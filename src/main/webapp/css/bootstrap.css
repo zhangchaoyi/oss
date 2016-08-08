@@ -325,6 +325,7 @@ th {
   left: -158px;
   top: -34px;
   font-size: 36px;
+  /* float: left; */
 }
 .glyphicon-film:before {
   content: "\e009";
@@ -1095,7 +1096,7 @@ body {
   font-size: 14px;
   line-height: 1.42857143;
   color: #333;
-  /* background-color: #D81; */
+  background-color: #eee;
   /* height: 1px; */
 }
 input,
@@ -1161,7 +1162,7 @@ hr {
   border-top: 1px solid #eee;
   position: relative;
   top: 351px;
-  background-color: #FEF9B6;
+  background-color: #5b2280;
   /* background-color: #D81; */
   height: 1px;
 }
@@ -3017,7 +3018,7 @@ select[multiple].input-lg {
   display: inline-block;
   padding: 6px 12px;
   margin-bottom: 0;
-  font-size: 14px;
+  font-size: 24px;
   font-weight: normal;
   line-height: 1.42857143;
   text-align: center;
@@ -3075,6 +3076,7 @@ fieldset[disabled] a.btn {
   color: #333;
   background-color: #fff;
   border-color: #ccc;
+  font-size: 19pt;
 }
 .btn-default:focus,
 .btn-default.focus {
@@ -3717,6 +3719,7 @@ tbody.collapse.in {
   position: relative;
   display: inline-block;
   vertical-align: middle;
+  /* background: red; */
 }
 .btn-group > .btn,
 .btn-group-vertical > .btn {

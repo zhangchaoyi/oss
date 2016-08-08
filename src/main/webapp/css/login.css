@@ -1,12 +1,16 @@
 .logo {
-	width: 300px;
-	height: 60px;
+	width: 182px;
+	height: 69px;
+	/* padding-left: 1px; */
+	/* border-left: 332px; */
+	margin-left: auto;
+	margin-right: 86px;
 	background:url("../images/logo.gif") left top;
 	position:relative;
 	top: 351px;
-	left: 20;
+	/* left: 10px; */
 	border-radius:8px 8px 8px 8px;
-	/* background-color: #292c54; */
+	/* background: silver; */
 }
 .login_container {
 	width: 340px;
@@ -14,6 +18,7 @@
 	margin: 0 auto;
 	top: -59px;
 	position: relative;
+	/* background: silver; */
 }
 .glyphicon glyphicon-user{
 	position:relative;

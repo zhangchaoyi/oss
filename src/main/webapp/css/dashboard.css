@@ -1,0 +1,59 @@
+.logo {
+	width: 175px;
+	height: 66px;
+	background:url("../images/logo.gif") left top;
+	position:relative;
+	margin-left: 8px;
+	border-radius:8px 8px 8px 8px;
+	margin-top: 1px;
+	padding-top: 20px;
+}
+.topnav {
+	float: right;
+	margin-top: 3px;
+}
+.logo-outer {
+	float: left;
+}
+#admin-btn {
+	float:left;
+	font-size: 20pt;
+	width: auto;
+	height: 5px;
+	position:relative;
+	margin-right:3px;
+	margin-top:10px;
+}
+#header {
+	background: black;
+	height: 69px;
+	background: #2E7C;
+	min-width: 1307px;
+	position: relative;
+	z-index: 103;
+}
+.logout-btn {
+	float:right;
+	position: relative;
+	margin-top: 9px;
+	margin-right: 29px;
+	margin-left: -32px;
+}
+.top {
+	z-index: -32;
+}
+#login-user {
+	position:relative;
+	margin-top:70px;
+	font-size:1pt;
+	padding-left:10px;
+	margin-right:20px;
+	color:white;
+}
+.panel.panel-default {
+	margin-top:50px;
+	margin-left: -291px;
+	margin-right: 100px;
+	border-radius:8px 8px 8px 8px;
+	width: 1720px;
+}
