@@ -1,0 +1,21 @@
+.logo {
+	width: 300px;
+	height: 60px;
+	background:url("../images/logo.gif") left top;
+	position:relative;
+	top: 351px;
+	left: 20;
+	border-radius:8px 8px 8px 8px;
+	/* background-color: #292c54; */
+}
+.login_container {
+	width: 340px;
+	text-align: center;
+	margin: 0 auto;
+	top: -59px;
+	position: relative;
+}
+.glyphicon glyphicon-user{
+	position:relative;
+	right:300;
+}

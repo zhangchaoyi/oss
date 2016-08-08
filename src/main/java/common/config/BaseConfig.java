@@ -10,6 +10,7 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 
+import common.interceptor.AuthInterceptor;
 import common.model.User;
 import common.routes.AdminRoute;
 
@@ -17,7 +18,7 @@ public class BaseConfig extends JFinalConfig {
 
 	@Override
 	public void configConstant(Constants me) {
-
+		me.setEncoding("UTF-8");
 	}
 
 	@Override
@@ -26,7 +27,7 @@ public class BaseConfig extends JFinalConfig {
 	}
 
 	@Override
-	public void configPlugin(Plugins me) {		
+	public void configPlugin(Plugins me) {
 		C3p0Plugin cp = createC3p0Plugin();
 		me.add(cp);
 		ActiveRecordPlugin arp = new ActiveRecordPlugin(cp);
@@ -36,7 +37,7 @@ public class BaseConfig extends JFinalConfig {
 
 	@Override
 	public void configInterceptor(Interceptors me) {
-
+		me.addGlobalActionInterceptor(new AuthInterceptor());
 	}
 
 	@Override

@@ -2,7 +2,6 @@ package common.model;
 
 import javax.sql.DataSource;
 import com.jfinal.kit.PathKit;
-import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.generator.Generator;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 import common.config.BaseConfig;
