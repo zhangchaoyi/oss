@@ -1,0 +1,283 @@
+
+/*=============================================================
+    Authour URI: www.binarytheme.com
+    License: Commons Attribution 3.0
+
+    http://creativecommons.org/licenses/by/3.0/
+
+    100% To use For Personal And Commercial Use.
+    IN EXCHANGE JUST GIVE US CREDITS AND TELL YOUR FRIENDS ABOUT US
+   
+    ========================================================  */
+
+
+/*==============================================
+    BASIC  STYLES    
+    =============================================*/
+body {
+    font-family: 'Open Sans', sans-serif;
+    line-height:25px;
+}
+
+#wrapper {
+    width: 100%;
+    background: #ffffff;
+}
+
+#page-wrapper {
+    /* padding: 15px 15px; */
+    min-height: 600px;
+    /* background: #EDEF49; */
+    /* top: 1px; */
+    /* margin-top: 10px; */
+    /* position: relative; */
+    border-left: #bdbdbd 1px solid;
+    border-right: #bdbdbd 1px solid;
+    background-color: #edeef0;
+}
+
+div#page-wrapper {}
+
+#page-inner {
+    width: 100%;
+    margin: 10px 20px 10px 0px;
+    background-color: #edeef0;
+    padding: 10px;
+    min-height: 1200px;
+    position: relative;
+    top: 14px;
+}
+
+.page-head-line {
+    font-size: 30px;
+    text-transform: uppercase;
+    color: #000;
+    font-weight: 800;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #00CA79;
+    margin-bottom: 10px;
+}
+
+.page-subhead-line {
+    font-size: 14px;
+    padding-top: 5px;
+    padding-bottom: 20px;
+    font-style:italic;
+    margin-bottom:30px;
+    border-bottom:1px dashed #00CA79;
+
+}
+
+
+/*==============================================
+    MENU STYLES    
+    =============================================*/
+
+
+.navbar-cls-top .navbar-brand {
+    color: #fff;
+    background: #202020;
+    width: 260px;
+    text-align: center;
+    height: 75px;
+    font-size: 20px;
+    letter-spacing: 1px;
+    font-weight: 900;
+    padding-top: 25px;
+    text-transform:uppercase;
+}
+
+.header-right {
+    color: #fff;
+    padding: 15px 50px 5px 50px;
+    float: right;
+    font-size: 16px;
+}
+
+.navbar-cls-top .navbar-brand:hover {
+    background: #202020;
+    color: #fff;
+}
+
+.user-img-div {
+    min-height: 140px;
+    padding: 20px;
+    background-color: #4380B8;
+}
+
+    .user-img-div img {
+        max-height: 60px;
+    }
+
+    .user-img-div .inner-text {
+        text-align: right;
+        position: relative;
+        color: #fff;
+        font-weight: 800;
+        line-height: 25px;
+    }
+
+.active-menu {
+    background-color: #00CA79!important;
+}
+.active-menu-top {
+    background-color: #000!important;
+}
+
+.arrow {
+    float: right;
+}
+
+.fa.arrow:before {
+    content: "\f104";
+    position: relative;
+    left: 10px;
+}
+
+.active > a > .fa.arrow:before {
+    content: "\f107";
+}
+
+
+.nav-second-level li,
+.nav-third-level li {
+    border-bottom: none !important;
+}
+
+    .nav-second-level li a {
+        padding-left: 37px;
+    }
+
+    .nav-third-level li a {
+        padding-left: 55px;
+    }
+
+.sidebar-collapse, .sidebar-collapse .nav {
+    /* background: none; */
+    background-color: white;
+}
+
+    .sidebar-collapse .nav {
+        padding: 0;
+    }
+
+        .sidebar-collapse .nav > li > a {
+            color: #000000;
+            background: #ffffff;
+            text-shadow: none;
+            position: relative;
+            left: -2px;
+            /* margin-left: 37px; */
+            text-align: left;
+            font-size: 124%;
+            font-weight: bold;
+            padding: 15px 40px;
+            /* border-bottom: 1px solid #2F2E31; */
+        }
+
+    .sidebar-collapse > .nav > li > a {
+        /* padding: 15px 10px; */
+    }
+
+    .sidebar-collapse .nav > li > a:hover,
+    .sidebar-collapse .nav > li > a:focus {
+        background: #d6d5d5;
+        outline: 0;
+    }
+
+
+
+.nav-second-level > li:last-child > a:after,
+.nav-third-level > li:last-child > a:after {
+    height: 50%;
+}
+
+.nav-third-level > li > a:after,
+.nav-third-level > li > a:before {
+    left: 40px;
+}
+
+.navbar-side {
+    border: none;
+    background-color: #fffefe;
+}
+
+.navbar-cls-top {
+    background: #00CA79;
+    border-bottom: none;
+}
+
+
+.navbar-default {
+    border: 0px solid #151313;
+}
+
+.navbar-header {
+    background: #000000;
+}
+
+.navbar-default .navbar-toggle:hover, .navbar-default .navbar-toggle:focus {
+    background-color: #00CA79;
+}
+
+.navbar-default .navbar-toggle {
+    border-color: #fff;
+}
+
+    .navbar-default .navbar-toggle .icon-bar {
+        background-color: #FFF;
+    }
+
+.nav > li > a > i {
+    margin-right: 12px;
+}
+
+nav.navbar.navbar-default.navbar-cls-top {position: relative;} 
+
+
+.sidebar-collapse .nav > li > a > em {
+
+}
+/*==============================================
+    FOOTER  STYLES    
+    =============================================*/
+#footer-sec {
+    background-color:#000;
+    padding:20px 50px;
+    color: #fff;
+    font-size:12px;
+    z-index: 200;
+    position: relative;
+}
+
+    #footer-sec a {
+        color:#fff;
+    }
+    #footer-sec a:hover,a:focus {
+        color: #918686;
+        text-decoration:none;
+    }
+/*==============================================
+    MEDIA QUERIES     
+    =============================================*/
+
+@media (min-width:768px) {
+    #page-wrapper {
+        margin: 20px 0 0 260px;
+        padding: 15px 30px;
+        min-height: 1200px;
+        /* top: 15px; */
+    }
+
+
+    .navbar-side {
+        position: fixed;
+        width: 260px;
+        /* background: white; */
+        top: 110px;
+    }
+
+    .navbar {
+        border-radius: 0px;
+    }
+}

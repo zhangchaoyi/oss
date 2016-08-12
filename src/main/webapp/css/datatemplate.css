@@ -1,0 +1,91 @@
+div#top-row {
+    font-size: 1px;
+    position: relative;
+    top: -1px;
+}
+div.filter-tool {
+    float:left;
+    background: #f7f7f7;
+    position:relative;
+    right: 25px;
+    width: 1580px;
+    height: 100px;
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fcfcfc),color-stop(1,#f2f2f2));
+    border: 1px solid #bfbfbf;
+}
+div.date-bar {
+    float:left;
+    position:relative;
+    top: 31px;
+    left: 53px;
+    width: 254px;
+    display: inline;
+}
+div.calender-bar {/*     font-size:px; */float:left;background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));font-size: 101px;width: 254px;height: 30px;position: relative;right: 20px;margin-bottom: 5px;}
+
+div.time-title {
+    float: left;
+    position:relative;
+    z-index:10000px;
+    left: 248px;
+    bottom: 27px;
+    font-size: large;
+}
+
+span#date_seletor.date_title {
+    position:relative;
+    bottom:2px;
+}
+
+div.explain-content {
+    position:relative;
+    top:25px;
+    text-align: left;
+}
+
+div#accordion.panel-group {
+    width:inherit;
+    height:200px;
+    overflow-y:scroll;
+    position:relative;
+    top:10px;
+    margin-bottom:20px;
+    border-radius: 9px;
+}
+
+span.explain-heading {
+    font-weight:bold;
+    font-size:20px;
+    position:relative;
+    top:2px;
+}
+
+div.explain-content > div.panel.panel-default {
+    border-radius: 10px 10px 10 10;
+}
+
+div.explain-content > div.panel.panel-default > div.panel-heading{
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
+}
+
+div.explain-switch {
+    display:none;
+}
+
+div#data-first {
+/*     float:left; */
+    text-align:left;
+    position:relative;
+    top:50px;
+}
+
+div#data-first.row > div.panel.panel-default > div.panel-heading {
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
+}
+
+div#data-first.row > div.panel.panel-default > div.panel-body > ul.nav.nav-tabs > li > a:hover {
+    background-color:silver;
+}
+div#data-first.row > div.panel.panel-default > div.panel-body > ul.nav.nav-tabs > li.active > a:hover {
+    background-color:white;
+}

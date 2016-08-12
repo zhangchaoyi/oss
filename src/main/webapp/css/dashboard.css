@@ -1,4 +1,4 @@
-.logo {
+/* .logo {
 	width: 175px;
 	height: 66px;
 	background:url("../images/logo.gif") left top;
@@ -7,53 +7,231 @@
 	border-radius:8px 8px 8px 8px;
 	margin-top: 1px;
 	padding-top: 20px;
-}
-.topnav {
+	opacity:0.4;
+    filter:alpha(opacity=40);
+} */
+
+/* .logo:hover{ 
+	opacity:1.0;
+    filter:alpha(opacity=40);
+} */
+
+/* .topnav {
 	float: right;
 	margin-top: 3px;
-}
-.logo-outer {
+} */
+
+/* .logo-outer {
 	float: left;
+} */
+#wrapper {
+	width: 2061px;
+	width: 100%;
+	position: relative;
 }
-#admin-btn {
+
+div.col-lg-6 {
+	position:relative;
+	left: 100%;
+}
+
+div.input-group {
+	position:relative;
+	top:10px;
+	margin-left: 76px;
+	z-index: -1;
+}
+
+input.form-control {
+	position:relative;
+	top:10px;
+
+
+}
+
+div.container {
+	position:relative;
+	top:120px;
+}
+/* #admin-btn {
 	float:left;
-	font-size: 20pt;
+	font-size: 28px;
 	width: auto;
-	height: 5px;
+	height: 6px;
 	position:relative;
 	margin-right:3px;
 	margin-top:10px;
-}
-#header {
+	display: inline;
+	top: 1px;
+} */
+
+/* #header {
 	background: black;
 	height: 69px;
 	background: #2E7C;
-	min-width: 1307px;
+	min-width: 1296px;
 	position: relative;
 	z-index: 103;
-}
-.logout-btn {
+} */
+
+/* .logout-btn {
 	float:right;
 	position: relative;
-	margin-top: 9px;
+	margin-top: 10px;
 	margin-right: 29px;
 	margin-left: -32px;
-}
-.top {
+} */
+
+/* span.glyphicon.glyphicon-off::before{
+	border:white;
+	top: 3px;
+	margin-top: 0;
+	position: relative;
+	color: white;
+} */
+
+
+/* .top {
 	z-index: -32;
-}
-#login-user {
+} */
+
+/* #login-user {
 	position:relative;
-	margin-top:70px;
+	top: 15px;
 	font-size:1pt;
-	padding-left:10px;
 	margin-right:20px;
-	color:white;
-}
+	color: white;
+	z-index: 100;
+	right: 129px;
+	font-size: 35px;
+} */
+
 .panel.panel-default {
-	margin-top:50px;
-	margin-left: -291px;
-	margin-right: 100px;
+	margin-top: 12px;
+	margin-left: -304px;
 	border-radius:8px 8px 8px 8px;
-	width: 1720px;
+	width: 1750px;
+	height: inherit;
+	text-align: -webkit-auto;
+	float: left;
 }
+
+.table-both {
+	position:relative;
+	top: 39px;
+}
+
+small {
+	display:block;
+	color:silver;
+}
+
+.table.table-responsive tr{
+	text-align:center;
+	width:100%;
+	overflow:hidden;
+}
+
+div.grid-gamename.inline-block {
+	position:relative;
+	top: 100px;
+	left:130px;
+	font-size: 20px;
+}
+
+.table-total th {
+	background:black;
+}
+
+.panel-heading {
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#f3f3f3));
+	font-weight:bold;
+	border-radius: 8px 8px 0px 0px;
+	background-color: white;
+}
+.module-table {
+	font-weight:bold;
+	font-size:initial;
+	height: inherit;
+}
+
+span.glyphicon.glyphicon-search {
+	position:relative;
+	left: 94px;
+	top:-13px;
+	z-index: 100;
+	font-size:120%;
+}
+
+
+/* 
+#menu {
+	background-color: #3c3737;
+	height: 50px;
+}
+
+.crumb {
+	position: relative;
+	left: -1px;
+	width: 62px;
+	float: left;
+} */
+
+/*ä¿®æ”¹å·¦ä¸Šè§’æŒ‰é’®home*/
+/* button.btn.btn-default.btn-home {
+	border: black;
+	background: #444343;
+	font-size: 27px;
+}
+button.btn.btn-default.btn-home:hover {
+	background:black;
+}
+
+em {
+	float: left;
+	color:white;
+	font-size:20px;
+	font-style:normal;
+	position:relative;
+	top: 12px;
+	left:10px;
+} */
+
+/*ä¿®æ”¹æŒ‰é’®å…¬æœ‰å±žæ€§*/
+.btn.btn-default {
+	border:silver;
+	font-size: 70%;
+}
+/*ä¿®æ”¹iosæŒ‰é’®*/
+.btn.btn-default.btn-ios {
+	background:#f9f8f8;
+}
+
+.btn.btn-default.btn-ios:hover {
+	background:white;
+}
+/*ä¿®æ”¹windowsæŒ‰é’®*/
+.btn.btn-default.btn-windows {
+	background:#f9f8f8;
+}
+
+.btn.btn-default.btn-windows:hover {
+	background:white;
+}
+
+/*ä¿®æ”¹å³ä¸Šè§’é€€å‡ºæŒ‰é’®*/
+/* button.btn.btn-default.btn-off {
+	background: black;
+	font-size: 27px;
+	position: relative;
+	bottom: 2px;
+}
+
+button.btn.btn-default.btn-off:hover {
+	background:silver;
+} */
+
+a:link {text-decoration:none;color:#000000;}    /* æœªè¢«è®¿é—®çš„é“¾æŽ¥ */
+a:visited {text-decoration:none;color:#000000} /* å·²è¢«è®¿é—®çš„é“¾æŽ¥ */
+a:hover {text-decoration:none;color:#428bca;}   /* é¼ æ ‡æŒ‡é’ˆç§»åŠ¨åˆ°é“¾æŽ¥ä¸Š */
+a:active {text-decoration:underline;}  /* æ­£åœ¨è¢«ç‚¹å‡»çš„é“¾æŽ¥ */

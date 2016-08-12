@@ -1,26 +1,62 @@
 .logo {
-	width: 182px;
+	width: 194px;
 	height: 69px;
-	/* padding-left: 1px; */
-	/* border-left: 332px; */
-	margin-left: auto;
-	margin-right: 86px;
-	background:url("../images/logo.gif") left top;
+	background: url("../images/logo.gif");
 	position:relative;
-	top: 351px;
-	/* left: 10px; */
+	bottom: 30px;
 	border-radius:8px 8px 8px 8px;
-	/* background: silver; */
+	text-align: center;
+	opacity: 0.9;
+	left: 200px;
 }
 .login_container {
-	width: 340px;
-	text-align: center;
-	margin: 0 auto;
-	top: -59px;
 	position: relative;
-	/* background: silver; */
+	margin-left: 30%;
+	margin-right: 25%;
+	text-align: center;
+	top: 300;
+	margin: 0 auto;
+	width: 800px;
+	}
+
+span.glyphicon.glyphicon-user.login-user::before{
+	right: 206px;
+	font-size: 270%;
+	position: relative;
+	float: left;
+	bottom: 43px;
+	}
+
+span.glyphicon.glyphicon-lock.login-password::before{
+	right: 242px;
+	font-size: 270%;
+	position: relative;
+	float: left;
+	top: 26px;
+	}
+
+input#username.form-control.input-lg {
+
 }
-.glyphicon glyphicon-user{
+
+input#password.form-control.input-lg {
 	position:relative;
-	right:300;
+	bottom:15px;
+}
+
+button.btn.btn-lg.btn-primary.btn-login {
+	position:relative;
+	top: 15px;
+}
+div.input-group.login-page {
+	width: 50%;
+	left: 95px;
+	}
+
+form.col-lg-12.input-user-password {
+	
+}
+
+body {
+	background: #ebedef;
 }
