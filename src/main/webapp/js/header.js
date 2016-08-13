@@ -9,7 +9,7 @@ $("#dropdownMenu1").on("mouseover", function() {
 function iconsView() {
     var icons = $("[type='checkbox']");
     if((!icons[0].checked) && (!icons[1].checked) && (!icons[2].checked)) {
-    	alert("a");
+    	alert("aa");
     	return;
     }
     for(var i = 0;i < $("[type='checkbox']").length;i++) {

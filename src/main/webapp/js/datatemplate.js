@@ -42,7 +42,6 @@ function dateSelected(obj) {
     $(obj).addClass("selected");
 }
 
-
 //onload initial
 $(function() {
     var dateRange = new pickerDateRange('date_seletor', {
