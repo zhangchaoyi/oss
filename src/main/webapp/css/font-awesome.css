@@ -565,6 +565,7 @@
 }
 .fa-key:before {
   content: "\f084";
+  margin-right: 2px;
 }
 .fa-gears:before,
 .fa-cogs:before {
@@ -1789,6 +1790,7 @@
 }
 .fa-neuter:before {
   content: "\f22c";
+  margin-right: 10px;
 }
 .fa-genderless:before {
   content: "\f22d";

@@ -146,6 +146,7 @@ div#page-wrapper {}
 
     .nav-second-level li a {
         padding-left: 37px;
+        font-weight: 100;
     }
 
     .nav-third-level li a {
@@ -169,14 +170,16 @@ div#page-wrapper {}
             left: -2px;
             /* margin-left: 37px; */
             text-align: left;
-            font-size: 124%;
-            font-weight: bold;
+            /* font-size: 114%; */
+            /* font-weight: bold; */
             padding: 15px 40px;
             /* border-bottom: 1px solid #2F2E31; */
         }
 
     .sidebar-collapse > .nav > li > a {
         /* padding: 15px 10px; */
+        font-size: 18px;
+        font-weight: bold;
     }
 
     .sidebar-collapse .nav > li > a:hover,

@@ -78,7 +78,7 @@ span.glyphicon.glyphicon-off::before{
 
 
 .top {
-	z-index: -32;
+	z-index: -32;140px
 }
 
 #login-user {
@@ -88,7 +88,7 @@ span.glyphicon.glyphicon-off::before{
 	margin-right:20px;
 	color: white;
 	z-index: 100;
-	right: 129px;
+	right: 140px;
 	font-size: 35px;
 }
 
@@ -106,7 +106,7 @@ span.glyphicon.glyphicon-off::before{
 }
 
 .crumb {
-	position: relative;
+	position: relative;66px
 	left: -1px;
 	width: 62px;
 	float: left;
@@ -129,7 +129,7 @@ button.btn.btn-default.btn-home:hover {
 	background:black;
 	z-index:1;
 }
-/*ÃƒÆ’Ã‚Â¦Ãƒâ€šÃ‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚Â©ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢Ãƒâ€šÃ‚Â¤ÃƒÆ’Ã‚Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¦Ãƒâ€šÃ‚ÂÃƒâ€šÃ‚Â®ÃƒÆ’Ã‚Â¦Ãƒâ€¦Ã¢â‚¬â„¢ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â°ÃƒÆ’Ã‚Â©ÃƒÂ¢Ã¢â€šÂ¬Ã¢â€žÂ¢Ãƒâ€šÃ‚Â®*/
+
 button.btn.btn-default.btn-circle {
 	border: black;
 	background: #37444f;
@@ -140,8 +140,9 @@ button.btn.btn-default.btn-circle {
 	position: relative;
 	padding-left: 22px;
 	padding-right: 33px;
+	left: 30px;
 	/* margin-left: 10px; */
-	top: 1px;
+	/* top: 0; */
 	/* float: left; */
 	/* margin-top: 2px; */
 }
@@ -149,7 +150,7 @@ button.btn.btn-default.btn-circle {
 button.btn.btn-default.btn-circle:hover {
 	background:black;
 }
-/*ÃƒÆ’Ã‚Â¦Ãƒâ€šÃ‚Â¸ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¦ÃƒÆ’Ã‚Â©ÃƒÂ¢Ã¢â‚¬Å¾Ã‚Â¢Ãƒâ€šÃ‚Â¤ÃƒÆ’Ã‚Â¦ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¢Ãƒâ€šÃ‚Â°ÃƒÆ’Ã‚Â¦Ãƒâ€šÃ‚ÂÃƒâ€šÃ‚Â®ÃƒÆ’Ã‚Â¥ÃƒÂ¢Ã¢â€šÂ¬Ã‚ÂºÃƒâ€šÃ‚Â¾ÃƒÆ’Ã‚Â¦Ãƒâ€šÃ‚Â ÃƒÂ¢Ã¢â€šÂ¬Ã‚Â¡*/
+
 span.glyphicon.glyphicon-ok-circle {
 	color:silver;
 	position: relative;
@@ -182,7 +183,7 @@ div.crumb-inner > em {
 }
 
 div.clear-data {
-	position:relative;
+	position:relative;66px
 	left: 41px;
 	z-index: -1;
 	bottom: 1px;
@@ -224,7 +225,7 @@ div.service-bar {
 	/* float: right; */
 	position:relative;
 	left:40px;
-	top:1px;
+	top: 0;
 	display: block;
 }
 
@@ -254,4 +255,27 @@ ul.dropdown-menu.user-bars {
 .fa-style {
 	margin-right:6px;
 	margin-left:5px;
+}
+
+div.envelope{
+	display:inline;
+	float:left;
+	position:relative;
+	right: 66px;
+	top: 9px;
+	/* left: 126px; */
+	/* z-index: 10; */
+}
+
+span.glyphicon.glyphicon-envelope {
+	font-size: 32px;
+	color: white;
+}
+
+button.btn.btn-default.btn-envelope {
+	background:#2e6fac;
+}
+
+button.btn.btn-default.btn-envelope:hover {
+	background:silver;
 }

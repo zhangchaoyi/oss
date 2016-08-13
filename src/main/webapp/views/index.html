@@ -14,8 +14,9 @@
     <link href="../css/header.css" rel="stylesheet" />
     <link href="../css/datatemplate.css" rel="stylesheet" />
     <link rel="stylesheet" type="text/css" href="../css/button/default.css" />
-    <link rel="stylesheet" type="text/css" href="../css/button/component.css" /></head>
-  
+    <link rel="stylesheet" type="text/css" href="../css/button/component.css" />
+    <link rel="stylesheet" type="text/css" href="../css/button/animation.css" /></head>
+    
   <body>
     <div id="wrapper">
       <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0">
@@ -27,6 +28,11 @@
               </a>
             </div>
             <div class="topnav">
+              <div class="envelope">
+                <button type="button" class="btn btn-default btn-envelope">
+                  <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+                </button>
+              </div>
               <div class="btn-group" id="admin-btn">
                 <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">admin
                   <span class="caret"></span></button>
@@ -93,7 +99,7 @@
           <ul class="nav" id="main-menu">
             <li>
               <a href="#">
-                <i class="fa fa-clock-o"></i>实时概况</a>
+                <i class="fa fa-clock-o "></i>实时概况</a>
             </li>
             <li>
               <a href="#">
@@ -205,15 +211,16 @@
                   <div id="datePicker"></div>
                 </div>
                 <div class="time-title">
-                  <a id="aToday">今日</a>
-                  <a id="aYesterday">昨日</a>
-                  <a id="aRecent7Days">近7日</a>
-                  <a id="aRecent30Days">近30日</a>
-                  <a id="aRecent90Days">近90日</a></div>
+                  <a id="aToday" onclick=dateSelected(this)>今日</a>
+                  <a id="aYesterday" onclick=dateSelected(this)>昨日</a>
+                  <a id="aRecent7Days" onclick=dateSelected(this)>近7日</a>
+                  <a id="aRecent30Days" onclick=dateSelected(this)>近30日</a>
+                  <a id="aRecent90Days" onclick=dateSelected(this)>近90日</a></div>
               </div>
               <div class="filter-bar"></div>
             </div>
           </div>
+          
           <!-- /. ROW -->
           <div class="row" id="explain-row">
             <div class="explain-content">
@@ -294,7 +301,7 @@
           <!-- /. explain-row -->
           <div class="row" id="data-first">
             <div class="panel panel-default">
-              <div class="panel-heading">新增玩家</div>
+              <div class="panel-heading"><span class="player-heading">新增玩家</span></div>
               <div class="panel-body">
                 <ul class="nav nav-tabs">
                   <li class="active">
@@ -304,15 +311,42 @@
                 </ul>
                 <div class="tab-content">
                   <div class="tab-pane fade active in" id="home">
-                    
+                     <div id="main" style="width: 600px;height:400px;display:inline;float:left"></div>
+                     <div id="side" style="width: 600px;height:400px;display:inline;"></div>
                   </div>
                   <div class="tab-pane fade" id="profile">
-                    
+                     <div id="third" style="width: 1400px;height:400px;"></div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
+          <div class="row" id="notification">
+            <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal">Launch Demo Modal
+            </button>
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog"> 
+
+                <div class="modal-content">
+                   <div class="modal-header">
+                      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                      <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                   </div>
+                   <div class="modal-body">
+                      <div class="alert alert-warning" id="platform-selected">
+                        请选择平台
+                      </div>
+                   </div>
+                   <div class="modal-footer">
+                      <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      <button type="button" class="btn btn-primary">Save changes</button>
+                   </div>
+                </div>
+              </div>  
+            </div>  
+          </div>
+
+
         </div>
         <!-- /. PAGE INNER --></div>
       <!-- /. PAGE WRAPPER --></div>
@@ -327,21 +361,10 @@
     <script src="../js/header.js"></script>
     <script src="../js/button/modernizr.custom.js"></script>
     <script src="../js/button/classie.js"></script>
+    <script src="../js/echarts.min.js"></script>
     <script type="text/javascript" src="../js/dateselector/dateRange.js"></script>
     <script type="text/javascript" src="../js/dateselector/monthPicker.js"></script>
     <script type="text/javascript" src="../js/datatemplate.js"></script>
-    <script type="text/javascript">var dateRange = new pickerDateRange('date_seletor', {
-        isTodayValid: true,
-        startDate: getNowFormatDate(),
-        endDate: getNowFormatDate(),
-        //needCompare : true,
-        //isSingleDay : true,
-        //shortOpr : true,
-        defaultText: ' 至 ',
-        inputTrigger: 'input_trigger',
-        theme: 'ta',
-
-      });</script>
   </body>
 
 </html>

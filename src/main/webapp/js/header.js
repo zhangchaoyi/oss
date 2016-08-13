@@ -15,6 +15,7 @@ function iconsView() {
     for(var i = 0;i < $("[type='checkbox']").length;i++) {
     	showIcon(icons[i]);
     }
+    $(".dropdown.open").toggleClass("open");
 }
 
 function showIcon(icon){

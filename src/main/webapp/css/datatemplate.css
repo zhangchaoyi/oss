@@ -1,36 +1,63 @@
 div#top-row {
-    font-size: 1px;
+    font-size: 0;
     position: relative;
     top: -1px;
 }
 div.filter-tool {
     float:left;
-    background: #f7f7f7;
+    /* background: #F7F834; */
     position:relative;
-    right: 25px;
-    width: 1580px;
+    right: 1px;
+    width: 1784px;
     height: 100px;
     background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fcfcfc),color-stop(1,#f2f2f2));
     border: 1px solid #bfbfbf;
+    right: 26px;
 }
 div.date-bar {
     float:left;
     position:relative;
     top: 31px;
-    left: 53px;
+    left: 54px;
     width: 254px;
     display: inline;
 }
-div.calender-bar {/*     font-size:px; */float:left;background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));font-size: 101px;width: 254px;height: 30px;position: relative;right: 20px;margin-bottom: 5px;}
+div.calender-bar {/*     font-size:px; */float:left;/* background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada)); */font-size: 98px;width: 261px;height: 30px;position: relative;right: 20px;margin-bottom: 5px;/* background: #DADAEA; */}
 
 div.time-title {
     float: left;
     position:relative;
-    z-index:10000px;
-    left: 248px;
+    left: 263px;
     bottom: 27px;
     font-size: large;
+    width: 327px;
 }
+
+div.time-title > a {
+    margin-left: 12px;
+}
+
+div.time-title > a:link {
+    color: #FF00003
+}		
+div.time-title > a:visited {
+    color: black;
+    font-weight:bold;
+}	
+div.time-title > a:hover {
+    text-decoration:none;
+    font-weight:bold;
+    font-size:large;
+
+}	
+div.time-title > a:active {
+    color: black;
+}	
+div.time-title > a.selected {
+    font-weight:bold;
+    color:black;
+}
+
 
 span#date_seletor.date_title {
     position:relative;
@@ -88,4 +115,21 @@ div#data-first.row > div.panel.panel-default > div.panel-body > ul.nav.nav-tabs 
 }
 div#data-first.row > div.panel.panel-default > div.panel-body > ul.nav.nav-tabs > li.active > a:hover {
     background-color:white;
+}
+
+div.panel.panel-default {
+    border-radius:10px;
+}
+
+div.panel-heading {
+    border-radius:10px 10px 0 0;
+}
+
+span.player-heading {
+    font-weight:bold;
+    font-size:20px;
+}
+
+#platform-selected {
+    width:600px;
 }
