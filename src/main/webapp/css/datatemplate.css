@@ -133,3 +133,105 @@ span.player-heading {
 #platform-selected {
     width:600px;
 }
+
+div.modal-dialog {
+    position:relative;
+    top:300px;
+}
+
+div#notification.row {
+    position:relative;
+    left:370px;
+    font-size:10px;
+    display:inline;
+}
+
+button.btn.btn-primary.btn-lg.btn-notify {
+    position:relative;
+    left: 102px;
+    width:80px;
+    height:40px;
+    padding: 9px;
+}
+
+button.btn.btn-primary.btn-lg.btn-notify > span {
+    display:inline;
+    float:left;
+}
+
+button.btn.btn-primary.btn-lg.btn-notify > i {
+    position:relative;
+    left: 4px;
+    font-style:normal;
+}
+
+div.modal-header {
+    height:50px;
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
+    border-radius:10px 10px 0 0;
+}
+
+h4#myModalLabel.modal-title > i {
+    float:left;
+    font-style:normal;
+}
+
+span.input-group.input-filter {
+	float:right;
+	position: relative;
+	bottom: 40px;
+	width: 147px;
+}
+
+span.input-group.input-filter > input.form-control {
+	position: absolute;
+	right: 0px;
+}
+
+span.input-group.input-filter > span.glyphicon.glyphicon-search {
+	position: absolute;
+	left: 131px;
+	top: 10px;
+	display:inline;
+	z-index: 10;
+}
+
+ul.nav.nav-pills {
+	display:inline;
+}
+
+div.choose.option {
+	text-align:center;	
+	background:#e3effa;
+	position:relative;
+	top:10px;
+	width:560px;
+	right:11px;
+}
+
+div.choose.option > i{
+	float:left;
+	font-style:normal;
+	padding-top:5px;
+	padding-left:5px;
+
+}
+
+div.choose.option > button.btn.btn-primary {
+	font-size:10px;
+	width:50px;
+	position:relative;
+	left:180px;
+}
+
+div.filter-header {
+	width: 566px;
+	position:relative;
+	right: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #d5d1d1;
+}
+
+div.tab-content {position: relative;top: 15px;}

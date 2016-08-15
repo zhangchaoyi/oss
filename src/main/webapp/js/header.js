@@ -9,7 +9,9 @@ $("#dropdownMenu1").on("mouseover", function() {
 function iconsView() {
     var icons = $("[type='checkbox']");
     if((!icons[0].checked) && (!icons[1].checked) && (!icons[2].checked)) {
-    	alert("aa");
+    	$("#platform-selected").css("display", "block");
+    	setTimeout('$("#platform-selected").css("display", "none")', 8000);
+    	$(".dropdown.open").toggleClass("open");
     	return;
     }
     for(var i = 0;i < $("[type='checkbox']").length;i++) {
@@ -48,3 +50,4 @@ $(document).ready(function(){
 $('.dropdown-menu.iconBar').click(function(e) {
     e.stopPropagation();
 });
+
