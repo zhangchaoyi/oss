@@ -15,7 +15,7 @@
   <link rel="stylesheet" type="text/css" href="../css/button/default.css" /> 
   <link rel="stylesheet" type="text/css" href="../css/button/component.css" /> 
   <link rel="stylesheet" type="text/css" href="../css/button/animation.css" />
-<!--   <link href="../css/polaris/polaris.css" rel="stylesheet"> -->
+  <link href="../css/polaris/polaris.css" rel="stylesheet">
  </head> 
  <body> 
   <div id="wrapper"> 
@@ -125,7 +125,60 @@
         </div> 
        </div> 
        <div class="filter-bar"> 
-         
+          <div class="row" id="notification">
+            
+            <button class="btn btn-primary btn-lg btn-notify" data-toggle="modal" data-target="#myModal">
+              <span class="glyphicon glyphicon-filter" aria-hidden="true"></span> 
+              <i>筛选</i>
+            </button>
+            <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title" id="myModalLabel"><i>筛选</i></h4>
+                  </div>
+                  <div class="modal-body">
+                    <div class="panel panel-default">
+                      <div class="panel-body">
+                        <div class="filter-header">
+                          <ul class="nav nav-pills">
+                            <li class="active"><a href="#version-pills" data-toggle="tab">版本</a></li> 
+                            <li class=""><a href="#approach-pills" data-toggle="tab">渠道</a> </li> 
+                            <li class=""><a href="#servers-pills" data-toggle="tab">区服</a> </li>
+                          </ul>
+                          <span class="input-group input-filter">
+                            <input name="filter" id="filter" type="text" class="form-control" placeholder="Search for..." /> 
+                            <span class="glyphicon glyphicon-search">
+                            </span> 
+                          </span>
+                        </div>
+                        <div class="choose option">
+                          <i>常用选择</i> 
+                          <button type="button" class="btn btn-primary">全选</button> 
+                          <button type="button" class="btn btn-primary">反选</button>
+                        </div>
+                        <div class="tab-content">
+                          <div class="tab-pane fade active in" id="version-pills">
+                            
+                          </div>
+                          <div class="tab-pane fade" id="approach-pills"> 
+                          </div> 
+                          <div class="tab-pane fade" id="servers-pills"> 
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="modal-footer"> 
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> 
+                    <button type="button" class="btn btn-primary">保存</button> 
+                  </div>
+                </div>
+              </div>
+            </div>
+                      
+          </div> 
        </div> 
       </div> 
      </div> 
@@ -265,8 +318,30 @@
   <script type="text/javascript" src="../js/filter/jcfilter.min.js"></script>
   <script type="text/javascript" src="../js/dateselector/dateRange.js"></script> 
   <script type="text/javascript" src="../js/dateselector/monthPicker.js"></script> 
-<!--   <script src="../js/checkbox/icheck.js"></script> -->
+  <script src="../js/checkbox/icheck.js"></script>
   <script type="text/javascript" src="../js/datatemplate.js"></script>
-  
+ <script>
+$(document).ready(function(){
+  $('input').iCheck({
+    checkboxClass: 'icheckbox_polaris',
+    radioClass: 'iradio_polaris',
+    increaseArea: '-10%' // optional
+  });
+});
+ </script>
+   <script type="text/javascript">
+		jQuery(document).ready(function(){
+			jQuery("#filter").jcOnPageFilter({
+				animateHideNShow: true,
+				focusOnLoad:true,
+				highlightColor:'#FFFF00',
+				textColorForHighlights:'#000000',
+				caseSensitive:false,
+				hideNegatives:true,
+				parentLookupClass:'jcorgFilterTextParent',
+				childBlockClass:'jcorgFilterTextChild'
+			});
+		});          
+</script>
  </body>
 </html>
