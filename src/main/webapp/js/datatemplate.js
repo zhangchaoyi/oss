@@ -15,25 +15,30 @@ function getNowFormatDate() {
     return currentdate;
 }
 
-$(".collapsed.explain-title").click(function() {
-    var rightCss = "fa fa-chevron-circle-right";
-    var downCss = "fa fa-chevron-circle-down";
+// $(".collapsed.explain-title").click(function() {
+//     var rightCss = "fa fa-chevron-circle-right";
+//     var downCss = "fa fa-chevron-circle-down";
 
-    $(this).siblings("i").toggleClass(downCss);
-    $(this).siblings("i").toggleClass(rightCss);
-});
+//     $(this).siblings("i").toggleClass(downCss);
+//     $(this).siblings("i").toggleClass(rightCss);
+// });
 
+//toggle the explain-row css
 $(".btn.btn-2.btn-2c").click(function() {
     $("#explain-panel").toggleClass("explain-switch");
     var txt = $(this).text();
-    console.log(txt);
     if (txt == "打开") {
         $(this).text("关闭");
+        $("#btn-explain-up").show();
+        $("#btn-explain-down").show();
     } else {
         $(this).text("打开");
+        $("#btn-explain-up").hide();
+        $("#btn-explain-down").hide();
     }
 });
 
+//change the css when mouse cover date
 function dateSelected(obj) {
     var nodes = $(obj).siblings("a");
     for(var i=0;i<nodes.length;i++) {
@@ -41,6 +46,52 @@ function dateSelected(obj) {
     }
     $(obj).addClass("selected");
 }
+
+//control the filter button
+$("#btn-selall").click(function(){
+    $("table.tab-pane.fade.active.in").find("div").iCheck("check");
+    $("table[class='tab-pane fade']").find("div").iCheck("uncheck");
+});
+
+$("#btn-selreverse").click(function(){
+    $("table.tab-pane.fade.active.in").find("div").iCheck("toggle");
+});
+
+//save the filter chioce
+$("#btn-filtersave").click(function(){
+    var filterCheckBoxs = $("table.tab-pane.fade.active.in").find("div");
+    for(var i=0;i<filterCheckBoxs.length;i++) { 
+        if($(filterCheckBoxs[i]).hasClass("checked")){
+            // console.log($(filterCheckBoxs[i]).siblings("span").text());
+        }
+    }
+});
+
+//explain up and down button 
+$("#btn-explain-up").click(function(){
+    $("div.explain-content-box").css("margin-top", function(index,value){
+        value = parseFloat(value) + 155;
+        if(value>=0){
+            $("#btn-explain-up").addClass("disabled");
+        }
+        if($("#btn-explain-down").hasClass("disabled")){ 
+            $("#btn-explain-down ").removeClass("disabled");
+        }
+        return value;
+    });       
+});
+$("#btn-explain-down").click(function(){
+    $("div.explain-content-box").css("margin-top", function(index,value){
+        value = parseFloat(value) - 155;
+        if(value <= -310){
+            $("#btn-explain-down").addClass("disabled");
+        }
+        if($("#btn-explain-up").hasClass("disabled")){ 
+            $("#btn-explain-up").removeClass("disabled");
+        }
+        return value;
+    });
+});
 
 //onload initial
 $(function() {
@@ -73,12 +124,13 @@ $(function() {
         legend: {
             // show:false,
             zlevel:-1,
-            padding:30,
+            left:20,
+            // padding:30,
             // left:"left",
-            align:"left",
+            // align:"left",
             // selectedMode:false,
             // inactiveColor:"black"
-            orient:"vertical",
+            // orient:"vertical",
             data: ['设备激活', '新增用户', '新增设备'],
             shadowColor:'rgba(1, 0, 1, 1.1)',
             shadowBlur: 10,
@@ -136,4 +188,13 @@ $(function() {
     myChart1.setOption(option);
     myChart2.setOption(option);
     myChart3.setOption(option);
+});
+
+$(function(){
+    
+    $('input').iCheck({
+        checkboxClass: 'icheckbox_polaris'
+        // increaseArea: '-10%' // optional
+    });
+
 });

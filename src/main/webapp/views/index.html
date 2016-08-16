@@ -3,7 +3,7 @@
  <head> 
   <meta charset="utf-8" /> 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
-  <title>数据页</title> 
+  <link rel="shortcut icon" type="image/x-icon" href="../images/koogame.ico"media="screen" /> 
   <link rel="stylesheet" type="text/css" href="../css/dateselector/dateRange.css" /> 
   <link rel="stylesheet" type="text/css" href="../css/dateselector/monthPicker.css" /> 
   <link href="../css/bootstrap.css" rel="stylesheet" /> 
@@ -16,6 +16,7 @@
   <link rel="stylesheet" type="text/css" href="../css/button/component.css" /> 
   <link rel="stylesheet" type="text/css" href="../css/button/animation.css" />
   <link href="../css/polaris/polaris.css" rel="stylesheet">
+  <title>数据页</title>
  </head> 
  <body> 
   <div id="wrapper"> 
@@ -55,9 +56,9 @@
       <div class="dropdown"> 
        <button class="btn btn-default dropdown-toggle" type="button" id="btn-dropdownIcon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <span class="caret"></span> </button> 
        <ul class="dropdown-menu iconBar" aria-labelledby="dropdownIcon"> 
-        <li class="btn-icons" id="ios"> <a> <input type="checkbox" value="apple" /> <span class="fa fa-apple fa-style" aria-hidden="true"></span>iOS</a> </li> 
-        <li class="btn-icons" id="and"> <a> <input type="checkbox" value="android" /> <span class="fa fa-android fa-style" aria-hidden="true"></span>Android</a> </li> 
-        <li class="btn-icons" id="wp"> <a> <input type="checkbox" value="windows" /> <span class="fa fa-windows fa-style" aria-hidden="true"></span>WP</a> </li> 
+        <li class="btn-icons" id="ios" data-value="apple"> <a> <input type="checkbox"  /> <span class="fa fa-apple fa-style" aria-hidden="true"></span>iOS</a> </li> 
+        <li class="btn-icons" id="and" data-value="android"> <a> <input type="checkbox"  /> <span class="fa fa-android fa-style" aria-hidden="true"></span>Android</a> </li> 
+        <li class="btn-icons" id="wp" data-value="windows"> <a> <input type="checkbox"  /> <span class="fa fa-windows fa-style" aria-hidden="true"></span>WP</a> </li> 
         <li> <button type="button" class="btn btn-primary" onclick="iconsView()">确定</button></li> 
        </ul> 
       </div> 
@@ -71,7 +72,8 @@
    <nav class="navbar-default navbar-side" role="navigation"> 
     <div class="sidebar-collapse"> 
      <ul class="nav" id="main-menu"> 
-      <li> <a href="#"> <i class="fa fa-clock-o "></i>实时概况</a> </li> 
+      <li> <a href="#"> <i class="fa fa-clock-o "></i>实时概况</a> </li>
+      <li> <a href="#"> <i class="fa fa-line-chart "></i>报表</a> </li> 
       <li> <a href="#"> <i class="fa fa-user"></i>玩家分析 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
         <li> <a href="#"> <i class="fa fa-user-plus" aria-hidden="true"></i>新增玩家</a> </li> 
@@ -87,9 +89,56 @@
         <li> <a href="#"> <i class="fa fa-bar-chart"></i>付费数据</a> </li> 
         <li> <a href="#"> <i class="fa fa-neuter "></i>付费行为</a> </li> 
         <li> <a href="#"> <i class="fa fa-key "></i>付费转化</a> </li> 
-        <li> <a href="#"> <i class="fa fa-send "></i>付费排行</a> </li> 
+        <li> <a href="#"> <i class="fa fa-arrows-v "></i>付费排行</a> </li> 
        </ul> </li> 
-      <li> <a href="#"> <i class="fa fa-flash "></i>流失分析</a> </li> 
+      <li> <a href="#"> <i class="fa fa-flash "></i>流失分析</a> </li>
+      <li> <a href="#"> <i class="fa fa-check-square-o "></i>在线分析 <span class="fa arrow"></span></a> 
+       <ul class="nav nav-second-level"> 
+        <li> <a href="#"> <i class="fa fa-check-square-o"></i>在线分析</a> </li> 
+        <li> <a href="#"> <i class="fa fa-arrows "></i>在线习惯</a> </li> 
+       </ul> </li>
+       <li> <a href="#"> <i class="fa fa-shopping-cart "></i>渠道分析 <span class="fa arrow"></span></a> 
+       <ul class="nav nav-second-level"> 
+        <li> <a href="#"> <i class="fa fa-shopping-cart"></i>渠道分析</a> </li> 
+        <li> <a href="#"> <i class="fa fa-link "></i>渠道短链追踪</a> </li> 
+       </ul> </li>
+       <li> <a href="#"> <i class="fa fa-gamepad "></i>系统分析 <span class="fa arrow"></span></a> 
+       <ul class="nav nav-second-level"> 
+        <li> <a href="#"> <i class="fa fa-gavel"></i>道具分析</a> </li> 
+        <li> <a href="#"> <i class="fa fa-tasks "></i>任务分析</a> </li>
+        <li> <a href="#"> <i class="fa fa-rocket "></i>关卡分析</a> </li>
+        <li> <a href="#"> <i class="fa fa-flag "></i>等级分析</a> </li>
+        <li> <a href="#"> <i class="fa fa-bitconin "></i>虚拟币统计</a> </li> 
+       </ul> </li>
+       <li> <a href="#"> <i class="fa fa-code-fork "></i>版本分析</a> </li>
+       <li> <a href="#"> <i class="fa fa-cog "></i>自定义事件 <span class="fa arrow"></span></a> 
+       <ul class="nav nav-second-level"> 
+        <li> <a href="#"> <i class="fa fa-qrcode"></i>事件列表</a> </li> 
+        <li> <a href="#"> <i class="fa fa-filter "></i>漏斗管理</a> </li> 
+       </ul> </li>
+       <li> <a href="#"> <i class="fa fa-send "></i>运营支持 <span class="fa arrow"></span></a> 
+       <ul class="nav nav-second-level"> 
+        <li> <a href="#"> <i class="fa fa-bell"></i>数据报警</a> </li> 
+       </ul> </li>
+       <li> <a href="#"> <i class="fa fa- "></i>数据挖掘 <span class="fa arrow"></span></a> 
+       <ul class="nav nav-second-level"> 
+        <li> <a href="#"> <i class="fa fa-crop"></i>聚类分析</a> </li>
+        <li> <a href="#"> <i class="fa fa-shopping-cart"></i>新玩家价值</a> </li> 
+       </ul> </li>
+       <li> <a href="#"> <i class="fa fa-bar-chart "></i>市场分析</a> </li>
+       <li> <a href="#"> <i class="fa fa-wrench "></i>技术支持 <span class="fa arrow"></span></a> 
+       <ul class="nav nav-second-level"> 
+        <li> <a href="#"> <i class="fa fa-vine"></i>在线参数</a> </li> 
+        <li> <a href="#"> <i class="fa fa-bookmark "></i>实时日志</a> </li>
+        <li> <a href="#"> <i class="fa fa-ban "></i>崩溃分析</a> </li>
+        <li> <a href="#"> <i class="fa fa-exclamation-triangle "></i>用户错误</a> </li>
+       </ul> </li>
+       <li> <a href="#"> <i class="fa fa-suitcase "></i>管理中心 <span class="fa arrow"></span></a> 
+       <ul class="nav nav-second-level"> 
+        <li> <a href="#"> <i class="fa fa-gears"></i>设置</a> </li> 
+        <li> <a href="#"> <i class="fa fa-cloud-download "></i>下载中心</a> </li>
+       </ul> </li>
+       
       <li> <a href="#"> <i class="fa fa-sitemap "></i>Multilevel Link <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
         <li> <a href="#"> <i class="fa fa-bicycle "></i>Second Level Link</a> </li> 
@@ -139,7 +188,21 @@
                     <h4 class="modal-title" id="myModalLabel"><i>筛选</i></h4>
                   </div>
                   <div class="modal-body">
-                    <div class="panel panel-default">
+                    <div class="panel panel-default">￼关闭
+设备激活:统计所选时期内，每日新增的玩家安装游戏客户端，并运行游戏的可连接网络设备的数量，每台设备只计算一次。
+新增账户:统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家账户数量。
+新增设备:统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家设备数量，每台设备只计算一次。
+玩家转化率: 统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家设备数量，即当日激活并注册的设备占比，如激活游戏后不在当日进行注册则不计算。
+首次游戏时长: 统计所选时期内，新增玩家首次进行游戏的游戏时间区间分布。
+小号分析: 统计所选时期内，新增设备上存在多个新增玩家游戏账号的数量情况。
+新增玩家地区/国家: 统计所选时期内，新增玩家注册信息中地区和国家分布情况。
+新增玩家性别: 统计所选时期内，新增玩家注册信息中性别分布情况。
+新增玩家年龄: 统计所选时期内，新增玩家注册信息中年龄分布情况。
+新增玩家账户类型: 统计所选时期内，新增玩家所选注册账户类型分布情况。￼￼
+新增玩家
+新增与激活
+玩家转化率
+Copyright © 2016.koogame All rights reserved.
                       <div class="panel-body">
                         <div class="filter-header">
                           <ul class="nav nav-pills">
@@ -155,24 +218,153 @@
                         </div>
                         <div class="choose option">
                           <i>常用选择</i> 
-                          <button type="button" class="btn btn-primary">全选</button> 
-                          <button type="button" class="btn btn-primary">反选</button>
+                          <button type="button" class="btn btn-primary" id="btn-selall">全选</button> 
+                          <button type="button" class="btn btn-primary" id="btn-selreverse">反选</button>
                         </div>
                         <div class="tab-content">
-                          <div class="tab-pane fade active in" id="version-pills">
-                            
-                          </div>
-                          <div class="tab-pane fade" id="approach-pills"> 
-                          </div> 
-                          <div class="tab-pane fade" id="servers-pills"> 
-                          </div>
+                         <table class="tab-pane fade active in" id="version-pills">
+                          <tbody> 
+                           <tr>
+                            <td class="jcorgFilterTextParent">   
+                              <input type="checkbox" />
+                              <span class="jcorgFilterTextChild">
+                                v1.0
+                              </span>   
+                            </td>
+                            <td class="jcorgFilterTextParent">   
+                              <input type="checkbox"/>
+                              <span class="jcorgFilterTextChild">
+                                v2.0
+                              </span>   
+                            </td>
+                            <td class="jcorgFilterTextParent">   
+                              <input type="checkbox"/>
+                              <span class="jcorgFilterTextChild">
+                                v3.0
+                              </span>   
+                            </td>
+                            </tr>
+                            <tr>
+                            <td class="jcorgFilterTextParent">   
+                              <input type="checkbox" />
+                              <span class="jcorgFilterTextChild">
+                                v4.0
+                              </span>   
+                            </td>
+                            <td class="jcorgFilterTextParent">   
+                              <input type="checkbox"/>
+                              <span class="jcorgFilterTextChild">
+                                v5.0
+                              </span>   
+                            </td>
+                            <td class="jcorgFilterTextParent">   
+                              <input type="checkbox"/>
+                              <span class="jcorgFilterTextChild">
+                                v6.0
+                              </span>   
+                            </td>
+                            </tr>
+                           </tbody> 
+                          </table>
+                          
+
+                          <table class="tab-pane fade" id="approach-pills">
+                           <tbody>
+                            <tr>
+                            <td class="jcorgFilterTextParent">   
+                              <input type="checkbox" />
+                              <span class="jcorgFilterTextChild">
+                                渠道1
+                              </span>   
+                            </td>
+                            <td class="jcorgFilterTextParent">   
+                              <input type="checkbox"/>
+                              <span class="jcorgFilterTextChild">
+                                渠道2
+                              </span>   
+                            </td>
+                            <td class="jcorgFilterTextParent">   
+                              <input type="checkbox"/>
+                              <span class="jcorgFilterTextChild">
+                                渠道3
+                              </span>   
+                            </td>
+                            </tr>
+                            <tr>
+                            <td class="jcorgFilterTextParent">   
+                              <input type="checkbox" />
+                              <span class="jcorgFilterTextChild">
+                                渠道4
+                              </span>   
+                            </td>
+                            <td class="jcorgFilterTextParent">   
+                              <input type="checkbox"/>
+                              <span class="jcorgFilterTextChild">
+                                渠道5
+                              </span>   
+                            </td>
+                            <td class="jcorgFilterTextParent">   
+                              <input type="checkbox"/>
+                              <span class="jcorgFilterTextChild">
+                                渠道6
+                              </span>   
+                            </td>
+                            </tr>
+                           </tbody> 
+                          </table> 
+
+                          <table class="tab-pane fade" id="servers-pills">
+                           <tbody> 
+                            <tr>
+                            <td class="jcorgFilterTextParent">   
+                              <input type="checkbox" />
+                              <span class="jcorgFilterTextChild">
+                                区服1
+                              </span>   
+                            </td>
+                            <td class="jcorgFilterTextParent">   
+                              <input type="checkbox"/>
+                              <span class="jcorgFilterTextChild">
+                                区服2
+                              </span>   
+                            </td>
+                            <td class="jcorgFilterTextParent">   
+                              <input type="checkbox"/>
+                              <span class="jcorgFilterTextChild">
+                                区服3
+                              </span>   
+                            </td>
+                            </tr>
+                            <tr>
+                            <td class="jcorgFilterTextParent">   
+                              <input type="checkbox" />
+                              <span class="jcorgFilterTextChild">
+                                区服4
+                              </span>   
+                            </td>
+                            <td class="jcorgFilterTextParent">   
+                              <input type="checkbox"/>
+                              <span class="jcorgFilterTextChild">
+                                区服5
+                              </span>   
+                            </td>
+                            <td class="jcorgFilterTextParent">   
+                              <input type="checkbox"/>
+                              <span class="jcorgFilterTextChild">
+                                区服6
+                              </span>   
+                            </td>
+                            </tr>
+                           </tbody>  
+                          </table>
+                        
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div class="modal-footer"> 
-                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button> 
-                    <button type="button" class="btn btn-primary">保存</button> 
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="btn-filtersave">保存</button>  
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button> 
                   </div>
                 </div>
               </div>
@@ -191,79 +383,84 @@
          <button class="btn btn-2 btn-2c">关闭</button>
         </div> 
         <div class="panel-body" id="explain-panel"> 
-         <div class="panel-group" id="accordion"> 
-          <div class="panel panel-default"> 
-           <div class="panel-heading"> 
-            <h4 class="panel-title"> <i class="fa fa-chevron-circle-right" aria-hidden="true"></i> <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" class="collapsed explain-title">设备激活</a></h4> 
-           </div> 
-           <div id="collapseOne" class="panel-collapse collapse" style="height: 0px;"> 
-            <div class="panel-body">
-             统计所选时期内，每日新增的玩家安装游戏客户端，并运行游戏的可连接网络设备的数量，每台设备只计算一次。
+         <div class="explain-content-panel cut">
+           <div class="explain-content-box">
+            <div class="explain-content-row"> 
+             <i class="fa fa-circle" aria-hidden="true"></i>
+             <dl>  
+                <dt>设备激活:</dt>
+                <dd>统计所选时期内，每日新增的玩家安装游戏客户端，并运行游戏的可连接网络设备的数量，每台设备只计算一次。</dd>
+             </dl>
             </div>
-           </div> 
-          </div> 
-          <div class="panel panel-default"> 
-           <div class="panel-heading"> 
-            <h4 class="panel-title"> <i class="fa fa-chevron-circle-right" aria-hidden="true"></i> <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo" class="collapsed explain-title">新增用户</a></h4> 
-           </div> 
-           <div id="collapseTwo" class="panel-collapse collapse" style="height: 0px;"> 
-            <div class="panel-body">
-             统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家账户数量。
+            <div class="explain-content-row">   
+             <i class="fa fa-circle" aria-hidden="true"></i> 
+             <dl>                
+                <dt>新增账户:</dt>
+                <dd>统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家账户数量。</dd>
+             </dl>
+            </div> 
+            <div class="explain-content-row">
+             <i class="fa fa-circle" aria-hidden="true"></i> 
+             <dl>
+                <dt>新增设备:</dt>
+                <dd>统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家设备数量，每台设备只计算一次。</dd>
+             </dl>
             </div>
-           </div> 
-          </div> 
-          <div class="panel panel-default"> 
-           <div class="panel-heading"> 
-            <h4 class="panel-title"> <i class="fa fa-chevron-circle-right" aria-hidden="true"></i> <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree" class="collapsed explain-title">新增设备</a></h4> 
-           </div> 
-           <div id="collapseThree" class="panel-collapse collapse"> 
-            <div class="panel-body">
-             统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家设备数量，每台设备只计算一次。
+            <div class="explain-content-row"> 
+             <i class="fa fa-circle" aria-hidden="true"></i>
+             <dl>
+                <dt>玩家转化率:</dt>
+                <dd> 统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家设备数量，即当日激活并注册的设备占比，如激活游戏后不在当日进行注册则不计算。</dd>
+             </dl>
             </div>
-           </div> 
-          </div> 
-          <div class="panel panel-default"> 
-           <div class="panel-heading"> 
-            <h4 class="panel-title"> <i class="fa fa-chevron-circle-right" aria-hidden="true"></i> <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour" class="collapsed explain-title">玩家转化率</a></h4> 
-           </div> 
-           <div id="collapseFour" class="panel-collapse collapse"> 
-            <div class="panel-body">
-             统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家设备数量，即当日激活并注册的设备占比，如激活游戏后不在当日进行注册则不计算。
+            <div class="explain-content-row"> 
+             <i class="fa fa-circle" aria-hidden="true"></i>
+             <dl>
+                <dt>首次游戏时长:</dt>
+                <dd> 统计所选时期内，新增玩家首次进行游戏的游戏时间区间分布。</dd>
+             </dl>
             </div>
-           </div> 
-          </div> 
-          <div class="panel panel-default"> 
-           <div class="panel-heading"> 
-            <h4 class="panel-title"> <i class="fa fa-chevron-circle-right" aria-hidden="true"></i> <a data-toggle="collapse" data-parent="#accordion" href="#collapseFive" class="collapsed explain-title">首次游戏时长</a></h4> 
-           </div> 
-           <div id="collapseFive" class="panel-collapse collapse"> 
-            <div class="panel-body">
-             统计所选时期内，新增玩家首次进行游戏的游戏时间区间分布。
+            <div class="explain-content-row"> 
+             <i class="fa fa-circle" aria-hidden="true"></i>
+             <dl>
+                <dt>小号分析:</dt>
+                <dd> 统计所选时期内，新增设备上存在多个新增玩家游戏账号的数量情况。</dd>
+             </dl>
             </div>
-           </div> 
-          </div> 
-          <div class="panel panel-default"> 
-           <div class="panel-heading"> 
-            <h4 class="panel-title"> <i class="fa fa-chevron-circle-right" aria-hidden="true"></i> <a data-toggle="collapse" data-parent="#accordion" href="#collapseSix" class="collapsed explain-title">小号分析</a></h4> 
-           </div> 
-           <div id="collapseSix" class="panel-collapse collapse"> 
-            <div class="panel-body">
-             统计所选时期内，新增设备上存在多个新增玩家游戏账号的数量情况。
+            <div class="explain-content-row"> 
+             <i class="fa fa-circle" aria-hidden="true"></i>
+             <dl>
+                <dt>新增玩家地区/国家:</dt>
+                <dd> 统计所选时期内，新增玩家注册信息中地区和国家分布情况。</dd>
+             </dl>
             </div>
-           </div> 
-          </div> 
-          <div class="panel panel-default"> 
-           <div class="panel-heading"> 
-            <h4 class="panel-title"> <i class="fa fa-chevron-circle-right" aria-hidden="true"></i> <a data-toggle="collapse" data-parent="#accordion" href="#collapseSeven" class="collapsed explain-title">新增玩家地区/国家</a></h4> 
-           </div> 
-           <div id="collapseSeven" class="panel-collapse collapse"> 
-            <div class="panel-body">
-             统计所选时期内，新增玩家注册信息中地区和国家分布情况。
+            <div class="explain-content-row"> 
+             <i class="fa fa-circle" aria-hidden="true"></i>
+             <dl>
+                <dt>新增玩家性别:</dt>
+                <dd> 统计所选时期内，新增玩家注册信息中性别分布情况。</dd>
+             </dl>
             </div>
-           </div> 
-          </div> 
-         </div> 
+            <div class="explain-content-row"> 
+             <i class="fa fa-circle" aria-hidden="true"></i>
+             <dl>
+                <dt>新增玩家年龄:</dt>
+                <dd> 统计所选时期内，新增玩家注册信息中年龄分布情况。</dd>
+             </dl>
+            </div>
+            <div class="explain-content-row"> 
+             <i class="fa fa-circle" aria-hidden="true"></i>
+             <dl>
+                <dt>新增玩家账户类型:</dt>
+                <dd> 统计所选时期内，新增玩家所选注册账户类型分布情况。</dd>
+             </dl>
+            </div>
+           </div>
+         </div>
         </div> 
+        <button type="button" class="btn btn-default disabled" id="btn-explain-up"> <span class="fa fa-chevron-up" aria-hidden="true"></span> </button>
+        <button type="button" class="btn btn-default" id="btn-explain-down"> <span class="fa fa-chevron-down" aria-hidden="true"></span> </button>
+         
        </div> 
       </div> 
      </div> 
@@ -281,7 +478,7 @@
         <div class="tab-content"> 
          <div class="tab-pane fade active in" id="home"> 
           <div id="main" style="width: 600px;height:400px;display:inline;float:left"></div> 
-          <div id="side" style="width: 600px;height:400px;display:inline;"></div> 
+          <div id="side" style="width: 600px;height:400px;display:inline;position:relative;left:100px;"></div> 
          </div> 
          <div class="tab-pane fade" id="profile"> 
           <div id="third" style="width: 1400px;height:400px;"></div> 
@@ -291,7 +488,7 @@
       </div> 
      </div> 
      <div class="row"> 
-      <div class="alert alert-warning fade in" data-dismiss="alert" id="platform-selected"> 
+      <div class="alert alert-warning fade in" data-dismiss="alert" id="platform-selected" > 
        <a href="#" class="close" data-dismiss="alert">&times;</a> 
        <strong>请选择平台</strong> 
       </div> 
@@ -320,16 +517,7 @@
   <script type="text/javascript" src="../js/dateselector/monthPicker.js"></script> 
   <script src="../js/checkbox/icheck.js"></script>
   <script type="text/javascript" src="../js/datatemplate.js"></script>
- <script>
-$(document).ready(function(){
-  $('input').iCheck({
-    checkboxClass: 'icheckbox_polaris',
-    radioClass: 'iradio_polaris',
-    increaseArea: '-10%' // optional
-  });
-});
- </script>
-   <script type="text/javascript">
+  <script type="text/javascript">
 		jQuery(document).ready(function(){
 			jQuery("#filter").jcOnPageFilter({
 				animateHideNShow: true,
@@ -343,5 +531,6 @@ $(document).ready(function(){
 			});
 		});          
 </script>
+
  </body>
 </html>

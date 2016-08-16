@@ -66,41 +66,43 @@ span#date_seletor.date_title {
 
 div.explain-content {
     position:relative;
-    top:25px;
+    top: 25px;
     text-align: left;
+    /* margin-top: 13px; */
+    /* height: 200px; */
+    /* margin-bottom: 200px; */
 }
 
-div#accordion.panel-group {
+/*div#accordion.panel-group {
     width:inherit;
     height:200px;
-    overflow-y:scroll;
+     overflow-y:scroll; 
     position:relative;
     top:10px;
     margin-bottom:20px;
     border-radius: 9px;
-}
+}*/
 
 span.explain-heading {
     font-weight:bold;
-    font-size:20px;
+    font-size: 17px;
     position:relative;
     top:2px;
 }
 
-div.explain-content > div.panel.panel-default {
+/*div.explain-content > div.panel.panel-default {
     border-radius: 10px 10px 10 10;
-}
+}*/
 
-div.explain-content > div.panel.panel-default > div.panel-heading{
+/*div.explain-content > div.panel.panel-default > div.panel-heading{
     background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
-}
+}*/
 
 div.explain-switch {
     display:none;
 }
 
 div#data-first {
-/*     float:left; */
     text-align:left;
     position:relative;
     top:50px;
@@ -127,7 +129,7 @@ div.panel-heading {
 
 span.player-heading {
     font-weight:bold;
-    font-size:20px;
+    font-size: 17px;
 }
 
 #platform-selected {
@@ -200,6 +202,10 @@ ul.nav.nav-pills {
 	display:inline;
 }
 
+ul.nav.nav-pills > li > a:hover {
+    background: silver;
+}
+
 div.choose.option {
 	text-align:center;	
 	background:#e3effa;
@@ -235,3 +241,128 @@ div.filter-header {
 }
 
 div.tab-content {position: relative;top: 15px;}
+
+table.tab-pane.fade.active.in {
+	width:100%;
+	text-align:left;
+}
+
+td.jcorgFilterTextParent {
+	width:500px;
+} 
+
+td.jcorgFilterTextParent > input {
+	font-size: 244px;
+}
+
+div.modal-footer button.btn.btn-primary {
+    width: 60px;
+}
+
+div.explain-content-row > dl {
+    clear:left;
+    display: inline-block;
+    float: left;
+    position: relative;
+    left: 29px;
+    bottom: 20px;
+    margin-bottom: 4px;
+}
+
+div.explain-content-row > dl > dt {
+    clear:left;
+    float:left;
+}
+
+div.explain-content-row > dl > dd {
+    float: left;
+    padding-left: 10px;
+}
+
+div.explain-content-row > i {
+    float:left;
+    clear:left;
+    display: inline-block;
+    font-size: 1%;
+    position: relative;
+    bottom:3px;
+    color:#3277b7;
+}
+
+div.explain-content-box {
+    color: #333;
+    width:inherit;
+    position: relative;
+    /* top: 10px; */
+    margin-top: 0px;
+}
+
+div.explain-content-row {
+    position:relative;
+    left:5px;
+    /* padding-top: 5px; */
+    /* margin-top: -289px; */
+    /* margin-bottom: -10px; */
+    /* height: 70%; */
+}
+
+div.explain-content-panel.cut {
+    position:relative;
+    margin-top;20px
+    height: 200px;
+    position:relative;
+    top: 8px;
+    /* margin-bottom: -1px; */
+}
+
+div#explain-panel {
+    height: 160px;
+    overflow-y: hidden;
+}
+
+div#data-first {
+    /* margin-top: 100px; */
+}
+
+button#btn-explain-up {
+    position: relative;
+    float: right;
+    bottom: 93px;
+    /* top: 53px; */
+    /* left: 576px; */
+    right: 20px;
+    height: 36px;
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fdfdfd),color-stop(1,#dedede));
+}
+
+button#btn-explain-up:hover {
+    background:white;
+}
+button#btn-explain-down {
+    float: right;
+    position:relative;
+    /* top: 103px; */
+    right: -16px;
+    bottom: 47px;
+    /* left: 535px; */
+    height: 36px;
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
+    border: #252222;
+}
+
+button#btn-explain-up > span.fa.fa-chevron-up {
+    font-size: 12px;
+}
+
+button#btn-explain-down > span.fa.fa-chevron-down {
+    font-size: 12px;
+}
+
+ul.nav.nav-tabs > li.active > a {
+    border-bottom:3px solid #3277b7;
+
+}
+
+body > div.icheckbox_polaris {
+    display: none;
+}

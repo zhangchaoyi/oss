@@ -1666,6 +1666,7 @@
 }
 .fa-line-chart:before {
   content: "\f201";
+  font-size: 79%;
 }
 .fa-lastfm:before {
   content: "\f202";

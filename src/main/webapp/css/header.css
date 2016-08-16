@@ -1,19 +1,12 @@
 .logo {
 	width: 175px;
 	height: 66px;
-	background:url("../images/logo.gif") left top;
+	background: url("../images/logo.gif") left top;
 	position:relative;
 	margin-left: 8px;
 	border-radius:8px 8px 8px 8px;
 	margin-top: 1px;
 	padding-top: 20px;
-	opacity:0.4;
-    filter:alpha(opacity=40);
-}
-
-.logo:hover{ 
-	opacity:1.0;
-    filter:alpha(opacity=40);
 }
 
 .topnav {
@@ -27,11 +20,11 @@
 
 
 #header {
-	background: #2e6fac;
+	background: #3277b7;
 	height: 69px;
 	background: #2E7C;
 	position: fixed;
-	z-index: 10000;
+	z-index: 1001;
 	width: 100%;
 	left: px;
 }
@@ -58,7 +51,7 @@
 
 /*off button*/
 button.btn.btn-default.btn-off {
-	background: #2e6fac;
+	background: #3277b7;
 	font-size: 27px;
 	position: relative;
 	bottom: 2px;
@@ -134,8 +127,7 @@ button.btn.btn-default.btn-circle {
 	position: relative;
 	padding-left: 22px;
 	padding-right: 33px;
-	left: 30px;
-
+	left: 40px;
 }
 
 button.btn.btn-default.btn-circle:hover {
@@ -150,7 +142,7 @@ span.glyphicon.glyphicon-ok-circle {
 
 button.btn-default.btn-circle > em {
 	color:white;
-	font-size:20px;
+	font-size: 18px;
 	font-style:normal;
 	position:relative;
 	bottom: 2px;
@@ -177,12 +169,12 @@ div.clear-data {
 	position:relative;66px
 	left: 41px;
 	z-index: -1;
-	bottom: 1px;
+	/* bottom: 1px; */
 	float: left;
 }
 
 .btn.btn-default {
-	border:silver;
+	border: silver;
 	font-size: 70%;
 }
 
@@ -236,7 +228,7 @@ button.btn.btn-primary {
 
 ul.dropdown-menu.user-bars {
 	margin-top:32px;
-	z-index: 10041;
+	z-index: 1001;
 }
 
 .icons {
@@ -262,7 +254,7 @@ span.glyphicon.glyphicon-envelope {
 }
 
 button.btn.btn-default.btn-envelope {
-	background:#2e6fac;
+	background: #3277b7;
 }
 
 button.btn.btn-default.btn-envelope:hover {
@@ -270,9 +262,9 @@ button.btn.btn-default.btn-envelope:hover {
 }
 
 div#platform-selected {
-	position:relative;
-	left:400px;
-	bottom:900px;
+	position:fixed;
+	bottom: 750px;
+	left: 635px;
 	opacity:0.9;
 	filter:alpha(opacity=40);
 	display:none;

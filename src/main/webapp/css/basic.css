@@ -163,7 +163,7 @@ div#page-wrapper {}
     }
 
         .sidebar-collapse .nav > li > a {
-            color: #000000;
+            color: #334451;
             background: #ffffff;
             text-shadow: none;
             position: relative;
@@ -178,7 +178,7 @@ div#page-wrapper {}
 
     .sidebar-collapse > .nav > li > a {
         /* padding: 15px 10px; */
-        font-size: 18px;
+        font-size: 17px;
         font-weight: bold;
     }
 

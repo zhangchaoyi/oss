@@ -7,25 +7,28 @@ $("#dropdownMenu1").on("mouseover", function() {
 });
 
 function iconsView() {
-    var icons = $("[type='checkbox']");
-    if((!icons[0].checked) && (!icons[1].checked) && (!icons[2].checked)) {
+    var icons = $('.btn-icons');
+    if(!$("ul.dropdown-menu.iconBar").find("div").hasClass("checked")){
     	$("#platform-selected").css("display", "block");
-    	setTimeout('$("#platform-selected").css("display", "none")', 8000);
+    	setTimeout('$("#platform-selected").css("display", "none")', 5000);
     	$(".dropdown.open").toggleClass("open");
     	return;
     }
-    for(var i = 0;i < $("[type='checkbox']").length;i++) {
-    	showIcon(icons[i]);
-    }
+  
+    for(var i=0;i<icons.length;i++){
+    	showIcon(icons[i]);    	
+    }	
     $(".dropdown.open").toggleClass("open");
 }
 
 function showIcon(icon){
-	var className = "span.fa.fa-" + icon.value + ".icons";
-	if(icon.checked === true) {
+	var value = $(icon).attr("data-value");
+	var className = "span.fa.fa-" + value + ".icons";
+	
+	if($(icon).find("div").hasClass("checked")) {
 		//whether element is null
 		if($(className).length == 0){
-			$("#btn-dropdownIcon").prepend("<span class='fa fa-"+icon.value+" icons' id='icons-view' aria-hidden='true'></span>");
+			$("#btn-dropdownIcon").prepend("<span class='fa fa-"+ value +" icons' id='icons-view' aria-hidden='true'></span>");
 		}		
 	}else{
 		$(className).remove();
@@ -33,13 +36,7 @@ function showIcon(icon){
 }
 
 $("li.btn-icons").click(function(){
-	if($(this).find("input").prop("checked")){
-		$(this).find("input").prop("checked", false);
-	}else{
-		$(this).find("input").prop("checked", true);
-	}
-
-	
+	$(this).iCheck('toggle');
 });
 
 //onload initial
@@ -47,6 +44,7 @@ $(document).ready(function(){
 	$("#btn-dropdownIcon").prepend("<span class='fa fa-apple icons' id='icons-view' aria-hidden='true'></span>");
 });
 
+//select more than one icon
 $('.dropdown-menu.iconBar').click(function(e) {
     e.stopPropagation();
 });
