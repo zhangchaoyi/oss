@@ -1,0 +1,250 @@
+div#top-row {
+    font-size: 0;
+    position: relative;
+    top: -1px;
+}
+div.filter-tool {
+    float:left;
+    /* background: #F7F834; */
+    position:relative;
+    right: 1px;
+    width: 1784px;
+    height: 100px;
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fcfcfc),color-stop(1,#f2f2f2));
+    border: 1px solid #bfbfbf;
+    right: 26px;
+}
+div.date-bar {
+    float:left;
+    position:relative;
+    top: 31px;
+    left: 54px;
+    width: 254px;
+    display: inline;
+}
+div.calender-bar {/*     font-size:px; */float:left;/* background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada)); */font-size: 98px;width: 261px;height: 30px;position: relative;right: 20px;margin-bottom: 5px;/* background: #DADAEA; */}
+
+div.time-title {
+    float: left;
+    position:relative;
+    left: 263px;
+    bottom: 27px;
+    font-size: large;
+    width: 327px;
+}
+
+div.time-title > a {
+    margin-left: 12px;
+}
+
+div.time-title > a:link {
+    color: #FF00003
+}		
+div.time-title > a:visited {
+    color: black;
+    font-weight:bold;
+}	
+div.time-title > a:hover {
+    text-decoration:none;
+    font-weight:bold;
+    font-size:large;
+
+}	
+div.time-title > a:active {
+    color: black;
+}	
+div.time-title > a.selected {
+    font-weight:bold;
+    color:black;
+}
+
+
+span#date_seletor.date_title {
+    position:relative;
+    bottom:2px;
+}
+
+div.explain-content {
+    position:relative;
+    top:25px;
+    text-align: left;
+}
+
+div#accordion.panel-group {
+    width:inherit;
+    height:200px;
+    overflow-y:scroll;
+    position:relative;
+    top:10px;
+    margin-bottom:20px;
+    border-radius: 9px;
+}
+
+span.explain-heading {
+    font-weight:bold;
+    font-size:20px;
+    position:relative;
+    top:2px;
+}
+
+div.explain-content > div.panel.panel-default {
+    border-radius: 10px 10px 10 10;
+}
+
+div.explain-content > div.panel.panel-default > div.panel-heading{
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
+}
+
+div.explain-switch {
+    display:none;
+}
+
+div#data-first {
+/*     float:left; */
+    text-align:left;
+    position:relative;
+    top:50px;
+}
+
+div#data-first.row > div.panel.panel-default > div.panel-heading {
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
+}
+
+div#data-first.row > div.panel.panel-default > div.panel-body > ul.nav.nav-tabs > li > a:hover {
+    background-color:silver;
+}
+div#data-first.row > div.panel.panel-default > div.panel-body > ul.nav.nav-tabs > li.active > a:hover {
+    background-color:white;
+}
+
+div.panel.panel-default {
+    border-radius:10px;
+}
+
+div.panel-heading {
+    border-radius:10px 10px 0 0;
+}
+
+span.player-heading {
+    font-weight:bold;
+    font-size:20px;
+}
+
+#platform-selected {
+    width:600px;
+}
+
+div.modal-dialog {
+    position:relative;
+    top:300px;
+}
+
+div#notification.row {
+    position:relative;
+    left:370px;
+    font-size:10px;
+    display:inline;
+}
+
+button.btn.btn-primary.btn-lg.btn-notify {
+    position:relative;
+    left: 102px;
+    width:80px;
+    height:40px;
+    padding: 9px;
+}
+
+button.btn.btn-primary.btn-lg.btn-notify > span {
+    display:inline;
+    float:left;
+}
+
+button.btn.btn-primary.btn-lg.btn-notify > i {
+    position:relative;
+    left: 4px;
+    font-style:normal;
+}
+
+div.modal-header {
+    height:50px;
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
+    border-radius:10px 10px 0 0;
+}
+
+h4#myModalLabel.modal-title > i {
+    float:left;
+    font-style:normal;
+}
+
+span.input-group.input-filter {
+	float:right;
+	position: relative;
+	bottom: 40px;
+	width: 147px;
+}
+
+span.input-group.input-filter > input.form-control {
+	position: absolute;
+	right: 0px;
+}
+
+span.input-group.input-filter > span.glyphicon.glyphicon-search {
+	position: absolute;
+	left: 131px;
+	top: 10px;
+	display:inline;
+	z-index: 10;
+}
+
+ul.nav.nav-pills {
+	display:inline;
+}
+
+div.choose.option {
+	text-align:center;	
+	background:#e3effa;
+	position:relative;
+	top:10px;
+	width:560px;
+	right:11px;
+}
+
+div.choose.option > i{
+	float:left;
+	font-style:normal;
+	padding-top:5px;
+	padding-left:5px;
+
+}
+
+div.choose.option > button.btn.btn-primary {
+	font-size:10px;
+	width:50px;
+	position:relative;
+	left:180px;
+}
+
+div.filter-header {
+	width: 566px;
+	position:relative;
+	right: 15px;
+	padding-left: 10px;
+	padding-right: 10px;
+	padding-bottom: 10px;
+	border-bottom: 1px solid #d5d1d1;
+}
+
+div.tab-content {position: relative;top: 15px;}
+
+table.tab-pane.fade.active.in {
+	width:100%;
+	text-align:left;
+}
+
+td.jcorgFilterTextParent {
+	width:500px;
+} 
+
+td.jcorgFilterTextParent > input {
+	font-size: 244px;
+}

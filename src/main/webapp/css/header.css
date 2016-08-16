@@ -1,0 +1,280 @@
+.logo {
+	width: 175px;
+	height: 66px;
+	background:url("../images/logo.gif") left top;
+	position:relative;
+	margin-left: 8px;
+	border-radius:8px 8px 8px 8px;
+	margin-top: 1px;
+	padding-top: 20px;
+	opacity:0.4;
+    filter:alpha(opacity=40);
+}
+
+.logo:hover{ 
+	opacity:1.0;
+    filter:alpha(opacity=40);
+}
+
+.topnav {
+	float: right;
+	margin-top: 3px;
+}
+
+.logo-outer {
+	float: left;
+}
+
+
+#header {
+	background: #2e6fac;
+	height: 69px;
+	background: #2E7C;
+	position: fixed;
+	z-index: 10000;
+	width: 100%;
+	left: px;
+}
+
+#admin-btn {
+	float:left;
+	font-size: 28px;
+	width: auto;
+	height: 6px;
+	position:relative;
+	margin-right:3px;
+	margin-top:10px;
+	display: inline;
+	top: 1px;
+}
+
+.logout-btn {
+	float:right;
+	position: relative;
+	margin-top: 10px;
+	margin-right: 29px;
+	margin-left: -32px;
+}
+
+/*off button*/
+button.btn.btn-default.btn-off {
+	background: #2e6fac;
+	font-size: 27px;
+	position: relative;
+	bottom: 2px;
+}
+
+button.btn.btn-default.btn-off:hover {
+	background:silver;
+}
+/*off icon*/
+span.glyphicon.glyphicon-off::before{
+	border:white;
+	top: 3px;
+	margin-top: 0;
+	position: relative;
+	color: white;
+}
+
+
+.top {
+	z-index: -32;140px
+}
+
+#login-user {
+	position:relative;
+	top: 15px;
+	font-size:1pt;
+	margin-right:20px;
+	color: white;
+	z-index: 100;
+	right: 140px;
+	font-size: 35px;
+}
+
+#menu {
+	background-color: #3c3737;
+	height: 50px;
+	position: fixed;
+	width: 100%;
+	top: 68px;
+	z-index: 1000;
+	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#303c48),color-stop(1,#273543));
+}
+
+.crumb {
+	position: relative;66px
+	left: -1px;
+	width: 62px;
+	float: left;
+	z-index: 200;
+}
+
+/*home button*/
+button.btn.btn-default.btn-home {
+	border: black;
+	background: #37444f;
+	color: white;
+	font-size: 21px;
+	padding-top: 12px;
+	padding-right: 20px;
+	padding-left: 15px;
+}
+button.btn.btn-default.btn-home:hover {
+	background:black;
+	z-index:1;
+}
+
+button.btn.btn-default.btn-circle {
+	border: black;
+	background: #37444f;
+	font-size: 27px;
+	z-index: 1000;
+	width: 100%;
+	position: relative;
+	padding-left: 22px;
+	padding-right: 33px;
+	left: 30px;
+
+}
+
+button.btn.btn-default.btn-circle:hover {
+	background:black;
+}
+
+span.glyphicon.glyphicon-ok-circle {
+	color:silver;
+	position: relative;
+	top: 5px;
+}
+
+button.btn-default.btn-circle > em {
+	color:white;
+	font-size:20px;
+	font-style:normal;
+	position:relative;
+	bottom: 2px;
+	left:10px;
+} 
+
+div.crumb-inner {
+	float:left;
+	/* top: 16px; */
+	margin-top: 2px;
+}
+
+div.crumb-inner > em {
+	float: left;
+	color:white;
+	font-size:20px;
+	font-style:normal;
+	position:relative;
+	top: 12px;
+	left:10px;
+}
+
+div.clear-data {
+	position:relative;66px
+	left: 41px;
+	z-index: -1;
+	bottom: 1px;
+	float: left;
+}
+
+.btn.btn-default {
+	border:silver;
+	font-size: 70%;
+}
+
+/*home icon*/
+span.glyphicon.glyphiconicons-home::before {
+	position: relative;
+	color:white;
+	top: 2px;
+}
+
+ul.dropdown-menu.iconBar{
+}
+
+#btn-dropdownIcon {
+	background: #37444f;
+}
+
+#btn-dropdownIcon:hover {
+	background:black;
+}
+
+button#btn-dropdownIcon.btn.btn-default.dropdown-toggle > span.caret {
+	position:relative;
+	left:10px;
+	bottom:2px;
+	color:white;
+}
+
+div.service-bar {
+	float:left;
+	/* float: right; */
+	position:relative;
+	left:40px;
+	top: 0;
+	display: block;
+}
+
+div.service-bar > .dropdown {
+	font-size:38px;
+}
+
+#icons-view {
+	color:white;
+}
+
+button.btn.btn-primary {
+	position:relative;
+	width:140px;
+	margin-left: 8px;
+}
+
+ul.dropdown-menu.user-bars {
+	margin-top:32px;
+	z-index: 10041;
+}
+
+.icons {
+	margin-left:10px;
+}
+
+.fa-style {
+	margin-right:6px;
+	margin-left:5px;
+}
+
+div.envelope{
+	display:inline;
+	float:left;
+	position:relative;
+	right: 66px;
+	top: 9px;
+}
+
+span.glyphicon.glyphicon-envelope {
+	font-size: 32px;
+	color: white;
+}
+
+button.btn.btn-default.btn-envelope {
+	background:#2e6fac;
+}
+
+button.btn.btn-default.btn-envelope:hover {
+	background:silver;
+}
+
+div#platform-selected {
+	position:relative;
+	left:400px;
+	bottom:900px;
+	opacity:0.9;
+	filter:alpha(opacity=40);
+	display:none;
+}
+
