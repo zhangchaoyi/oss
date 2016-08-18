@@ -15,7 +15,7 @@ function getNowFormatDate() {
     return currentdate;
 }
 
-$("#btn-toggle-switch").click(function() {
+$("#btn-explain-switch").click(function() {
     $("#explain-panel").toggleClass("toggle-switch");
     var txt = $(this).text();
     if (txt == "打开") {
@@ -124,12 +124,12 @@ $(function() {
 //E-chart
 $(function() {
     // 基于准备好的dom，初始化echarts实例
-    var myChart1 = echarts.init(document.getElementById('main'));
-    var myChart2 = echarts.init(document.getElementById('side'));
-    var myChart3 = echarts.init(document.getElementById('third'));
+    var userIncreaseLeft = echarts.init(document.getElementById('user-increase-chart-left'));
+    var userIncreaseRight = echarts.init(document.getElementById('user-increase-chart-right'));
+    var userChange = echarts.init(document.getElementById('user-change-chart'));
 
     // 指定图表的配置项和数据
-    var option = {
+    var userIncreaseOption = {
         tooltip: {
             trigger: 'axis'
 
@@ -188,31 +188,95 @@ $(function() {
         yAxis: {
             type: 'value',
             axisLabel: {
-                formatter: '{value} cm'
+                formatter: '{value}'
             }
         },
         series: [{
             name: '设备激活',
             type: 'line',
-            data: [11, 11, 15, 13, 12, 13, 10]
+            smooth: 'true',
+            data: [30, 48, 13, 8, 3, 4, 48, 30]
         },
         {
             name: '新增用户',
             type: 'line',
-            data: [1, -2, 2, 5, 3, 2, 0]
+            smooth: 'true',
+            data: [2, 5, 20, 5, 2, 51, 5, 2]
         
         },
         {
             name: '新增设备',
             type: 'line',
-            data: [14, 2, 14, 5, 4, 12, 10]
+            smooth: 'true',
+            data: [0, 5, 4, 5, 4, 50, 50, 40]
         
         }]
     };
+
+        var userChangeOption = {
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                zlevel:-1,
+                left:20,
+                data: ['玩家转化率'],
+                shadowColor:'rgba(1, 0, 1, 1.1)',
+                shadowBlur: 10,
+                shadowOffsetX:10,
+                shadowOffsetX:10,
+            },
+            
+            toolbox: {
+                show: true,
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                    },
+                    dataView: {
+                        readOnly: false
+                    },
+                    magicType: {
+                        type: ['line', 'bar']
+                    },
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            dataZoom: [
+            {   // 这个dataZoom组件，默认控制x轴。
+                type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+                start: 10,      // 左边在 10% 的位置。
+                end: 80         // 右边在 60% 的位置。
+            },
+            {   // 这个dataZoom组件，也控制x轴。
+                type: 'inside', // 这个 dataZoom 组件是 inside 型 dataZoom 组件
+                start: 10,      // 左边在 10% 的位置。
+                end: 50         // 右边在 60% 的位置。
+            }
+        ],
+            xAxis: {
+                type: 'category',
+                boundaryGap: true,
+                data: ['2016-08-11', '2016-08-12', '2016-08-13', '2016-08-14', '2016-08-15', '2016-08-16', '2016-08-17', '2016-08-18']
+            },
+            yAxis: {
+                type: 'value',
+                axisLabel: {
+                    formatter: '{value}'
+                }
+            },
+            series: [{
+                name: '玩家转化率',
+                type: 'line',
+                smooth: 'true',
+                data: ["10", "20", "30", "40", "50", "40", "30", "20"]
+            }]
+        };
     // 使用刚指定的配置项和数据显示图表。
-    myChart1.setOption(option);
-    myChart2.setOption(option);
-    myChart3.setOption(option);
+    userIncreaseLeft.setOption(userIncreaseOption);
+    userIncreaseRight.setOption(userIncreaseOption);
+    userChange.setOption(userChangeOption);
 });
 
 //Echart 首次游戏 + 小号分析 + 地区 + 国家 + 性别 + 年龄 + 账户类型
@@ -638,91 +702,77 @@ $(function(){
 
 $(function(){
     var data = [
-      ["2016-08-16",
+      ["2016-08-11",
        30,
        2,
-       40
+       0
+      ],
+      ["2016-08-12",
+       48,
+       5,
+       5
+      ],
+      ["2016-08-13",
+       13,
+       20,
+       4
+      ],
+      ["2016-08-14",
+       8,
+       5,
+       5
+      ],
+      ["2016-08-15",
+       3,
+       2,
+       4
+      ],
+      ["2016-08-16",
+       4,
+       51,
+       50
       ],
       ["2016-08-17",
        48,
        5,
        50
       ],
-      ["2016-08-16",
+      ["2016-08-18",
        30,
        2,
        40
-      ],
-      ["2016-08-17",
-       48,
-       5,
-       50
-      ],
-      ["2016-08-16",
-       30,
-       2,
-       40
-      ],
-      ["2016-08-17",
-       48,
-       5,
-       50
-      ],
-      ["2016-08-16",
-       30,
-       2,
-       40
-      ],
-      ["2016-08-17",
-       48,
-       5,
-       50
-      ],
-      ["2016-08-16",
-       30,
-       2,
-       40
-      ],
-      ["2016-08-17",
-       48,
-       5,
-       50
-      ],
-      ["2016-08-16",
-       30,
-       2,
-       40
-      ],
-      ["2016-08-17",
-       48,
-       5,
-       50
-      ],
-      ["2016-08-16",
-       30,
-       2,
-       40
-      ],
-      ["2016-08-17",
-       48,
-       5,
-       50
-      ],
-      ["2016-08-16",
-       30,
-       2,
-       40
-      ],
-      ["2016-08-17",
-       48,
-       5,
-       50
       ]
     ];
-    var data2=[["2016-08-16","50%"],["2016-08-17","60%"]];
     
+    var userChangeData = [
+        ["2016-08-11",
+           "10%"
+        ],
+        ["2016-08-12",
+           "20%"
+        ],
+        ["2016-08-13",
+            "30%"   
+        ],
+        ["2016-08-14",
+           "40%"
+        ],
+        ["2016-08-15",
+            "50%"   
+        ],
+        ["2016-08-16",
+           "40%"
+        ],
+        ["2016-08-17",
+           "30%"
+        ],
+        ["2016-08-18",
+           "20%"
+        ]
+    ];
+
     $(document).ready( function () {
-      $('#data-table1').DataTable({
+      $('#data-table-user-increase').DataTable({
         data:data,
         "dom":'<"top"f>rt<"left"lip>',
          'language': {  
@@ -737,8 +787,8 @@ $(function(){
                 'infoFiltered': '(过滤总件数 _MAX_ 条)'  
             } 
       });
-      $('#data-table2').DataTable({
-        data:data2,
+      $('#data-table-user-change').DataTable({
+        data:userChangeData,
         "dom":'<"top"f>rt<"left"lip>',
          'language': {  
                 'emptyTable': '没有数据',  

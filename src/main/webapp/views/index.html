@@ -389,11 +389,23 @@
          <li class=""> <a href="#players-change" data-toggle="tab">玩家转化率</a></li> 
         </ul> 
         <div class="tab-content"> 
-         <div class="tab-pane fade active in" id="increase"> 
-          <div id="main" style="width: 600px;height:400px;display:inline;float:left"></div> 
-          <div id="side" style="width: 600px;height:400px;display:inline;position:relative;left:100px;float:left"></div> 
+         <div class="tab-pane fade active in" id="increase">
+          <div id="newPlayer-note" class="data-results">
+            <span>
+              <em>SUM</em>
+              激活|玩家|设备:
+              <font>48 | 0 | 50 </font>
+            </span>
+            <span>
+              <em>AVG</em>
+              激活|玩家|设备:
+              <font>7 | 0 | 7 </font>
+            </span>
+          </div> 
+          <div id="user-increase-chart-left" style="width: 600px;height:400px;display:inline;float:left"></div> 
+          <div id="user-increase-chart-right" style="width: 600px;height:400px;display:inline;position:relative;left:100px;float:left"></div> 
           <div class="table-zoom-first"> 
-           <table id="data-table1" class="hover stripe row-border"> 
+           <table id="data-table-user-increase" class="hover stripe row-border"> 
             <thead> 
              <tr> 
               <th><span>日期</span></th> 
@@ -407,13 +419,13 @@
           </div> 
          </div> 
          <div class="tab-pane fade" id="players-change"> 
-          <div id="third" style="width: 1400px;height:400px;"></div>
-          <div class="table-zoom">
-            <table id="data-table2" class="hover stripe row-border"> 
+          <div id="user-change-chart" style="width: 1400px;height:400px;"></div>
+          <div class="table-zoom-first">
+            <table id="data-table-user-change" class="hover stripe row-border"> 
              <thead> 
               <tr> 
-               <th>日期</th> 
-               <th>玩家转化率</th>
+               <th><span>日期</span></th> 
+               <th><span>玩家转化率</span></th>
               </tr> 
              </thead> 
             <tbody></tbody> 
@@ -528,13 +540,18 @@
          </div>
          <div class="tab-pane fade" id="account-type-tab"> 
          </div>
-        <div>
+        </div>
      </div>
      <div class="row"> 
       <div class="alert alert-warning fade in" data-dismiss="alert" id="platform-selected"> 
        <a href="#" class="close" data-dismiss="alert">&times;</a> 
        <strong>请选择平台</strong> 
       </div> 
+     </div>
+     <div class="row">  
+       <a href="#" class="back-top">
+        <span class="fa fa-angle-up" aria-hidden="true"></span>
+       </a> 
      </div> 
     </div> 
     <!-- /. PAGE INNER --> 

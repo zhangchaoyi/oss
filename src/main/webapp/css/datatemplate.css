@@ -397,3 +397,32 @@ table.dataTable thead .sorting span {
     margin: 3px 10px 0 0;
     padding-right: 22px;
 }
+
+div#newPlayer-note > span {
+    position: relative;
+    left:5px;
+    font-size:95%;
+    margin-left: 20px;
+}
+
+div#newPlayer-note > span > font{
+    color:#e25856;
+    font-weight: bold;
+    font-size: large;
+}
+
+div#newPlayer-note {
+    margin-bottom:20px;
+}
+
+div#page-inner > div.row > a.back-top {
+    background:rgba(43,57,69,0.95);
+    border-radius: 3px 0 0 3px;
+    border: 1px solid #22282e;
+    position:fixed;
+    float: right;
+    width: 40px;
+    height: 40px;
+    bottom:200px;
+    left: 1800px;
+}
