@@ -219,7 +219,7 @@ div.filter-header {
 	border-bottom: 1px solid #d5d1d1;
 }
 
-div.tab-content {position: relative;top: 15px;}
+div.tab-content {position: relative;/* top: 15px; *//* background: #ffffff; */}
 
 table.tab-pane.fade.active.in {
 	width:100%;

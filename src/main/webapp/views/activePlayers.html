@@ -77,7 +77,7 @@
       <li> <a href="#"> <i class="fa fa-line-chart "></i>报表</a> </li> 
       <li> <a href="#"> <i class="fa fa-user"></i>玩家分析 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
-        <li> <a href="#"> <i class="fa fa-user-plus" aria-hidden="true"></i>新增玩家</a> </li> 
+        <li> <a href="./newPlayers.html"> <i class="fa fa-user-plus" aria-hidden="true"></i>新增玩家</a> </li> 
         <li> <a href="#"> <i class="fa fa-users "></i>活跃玩家</a> </li> 
         <li> <a href="#"> <i class="fa fa-bars "></i>留存统计</a> </li> 
         <li> <a href="#"> <i class="fa fa-user-secret "></i>有效玩家</a> </li> 
@@ -262,10 +262,10 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              设备激活:
+              付费玩家:
              </dt> 
              <dd>
-              统计所选时期内，每日新增的玩家安装游戏客户端，并运行游戏的可连接网络设备的数量，每台设备只计算一次。
+              统计所选时期内，每日登陆的玩家中有过付费行为的玩家数量。
              </dd> 
             </dl> 
            </div> 
@@ -273,10 +273,10 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              新增账户:
+              DAU（日活跃玩家数量）:
              </dt> 
              <dd>
-              统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家账户数量。
+              统计所选时期内，每日成功登录游戏的玩家数量。
              </dd> 
             </dl> 
            </div> 
@@ -284,10 +284,10 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              新增设备:
+              WAU（周活跃玩家数量）:
              </dt> 
              <dd>
-              统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家设备数量，每台设备只计算一次。
+              统计所选时期内，当日往前推7日（当日计入天数）期间内，登陆过游戏的玩家总数量，按照玩家ID排重。
              </dd> 
             </dl> 
            </div> 
@@ -295,10 +295,10 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              玩家转化率:
+              MAU（月活跃玩家数量）:
              </dt> 
              <dd>
-               统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家设备数量，即当日激活并注册的设备占比，如激活游戏后不在当日进行注册则不计算。
+               统计所选时期内，当日往前推30日（当日计入天数）期间内，登陆过游戏的玩家总数量，按照玩家ID排重。
              </dd> 
             </dl> 
            </div> 
@@ -306,10 +306,21 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              首次游戏时长:
+              DAU/MAU:
              </dt> 
              <dd>
-               统计所选时期内，新增玩家首次进行游戏的游戏时间区间分布。
+               统计所选时期内，当日活跃玩家数量与当月活跃玩家数量的比例。此比例越趋近于1，说明游戏玩家的活跃度越高。
+             </dd> 
+            </dl> 
+           </div>             
+           <div class="explain-content-row"> 
+            <i class="fa fa-circle" aria-hidden="true"></i> 
+            <dl> 
+             <dt>
+              已玩天数:
+             </dt> 
+             <dd>
+               统计所选时期内，活跃玩家从新增日到所选时期最后一日为止，登陆游戏的总天数分布（时间区间选择为1天以上的情况，则为每日结算后结果相加，未排重）。
              </dd> 
             </dl> 
            </div> 
@@ -317,10 +328,10 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              小号分析:
+              活跃玩家等级:
              </dt> 
              <dd>
-               统计所选时期内，新增设备上存在多个新增玩家游戏账号的数量情况。
+               统计所选时期内，活跃玩家在所选日期最后一次退出游戏时的等级分布情况（未排重）。
              </dd> 
             </dl> 
            </div> 
@@ -328,10 +339,10 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              新增玩家地区/国家:
+              活跃玩家地区/国家
              </dt> 
              <dd>
-               统计所选时期内，新增玩家注册信息中地区和国家分布情况。
+               统计所选时期内，活跃玩家在所选日期最后一次退出游戏时的地区/国家分布情况（未排重）。
              </dd> 
             </dl> 
            </div> 
@@ -339,32 +350,21 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              新增玩家性别:
+              活跃玩家性别:
              </dt> 
              <dd>
-               统计所选时期内，新增玩家注册信息中性别分布情况。
+               统计所选时期内，活跃玩家注册信息中性别分布情况（未排重）。
              </dd> 
             </dl> 
-           </div> 
+           </div>
            <div class="explain-content-row"> 
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              新增玩家年龄:
+              活跃玩家年龄:
              </dt> 
              <dd>
-               统计所选时期内，新增玩家注册信息中年龄分布情况。
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              新增玩家账户类型:
-             </dt> 
-             <dd>
-               统计所选时期内，新增玩家所选注册账户类型分布情况。
+               统计所选时期内，活跃玩家注册信息中年龄分布情况（未排重）。
              </dd> 
             </dl> 
            </div> 
@@ -380,52 +380,57 @@
      <div class="row" id="data-first"> 
       <div class="panel panel-default"> 
        <div class="panel-heading"> 
-        <span class="player-heading">新增玩家</span>
+        <span class="player-heading">活跃玩家</span>
         <button class="btn btn-2 btn-2c" id="btn-adduser-switch">关闭</button> 
        </div> 
        <div class="panel-body"> 
         <ul class="nav nav-tabs"> 
-         <li class="active"> <a href="#increase" data-toggle="tab">新增与激活</a></li> 
-         <li class=""> <a href="#players-change" data-toggle="tab">玩家转化率</a></li> 
+         <li class="active"> <a href="#dau-tag" data-toggle="tab">DAU</a></li> 
+         <li class=""> <a href="#dau-wau-mau-tag" data-toggle="tab">DAU|WAU|MAU</a></li>
+         <li class=""> <a href="#dau-mau-tag" data-toggle="tab">DAU/MAU</a></li> 
         </ul> 
         <div class="tab-content"> 
-         <div class="tab-pane fade active in" id="increase">
-          <div id="newPlayer-note" class="data-results">
-            <span>
-              <em>SUM</em>
-              激活|玩家|设备:
-              <font>48 | 0 | 50 </font>
-            </span>
-            <span>
-              <em>AVG</em>
-              激活|玩家|设备:
-              <font>7 | 0 | 7 </font>
-            </span>
-          </div> 
-          <div id="user-increase-chart-left" style="width: 600px;height:400px;display:inline;float:left"></div> 
-          <div id="user-increase-chart-right" style="width: 600px;height:400px;display:inline;position:relative;left:100px;float:left"></div> 
+         <div class="tab-pane fade active in" id="dau-tag">
+          <div id="dau-chart" style="width: 1400px;height:400px;display:inline;position:relative;left:100px;float:left"></div> 
           <div class="table-zoom-first"> 
-           <table id="data-table-user-increase" class="hover stripe row-border"> 
+           <table id="data-table-dau" class="hover stripe row-border"> 
             <thead> 
              <tr> 
               <th><span>日期</span></th> 
-              <th><span>设备激活</span></th> 
-              <th><span>新增账户</span></th> 
-              <th><span>新增设备</span></th> 
+              <th><span>新增玩家</span></th> 
+              <th><span>付费玩家</span></th> 
+              <th><span>非付费玩家</span></th>
+              <th><span>DAU</span></th>               
              </tr> 
             </thead> 
             <tbody></tbody> 
            </table> 
           </div> 
          </div> 
-         <div class="tab-pane fade" id="players-change"> 
-          <div id="user-change-chart" style="width: 1400px;height:400px;"></div>
+         <div class="tab-pane fade" id="dau-wau-mau-tag"> 
+          <div id="dau-wau-mau-chart" style="width: 1400px;height:400px;"></div>
           <div class="table-zoom-first">
-            <table id="data-table-user-change" class="hover stripe row-border"> 
+            <table id="data-table-dau-wau-mau" class="hover stripe row-border"> 
              <thead> 
               <tr> 
                <th><span>日期</span></th> 
-               <th><span>玩家转化率</span></th>
+               <th><span>DAU</span></th>
+               <th><span>WAU</span></th>
+               <th><span>MAU</span></th>
+              </tr> 
+             </thead> 
+            <tbody></tbody> 
+           </table>
+          </div> 
+         </div>
+         <div class="tab-pane fade" id="dau-mau-tag"> 
+          <div id="dau-mau-chart" style="width: 1400px;height:400px;"></div>
+          <div class="table-zoom-first">
+            <table id="data-table-dau-mau" class="hover stripe row-border"> 
+             <thead> 
+              <tr> 
+               <th><span>日期</span></th> 
+               <th><span>DAU/MAU</span></th>
               </tr> 
              </thead> 
             <tbody></tbody> 
@@ -438,8 +443,8 @@
      </div>
      <div class="row" id="data-second">
         <ul class="nav nav-tabs"> 
-         <li class="active"> <a href="#first-game-period-tab" data-toggle="tab">首次游戏时间</a></li> 
-         <li class=""> <a href="#small-account-tab" data-toggle="tab">小号分析</a></li>
+         <li class="active"> <a href="#played-days-tab" data-toggle="tab">已玩天数</a></li> 
+         <li class=""> <a href="#rank-tab" data-toggle="tab">等级</a></li>
          <li class=""> <a href="#area-tab" data-toggle="tab">地区</a></li> 
          <li class=""> <a href="#country-tab" data-toggle="tab">国家</a></li>
          <li class=""> <a href="#sex-tab" data-toggle="tab">性别</a></li> 
@@ -448,14 +453,14 @@
          <button class="btn btn-2 btn-2c" id="btn-gamedetail-switch">关闭</button>  
         </ul> 
         <div class="tab-content"> 
-         <div class="tab-pane fade active in" id="first-game-period-tab">
-            <div id="first-game-period-chart-bar" style="width:1400px;height:400px;display:inline;float:left"></div>
+         <div class="tab-pane fade active in" id="played-days-tab">
+            <div id="played-days-chart-bar" style="width:1528px;height:400px;display:inline;float:left;"></div>
             <div class="table-zoom-second"> 
-             <table id="data-table-first-game-time" class="hover stripe row-border"> 
+             <table id="data-table-played-days" class="hover stripe row-border"> 
               <thead> 
                 <tr> 
-                  <th><span>首次游戏时长</span></th> 
-                  <th><span>玩家数</span></th> 
+                  <th><span>已玩天数</span></th> 
+                  <th><span>人数</span></th> 
                   <th><span>百分比</span></th>  
                 </tr> 
               </thead> 
@@ -463,10 +468,10 @@
              </table> 
             </div>  
          </div> 
-         <div class="tab-pane fade" id="small-account-tab">
-           <div id="small-account-chart-bar" style="width:1400px;height:400px;display:inline;float:left"></div>
+         <div class="tab-pane fade" id="rank-tab">
+           <div id="rank-chart-bar" style="width:1528px;height:400px;display:inline;float:left"></div>
             <div class="table-zoom-second"> 
-             <table id="data-table-small-account" class="hover stripe row-border"> 
+             <table id="data-table-rank" class="hover stripe row-border"> 
               <thead> 
                 <tr> 
                   <th><span>小号分析</span></th> 
@@ -479,7 +484,7 @@
             </div>
          </div>
          <div class="tab-pane fade" id="area-tab">
-           <div id="area-chart-bar" style="width:1400px;height:400px;display:inline;float:left"></div>
+           <div id="area-chart-bar" style="width:1528px;height:400px;display:inline;float:left"></div>
            <div class="table-zoom-second"> 
              <table id="data-table-area" class="hover stripe row-border"> 
               <thead> 
@@ -494,7 +499,7 @@
            </div>  
          </div>
          <div class="tab-pane fade" id="country-tab">
-           <div id="country-chart-bar" style="width:1400px;height:400px;display:inline;float:left"></div>
+           <div id="country-chart-bar" style="width:1528px;height:400px;display:inline;float:left"></div>
            <div class="table-zoom-second"> 
              <table id="data-table-country" class="hover stripe row-border"> 
               <thead> 
@@ -509,7 +514,7 @@
            </div> 
          </div>
          <div class="tab-pane fade" id="sex-tab">
-           <div id="sex-chart-pie" style="width:1400px;height:400px;display:inline;float:left"></div>
+           <div id="sex-chart-pie" style="width:1528px;height:400px;display:inline;float:left"></div>
            <div class="table-zoom-second"> 
              <table id="data-table-sex" class="hover stripe row-border"> 
               <thead> 
@@ -524,7 +529,7 @@
            </div>  
          </div>
          <div class="tab-pane fade" id="age-tab">
-           <div id="age-chart-bar" style="width:1400px;height:400px;display:inline;float:left"></div>
+           <div id="age-chart-bar" style="width:1528px;height:400px;display:inline;float:left"></div>
            <div class="table-zoom-second"> 
              <table id="data-table-age" class="hover stripe row-border"> 
               <thead> 
@@ -578,12 +583,7 @@
   <script src="../js/dateselector/dateRange.js"></script> 
   <script src="../js/dateselector/monthPicker.js"></script> 
   <script src="../js/checkbox/icheck.js"></script>
-  <script src="../js/datatemplate.js"></script> 
-  <script type="text/javascript">
-		      
-  </script> 
-  <script>
-    
-  </script>  
+  <script src="../js/common.js"></script>
+  <script src="../js/activePlayers.js"></script>
  </body>
 </html>
