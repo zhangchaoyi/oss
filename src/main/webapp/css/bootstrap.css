@@ -2318,7 +2318,8 @@ label {
   display: inline-block;
   max-width: 100%;
   margin-bottom: 5px;
-  font-weight: bold;
+  /* font-weight: bold; */
+  margin-top: 10px;
 }
 input[type="search"] {
   -webkit-box-sizing: border-box;
@@ -3584,6 +3585,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   padding-left: 0;
   margin-bottom: 0;
   list-style: none;
+  /* background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada)); */
 }
 .nav > li {
   position: relative;
@@ -3644,7 +3646,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .nav-tabs > li.active > a,
 .nav-tabs > li.active > a:hover,
 .nav-tabs > li.active > a:focus {
-  color: #555;
+  color: #131111;
   cursor: default;
   background-color: #fff;
   border: 1px solid #ddd;

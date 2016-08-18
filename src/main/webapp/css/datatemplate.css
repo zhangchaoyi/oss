@@ -5,7 +5,6 @@ div#top-row {
 }
 div.filter-tool {
     float:left;
-    /* background: #F7F834; */
     position:relative;
     right: 1px;
     width: 1784px;
@@ -22,7 +21,7 @@ div.date-bar {
     width: 254px;
     display: inline;
 }
-div.calender-bar {/*     font-size:px; */float:left;/* background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada)); */font-size: 98px;width: 261px;height: 30px;position: relative;right: 20px;margin-bottom: 5px;/* background: #DADAEA; */}
+div.calender-bar {float:left;font-size: 98px;width: 261px;height: 30px;position: relative;right: 20px;margin-bottom: 5px;/* background: #DADAEA; */}
 
 div.time-title {
     float: left;
@@ -68,20 +67,7 @@ div.explain-content {
     position:relative;
     top: 25px;
     text-align: left;
-    /* margin-top: 13px; */
-    /* height: 200px; */
-    /* margin-bottom: 200px; */
 }
-
-/*div#accordion.panel-group {
-    width:inherit;
-    height:200px;
-     overflow-y:scroll; 
-    position:relative;
-    top:10px;
-    margin-bottom:20px;
-    border-radius: 9px;
-}*/
 
 span.explain-heading {
     font-weight:bold;
@@ -90,15 +76,7 @@ span.explain-heading {
     top:2px;
 }
 
-/*div.explain-content > div.panel.panel-default {
-    border-radius: 10px 10px 10 10;
-}*/
-
-/*div.explain-content > div.panel.panel-default > div.panel-heading{
-    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
-}*/
-
-div.explain-switch {
+div.toggle-switch {
     display:none;
 }
 
@@ -106,6 +84,7 @@ div#data-first {
     text-align:left;
     position:relative;
     top:50px;
+    margin-bottom: 14px;
 }
 
 div#data-first.row > div.panel.panel-default > div.panel-heading {
@@ -293,17 +272,12 @@ div.explain-content-box {
     color: #333;
     width:inherit;
     position: relative;
-    /* top: 10px; */
     margin-top: 0px;
 }
 
 div.explain-content-row {
     position:relative;
     left:5px;
-    /* padding-top: 5px; */
-    /* margin-top: -289px; */
-    /* margin-bottom: -10px; */
-    /* height: 70%; */
 }
 
 div.explain-content-panel.cut {
@@ -312,7 +286,6 @@ div.explain-content-panel.cut {
     height: 200px;
     position:relative;
     top: 8px;
-    /* margin-bottom: -1px; */
 }
 
 div#explain-panel {
@@ -320,16 +293,10 @@ div#explain-panel {
     overflow-y: hidden;
 }
 
-div#data-first {
-    /* margin-top: 100px; */
-}
-
 button#btn-explain-up {
     position: relative;
     float: right;
     bottom: 93px;
-    /* top: 53px; */
-    /* left: 576px; */
     right: 20px;
     height: 36px;
     background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fdfdfd),color-stop(1,#dedede));
@@ -341,10 +308,8 @@ button#btn-explain-up:hover {
 button#btn-explain-down {
     float: right;
     position:relative;
-    /* top: 103px; */
     right: -16px;
     bottom: 47px;
-    /* left: 535px; */
     height: 36px;
     background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
     border: #252222;
@@ -365,4 +330,70 @@ ul.nav.nav-tabs > li.active > a {
 
 body > div.icheckbox_polaris {
     display: none;
+}
+
+i.fa.fa-check-square-o::before {
+    position:relative;
+    font-size: 85%
+}
+
+i.fa.fa-spinner::before {
+    font-size: 80%
+} 
+i.fa.fa-shopping-cart::before {
+    font-size:90%;
+} 
+
+i.fa.fa-gamepad::before {
+    font-size: 85%
+} 
+
+i.fa.fa-bar-chart::before {
+    font-size: 90%
+} 
+
+i.fa.fa-send::before {
+    font-size: 90%
+} 
+
+div#data-second {
+    margin-top: 48px;
+}
+
+div#data-second.row > ul.nav.nav-tabs {
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
+    border-radius: 10px 10px 0 0;
+}
+
+div#data-second.row > ul.nav.nav-tabs > li {
+    font-weight: bold;
+}
+div#data-second.row > ul.nav.nav-tabs > li > a:hover{
+    background-color: white;
+}
+
+div.table-zoom-second {
+    margin-bottom: 10px;
+}
+
+button#btn-gamedetail-switch {
+    position: relative;
+    right: 15px;
+}
+
+table.dataTable th.sorting_desc span {
+    margin: 3px 10px 5px 0;
+    padding-right: 22px;
+    background: url(../images/sort_desc.png) no-repeat right center;
+}  
+
+table.dataTable th.sorting_asc span {
+    background: url(../images/sort_asc.png) no-repeat right center;
+    margin: 3px 10px 0 0;
+    padding-right: 22px;
+}
+
+table.dataTable thead .sorting span {
+    margin: 3px 10px 0 0;
+    padding-right: 22px;
 }

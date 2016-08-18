@@ -15,17 +15,8 @@ function getNowFormatDate() {
     return currentdate;
 }
 
-// $(".collapsed.explain-title").click(function() {
-//     var rightCss = "fa fa-chevron-circle-right";
-//     var downCss = "fa fa-chevron-circle-down";
-
-//     $(this).siblings("i").toggleClass(downCss);
-//     $(this).siblings("i").toggleClass(rightCss);
-// });
-
-//toggle the explain-row css
-$(".btn.btn-2.btn-2c").click(function() {
-    $("#explain-panel").toggleClass("explain-switch");
+$("#btn-toggle-switch").click(function() {
+    $("#explain-panel").toggleClass("toggle-switch");
     var txt = $(this).text();
     if (txt == "打开") {
         $(this).text("关闭");
@@ -38,6 +29,25 @@ $(".btn.btn-2.btn-2c").click(function() {
     }
 });
 
+$("#btn-adduser-switch").click(function(){
+    $("div.table-zoom-first").toggleClass("toggle-switch");
+    var txt = $(this).text();
+    if (txt == "打开") {
+        $(this).text("关闭");
+    } else {
+        $(this).text("打开");
+    }
+});
+
+$('#btn-gamedetail-switch').click(function(){
+    $("div.table-zoom-second").toggleClass("toggle-switch");
+    var txt = $(this).text();
+    if (txt == "打开") {
+        $(this).text("关闭");
+    } else {
+        $(this).text("打开");
+    }
+});
 //change the css when mouse cover date
 function dateSelected(obj) {
     var nodes = $(obj).siblings("a");
@@ -62,6 +72,7 @@ $("#btn-filtersave").click(function(){
     var filterCheckBoxs = $("table.tab-pane.fade.active.in").find("div");
     for(var i=0;i<filterCheckBoxs.length;i++) { 
         if($(filterCheckBoxs[i]).hasClass("checked")){
+            //extend
             // console.log($(filterCheckBoxs[i]).siblings("span").text());
         }
     }
@@ -94,6 +105,7 @@ $("#btn-explain-down").click(function(){
 });
 
 //onload initial
+//dateSelector
 $(function() {
     var dateRange = new pickerDateRange('date_seletor', {
         isTodayValid: true,
@@ -109,6 +121,7 @@ $(function() {
     });
 });
 
+//E-chart
 $(function() {
     // 基于准备好的dom，初始化echarts实例
     var myChart1 = echarts.init(document.getElementById('main'));
@@ -154,6 +167,18 @@ $(function() {
                 saveAsImage: {}
             }
         },
+        dataZoom: [
+        {   // 这个dataZoom组件，默认控制x轴。
+            type: 'slider', // 这个 dataZoom 组件是 slider 型 dataZoom 组件
+            start: 10,      // 左边在 10% 的位置。
+            end: 60         // 右边在 60% 的位置。
+        },
+        {   // 这个dataZoom组件，也控制x轴。
+            type: 'inside', // 这个 dataZoom 组件是 inside 型 dataZoom 组件
+            start: 10,      // 左边在 10% 的位置。
+            end: 60         // 右边在 60% 的位置。
+        }
+    ],
         xAxis: {
             type: 'category',
             boundaryGap: true,
@@ -190,6 +215,547 @@ $(function() {
     myChart3.setOption(option);
 });
 
+//Echart 首次游戏 + 小号分析 + 地区 + 国家 + 性别 + 年龄 + 账户类型
+$(function(){
+    var firstGamePeriodBar = echarts.init(document.getElementById('first-game-period-chart-bar'));
+    var smallAccountBar = echarts.init(document.getElementById('small-account-chart-bar'));
+    var areaBar = echarts.init(document.getElementById('area-chart-bar'));
+    var countryBar = echarts.init(document.getElementById('country-chart-bar'));
+    var sexBar = echarts.init(document.getElementById('sex-chart-pie'));
+    var ageBar = echarts.init(document.getElementById('age-chart-bar'))
+
+    var firstGamePeriodOption = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        legend: {
+            data: ['玩家数']
+        },
+
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'value',
+            boundaryGap: [0, 0.01]
+        },
+        yAxis: {
+            type: 'category',
+            data: ['>60 min','30-60 min','10-30 min','3-10 min','1-3 min','31-60 s','11-30 s','5-10 s','1-4 s']
+        },
+        series: [
+            {
+                name: '玩家数',
+                type: 'bar',
+                itemStyle: {normal:{color:'rgb(87, 139, 187)'}},
+                data: [10, 20, 30, 40, 0, 40, 30, 20, 10]
+            },
+            
+        ]
+    };  
+    var smallAccountOption = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        legend: {
+            data: ['设备数']
+        },
+
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'value',
+            boundaryGap: [0, 0.01]
+        },
+        yAxis: {
+            type: 'category',
+            data: ['>10', '8-10', '7', '6', '5', '4', '3', '2', '1', '未统计']
+        },
+        series: [
+            {
+                name: '设备数',
+                type: 'bar',
+                itemStyle: {normal:{color:'rgb(87, 139, 187)'}},
+                data: [10, 10, 10, 20, 4, 16, 8, 16, 6, 0]
+            },
+            
+        ]
+    };
+    
+    var areaBarOption = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        legend: {
+            data: ['新增人数']
+        },
+
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'value',
+            boundaryGap: [0, 0.01]
+        },
+        yAxis: {
+            type: 'category',
+            data: ['广东省', '-']
+        },
+        series: [
+            {
+                name: '新增人数',
+                type: 'bar',
+                barWidth: '20%',
+                itemStyle: {normal:{color:'rgb(87, 139, 187)'}},
+                data: [9,1]
+            },
+            
+        ]
+    };
+
+    var countryBarOption = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        legend: {
+            data: ['新增人数']
+        },
+
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'value',
+            boundaryGap: [0, 0.01]
+        },
+        yAxis: {
+            type: 'category',
+            data: ['中国', '-']
+        },
+        series: [
+            {
+                name: '新增人数',
+                type: 'bar',
+                barWidth: '20%',
+                itemStyle: {normal:{color:'rgb(87, 139, 187)'}},
+                data: [90,10]
+            },
+            
+        ]
+    };
+
+    var sexPieOption = {
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: ['男','女','未知']
+        },
+        series : [
+            {
+                name: '新增人数',
+                type: 'pie',
+                radius : '55%',
+                center: ['50%', '60%'],
+                data:[
+                    {value:50, name:'男'},
+                    {value:40, name:'女'},
+                    {value:10, name:'未知'}
+                ],
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+
+    var ageBarOption = {
+        tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+                type: 'shadow'
+            }
+        },
+        legend: {
+            data: ['新增玩家']
+        },
+
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        xAxis: {
+            type: 'value',
+            boundaryGap: [0, 0.01]
+        },
+        yAxis: {
+            type: 'category',
+            data: ['未知', '>60', '56-60', '51-55', '46-50', '41-45', '36-40', '31-35', '26-30', '21-25', '16-20','1-15']
+        },
+        series: [
+            {
+                name: '新增玩家',
+                type: 'bar',
+                itemStyle: {normal:{color:'rgb(87, 139, 187)'}},
+                data: [10,0,0,20,30,40,0,40,30,20,10,0]
+            },
+            
+        ]
+    };
+
+    firstGamePeriodBar.setOption(firstGamePeriodOption);
+    smallAccountBar.setOption(smallAccountOption);
+    areaBar.setOption(areaBarOption);
+    countryBar.setOption(countryBarOption);
+    sexBar.setOption(sexPieOption);
+    ageBar.setOption(ageBarOption);
+})
+
+//filter
+$(function(){
+    jQuery(document).ready(function(){
+            jQuery("#filter").jcOnPageFilter({
+                animateHideNShow: true,
+                focusOnLoad:true,
+                highlightColor:'#FFFF00',
+                textColorForHighlights:'#000000',
+                caseSensitive:false,
+                hideNegatives:true,
+                parentLookupClass:'jcorgFilterTextParent',
+                childBlockClass:'jcorgFilterTextChild'
+            });
+        });    
+})
+
+
+
+//dataTable 首次游戏 + 小号分析 + 地区 + 国家 + 性别 + 年龄 + 账户类型
+$(function(){
+    var firstGamePeriodData=[
+        ["1-4 s", "10", "5%"],
+        ["5-10 s", "20", "10%"],
+        ["11-30 s", "30", "15%"],
+        ["31-60 s", "40", "20%"],
+        ["1-3 min", "0", "0"],
+        ["3-10 min", "40", "20%"],
+        ["10-30 min", "30", "15%"],
+        ["30-60 min", "20", "10%"],
+        [">60 min", "10", "5%"],
+    ];
+    var smallAccount=[
+        ["未统计", 0, 0],
+        ["1", 6, "6%"],
+        ["2", 16, "16%"],
+        ["3", 8, "8%"],
+        ["4", 16, "16%"],
+        ["5", 4, "4%"],
+        ["6", 20, "20%"],
+        ["7", 10, "10%"],
+        ["8-10", 10, "10%"],
+        [">10", 10, "10%"]
+    ];
+
+    var areaData = [
+        ["广东省", 9, "90%"],
+        ["-", 1, "10%"]
+    ];
+
+    var countryData = [
+        ["中国", 90, "90%"],
+        ["-", 10, "10%"]
+    ];
+
+    var sexData = [
+        ["男", 50, "50%"],
+        ["女", 40, "40%"],
+        ["未知", 10, "10%"]
+    ];
+
+    var ageData = [
+        ["1-15", 10, "10%"],
+        ["16-20", 0, 0],
+        ["21-25", 0, 0],
+        ["26-30", 20, "20%"],
+        ["31-35", 30 , "30%"],
+        ["36-40", 40 ,"40%"],
+        ["41-45", 0 ,0],
+        ["46-50", 40, "40%"],
+        ["51-55", 30 ,"30%"],
+        ["56-60", 20, "20%"],
+        [">60", 10, "10%"],
+        ["未知", 0, 0]
+    ];
+
+    $(document).ready( function () {
+        //define sort
+        jQuery.extend( jQuery.fn.dataTableExt.oSort, {
+            "num-html-pre": function ( a ) {
+                    var time = String(a).split(" ")[1]; 
+                    var num = String(a).split(" ")[0].split("-")[0];
+                    if(num==">60"){
+                        num = 60;
+                    }
+                    if(time=="min"){
+                        num *= 60;
+                    }
+                    return parseFloat(num);
+                },
+             
+                "num-html-asc": function ( a, b ) {
+                    return ((a < b) ? -1 : ((a > b) ? 1 : 0));               
+                },
+             
+                "num-html-desc": function ( a, b ) {
+                    return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+                }
+        });
+
+        $('#data-table-first-game-time').DataTable({
+            data:firstGamePeriodData,
+            //use self-define sort
+            columnDefs: [
+           { type: 'num-html', targets: 0 }
+            ],
+            "dom":'<"top"f>rt',
+            'language': {  
+                'emptyTable': '没有数据',  
+                'loadingRecords': '加载中...',  
+                'processing': '查询中...',  
+                'search': '查询:',  
+                'lengthMenu': '每页显示 _MENU_ 条记录',  
+                'zeroRecords': '没有数据',                
+                "sInfo": "(共 _TOTAL_ 条记录)",
+                'infoEmpty': '没有数据', 
+            }
+        });
+        $('#data-table-small-account').DataTable({
+            data:smallAccount,
+            "dom":'<"top"f>rt<"left">',
+             'language': {  
+                    'emptyTable': '没有数据',  
+                    'loadingRecords': '加载中...',  
+                    'processing': '查询中...',  
+                    'search': '查询:',  
+                    'lengthMenu': '每页显示 _MENU_ 条记录',  
+                    'zeroRecords': '没有数据',                
+                    "sInfo": "(共 _TOTAL_ 条记录)",
+                    'infoEmpty': '没有数据', 
+            } 
+        });
+        $('#data-table-area').DataTable({
+            data:areaData,
+            "dom":'<"top"f>rt<"left">',
+             'language': {  
+                    'emptyTable': '没有数据',  
+                    'loadingRecords': '加载中...',  
+                    'processing': '查询中...',  
+                    'search': '查询:',  
+                    'lengthMenu': '每页显示 _MENU_ 条记录',  
+                    'zeroRecords': '没有数据',                
+                    "sInfo": "(共 _TOTAL_ 条记录)",
+                    'infoEmpty': '没有数据', 
+            } 
+        });
+        $('#data-table-country').DataTable({
+            data:countryData,
+            "dom":'<"top"f>rt<"left">',
+             'language': {  
+                    'emptyTable': '没有数据',  
+                    'loadingRecords': '加载中...',  
+                    'processing': '查询中...',  
+                    'search': '查询:',  
+                    'lengthMenu': '每页显示 _MENU_ 条记录',  
+                    'zeroRecords': '没有数据',                
+                    "sInfo": "(共 _TOTAL_ 条记录)",
+                    'infoEmpty': '没有数据', 
+            } 
+        });
+        $("#data-table-sex").DataTable({
+            data:sexData,
+            "dom":'<"top"f>rt<"left">',
+             'language': {  
+                    'emptyTable': '没有数据',  
+                    'loadingRecords': '加载中...',  
+                    'processing': '查询中...',  
+                    'search': '查询:',  
+                    'lengthMenu': '每页显示 _MENU_ 条记录',  
+                    'zeroRecords': '没有数据',                
+                    "sInfo": "(共 _TOTAL_ 条记录)",
+                    'infoEmpty': '没有数据', 
+            }
+        });
+        $("#data-table-age").DataTable({
+            data:ageData,
+            "dom":'<"top"f>rt<"left">',
+            'iDisplayLength':12,
+             'language': {  
+                    'emptyTable': '没有数据',  
+                    'loadingRecords': '加载中...',  
+                    'processing': '查询中...',  
+                    'search': '查询:',  
+                    'lengthMenu': '每页显示 _MENU_ 条记录',  
+                    'zeroRecords': '没有数据',                
+                    "sInfo": "(共 _TOTAL_ 条记录)",
+                    'infoEmpty': '没有数据',                    
+            }
+        });
+    })
+})
+
+$(function(){
+    var data = [
+      ["2016-08-16",
+       30,
+       2,
+       40
+      ],
+      ["2016-08-17",
+       48,
+       5,
+       50
+      ],
+      ["2016-08-16",
+       30,
+       2,
+       40
+      ],
+      ["2016-08-17",
+       48,
+       5,
+       50
+      ],
+      ["2016-08-16",
+       30,
+       2,
+       40
+      ],
+      ["2016-08-17",
+       48,
+       5,
+       50
+      ],
+      ["2016-08-16",
+       30,
+       2,
+       40
+      ],
+      ["2016-08-17",
+       48,
+       5,
+       50
+      ],
+      ["2016-08-16",
+       30,
+       2,
+       40
+      ],
+      ["2016-08-17",
+       48,
+       5,
+       50
+      ],
+      ["2016-08-16",
+       30,
+       2,
+       40
+      ],
+      ["2016-08-17",
+       48,
+       5,
+       50
+      ],
+      ["2016-08-16",
+       30,
+       2,
+       40
+      ],
+      ["2016-08-17",
+       48,
+       5,
+       50
+      ],
+      ["2016-08-16",
+       30,
+       2,
+       40
+      ],
+      ["2016-08-17",
+       48,
+       5,
+       50
+      ]
+    ];
+    var data2=[["2016-08-16","50%"],["2016-08-17","60%"]];
+    
+    $(document).ready( function () {
+      $('#data-table1').DataTable({
+        data:data,
+        "dom":'<"top"f>rt<"left"lip>',
+         'language': {  
+                'emptyTable': '没有数据',  
+                'loadingRecords': '加载中...',  
+                'processing': '查询中...',  
+                'search': '查询:',  
+                'lengthMenu': '每页显示 _MENU_ 条记录',  
+                'zeroRecords': '没有数据',                 
+                "sInfo": "(共 _TOTAL_ 条记录)",
+                'infoEmpty': '没有数据',  
+                'infoFiltered': '(过滤总件数 _MAX_ 条)'  
+            } 
+      });
+      $('#data-table2').DataTable({
+        data:data2,
+        "dom":'<"top"f>rt<"left"lip>',
+         'language': {  
+                'emptyTable': '没有数据',  
+                'loadingRecords': '加载中...',  
+                'processing': '查询中...',  
+                'search': '查询:',  
+                'lengthMenu': '每页显示 _MENU_ 条记录',  
+                'zeroRecords': '没有数据',                
+                "sInfo": "(共 _TOTAL_ 条记录)",
+                'infoEmpty': '没有数据', 
+            } 
+      });
+      
+  });
+})
+
+//icheck  checkbox
 $(function(){
     
     $('input').iCheck({

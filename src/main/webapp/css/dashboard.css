@@ -67,7 +67,6 @@ div.grid-gamename.inline-block {
 }
 
 .panel-heading {
-	/* background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#f3f3f3)); */
 	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
 	font-weight:bold;
 	border-radius: 8px 8px 0px 0px;
