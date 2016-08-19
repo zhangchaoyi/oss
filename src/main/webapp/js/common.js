@@ -29,7 +29,7 @@ $("#btn-explain-switch").click(function() {
     }
 });
 
-$("#btn-adduser-switch").click(function(){
+$("#btn-first-data-panel-switch").click(function(){
     $("div.table-zoom-first").toggleClass("toggle-switch");
     var txt = $(this).text();
     if (txt == "打开") {

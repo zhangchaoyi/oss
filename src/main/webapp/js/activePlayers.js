@@ -159,7 +159,7 @@ $(function() {
         legend: {
             zlevel: -1,
             left: 20,
-            data: ['新增玩家', '付费玩家', '非付费玩家', 'DAU'],
+            data: ['DAU/MAU'],
             shadowColor: 'rgba(1, 0, 1, 1.1)',
             shadowBlur: 10,
             shadowOffsetX: 10,
@@ -398,14 +398,16 @@ $(function(){
         legend: {
             orient: 'vertical',
             left: 'left',
+            // right:"right",
+
             data: ['男', '女', '未知']
         },
         backgroundColor:"white",
         series: [{
             name: '新增人数',
             type: 'pie',
-            radius: '55%',
-            center: ['50%', '60%'],
+            radius: '65%',
+            center: ['50%', '50%'],
             data: [{
                 value: 4,
                 name: '男'
@@ -567,7 +569,7 @@ $(function(){
 
         $('#data-table-played-days').DataTable({
             data: playedDaysData,
-            "dom": '<"top"f>rt<"left"lip>',
+            "dom": '<"top"f>rt<"left">',
             columnDefs: [{
                 type: 'num-html',
                 targets: 0
@@ -586,7 +588,7 @@ $(function(){
         });
         $('#data-table-rank').DataTable({
             data: rankData,
-            "dom": '<"top"f>rt<"left"lip>',
+            "dom": '<"top"f>rt<"left">',
             'language': {
                 'emptyTable': '没有数据',
                 'loadingRecords': '加载中...',
@@ -601,7 +603,7 @@ $(function(){
         });
         $('#data-table-area').DataTable({
             data: areaData,
-            "dom": '<"top"f>rt<"left"lip>',
+            "dom": '<"top"f>rt<"left">',
             'language': {
                 'emptyTable': '没有数据',
                 'loadingRecords': '加载中...',
@@ -616,7 +618,7 @@ $(function(){
         });
         $('#data-table-country').DataTable({
             data: countryData,
-            "dom": '<"top"f>rt<"left"lip>',
+            "dom": '<"top"f>rt<"left">',
             'language': {
                 'emptyTable': '没有数据',
                 'loadingRecords': '加载中...',
@@ -631,7 +633,7 @@ $(function(){
         });
         $('#data-table-sex').DataTable({
             data: sexData,
-            "dom": '<"top"f>rt<"left"lip>',
+            "dom": '<"top"f>rt<"left">',
             'language': {
                 'emptyTable': '没有数据',
                 'loadingRecords': '加载中...',
@@ -646,7 +648,8 @@ $(function(){
         });
         $('#data-table-age').DataTable({
             data: ageData,
-            "dom": '<"top"f>rt<"left"lip>',
+            "dom": '<"top"f>rt<"left">',
+            'iDisplayLength': 12,
             'language': {
                 'emptyTable': '没有数据',
                 'loadingRecords': '加载中...',
