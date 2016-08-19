@@ -828,7 +828,7 @@
 .fa-flash:before,
 .fa-bolt:before {
   content: "\f0e7";
-  font-size: larger;
+  /* font-size: larger; */
   margin-left: 10p;
   padding-left: 1;
 }
@@ -1666,6 +1666,7 @@
 }
 .fa-line-chart:before {
   content: "\f201";
+  font-size: 77%;
 }
 .fa-lastfm:before {
   content: "\f202";

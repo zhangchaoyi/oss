@@ -5,7 +5,6 @@ div#top-row {
 }
 div.filter-tool {
     float:left;
-    /* background: #F7F834; */
     position:relative;
     right: 1px;
     width: 1784px;
@@ -22,7 +21,7 @@ div.date-bar {
     width: 254px;
     display: inline;
 }
-div.calender-bar {/*     font-size:px; */float:left;/* background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada)); */font-size: 98px;width: 261px;height: 30px;position: relative;right: 20px;margin-bottom: 5px;/* background: #DADAEA; */}
+div.calender-bar {float:left;font-size: 98px;width: 261px;height: 30px;position: relative;right: 20px;margin-bottom: 5px;/* background: #DADAEA; */}
 
 div.time-title {
     float: left;
@@ -66,44 +65,26 @@ span#date_seletor.date_title {
 
 div.explain-content {
     position:relative;
-    top:25px;
+    top: 25px;
     text-align: left;
-}
-
-div#accordion.panel-group {
-    width:inherit;
-    height:200px;
-    overflow-y:scroll;
-    position:relative;
-    top:10px;
-    margin-bottom:20px;
-    border-radius: 9px;
 }
 
 span.explain-heading {
     font-weight:bold;
-    font-size:20px;
+    font-size: 17px;
     position:relative;
     top:2px;
 }
 
-div.explain-content > div.panel.panel-default {
-    border-radius: 10px 10px 10 10;
-}
-
-div.explain-content > div.panel.panel-default > div.panel-heading{
-    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
-}
-
-div.explain-switch {
+div.toggle-switch {
     display:none;
 }
 
 div#data-first {
-/*     float:left; */
     text-align:left;
     position:relative;
     top:50px;
+    margin-bottom: 14px;
 }
 
 div#data-first.row > div.panel.panel-default > div.panel-heading {
@@ -127,7 +108,7 @@ div.panel-heading {
 
 span.player-heading {
     font-weight:bold;
-    font-size:20px;
+    font-size: 17px;
 }
 
 #platform-selected {
@@ -200,6 +181,10 @@ ul.nav.nav-pills {
 	display:inline;
 }
 
+ul.nav.nav-pills > li > a:hover {
+    background: silver;
+}
+
 div.choose.option {
 	text-align:center;	
 	background:#e3effa;
@@ -234,7 +219,7 @@ div.filter-header {
 	border-bottom: 1px solid #d5d1d1;
 }
 
-div.tab-content {position: relative;top: 15px;}
+div.tab-content {position: relative;top: 15px;/* background: #ffffff; */}
 
 table.tab-pane.fade.active.in {
 	width:100%;
@@ -247,4 +232,197 @@ td.jcorgFilterTextParent {
 
 td.jcorgFilterTextParent > input {
 	font-size: 244px;
+}
+
+div.modal-footer button.btn.btn-primary {
+    width: 60px;
+}
+
+div.explain-content-row > dl {
+    clear:left;
+    display: inline-block;
+    float: left;
+    position: relative;
+    left: 29px;
+    bottom: 20px;
+    margin-bottom: 4px;
+}
+
+div.explain-content-row > dl > dt {
+    clear:left;
+    float:left;
+}
+
+div.explain-content-row > dl > dd {
+    float: left;
+    padding-left: 10px;
+}
+
+div.explain-content-row > i {
+    float:left;
+    clear:left;
+    display: inline-block;
+    font-size: 1%;
+    position: relative;
+    bottom:3px;
+    color:#3277b7;
+}
+
+div.explain-content-box {
+    color: #333;
+    width:inherit;
+    position: relative;
+    margin-top: 0px;
+}
+
+div.explain-content-row {
+    position:relative;
+    left:5px;
+}
+
+div.explain-content-panel.cut {
+    position:relative;
+    margin-top;20px
+    height: 200px;
+    position:relative;
+    top: 8px;
+}
+
+div#explain-panel {
+    height: 160px;
+    overflow-y: hidden;
+}
+
+button#btn-explain-up {
+    position: relative;
+    float: right;
+    bottom: 93px;
+    right: 20px;
+    height: 36px;
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fdfdfd),color-stop(1,#dedede));
+}
+
+button#btn-explain-up:hover {
+    background:white;
+}
+button#btn-explain-down {
+    float: right;
+    position:relative;
+    right: -16px;
+    bottom: 47px;
+    height: 36px;
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
+    border: #252222;
+}
+
+button#btn-explain-up > span.fa.fa-chevron-up {
+    font-size: 12px;
+}
+
+button#btn-explain-down > span.fa.fa-chevron-down {
+    font-size: 12px;
+}
+
+ul.nav.nav-tabs > li.active > a {
+    border-bottom:3px solid #3277b7;
+
+}
+
+body > div.icheckbox_polaris {
+    display: none;
+}
+
+i.fa.fa-check-square-o::before {
+    position:relative;
+    font-size: 85%
+}
+
+i.fa.fa-spinner::before {
+    font-size: 80%
+} 
+i.fa.fa-shopping-cart::before {
+    font-size:90%;
+} 
+
+i.fa.fa-gamepad::before {
+    font-size: 85%
+} 
+
+i.fa.fa-bar-chart::before {
+    font-size: 90%
+} 
+
+i.fa.fa-send::before {
+    font-size: 90%
+} 
+
+div#data-second {
+    margin-top: 48px;
+}
+
+div#data-second.row > ul.nav.nav-tabs {
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
+    border-radius: 10px 10px 0 0;
+}
+
+div#data-second.row > ul.nav.nav-tabs > li {
+    font-weight: bold;
+}
+div#data-second.row > ul.nav.nav-tabs > li > a:hover{
+    background-color: white;
+}
+
+div.table-zoom-second {
+    margin-bottom: 10px;
+}
+
+button#btn-gamedetail-switch {
+    position: relative;
+    right: 15px;
+}
+
+table.dataTable th.sorting_desc span {
+    margin: 3px 10px 5px 0;
+    padding-right: 22px;
+    background: url(../images/sort_desc.png) no-repeat right center;
+}  
+
+table.dataTable th.sorting_asc span {
+    background: url(../images/sort_asc.png) no-repeat right center;
+    margin: 3px 10px 0 0;
+    padding-right: 22px;
+}
+
+table.dataTable thead .sorting span {
+    margin: 3px 10px 0 0;
+    padding-right: 22px;
+}
+
+div#newPlayer-note > span {
+    position: relative;
+    left:5px;
+    font-size:95%;
+    margin-left: 20px;
+}
+
+div#newPlayer-note > span > font{
+    color:#e25856;
+    font-weight: bold;
+    font-size: large;
+}
+
+div#newPlayer-note {
+    margin-bottom:20px;
+}
+
+div#page-inner > div.row > a.back-top {
+    background:rgba(43,57,69,0.95);
+    border-radius: 3px 0 0 3px;
+    border: 1px solid #22282e;
+    position:fixed;
+    float: right;
+    width: 40px;
+    height: 40px;
+    bottom:200px;
+    left: 1800px;
 }

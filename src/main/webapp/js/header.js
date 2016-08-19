@@ -8,34 +8,31 @@ $("#dropdownMenu1").on("mouseover", function() {
 
 function iconsView() {
     var icons = $('.btn-icons');
-    var emptyClick = true;
-    for(var i=0;i<icons.length;i++){
-    	if(!showIcon(icons[i])){
-    		emptyClick = false;
-    	}
-    }
-    if(emptyClick){
+    if(!$("ul.dropdown-menu.iconBar").find("div").hasClass("checked")){
     	$("#platform-selected").css("display", "block");
-    	setTimeout('$("#platform-selected").css("display", "none")', 8000);
+    	setTimeout('$("#platform-selected").css("display", "none")', 5000);
     	$(".dropdown.open").toggleClass("open");
+    	return;
+    }
+  
+    for(var i=0;i<icons.length;i++){
+    	showIcon(icons[i]);    	
     }	
+    $(".dropdown.open").toggleClass("open");
 }
 
 function showIcon(icon){
-	var emptyClick = true;
 	var value = $(icon).attr("data-value");
 	var className = "span.fa.fa-" + value + ".icons";
 	
 	if($(icon).find("div").hasClass("checked")) {
 		//whether element is null
-		emptyClick = false;
 		if($(className).length == 0){
 			$("#btn-dropdownIcon").prepend("<span class='fa fa-"+ value +" icons' id='icons-view' aria-hidden='true'></span>");
 		}		
 	}else{
 		$(className).remove();
 	}
-	return emptyClick;
 }
 
 $("li.btn-icons").click(function(){
