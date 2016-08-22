@@ -444,7 +444,7 @@ div#page-inner > div.row > a.back-top {
     width: 40px;
     height: 40px;
     bottom:200px;
-    left: 1799px;
+    left: 98%;
 }
 
 div#page-inner > div.row > a.back-top:hover {
@@ -613,4 +613,21 @@ button#customize-retain-times {
     border: 1px solid #d5d1d1;
     font-size: 16px;
     margin-top: -3px;
+}
+
+table#data-table-customize-retained-queryDay > thead {
+    background: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada)) !important;
+}
+
+table#data-table-customize-retained-queryDay > thead > tr > th.sorting_asc {
+    border-radius: 8px 0 0 0;
+}
+
+table#data-table-customize-retained-queryDay > thead > tr > th.center.thead {
+    border-radius: 0 8px 0 0;
+}
+button#customize-retain-type {
+    float:right;
+    font-size: 16px;
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
 }

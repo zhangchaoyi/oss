@@ -34,9 +34,10 @@
        </div> 
        <div class="btn-group" id="admin-btn"> 
         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">admin <span class="caret"></span></button> 
-        <ul class="dropdown-menu user-bars" aria-labelledby="dropdownMenu1"> 
+        <ul class="dropdown-menu user-bars" aria-labelledby="dropdownMenu1">
+         <li> <a href="#">admin</a></li> 
          <li> <a href="#">Action</a></li> 
-         <li> <a href="#">Another action</a></li> 
+         <li> <a href="#">Action2</a></li> 
         </ul> 
        </div> 
        <div class="glyphicon glyphicon-user" aria-hidden="true" id="login-user"></div> 
@@ -75,7 +76,7 @@
      <ul class="nav" id="main-menu"> 
       <li> <a href="#"> <i class="fa fa-clock-o "></i>实时概况</a> </li> 
       <li> <a href="#"> <i class="fa fa-line-chart "></i>报表</a> </li> 
-      <li> <a href="#"> <i class="fa fa-user"></i>玩家分析 <span class="fa arrow"></span></a> 
+      <li> <a href="#"> <i class="fa fa-user"></i>玩家分析 <spa啊n class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
         <li> <a href="add.html"> <i class="fa fa-user-plus" aria-hidden="true"></i>新增玩家</a> </li> 
         <li> <a href="#"> <i class="fa fa-users "></i>活跃玩家</a> </li> 
@@ -101,7 +102,7 @@
       <li> <a href="#"> <i class="fa fa-shopping-cart "></i>渠道分析 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
         <li> <a href="#"> <i class="fa fa-shopping-cart"></i>渠道分析</a> </li> 
-        <li> <a href="#"> <i class="fa fa-link "></i>渠道短链追踪</a> </li> 
+        <li> <a href="#"> <i class="fa fa-link "></i>渠道短链追踪啊</a> </li> 
        </ul> </li> 
       <li> <a href="#"> <i class="fa fa-gamepad "></i>系统分析 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
@@ -127,7 +128,7 @@
         <li> <a href="#"> <i class="fa fa-shopping-cart"></i>新玩家价值</a> </li> 
        </ul> </li> 
       <li> <a href="#"> <i class="fa fa-bar-chart "></i>市场分析</a> </li> 
-      <li> <a href="#"> <i class="fa fa-wrench "></i>技术支持 <span class="fa arrow"></span></a> 
+      <li> <a href="#"> <i class="fa fa-wrench "></i>技术支持 <s啊pan class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
         <li> <a href="#"> <i class="fa fa-vine"></i>在线参数</a> </li> 
         <li> <a href="#"> <i class="fa fa-bookmark "></i>实时日志</a> </li> 
@@ -154,7 +155,7 @@
           <a class="opt_sel" id="input_trigger" hre2f="#"> <i class="fa fa-calendar" aria-hidden="true"></i> </a> 
          </div> 
          <div id="datePicker"></div> 
-        </div> 
+        </div> 啊
         <div class="time-title"> 
          <a id="aToday" onclick="dateSelected(this)">今日</a> 
          <a id="aYesterday" onclick="dateSelected(this)">昨日</a> 
@@ -301,9 +302,9 @@
                <span class="caret"></span>
              </button>
              <ul class="dropdown-menu" aria-labelledby="customize-retain-players">
-               <li><a href="#">新增玩家</a></li>
-               <li><a href="#">活跃玩家</a></li>
-               <li><a href="#">付费玩家</a></li>
+               <li><a href="#" >新增玩家</a></li>
+               <li><a href="#" >活跃玩家</a></li>
+               <li><a href="#" >付费玩家</a></li>
              </ul>
            </div>
            <span>留存行为:在之后的使用中</span>
@@ -328,6 +329,16 @@
              </ul>
            </div>
            <span>计为留存玩家</span>
+            <div class="dropdown">
+             <button class="btn btn-default dropdown-toggle" type="button" id="customize-retain-type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+               留存率
+               <span class="caret"></span>
+             </button>
+             <ul class="dropdown-menu" aria-labelledby="customize-retain-type">
+               <li><a href="#">留存率</a></li>
+               <li><a href="#">留存人数</a></li>
+             </ul>
+           </div>
          </div>
          
          <div class="tab-content"> 
@@ -451,8 +462,7 @@
   <script src="../../js/retain.js"></script>
   <script>
     $(document).ready(function(){
-//        loadRetainChart();
-//        loadRetainDataTable();
+       loadCustomizeRetainTable();
     });
   </script>
  </body>

@@ -213,3 +213,82 @@ function loadRetainEquipmentDataTable() {
         }
     });
 }
+
+//E-chart customize-retained
+function loadCustomizeRetainTable() {
+	var customizeRetainData = [
+	  ["2016-08-03", 0, '1%', '0%', '0%', '0%', '0%','0%', '0%', '0%', '0%'],
+	  ["2016-08-04", 0, '0%', '0%', '0%', '0%', '0%','0%', '0%', '0%', '0%'],
+	  ["2016-08-05", 0, '0%', '0%', '0%', '0%', '0%','0%', '0%', '0%', '0%'],
+	  ["2016-08-06", 0, '0%', '0%', '0%', '0%', '0%','0%', '0%', '0%', '0%'],
+	  ["2016-08-07", 0, '0%', '0%', '0%', '0%', '0%','0%', '0%', '0%', '0%'],
+	  ["2016-08-08", 0, '0%', '0%', '0%', '0%', '0%','0%', '0%', '0%', '0%'],
+	  ["2016-08-09", 0, '0%', '0%', '0%', '0%', '0%','0%', '0%', '0%', '0%'],
+	  ["2016-08-10", 0, '0%', '0%', '0%', '0%', '0%','0%', '0%', '0%', '0%'],
+	  ["2016-08-11", 0, '0%', '0%', '0%', '0%', '0%','0%', '0%', '0%', '0%'],
+	  ["2016-08-12", 0, '0%', '0%', '0%', '0%', '0%','0%', '0%', '0%', '0%'],
+	  ["2016-08-13", 0, '0%', '0%', '0%', '0%', '0%','0%', '0%', '0%', '0%'],
+	  ["2016-08-14", 0, '0%', '0%', '0%', '0%', '0%','0%', '0%', '0%', '0%'],
+	  ["2016-08-15", 0, '0%', '0%', '0%', '0%', '0%','0%', '0%', '0%', '0%'],
+	  ["2016-08-16", 0, '0%', '0%', '0%', '0%', '0%','0%', '0%', '0%', '0%'],
+	  ["2016-08-17", 0, '0%', '0%', '0%', '0%', '0%','0%', '0%', '0%', '0%'],
+	  ["2016-08-18", 0, '0%', '0%', '0%', '0%', '0%','0%', '0%', '0%', '0%'],
+	];
+
+	$('#data-table-customize-retained-queryDay').DataTable({
+        data: customizeRetainData,
+        "dom": '<"top"f>rt<"left"lip>',
+        'language': {
+            'emptyTable': '没有数据',
+            'loadingRecords': '加载中...',
+            'processing': '查询中...',
+            'search': '查询:',
+            'lengthMenu': '每页显示 _MENU_ 条记录',
+            'zeroRecords': '没有数据',
+            "sInfo": "(共 _TOTAL_ 条记录)",
+            'infoEmpty': '没有数据',
+            'infoFiltered': '(过滤总件数 _MAX_ 条)'
+        }
+    });
+
+    $('#data-table-customize-retained-queryWeek').DataTable({
+        data: customizeRetainData,
+        "dom": '<"top"f>rt<"left"lip>',
+        'language': {
+            'emptyTable': '没有数据',
+            'loadingRecords': '加载中...',
+            'processing': '查询中...',
+            'search': '查询:',
+            'lengthMenu': '每页显示 _MENU_ 条记录',
+            'zeroRecords': '没有数据',
+            "sInfo": "(共 _TOTAL_ 条记录)",
+            'infoEmpty': '没有数据',
+            'infoFiltered': '(过滤总件数 _MAX_ 条)'
+        }
+    });
+
+    $('#data-table-customize-retained-queryMonth').DataTable({
+        data: customizeRetainData,
+        "dom": '<"top"f>rt<"left"lip>',
+        'language': {
+            'emptyTable': '没有数据',
+            'loadingRecords': '加载中...',
+            'processing': '查询中...',
+            'search': '查询:',
+            'lengthMenu': '每页显示 _MENU_ 条记录',
+            'zeroRecords': '没有数据',
+            "sInfo": "(共 _TOTAL_ 条记录)",
+            'infoEmpty': '没有数据',
+            'infoFiltered': '(过滤总件数 _MAX_ 条)'
+        }
+    });
+}
+
+
+// $('.dropdown-menu').click(){
+// 	$('#customize-retain-players').
+// }
+$('.dropdown-menu > li').click(function(){
+	$(this).parent().siblings("button").html($(this).text()+ "<span class='caret'></span>");
+  console.log($(this).text());
+});
