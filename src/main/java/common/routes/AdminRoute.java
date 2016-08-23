@@ -6,6 +6,7 @@ import common.controllers.DashboardController;
 import common.controllers.LoginController;
 import common.controllers.TestController;
 import common.controllers.players.EffectiveController;
+import common.controllers.players.RetainController;
 
 public class AdminRoute extends Routes {
 
@@ -14,7 +15,8 @@ public class AdminRoute extends Routes {
 		add("/test", TestController.class);
 		add("/", LoginController.class, "/views");
 		add("/dashboard", DashboardController.class, "/views");
-		add("/effective", EffectiveController.class ,"/views");
+		add("/effective", EffectiveController.class);
+		add("/retain", RetainController.class);
 	}
 
 }

@@ -1,7 +1,6 @@
 var effectiveChart = echarts.init(document.getElementById('effective-chart'));
 
-
-$(function(){
+$(function() {
     loadData($("ul.nav.nav-tabs.effective > li").children("a").attr("data-info"));
 })
 
@@ -10,81 +9,86 @@ function loadData(tagDataInfo) {
     $.post("/api/effective", {
         tagDataInfo: tagDataInfo
     },
-    function(data, status) {    
+    function(data, status) {
         configChart(data);
         configTable(data);
     });
 }
 
-function configChart(data){
-    var recData = data.data;
-        effectiveChart.clear();
-        effectiveChart.setOption({
-            tooltip: {
-                trigger: 'axis'
-            },
-            legend: {
-                data: data.type
-            },
-            toolbox: {
-                show: true,
-                feature: {
-                    dataZoom: {
-                        yAxisIndex: 'none'
-                    },
-                    dataView: {
-                        readOnly: false
-                    },
-                    magicType: {
-                        type: ['line', 'bar']
-                    },
-                    restore: {},
-                    saveAsImage: {}
+function configChart(data) {
+    var recData = data.serie;
+    effectiveChart.clear();
+    effectiveChart.setOption({
+        tooltip: {
+            trigger: 'axis'
+        },
+        legend: {
+            data: data.type
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                dataView: {
+                    readOnly: false
+                },
+                magicType: {
+                    type: ['line', 'bar']
+                },
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        dataZoom: [{
+            type: 'slider',
+            start: 10,
+            end: 80
+        },
+        {
+            type: 'inside',
+            start: 10,
+            end: 50
+        }],
+        xAxis: {
+            type: 'category',
+            data: function() {
+                for (var key in data.category) {
+                    return data.category[key];
                 }
-            },
-            dataZoom: [{
-                type: 'slider',
-                start: 10,
-                end: 80
-            },
-            {
-                type: 'inside',
-                start: 10,
-                end: 50
-            }],
-            xAxis: {
-                type: 'category',
-                data: data.categories
-            },
-            yAxis: {
-                type: 'value',
-                axisLabel: {
-                    formatter: '{value} %'
-                }
-            },
-            series: function() {
-                var serie = [];
-                for (var key in recData) {
-                    var item = {
-                        name: key,
-                        type: "line",
-                        data: recData[key]
-                    }
-                    serie.push(item);
-                };
-                return serie;
             } ()
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} %'
+            }
+        },
+        series: function() {
+            var serie = [];
+            for (var key in recData) {
+                var item = {
+                    name: key,
+                    type: "line",
+                    data: recData[key]
+                }
+                serie.push(item);
+            };
+            return serie;
+        } ()
 
-        });
+    });
 }
 
-function configTable(data){
+
+function configTable(data) {
     appendTableHeader(data);
     var tableData = dealTableData(data);
     table = $('#effective-table').dataTable({
-        destroy:true,
+        destroy: true,
         // retrive:true,
-        "data":tableData,
+        "data": tableData,
         "dom": '<"top"f>rt<"left"lip>',
         'language': {
             'emptyTable': '没有数据',
@@ -100,17 +104,20 @@ function configTable(data){
     });
 }
 
-function dealTableData(data){
+function dealTableData(data) {
     var type = data.type;
-    var categories = data.categories;
-    var serie = data.data;
-
+    var category = data.category;
+    var categories;
+    for (var key in category) {
+        categories = category[key];
+    }
+    var serie = data.serie;
     var dataArray = [];
-    
-    for(var i=0;i<categories.length;i++){
+
+    for (var i = 0; i < categories.length; i++) {
         var item = [];
         item.push(categories[i]);
-        for(var j=0;j<type.length;j++){
+        for (var j = 0; j < type.length; j++) {
             item.push(serie[type[j]][i]);
         }
         dataArray.push(item);
@@ -118,13 +125,18 @@ function dealTableData(data){
     return dataArray;
 }
 
-function appendTableHeader(data){
+function appendTableHeader(data) {
     var type = data.type;
-    var txt = "<th><span>日期</span></th>";
-    for(var i=0;i<type.length;i++){
-        txt = txt + "<th><span>"+ type[i] +"</span></th>"
+    var category = data.category;
+    var txt = "";
+    for (var key in category) {
+        txt = "<th><span>" + key + "</span></th>";
     }
-    if($("table#effective-table > thead").length!=0){
+
+    for (var i = 0; i < type.length; i++) {
+        txt = txt + "<th><span>" + type[i] + "</span></th>"
+    }
+    if ($("table#effective-table > thead").length != 0) {
         $("table#effective-table > thead").remove();
         $("#effective-table").prepend("<thead><tr>" + txt + "</tr></thead>");
         // var spans = $("table#effective-table > thead").find("span");
@@ -132,16 +144,12 @@ function appendTableHeader(data){
         //     $(spans[i]).text(type[i]);
         // }
         return;
-        
+
     }
     $("#effective-table").append("<thead><tr>" + txt + "</tr></thead>");
 }
-
 
 $("ul[class='nav nav-tabs effective'] > li").click(function() {
     var tagDataInfo = $(this).children("a").attr("data-info");
     loadData(tagDataInfo);
 });
-
-
-

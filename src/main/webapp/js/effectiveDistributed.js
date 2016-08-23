@@ -1,7 +1,6 @@
 var effectiveChart = echarts.init(document.getElementById('effective-distributed-chart'));
 
-
-$(function(){
+$(function() {
     loadData($("ul.nav.nav-tabs.effective-distributed > li.active").children("a").attr("data-info"), $("ul.nav.nav-tabs.effective.distributed > li.active").children("a").attr("data-info"));
 })
 
@@ -11,15 +10,68 @@ function loadData(tagDataInfo, subTagDataInfo) {
         tagDataInfo: tagDataInfo,
         subTagDataInfo: subTagDataInfo
     },
-    function(data, status) {    
+    function(data, status) {
         configChart(data);
         configTable(data);
     });
 }
 
-function configChart(data){
-    var recData = data.data;
-        effectiveChart.clear();
+function configChart(data) {
+    var recData = data.serie;
+    var categoryName = "";
+    var categories = "";
+    var dataSeries = "";
+    effectiveChart.clear();
+
+    for (var i in recData) {
+        dataSeries = recData[i];
+    }
+    for (var cat in data.category) {
+        categoryName = cat;
+        categories = data.category[cat];
+    }
+
+    if (categoryName == "性别") {
+        effectiveChart.setOption({
+            tooltip: {
+                trigger: 'item',
+                formatter: "{a} <br/>{b} : {c} ({d}%)"
+            },
+            legend: {
+                orient: 'vertical',
+                // left: 'left',
+                data: data.type
+            },
+            backgroundColor: "white",
+            series: [{
+                name: data.type,
+                type: 'pie',
+                radius: '65%',
+                center: ['50%', '50%'],
+                data: function() {
+                    var serie = [];
+                    for (var i = 0; i < categories.length; i++) {
+                        var item = {
+                            name: categories[i],
+                            value: dataSeries[i],
+                        };
+                        serie.push(item);
+                    }
+                    console.log(serie);
+                    return serie;
+                } (),
+
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }]
+        });
+    } else {
+
         effectiveChart.setOption({
             tooltip: {
                 trigger: 'axis'
@@ -55,21 +107,22 @@ function configChart(data){
             }],
             xAxis: {
                 type: 'value',
-                
+
             },
             yAxis: {
                 type: 'category',
                 axisLabel: {
                     formatter: '{value} %'
                 },
-                data: function(){
-                    for(var key in data.category){
+                data: function() {
+                    for (var key in data.category) {
                         return data.category[key];
                     }
-                }()
+                } ()
             },
             series: function() {
                 var serie = [];
+                var categoryName = "";
                 for (var key in recData) {
                     var item = {
                         name: key,
@@ -87,15 +140,16 @@ function configChart(data){
             } ()
 
         });
+    }
 }
 
-function configTable(data){
+function configTable(data) {
     appendTableHeader(data);
     var tableData = dealTableData(data);
     table = $('#effective-distributed-table').dataTable({
-        destroy:true,
+        destroy: true,
         // retrive:true,
-        "data":tableData,
+        "data": tableData,
         "dom": '<"top"f>rt<"left"lip>',
         'language': {
             'emptyTable': '没有数据',
@@ -111,41 +165,40 @@ function configTable(data){
     });
 }
 
-function dealTableData(data){
+function dealTableData(data) {
     var type = data.type;
     var category = data.category;
     var categories;
-    for(var key in category){
+    for (var key in category) {
         categories = category[key];
     }
-    var serie = data.data;
+    var serie = data.serie;
 
     var dataArray = [];
-    
-    for(var i=0;i<categories.length;i++){
+
+    for (var i = 0; i < categories.length; i++) {
         var item = [];
         item.push(categories[i]);
-        for(var j=0;j<type.length;j++){
+        for (var j = 0; j < type.length; j++) {
             item.push(serie[type[j]][i]);
         }
         dataArray.push(item);
     }
-    console.log(dataArray)
     return dataArray;
 }
 
-function appendTableHeader(data){
+function appendTableHeader(data) {
     var type = data.type;
     var category = data.category;
     var txt = "";
-    for(var key in category){
-        txt = "<th><span>"+ key +"</span></th>";
+    for (var key in category) {
+        txt = "<th><span>" + key + "</span></th>";
     }
-    
-    for(var i=0;i<type.length;i++){
-        txt = txt + "<th><span>"+ type[i] +"</span></th>"
+
+    for (var i = 0; i < type.length; i++) {
+        txt = txt + "<th><span>" + type[i] + "</span></th>"
     }
-    if($("table#effective-distributed-table> thead").length!=0){
+    if ($("table#effective-distributed-table> thead").length != 0) {
         $("table#effective-distributed-table > thead").remove();
         $("#effective-distributed-table").prepend("<thead><tr>" + txt + "</tr></thead>");
         // var spans = $("table#effective-table > thead").find("span");
@@ -153,23 +206,19 @@ function appendTableHeader(data){
         //     $(spans[i]).text(type[i]);
         // }
         return;
-        
+
     }
     $("#effective-distributed-table").append("<thead><tr>" + txt + "</tr></thead>");
 }
 
-
-$("ul.nav.nav-tabs.effective-distributed > li").click(function(){
+$("ul.nav.nav-tabs.effective-distributed > li").click(function() {
     var tagDataInfo = $(this).children("a").attr("data-info");
     var subTagDataInfo = $("ul.nav.nav-tabs.effective.distributed > li.active").children("a").attr("data-info");
     loadData(tagDataInfo, subTagDataInfo);
 })
 
-$("ul.nav.nav-tabs.effective.distributed > li").click(function(){
+$("ul.nav.nav-tabs.effective.distributed > li").click(function() {
     var subTagDataInfo = $(this).children("a").attr("data-info");
     var tagDataInfo = $("ul.nav.nav-tabs.effective-distributed > li.active").children("a").attr("data-info");
     loadData(tagDataInfo, subTagDataInfo);
 })
-
-
-

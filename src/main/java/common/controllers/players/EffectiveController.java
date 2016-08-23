@@ -18,8 +18,10 @@ public class EffectiveController extends Controller {
 	@ActionKey("/api/effective")
 	public void testData() {
 		String tagDataInfo = getPara("tagDataInfo");
-		Map<String, Object> map = new LinkedHashMap<String,Object>();
+		Map<String, Object> data = new LinkedHashMap<String,Object>();
+		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
 		Map<String, List<Integer>> seriesMap = new LinkedHashMap<String, List<Integer>>();
+		
 		List<Integer> dataAdd1 =  Arrays.asList(0,1,2,3,4,5,6,7);
 		List<Integer> dataAdd2 =  Arrays.asList(7,6,5,4,3,2,1,0);
 		List<Integer> dataAdd3 =  Arrays.asList(2,2,2,2,2,2,2,2);
@@ -40,10 +42,12 @@ public class EffectiveController extends Controller {
 		Set<String> type = seriesMap.keySet();
 		List<String> categories = Arrays.asList("2016-08-11","2016-08-12","2016-08-13","2016-08-14","2016-08-15","2016-08-16","2016-08-17","2016-08-18");
 
-		map.put("type", type.toArray());
-		map.put("categories", categories);
-		map.put("data", seriesMap);
-		renderJson(map);
+		category.put("日期", categories);
+		
+		data.put("type", type.toArray());
+		data.put("category", category);
+		data.put("serie", seriesMap);
+		renderJson(data);
 	}
 	
 	@Before(POST.class)
@@ -52,7 +56,7 @@ public class EffectiveController extends Controller {
 		String tagDataInfo = getPara("tagDataInfo");
 		String subTagDataInfo = getPara("subTagDataInfo");
 		
-		Map<String, Object> map = new LinkedHashMap<String,Object>();
+		Map<String, Object> data = new LinkedHashMap<String,Object>();
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
 		Map<String, List<Integer>> seriesMap = new LinkedHashMap<String, List<Integer>>();
 		
@@ -106,9 +110,9 @@ public class EffectiveController extends Controller {
 			seriesMap.put("活跃玩家", dataAct);
 		}
 		Set<String> type = seriesMap.keySet();
-		map.put("type", type.toArray());
-		map.put("category", category);
-		map.put("data", seriesMap);
-		renderJson(map);
+		data.put("type", type.toArray());
+		data.put("category", category);
+		data.put("serie", seriesMap);
+		renderJson(data);
 	}
 }
