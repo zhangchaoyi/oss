@@ -488,7 +488,10 @@ $(function() {
     var dauWauMauData = [["2016-08-11", 0, 2, 61], ["2016-08-12", 1, 1, 61], ["2016-08-13", 0, 1, 61], ["2016-08-14", 0, 1, 60], ["2016-08-15", 0, 1, 60], ["2016-08-16", 0, 0, 60], ["2016-08-17", 0, 1, 60], ["2016-08-18", 2, 2, 2]];
     var dauMauData = [["2016-08-11", 0], ["2016-08-12", 0.02], ["2016-08-13", 0], ["2016-08-14", 0], ["2016-08-15", 0], ["2016-08-16", 0], ["2016-08-17", 0], ["2016-08-18", 1]];
 
-    $('#data-table-dau').DataTable({
+    
+
+    $("ul.nav.nav-tabs > li > a").click(function(){
+  $('#data-table-dau').DataTable({
         data: dauData,
         "dom": '<"top"f>rt<"left"lip>',
         'language': {
@@ -503,6 +506,7 @@ $(function() {
             'infoFiltered': '(过滤总件数 _MAX_ 条)'
         }
     });
+});
 
     $('#data-table-dau-wau-mau').DataTable({
         data: dauWauMauData,

@@ -1,5 +1,12 @@
 package common.controllers;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
@@ -40,5 +47,17 @@ public class LoginController extends Controller {
 	@ActionKey("/api/logout")
 	public void logout() {
 		getSession().setAttribute("login_flag", false);
+	}
+	
+	
+	@Before(GET.class)
+	@ActionKey("/api/testTableData")
+	public void testTableData() {
+		Map<String,Object> map = new HashMap<String,Object>();
+		
+		List<Object> l = new ArrayList<Object>();
+		l.add(Arrays.asList("ri","ri","ri","ri"));
+		map.put("data", l);
+		renderJson(map);
 	}
 }

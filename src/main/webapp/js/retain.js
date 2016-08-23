@@ -285,10 +285,6 @@ function loadCustomizeRetainTable() {
 }
 
 
-// $('.dropdown-menu').click(){
-// 	$('#customize-retain-players').
-// }
 $('.dropdown-menu > li').click(function(){
 	$(this).parent().siblings("button").html($(this).text()+ "<span class='caret'></span>");
-  console.log($(this).text());
 });

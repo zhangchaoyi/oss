@@ -77,10 +77,10 @@
       <li> <a href="#"> <i class="fa fa-line-chart "></i>报表</a> </li> 
       <li> <a href="#"> <i class="fa fa-user"></i>玩家分析 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
-        <li> <a href="#"> <i class="fa fa-user-plus" aria-hidden="true"></i>新增玩家</a> </li> 
-        <li> <a href="active.html"> <i class="fa fa-users "></i>活跃玩家</a> </li> 
+        <li> <a href="add.html"> <i class="fa fa-user-plus" aria-hidden="true"></i>新增玩家</a> </li> 
+        <li> <a href="#"> <i class="fa fa-users "></i>活跃玩家</a> </li> 
         <li> <a href="retain.html"> <i class="fa fa-bars "></i>留存统计</a> </li> 
-        <li> <a href="effective.html"> <i class="fa fa-user-secret "></i>有效玩家</a> </li> 
+        <li> <a href="#"> <i class="fa fa-user-secret "></i>有效玩家</a> </li> 
         <li> <a href="#"> <i class="fa fa-code "></i>标签分析</a> </li> 
         <li> <a href="#"> <i class="fa fa-tablet "></i>设备分析</a> </li> 
         <li> <a href="#"> <i class="fa fa-circle-o-notch "></i>生命轨迹</a> </li> 
@@ -123,7 +123,7 @@
        </ul> </li> 
       <li> <a href="#"> <i class="fa fa-anchor "></i>数据挖掘 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
-        <li> <a href="#"> <i class="fa fa-crop"></i>聚类分析</a> </li> 
+        <li> <a href="#"> <i class="fa fa-crop"></i>聚lert alert-warn类分析</a> </li> 
         <li> <a href="#"> <i class="fa fa-shopping-cart"></i>新玩家价值</a> </li> 
        </ul> </li> 
       <li> <a href="#"> <i class="fa fa-bar-chart "></i>市场分析</a> </li> 
@@ -141,7 +141,7 @@
        </ul> </li> 
      </ul> 
     </div> 
-   </nav> 
+   </nav> retain-equipment 
    <!-- /. NAV SIDE --> 
    <div id="page-wrapper" style="overflow-x: hidden;overflow-y:hidden;"> 
     <div id="page-inner"> 
@@ -174,7 +174,7 @@
              <h4 class="modal-title" id="myModalLabel"><i>筛选</i></h4> 
             </div> 
             <div class="modal-body"> 
-             <div class="panel panel-default">
+             <div class="panel panel-default"> 
               <div class="panel-body"> 
                <div class="filter-header"> 
                 <ul class="nav nav-pills"> 
@@ -245,6 +245,12 @@
          </div> 
         </div> 
        </div> 
+       <div class="nav-tab effective"> 
+        <ul class="nav nav-pills"> 
+         <li class=""><a href="effective.html"><span>有效玩家</span></a></li> 
+         <li class="active"><a href="#"><span>有效玩家分布</span></a> </li> 
+        </ul> 
+       </div> 
       </div> 
      </div> 
      <!-- /. ROW --> 
@@ -255,17 +261,17 @@
          <span class="explain-heading">指标说明</span> 
          <button class="btn btn-2 btn-2c" id="btn-explain-switch">关闭</button> 
         </div> 
-        <div class="panel-body" id="explain-panel"> 
+        <div class="panel-body fix-explain-box" id="explain-panel"> 
          <div class="explain-content-panel cut"> 
           <div class="explain-content-box"> 
            <div class="explain-content-row"> 
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              设备激活:
+               有效玩家地区/国家分布： 
              </dt> 
              <dd>
-              统计所选时期内，每日新增的玩家安装游戏客户端，并运行游戏的可连接网络设备的数量，每台设备只计算一次。
+               统计所选时期内，有效新增玩家/活跃玩家的地区/国家分布情况。 
              </dd> 
             </dl> 
            </div> 
@@ -273,10 +279,10 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              新增账户:
+               有效玩家性别分布： 
              </dt> 
              <dd>
-              统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家账户数量。
+               统计所选时期内，有效新增玩家/活跃玩家的性别分布情况。 
              </dd> 
             </dl> 
            </div> 
@@ -284,10 +290,10 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              新增设备:
+               有效玩家年龄分布： 
              </dt> 
              <dd>
-              统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家设备数量，每台设备只计算一次。
+               统计所选时期内，有效新增玩家/活跃玩家的年龄分布情况。 
              </dd> 
             </dl> 
            </div> 
@@ -295,271 +301,57 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              玩家转化率:
+               有效玩家账号分布： 
              </dt> 
              <dd>
-               统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家设备数量，即当日激活并注册的设备占比，如激活游戏后不在当日进行注册则不计算。
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              首次游戏时长:
-             </dt> 
-             <dd>
-               统计所选时期内，新增玩家首次进行游戏的游戏时间区间分布。
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              小号分析:
-             </dt> 
-             <dd>
-               统计所选时期内，新增设备上存在多个新增玩家游戏账号的数量情况。
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              新增玩家地区/国家:
-             </dt> 
-             <dd>
-               统计所选时期内，新增玩家注册信息中地区和国家分布情况。
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              新增玩家性别:
-             </dt> 
-             <dd>
-               统计所选时期内，新增玩家注册信息中性别分布情况。
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              新增玩家年龄:
-             </dt> 
-             <dd>
-               统计所选时期内，新增玩家注册信息中年龄分布情况。
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              新增玩家账户类型:
-             </dt> 
-             <dd>
-               统计所选时期内，新增玩家所选注册账户类型分布情况。
+               统计所选时期内，有效新增玩家/活跃玩家的登陆游戏所用账号类型分布情况。 
              </dd> 
             </dl> 
            </div> 
           </div> 
          </div> 
         </div> 
-        <button type="button" class="btn btn-default disabled" id="btn-explain-up"> <span class="fa fa-chevron-up" aria-hidden="true"></span> </button> 
-        <button type="button" class="btn btn-default" id="btn-explain-down"> <span class="fa fa-chevron-down" aria-hidden="true"></span> </button> 
        </div> 
       </div> 
      </div> 
      <!-- /. explain-row --> 
-     <div class="row" id="data-first"> 
-      <div class="panel panel-default"> 
-       <div class="panel-heading"> 
-        <span class="data-first-panel-heading">新增玩家</span>
-        <button class="btn btn-2 btn-2c" id="btn-first-data-panel-switch">关闭</button> 
-       </div> 
-       <div class="panel-body"> 
-        <ul class="nav nav-tabs"> 
-         <li class="active"> <a href="#increase" data-toggle="tab">新增与激活</a></li> 
-         <li class=""> <a href="#players-change" data-toggle="tab">玩家转化率</a></li> 
+     <div class="row" id="data-second"> 
+      <ul class="nav nav-tabs effective-distributed"> 
+       <li class="active"> <a data-toggle="tab" data-info="area">地区</a></li> 
+       <li class=""> <a data-toggle="tab" data-info="country">国家</a></li> 
+       <li class=""> <a data-toggle="tab" data-info="sex">性别</a></li> 
+       <li class=""> <a data-toggle="tab" data-info="age">年龄</a></li> 
+       <li class=""> <a data-toggle="tab" data-info="account">账户类型</a></li> 
+       <button class="btn btn-2 btn-2c" id="btn-gamedetail-switch">关闭</button> 
+      </ul> 
+      <div class="tab-content"> 
+       <div class="clearfix"> 
+        <ul class="nav nav-tabs effective distributed"> 
+         <li class="active"><a data-toggle="tab" data-info="add-players"><span>新增玩家</span></a></li> 
+         <li class=""><a data-toggle="tab" data-info="active-players"><span>活跃玩家</span></a> </li> 
         </ul> 
-        <div class="tab-content"> 
-         <div class="tab-pane fade active in" id="increase">
-          <div id="newPlayer-note" class="data-results">
-            <span>
-              <em>SUM</em>
-              激活|玩家|设备:
-              <font>48 | 0 | 50 </font>
-            </span>
-            <span>
-              <em>AVG</em>
-              激活|玩家|设备:
-              <font>7 | 0 | 7 </font>
-            </span>
-          </div> 
-          <div id="user-increase-chart-left" style="width: 600px;height:400px;display:inline;float:left"></div> 
-          <div id="user-increase-chart-right" style="width: 600px;height:400px;display:inline;position:relative;left:100px;float:left"></div> 
-          <div class="table-zoom-first"> 
-           <table id="data-table-user-increase" class="hover stripe row-border"> 
-            <thead> 
-             <tr> 
-              <th><span>日期</span></th> 
-              <th><span>设备激活</span></th> 
-              <th><span>新增账户</span></th> 
-              <th><span>新增设备</span></th> 
-             </tr> 
-            </thead> 
-            <tbody></tbody> 
-           </table> 
-          </div> 
-         </div> 
-         <div class="tab-pane fade" id="players-change"> 
-          <div id="user-change-chart" style="width: 1400px;height:400px;"></div>
-          <div class="table-zoom-first">
-            <table id="data-table-user-change" class="hover stripe row-border"> 
-             <thead> 
-              <tr> 
-               <th><span>日期</span></th> 
-               <th><span>玩家转化率</span></th>
-              </tr> 
-             </thead> 
-            <tbody></tbody> 
-           </table>
-          </div> 
-         </div> 
-        </div> 
+       </div> 
+       <div id="effective-distributed-chart" style="width:1498px;height:400px;display:inline;float:left"></div> 
+       <div class="table-zoom-second">
+        <table id="effective-distributed-table" class="hover stripe row-border"></table>  
        </div> 
       </div> 
-     </div>
-     <div class="row" id="data-second">
-        <ul class="nav nav-tabs"> 
-         <li class="active"> <a href="#first-game-period-tab" data-toggle="tab">首次游戏时间</a></li> 
-         <li class=""> <a href="#small-account-tab" data-toggle="tab">小号分析</a></li>
-         <li class=""> <a href="#area-tab" data-toggle="tab">地区</a></li> 
-         <li class=""> <a href="#country-tab" data-toggle="tab">国家</a></li>
-         <li class=""> <a href="#sex-tab" data-toggle="tab">性别</a></li> 
-         <li class=""> <a href="#age-tab" data-toggle="tab">年龄</a></li>
-         <li class=""> <a href="#account-type-tab" data-toggle="tab">账户类型</a></li>
-         <button class="btn btn-2 btn-2c" id="btn-gamedetail-switch">关闭</button>  
-        </ul> 
-        <div class="tab-content"> 
-         <div class="tab-pane fade active in" id="first-game-period-tab">
-            <div id="first-game-period-chart-bar" style="width:1528px;height:400px;display:inline;float:left"></div>
-            <div class="table-zoom-second"> 
-             <table id="data-table-first-game-time" class="hover stripe row-border"> 
-              <thead> 
-                <tr> 
-                  <th><span>首次游戏时长</span></th> 
-                  <th><span>玩家数</span></th> 
-                  <th><span>百分比</span></th>  
-                </tr> 
-              </thead> 
-              <tbody></tbody> 
-             </table> 
-            </div>  
-         </div> 
-         <div class="tab-pane fade" id="small-account-tab">
-           <div id="small-account-chart-bar" style="width:1528px;height:400px;display:inline;float:left"></div>
-            <div class="table-zoom-second"> 
-             <table id="data-table-small-account" class="hover stripe row-border"> 
-              <thead> 
-                <tr> 
-                  <th><span>小号分析</span></th> 
-                  <th><span>设备数</span></th> 
-                  <th><span>百分比</span></th>  
-                </tr> 
-              </thead> 
-              <tbody></tbody> 
-             </table> 
-            </div>
-         </div>
-         <div class="tab-pane fade" id="area-tab">
-           <div id="area-chart-bar" style="width:1528px;height:400px;display:inline;float:left"></div>
-           <div class="table-zoom-second"> 
-             <table id="data-table-area" class="hover stripe row-border"> 
-              <thead> 
-                <tr> 
-                  <th><span>地区</span></th> 
-                  <th><span>新增人数</span></th> 
-                  <th><span>百分比</span></th>  
-                </tr> 
-              </thead> 
-              <tbody></tbody> 
-             </table> 
-           </div>  
-         </div>
-         <div class="tab-pane fade" id="country-tab">
-           <div id="country-chart-bar" style="width:1528px;height:400px;display:inline;float:left"></div>
-           <div class="table-zoom-second"> 
-             <table id="data-table-country" class="hover stripe row-border"> 
-              <thead> 
-                <tr> 
-                  <th><span>国家</span></th> 
-                  <th><span>新增人数</span></th> 
-                  <th><span>百分比</span></th>  
-                </tr> 
-              </thead> 
-              <tbody></tbody> 
-             </table> 
-           </div> 
-         </div>
-         <div class="tab-pane fade" id="sex-tab">
-           <div id="sex-chart-pie" style="width:1528px;height:400px;display:inline;float:left"></div>
-           <div class="table-zoom-second"> 
-             <table id="data-table-sex" class="hover stripe row-border"> 
-              <thead> 
-                <tr> 
-                  <th><span>性别</span></th> 
-                  <th><span>新增人数</span></th> 
-                  <th><span>百分比</span></th>  
-                </tr> 
-              </thead> 
-              <tbody></tbody> 
-             </table> 
-           </div>  
-         </div>
-         <div class="tab-pane fade" id="age-tab">
-           <div id="age-chart-bar" style="width:1528px;height:400px;display:inline;float:left"></div>
-           <div class="table-zoom-second"> 
-             <table id="data-table-age" class="hover stripe row-border"> 
-              <thead> 
-                <tr> 
-                  <th><span>年龄</span></th> 
-                  <th><span>新增人数</span></th> 
-                  <th><span>百分比</span></th>  
-                </tr> 
-              </thead> 
-              <tbody></tbody> 
-             </table> 
-           </div> 
-         </div>
-         <div class="tab-pane fade" id="account-type-tab"> 
-         </div>
-        </div>
-     </div>
+     </div> 
      <div class="row"> 
       <div class="alert alert-warning fade in" data-dismiss="alert" id="platform-selected"> 
        <a href="#" class="close" data-dismiss="alert">&times;</a> 
        <strong>请选择平台</strong> 
       </div> 
-     </div>
-     <div class="row">  
-       <a href="#" class="back-top">
-        <span class="fa fa-angle-up" aria-hidden="true"></span>
-       </a> 
+     </div> 
+     <div class="row"> 
+      <a href="#" class="back-top"> <span class="fa fa-angle-up" aria-hidden="true"></span> </a> 
      </div> 
     </div> 
     <!-- /. PAGE INNER --> 
    </div> 
    <!-- /. PAGE WRAPPER --> 
   </div> 
-  <!-- /. WRAPPER -->
-  </div> 
+  <!-- /. WRAPPER -->  
   <div id="footer-sec">
     Copyright &copy; 2016.koogame All rights reserved. 
    <a target="_blank" href="#/"></a> 
@@ -569,16 +361,22 @@
   <script src="../../js/bootstrap.min.js"></script> 
   <script src="../../js/jquery.metisMenu.js"></script> 
   <script src="../../js/jquery.dataTables.min.js"></script> 
-  <script src="../../js/custom.js"></script> 
-  <script src="../../js/header.js"></script> 
+  <script src="../../js/custom.js"></script>  
   <script src="../../js/button/modernizr.custom.js"></script> 
   <script src="../../js/button/classie.js"></script> 
   <script src="../../js/echarts.min.js"></script> 
   <script src="../../js/filter/jcfilter.min.js"></script> 
   <script src="../../js/dateselector/dateRange.js"></script> 
   <script src="../../js/dateselector/monthPicker.js"></script> 
-  <script src="../../js/checkbox/icheck.js"></script>
-  <script src="../../js/common.js"></script>
-  <script src="../../js/newPlayers.js"></script> 
+  <script src="../../js/checkbox/icheck.js"></script> 
+  <script src="../../js/effectiveDistributed.js"></script>
+  <script src="../../js/common.js"></script> 
+  <script src="../../js/header.js"></script>
+  <script>
+    $(document).ready(function(){
+//        loadEffectiveChart();
+//        loadEffectiveDataTable();
+    });
+  </script>   
  </body>
 </html>

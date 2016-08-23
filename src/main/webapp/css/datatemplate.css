@@ -631,3 +631,32 @@ button#customize-retain-type {
     font-size: 16px;
     background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
 }
+
+ul.nav.nav-tabs.effective > li > a {
+    background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
+}
+
+
+div.nav-tab.effective > ul.nav.nav-pills {
+    width:130px;
+}
+
+ul.nav.nav-tabs.effective > li {
+    margin-left: -2px;
+}
+
+ul.nav.nav-tabs.effective > li > a {
+    color:black;
+}
+
+ul.nav.nav-tabs.effective > li > a:hover {
+    background: #2f70ad !important;
+    color:white;
+}
+
+ul.nav.nav-tabs.effective > li.active > a {
+    color: white;
+    border: #3172af 1px solid;
+    background: #2f70ad;
+}
+
