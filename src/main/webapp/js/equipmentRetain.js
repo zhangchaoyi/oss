@@ -1,4 +1,4 @@
-var retainChart = echarts.init(document.getElementById('newPlayers-retain-chart'));
+var retainEquipmentChart = echarts.init(document.getElementById('equipment-retain-chart'));
 
 $(function(){
     loadData();
@@ -6,18 +6,23 @@ $(function(){
 
 function loadData() {
 
-    $.post("/api/retain", {
+    $.post("/api/retain/equipment/rate", {
     },
     function(data, status) {
         configChart(data);
+    });
+
+    $.post("/api/retain/equipment/detail", {
+    },
+    function(data, status) {
         configTable(data);
     });
 }
 
 function configChart(data) {
     var recData = data.data;
-    retainChart.clear();
-    retainChart.setOption({
+    retainEquipmentChart.clear();
+    retainEquipmentChart.setOption({
         tooltip: {
             trigger: 'axis',
             formatter:function(params) {  
@@ -77,6 +82,7 @@ function configChart(data) {
                 var item = {
                     name: key,
                     type: "line",
+                    smooth:true,
                     data: recData[key]
                 }
                 serie.push(item);
@@ -90,8 +96,7 @@ function configChart(data) {
 function configTable(data) {
     appendTableHeader(data);
     var tableData = dealTableData(data);
-    console.log(tableData)
-    $('#data-table-newPlayers-retain').dataTable({
+    table = $('#data-table-equipment-retain').dataTable({
         destroy: true,
         // retrive:true,
         "data": tableData,
@@ -110,56 +115,30 @@ function configTable(data) {
     });
 }
 
-function dealTableData(data) {
-    var type = data.type;
-    var categories;
-    var addPlayers;
-
-    for (var key in data.category) {
-        categories = data.category[key];
-    }
-    for (var key in data.addPlayer){
-        addPlayers = data.addPlayer[key];
-    }
-    var serie = data.data;
-    var dataArray = [];
-
-    for (var i = 0; i < categories.length; i++) {
-        var item = [];
-        item.push(categories[i]);
-        item.push(addPlayers[i]);
-        for (var j = 0; j < type.length; j++) {
-            item.push(serie[type[j]][i]);
-        }
-        dataArray.push(item);
-    }
+function dealTableData(data) {    
+    var dataArray = data.data;   
     return dataArray;
 }
 
 function appendTableHeader(data) {
-    var type = data.type;
-    var category = data.category;
-    var addPlayer = data.addPlayer;
-    var txt = "";
-    for (var key in category) {
-        txt = "<th><span>" + key + "</span></th>";
-    }
-    for (var key in addPlayer) {
-        txt = txt + "<th><span>" + key + "</span></th>";
-    }
+    var header = data.header;
+    var txt="";
+    for(var i=0;i<header.length;i++){
+        if(i<2){
+            txt = txt + "<th rowspan=2><span>" + header[i] + "</span></th>"
+            continue;
+        }
+        if(i==2){
+            txt = txt + "<th colspan=9 class='center thead'><span>" + header[i] + "</span></th></tr><tr>"
+            continue;
+        }
 
-    for (var i = 0; i < type.length; i++) {
-        txt = txt + "<th><span>" + type[i] + "</span></th>"
+        txt = txt + "<th class='bhead'><span>" + header[i] + "</span></th>"
     }
-    if ($("table#data-table-newPlayers-retain > thead").length != 0) {
-        $("table#data-table-newPlayers-retain > thead").remove();
-        $("#data-table-newPlayers-retain").prepend("<thead><tr>" + txt + "</tr></thead>");
-        // var spans = $("table#effective-table > thead").find("span");
-        // for(var i=1;i<spans.length;i++){
-        //     $(spans[i]).text(type[i]);
-        // }
+    if ($("table#data-table-equipment-retain > thead").length != 0) {
+        $("table#data-table-equipment-retain > thead").empty();
+        $("#data-table-equipment-retain").prepend("<thead><tr>" + txt + "</tr></thead>");
         return;
-
     }
-    $("#data-table-newPlayers-retain").append("<thead><tr>" + txt + "</tr></thead>");
+    $("#data-table-equipment-retain").append("<thead><tr>" + txt + "</tr></thead>");
 }

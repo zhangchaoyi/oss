@@ -384,167 +384,36 @@
         <button class="btn btn-2 btn-2c" id="btn-first-data-panel-switch">关闭</button> 
        </div> 
        <div class="panel-body"> 
-        <ul class="nav nav-tabs"> 
-         <li class="active"> <a href="#dau-tag" data-toggle="tab">DAU</a></li> 
-         <li class=""> <a href="#dau-wau-mau-tag" data-toggle="tab">DAU|WAU|MAU</a></li>
-         <li class=""> <a href="#dau-mau-tag" data-toggle="tab">DAU/MAU</a></li> 
+        <ul class="nav nav-tabs activeplayer"> 
+         <li class="active"> <a data-toggle="tab" data-info="dau">DAU</a></li> 
+         <li class=""> <a data-toggle="tab" data-info="dauwaumau">DAU|WAU|MAU</a></li>
+         <li class=""> <a data-toggle="tab" data-info="daumau">DAU/MAU</a></li> 
         </ul> 
         <div class="tab-content"> 
-         <div class="tab-pane fade active in" id="dau-tag">
-          <div id="dau-chart" style="width: 1400px;height:400px;display:inline;position:relative;float:left"></div> 
-          <div class="table-zoom-first"> 
-           <table id="data-table-dau" class="hover stripe row-border"> 
-            <thead> 
-             <tr> 
-              <th><span>日期</span></th> 
-              <th><span>新增玩家</span></th> 
-              <th><span>付费玩家</span></th> 
-              <th><span>非付费玩家</span></th>
-              <th><span>DAU</span></th>               
-             </tr> 
-            </thead> 
-            <tbody></tbody> 
-           </table> 
-          </div> 
-         </div> 
-         <div class="tab-pane fade" id="dau-wau-mau-tag"> 
-          <div id="dau-wau-mau-chart" style="width: 1400px;height:400px;"></div>
-          <div class="table-zoom-first">
-            <table id="data-table-dau-wau-mau" class="hover stripe row-border"> 
-             <thead> 
-              <tr> 
-               <th><span>日期</span></th> 
-               <th><span>DAU</span></th>
-               <th><span>WAU</span></th>
-               <th><span>MAU</span></th>
-              </tr> 
-             </thead> 
-            <tbody></tbody> 
-           </table>
-          </div> 
-         </div>
-         <div class="tab-pane fade" id="dau-mau-tag"> 
-          <div id="dau-mau-chart" style="width: 1400px;height:400px;"></div>
-          <div class="table-zoom-first">
-            <table id="data-table-dau-mau" class="hover stripe row-border"> 
-             <thead> 
-              <tr> 
-               <th><span>日期</span></th> 
-               <th><span>DAU/MAU</span></th>
-              </tr> 
-             </thead> 
-            <tbody></tbody> 
-           </table>
-          </div> 
-         </div> 
+         <div id="active-players-chart" style="width: 1400px;height:400px;display:inline;position:relative;float:left"></div> 
+         <div class="table-zoom-first"> 
+          <table id="data-table-active-players" class="hover stripe row-border"></table>
+         </div>          
         </div> 
        </div> 
       </div> 
      </div>
      <div class="row" id="data-second">
         <ul class="nav nav-tabs"> 
-         <li class="active"> <a href="#played-days-tab" data-toggle="tab">已玩天数</a></li> 
-         <li class=""> <a href="#rank-tab" data-toggle="tab">等级</a></li>
-         <li class=""> <a href="#area-tab" data-toggle="tab">地区</a></li> 
-         <li class=""> <a href="#country-tab" data-toggle="tab">国家</a></li>
-         <li class=""> <a href="#sex-tab" data-toggle="tab">性别</a></li> 
-         <li class=""> <a href="#age-tab" data-toggle="tab">年龄</a></li>
-         <li class=""> <a href="#account-type-tab" data-toggle="tab">账户类型</a></li>
+         <li class="active"> <a data-toggle="tab" data-info="played-days">已玩天数</a></li> 
+         <li class=""> <a data-toggle="tab" data-info="rank">等级</a></li>
+         <li class=""> <a data-toggle="tab" data-info="area">地区</a></li> 
+         <li class=""> <a data-toggle="tab" data-info="country">国家</a></li>
+         <li class=""> <a data-toggle="tab" data-info="sex">性别</a></li> 
+         <li class=""> <a data-toggle="tab" data-info="age">年龄</a></li>
+         <li class=""> <a data-toggle="tab" data-info="account">账户类型</a></li>
          <button class="btn btn-2 btn-2c" id="btn-gamedetail-switch">关闭</button>  
         </ul> 
         <div class="tab-content"> 
-         <div class="tab-pane fade active in" id="played-days-tab">
-            <div id="played-days-chart-bar" style="width:1498px;height:400px;display:inline;float:left;"></div>
-            <div class="table-zoom-second"> 
-             <table id="data-table-played-days" class="hover stripe row-border"> 
-              <thead> 
-                <tr> 
-                  <th><span>已玩天数</span></th> 
-                  <th><span>人数</span></th> 
-                  <th><span>百分比</span></th>  
-                </tr> 
-              </thead> 
-              <tbody></tbody> 
-             </table> 
-            </div>  
+         <div id="active-details-chart" style="width: 1400px;height:400px;display:inline;position:relative;float:left"></div> 
+         <div class="table-zoom-second"> 
+          <table id="data-table-active-details" class="hover stripe row-border"></table>
          </div> 
-         <div class="tab-pane fade" id="rank-tab">
-           <div id="rank-chart-bar" style="width:1498px;height:400px;display:inline;float:left"></div>
-            <div class="table-zoom-second"> 
-             <table id="data-table-rank" class="hover stripe row-border"> 
-              <thead> 
-                <tr> 
-                  <th><span>小号分析</span></th> 
-                  <th><span>设备数</span></th> 
-                  <th><span>百分比</span></th>  
-                </tr> 
-              </thead> 
-              <tbody></tbody> 
-             </table> 
-            </div>
-         </div>
-         <div class="tab-pane fade" id="area-tab">
-           <div id="area-chart-bar" style="width:1498px;height:400px;display:inline;float:left"></div>
-           <div class="table-zoom-second"> 
-             <table id="data-table-area" class="hover stripe row-border"> 
-              <thead> 
-                <tr> 
-                  <th><span>地区</span></th> 
-                  <th><span>新增人数</span></th> 
-                  <th><span>百分比</span></th>  
-                </tr> 
-              </thead> 
-              <tbody></tbody> 
-             </table> 
-           </div>  
-         </div>
-         <div class="tab-pane fade" id="country-tab">
-           <div id="country-chart-bar" style="width:1498px;height:400px;display:inline;float:left"></div>
-           <div class="table-zoom-second"> 
-             <table id="data-table-country" class="hover stripe row-border"> 
-              <thead> 
-                <tr> 
-                  <th><span>国家</span></th> 
-                  <th><span>新增人数</span></th> 
-                  <th><span>百分比</span></th>  
-                </tr> 
-              </thead> 
-              <tbody></tbody> 
-             </table> 
-           </div> 
-         </div>
-         <div class="tab-pane fade" id="sex-tab">
-           <div id="sex-chart-pie" style="width:1498px;height:400px;display:inline;float:left"></div>
-           <div class="table-zoom-second"> 
-             <table id="data-table-sex" class="hover stripe row-border"> 
-              <thead> 
-                <tr> 
-                  <th><span>性别</span></th> 
-                  <th><span>新增人数</span></th> 
-                  <th><span>百分比</span></th>  
-                </tr> 
-              </thead> 
-              <tbody></tbody> 
-             </table> 
-           </div>  
-         </div>
-         <div class="tab-pane fade" id="age-tab">
-           <div id="age-chart-bar" style="width:1498px;height:400px;display:inline;float:left"></div>
-           <div class="table-zoom-second"> 
-             <table id="data-table-age" class="hover stripe row-border"> 
-              <thead> 
-                <tr> 
-                  <th><span>年龄</span></th> 
-                  <th><span>新增人数</span></th> 
-                  <th><span>百分比</span></th>  
-                </tr> 
-              </thead> 
-              <tbody></tbody> 
-             </table> 
-           </div> 
-         </div>
-         <div class="tab-pane fade" id="account-type-tab"> 
-         </div>
         </div>
      </div>
      <div class="row"> 

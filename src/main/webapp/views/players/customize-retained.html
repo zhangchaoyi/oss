@@ -34,7 +34,7 @@
        </div> 
        <div class="btn-group" id="admin-btn"> 
         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">admin <span class="caret"></span></button> 
-        <ul class="dropdown-menu user-bars" aria-labelledby="dropdownMenu1">
+        <ul class="dropdown-menu user-bars" aria-labelledby="dropdownMenu1"> 
          <li> <a href="#">admin</a></li> 
          <li> <a href="#">Action</a></li> 
          <li> <a href="#">Action2</a></li> 
@@ -64,7 +64,7 @@
         <li> <button type="button" class="btn btn-primary" onclick="iconsView()">确定</button></li> 
        </ul> 
       </div> 
-     </div> 
+     </div> 		
      <div class="clear-data"> 
       <button type="button" class="btn btn-default btn-circle" aria-label="Left Align"> <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> <em>清除数据</em></button> 
      </div> 
@@ -76,7 +76,8 @@
      <ul class="nav" id="main-menu"> 
       <li> <a href="#"> <i class="fa fa-clock-o "></i>实时概况</a> </li> 
       <li> <a href="#"> <i class="fa fa-line-chart "></i>报表</a> </li> 
-      <li> <a href="#"> <i class="fa fa-user"></i>玩家分析 <spa啊n class="fa arrow"></span></a> 
+      <li> <a href="#"> <i class="fa fa-user"></i>玩家分析 
+        <spa啊n class="fa arrow"></spa啊n></a> 
        <ul class="nav nav-second-level"> 
         <li> <a href="add.html"> <i class="fa fa-user-plus" aria-hidden="true"></i>新增玩家</a> </li> 
         <li> <a href="active.html"> <i class="fa fa-users "></i>活跃玩家</a> </li> 
@@ -128,7 +129,8 @@
         <li> <a href="#"> <i class="fa fa-shopping-cart"></i>新玩家价值</a> </li> 
        </ul> </li> 
       <li> <a href="#"> <i class="fa fa-bar-chart "></i>市场分析</a> </li> 
-      <li> <a href="#"> <i class="fa fa-wrench "></i>技术支持 <s啊pan class="fa arrow"></span></a> 
+      <li> <a href="#"> <i class="fa fa-wrench "></i>技术支持 
+        <s啊pan class="fa arrow"></s啊pan></a> 
        <ul class="nav nav-second-level"> 
         <li> <a href="#"> <i class="fa fa-vine"></i>在线参数</a> </li> 
         <li> <a href="#"> <i class="fa fa-bookmark "></i>实时日志</a> </li> 
@@ -155,7 +157,7 @@
           <a class="opt_sel" id="input_trigger" hre2f="#"> <i class="fa fa-calendar" aria-hidden="true"></i> </a> 
          </div> 
          <div id="datePicker"></div> 
-        </div> 啊
+        </div> 啊 
         <div class="time-title"> 
          <a id="aToday" onclick="dateSelected(this)">今日</a> 
          <a id="aYesterday" onclick="dateSelected(this)">昨日</a> 
@@ -175,7 +177,7 @@
              <h4 class="modal-title" id="myModalLabel"><i>筛选</i></h4> 
             </div> 
             <div class="modal-body"> 
-             <div class="panel panel-default">
+             <div class="panel panel-default"> 
               <div class="panel-body"> 
                <div class="filter-header"> 
                 <ul class="nav nav-pills"> 
@@ -246,14 +248,14 @@
          </div> 
         </div> 
        </div> 
-       <div class="nav-tab">
-         <ul class="nav nav-pills"> 
-           <li class=""><a href="retain.html" ><span>留存</span></a></li> 
-           <li class="active"><a href="#" ><span>自定义留存</span></a> </li> 
-           <li class=""><a href="retain-equipment.html" ><span>设备留存</span></a> </li> 
-         </ul> 
-       </div>
-      </div>   
+       <div class="nav-tab"> 
+        <ul class="nav nav-pills"> 
+         <li class=""><a href="retain.html"><span>留存</span></a></li> 
+         <li class="active"><a href="#"><span>自定义留存</span></a> </li> 
+         <li class=""><a href="retain-equipment.html"><span>设备留存</span></a> </li> 
+        </ul> 
+       </div> 
+      </div> 
      </div> 
      <!-- /. ROW --> 
      <div class="row" id="explain-row"> 
@@ -263,20 +265,20 @@
          <span class="explain-heading">指标说明</span> 
          <button class="btn btn-2 btn-2c" id="btn-explain-switch">关闭</button> 
         </div> 
-        <div class="panel-body fix-explain-box" id="explain-panel" > 
+        <div class="panel-body fix-explain-box" id="explain-panel"> 
          <div class="explain-content-panel cut"> 
           <div class="explain-content-box" style="position:relative;top:5px;"> 
            <div class="explain-content-row"> 
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              自定义留存:
+               自定义留存: 
              </dt> 
              <dd>
-              统计所选时期内，符合某自定义条件下的玩家留存情况，可以通过选择不同的限制条件来对比不同纬度的玩家留存数据。
+               统计所选时期内，符合某自定义条件下的玩家留存情况，可以通过选择不同的限制条件来对比不同纬度的玩家留存数据。 
              </dd> 
             </dl> 
-           </div>  
+           </div> 
           </div> 
          </div> 
         </div> 
@@ -288,158 +290,67 @@
       <div class="panel panel-default"> 
        <div class="panel-heading"> 
         <span class="data-first-panel-heading">自定义留存</span> 
-       </div>
+       </div> 
        <div class="panel-body"> 
-         <div class="panel-body-nav-tab-row">
-           <ul class="nav nav-pills"> 
-             <li class="active"><a href="#queryDay" data-toggle="tab" aria-expanded="true"><span>日</span></a></li> 
-             <li class=""><a href="#queryWeek" data-toggle="tab" aria-expanded="true"><span>周</span></a> </li> 
-             <li class=""><a a href="#queryMonth" data-toggle="tab" aria-expanded="true"><span>月</span></a> </li> 
-           </ul>
-           <div class="dropdown">
-             <button class="btn btn-default dropdown-toggle" type="button" id="customize-retain-players" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-               新增玩家
-               <span class="caret"></span>
-             </button>
-             <ul class="dropdown-menu" aria-labelledby="customize-retain-players">
-               <li><a href="#" >新增玩家</a></li>
-               <li><a href="#" >活跃玩家</a></li>
-               <li><a href="#" >付费玩家</a></li>
-             </ul>
-           </div>
-           <span>留存行为:在之后的使用中</span>
-           <div class="dropdown">
-             <button class="btn btn-default dropdown-toggle" type="button" id="customize-retain-game-type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-               启动游戏
-               <span class="caret"></span>
-             </button>
-             <ul class="dropdown-menu" aria-labelledby="customize-retain-game-type">
-               <li><a href="#">启动游戏</a></li>
-             </ul>
-           </div>
-           <div class="dropdown">
-             <button class="btn btn-default dropdown-toggle" type="button" id="customize-retain-times" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-               至少1次
-               <span class="caret"></span>
-             </button>
-             <ul class="dropdown-menu" aria-labelledby="customize-retain-times">
-               <li><a href="#">至少1次</a></li>
-               <li><a href="#">至少2次</a></li>
-               <li><a href="#">至少3次</a></li>
-             </ul>
-           </div>
-           <span>计为留存玩家</span>
-            <div class="dropdown">
-             <button class="btn btn-default dropdown-toggle" type="button" id="customize-retain-type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-               留存率
-               <span class="caret"></span>
-             </button>
-             <ul class="dropdown-menu" aria-labelledby="customize-retain-type">
-               <li><a href="#">留存率</a></li>
-               <li><a href="#">留存人数</a></li>
-             </ul>
-           </div>
-         </div>
-         
-         <div class="tab-content"> 
-           <div class="tab-pane fade active in" id="queryDay">
-             <div class="table-zoom-first">
-                <table id="data-table-customize-retained-queryDay" class="hover stripe row-border"> 
-                 <thead> 
-                  <tr> 
-                   <th rowspan=2 class=""><span>首次使用日</span></th> 
-                   <th rowspan=2><span>玩家数</span></th>
-                   <th colspan="9" class="center thead"><span>第N天后 保留玩家</span></th>
-                  </tr>
-                  <tr>
-                   <th class="bhead"><span>+1日</span></th>
-                   <th class="bhead"><span>+2日</span></th>
-                   <th class="bhead"><span>+3日</span></th>
-                   <th class="bhead"><span>+4日</span></th>
-                   <th class="bhead"><span>+5日</span></th>
-                   <th class="bhead"><span>+6日</span></th>
-                   <th class="bhead"><span>+7日</span></th>
-                   <th class="bhead"><span>+14日</span></th>
-                   <th class="bhead"><span>+30日</span></th>
-                  </tr> 
-                 </thead> 
-                 <tbody></tbody> 
-                </table>
-             </div>
-           </div> 
-           <div class="tab-pane fade" id="queryWeek"> 
-             <div class="table-zoom-first">
-                <table id="data-table-customize-retained-queryWeek" class="hover stripe row-border"> 
-                 <thead> 
-                  <tr> 
-                   <th rowspan=2 class=""><span>首次使用日</span></th> 
-                   <th rowspan=2><span>玩家数</span></th>
-                   <th colspan="9" class="center thead"><span>第N周后 保留玩家</span></th>
-                  </tr>
-                  <tr>
-                   <th class="bhead"><span>+1周</span></th>
-                   <th class="bhead"><span>+2周</span></th>
-                   <th class="bhead"><span>+3周</span></th>
-                   <th class="bhead"><span>+4周</span></th>
-                   <th class="bhead"><span>+5周</span></th>
-                   <th class="bhead"><span>+6周</span></th>
-                   <th class="bhead"><span>+7周</span></th>
-                   <th class="bhead"><span>+8周</span></th>
-                   <th class="bhead"><span>+9周</span></th>
-                  </tr> 
-                 </thead> 
-                 <tbody></tbody> 
-                </table>
-             </div>             
-           </div>
-           <div class="tab-pane fade" id="queryMonth"> 
-             <div class="table-zoom-first">
-                <table id="data-table-customize-retained-queryMonth" class="hover stripe row-border"> 
-                 <thead> 
-                  <tr> 
-                   <th rowspan=2 class=""><span>首次使用日</span></th> 
-                   <th rowspan=2><span>玩家数</span></th>
-                   <th colspan="9" class="center thead"><span>第N月后 保留玩家</span></th>
-                  </tr>
-                  <tr>
-                   <th class="bhead"><span>+1月</span></th>
-                   <th class="bhead"><span>+2月</span></th>
-                   <th class="bhead"><span>+3月</span></th>
-                   <th class="bhead"><span>+4月</span></th>
-                   <th class="bhead"><span>+5月</span></th>
-                   <th class="bhead"><span>+6月</span></th>
-                   <th class="bhead"><span>+7月</span></th>
-                   <th class="bhead"><span>+8月</span></th>
-                   <th class="bhead"><span>+9月</span></th>
-                  </tr> 
-                 </thead> 
-                 <tbody></tbody> 
-                </table>
-             </div> 
-           </div>          
+        <div class="panel-body-nav-tab-row"> 
+         <ul class="nav nav-pills customize-period-selected"> 
+          <li class="active"><a  data-toggle="tab" aria-expanded="true" data-info="queryDay"><span>日</span></a></li> 
+          <li class=""><a  data-toggle="tab" aria-expanded="true" data-info="queryWeek"><span>周</span></a> </li> 
+          <li class=""><a  data-toggle="tab" aria-expanded="true" data-info="queryMonth"><span>月</span></a> </li> 
+         </ul> 
+         <div class="dropdown"> 
+          <button class="btn btn-default dropdown-toggle" type="button" id="customize-retain-players" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" data-info="add-player"> 新增玩家 <span class="caret"></span> </button> 
+          <ul class="dropdown-menu" aria-labelledby="customize-retain-players"> 
+           <li><a data-info="add-player">新增玩家</a></li> 
+           <li><a data-info="active-player">活跃玩家</a></li> 
+           <li><a data-info="paid-player">付费玩家</a></li> 
+          </ul> 
+         </div> 
+         <span>留存行为:在之后的使用中</span> 
+         <div class="dropdown"> 
+          <button class="btn btn-default dropdown-toggle" type="button" id="customize-retain-game-type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" data-info="start-game"> 启动游戏 <span class="caret"></span> </button> 
+          <ul class="dropdown-menu" aria-labelledby="customize-retain-game-type"> 
+           <li><a data-info="start-game">启动游戏</a></li> 
+          </ul> 
+         </div> 
+         <div class="dropdown"> 
+          <button class="btn btn-default dropdown-toggle" type="button" id="customize-retain-times" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" data-info="at-lease-one"> 至少1次 <span class="caret" ></span> </button> 
+          <ul class="dropdown-menu" aria-labelledby="customize-retain-times"> 
+           <li><a data-info="at-lease-one">至少1次</a></li> 
+           <li><a data-info="at-lease-two">至少2次</a></li> 
+           <li><a data-info="at-lease-three">至少3次</a></li> 
+          </ul> 
+         </div> 
+         <span>计为留存玩家</span> 
+         <div class="dropdown retention"> 
+          <button class="btn btn-default dropdown-toggle" type="button" id="customize-retain-type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" data-info="retention-rate"> 留存率 <span class="caret"></span> </button> 
+          <ul class="dropdown-menu" aria-labelledby="customize-retain-type"> 
+           <li><a data-info="retention-rate">留存率</a></li> 
+           <li><a data-info="retention-people">留存人数</a></li> 
+          </ul> 
+         </div> 
         </div>
-
+        <div class="table-zoom">
+           <table id="data-table-customize-retain" class="hover stripe row-border"></table>
+        </div> 
        </div> 
       </div> 
-     </div>     
+     </div> 
      <div class="row"> 
       <div class="alert alert-warning fade in" data-dismiss="alert" id="platform-selected"> 
        <a href="#" class="close" data-dismiss="alert">&times;</a> 
        <strong>请选择平台</strong> 
       </div> 
-     </div>
-     <div class="row">  
-       <a href="#" class="back-top">
-        <span class="fa fa-angle-up" aria-hidden="true"></span>
-       </a> 
+     </div> 
+     <div class="row"> 
+      <a href="#" class="back-top"> <span class="fa fa-angle-up" aria-hidden="true"></span> </a> 
      </div> 
     </div> 
     <!-- /. PAGE INNER --> 
    </div> 
    <!-- /. PAGE WRAPPER --> 
   </div> 
-  <!-- /. WRAPPER -->
-  </div> 
+  <!-- /. WRAPPER -->  
   <div id="footer-sec">
     Copyright &copy; 2016.koogame All rights reserved. 
    <a target="_blank" href="#/"></a> 
@@ -457,13 +368,8 @@
   <script src="../../js/filter/jcfilter.min.js"></script> 
   <script src="../../js/dateselector/dateRange.js"></script> 
   <script src="../../js/dateselector/monthPicker.js"></script> 
-  <script src="../../js/checkbox/icheck.js"></script>
-  <script src="../../js/common.js"></script>
-  <script src="../../js/retain.js"></script>
-  <script>
-    $(document).ready(function(){
-       loadCustomizeRetainTable();
-    });
-  </script>
+  <script src="../../js/checkbox/icheck.js"></script> 
+  <script src="../../js/common.js"></script> 
+  <script src="../../js/customizeRetain.js"></script> 
  </body>
 </html>

@@ -627,9 +627,13 @@ table#data-table-customize-retained-queryDay > thead > tr > th.center.thead {
     border-radius: 0 8px 0 0;
 }
 button#customize-retain-type {
-    float:right;
     font-size: 16px;
+    border: 1px solid #d5d1d1;
     background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
+}
+div.dropdown.retention {
+    position:relative;
+    left:640px;
 }
 
 ul.nav.nav-tabs.effective > li > a {
@@ -660,3 +664,11 @@ ul.nav.nav-tabs.effective > li.active > a {
     background: #2f70ad;
 }
 
+th.center.thead {
+        background: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
+}
+
+button#customize-retain-type + ul.dropdown-menu {
+    /*position: relative;*/
+    /*left:800px;*/
+}
