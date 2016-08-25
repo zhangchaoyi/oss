@@ -11,15 +11,34 @@ import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
+import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 
 import common.interceptor.AuthInterceptor;
 
 @Clear(AuthInterceptor.class)
 public class RetainController extends Controller{
-	@Before(POST.class)
-	@ActionKey("/api/retain")
+	@Before(GET.class)
+	@ActionKey("/players/retain")
 	public void retain() {
+		render("retain.html");
+	}
+	
+	@Before(GET.class)
+	@ActionKey("/players/retain-customize")
+	public void retainCustomize() {
+		render("retain-customize.html");
+	}
+	
+	@Before(GET.class)
+	@ActionKey("/players/retain-equipment")
+	public void retainEquipment() {
+		render("retain-equipment.html");
+	}
+	
+	@Before(POST.class)
+	@ActionKey("/api/players/retain")
+	public void queryRetain() {
 		Map<String, Object> data = new LinkedHashMap<String,Object>();
 		
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
@@ -51,8 +70,8 @@ public class RetainController extends Controller{
 	}
 	
 	@Before(POST.class)
-	@ActionKey("/api/retain/customize")
-	public void customizeRetain() {
+	@ActionKey("/api/players/retain-customize")
+	public void queryRetainCustomize() {
 		String period = getPara("period","queryDay");
 		String playerType = getPara("playerType");
 		String gameType = getPara("gameType");
@@ -98,8 +117,8 @@ public class RetainController extends Controller{
 	}
 	
 	@Before(POST.class)
-	@ActionKey("/api/retain/equipment/rate")
-	public void equipmentRetainRate() {
+	@ActionKey("/api/players/retain-equipment/rate")
+	public void queryRetainEquipmentRate() {
 		Map<String, Object> data = new LinkedHashMap<String,Object>();
 		
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
@@ -127,8 +146,8 @@ public class RetainController extends Controller{
 	}
 	
 	@Before(POST.class)
-	@ActionKey("/api/retain/equipment/detail")
-	public void equipmentRetainDetail() {
+	@ActionKey("/api/players/retain-equipment/detail")
+	public void queryRetainEquipmentDetail() {
 
 		Map<String, Object> data = new LinkedHashMap<String,Object>();
 		List<String> tableHeader = new LinkedList<String>();

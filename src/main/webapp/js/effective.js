@@ -6,7 +6,7 @@ $(function() {
 
 function loadData(tagDataInfo) {
 
-    $.post("/api/effective", {
+    $.post("/api/players/effective", {
         tagDataInfo: tagDataInfo
     },
     function(data, status) {

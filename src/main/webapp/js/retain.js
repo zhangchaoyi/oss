@@ -6,7 +6,7 @@ $(function(){
 
 function loadData() {
 
-    $.post("/api/retain", {
+    $.post("/api/players/retain", {
     },
     function(data, status) {
         configChart(data);

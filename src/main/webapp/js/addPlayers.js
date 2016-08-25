@@ -1,25 +1,24 @@
-var activeChart = echarts.init(document.getElementById('active-players-chart'));
-var detailChart = echarts.init(document.getElementById('active-details-chart'));
+var addChart = echarts.init(document.getElementById('add-players-chart'));
+var detailChart = echarts.init(document.getElementById('add-players-details-chart'));
 
 $(function(){
-    loadActivePlayerData($("ul.nav.nav-tabs.activeplayer > li.active").children("a").attr("data-info"));
-    loadActiveDetailData("played-days");
-});
+    loadAddPlayerData("new-activate");
+    loadAddDetailData("first-game-period");
+})
 
-function loadActivePlayerData(playerTag) {
-
-    $.post("/api/players/active", {
-    	playerTag:playerTag
+function loadAddPlayerData(addTagInfo) {
+    $.post("/api/players/add", {
+        addTagInfo:addTagInfo
     },
     function(data, status) {
         configPlayerChart(data);
-        configPlayerTable(data);   
+        configPlayerTable(data)
     });
 }
 
-function loadActiveDetailData(detailTagInfo) {
-	$.post("/api/players/active/details", {
-    	detailTagInfo:detailTagInfo
+function loadAddDetailData(addDetailTagInfo) {
+    $.post("/api/players/add/detail", {
+        addDetailTagInfo:addDetailTagInfo
     },
     function(data, status) {
         configDetailChart(data);
@@ -27,10 +26,11 @@ function loadActiveDetailData(detailTagInfo) {
     });
 }
 
+
 function configPlayerChart(data) {
     var recData = data.data;
-    activeChart.clear();
-    activeChart.setOption({
+    addChart.clear();
+    addChart.setOption({
         tooltip: {
             trigger: 'axis',
         },
@@ -74,7 +74,7 @@ function configPlayerChart(data) {
         yAxis: {
             type: 'value',
             axisLabel: {
-                formatter: '{value} %'
+                formatter: '{value}'
             }
         },
         series: function() {
@@ -94,14 +94,12 @@ function configPlayerChart(data) {
     });
 }
 
-
-
 function configPlayerTable(data) {
-	appendPlayerTableHeader(data);
-	$('#data-table-active-players').dataTable().fnClearTable();  
+    appendPlayerTableHeader(data);
+    $('#data-table-add-players').dataTable().fnClearTable();  
     var tableData = dealTableData(data,false);
 
-    $('#data-table-active-players').dataTable({
+    $('#data-table-add-players').dataTable({
         "destroy": true,
         // retrive:true,
         "data": tableData,
@@ -134,12 +132,12 @@ function dealTableData(data,percent) {
     var dataArray = [];
 
     if(percent===true){
-	    for(var t in serie){
-	    	for(var k in serie[t]){
-	    		sum = sum + serie[t][k];
-	    	}
-	    }
-	}
+        for(var t in serie){
+            for(var k in serie[t]){
+                sum = sum + serie[t][k];
+            }
+        }
+    }
 
 
     for (var i = 0; i < categories.length; i++) {
@@ -148,7 +146,7 @@ function dealTableData(data,percent) {
         for (var j = 0; j < type.length; j++) {
             item.push(serie[type[j]][i]);
             if(percent===true){
-            	item.push(((serie[type[j]][i]/sum*100)).toFixed(2) + '%');
+                item.push(((serie[type[j]][i]/sum*100)).toFixed(2) + '%');
             }
         }
         dataArray.push(item);
@@ -168,14 +166,13 @@ function appendPlayerTableHeader(data) {
     for (var i = 0; i < type.length; i++) {
         txt = txt + "<th><span>" + type[i] + "</span></th>"
     }
-    if ($("table#data-table-active-players > thead").length != 0) {
-        $("table#data-table-active-players > thead").empty();
-        $("#data-table-active-players").prepend("<thead><tr>" + txt + "</tr></thead>");
+    if ($("table#data-table-add-players > thead").length != 0) {
+        $("table#data-table-add-players > thead").empty();
+        $("#data-table-add-players").prepend("<thead><tr>" + txt + "</tr></thead>");
         return;
     }
-    $("#data-table-active-players").append("<thead><tr>" + txt + "</tr></thead>");
+    $("#data-table-add-players").append("<thead><tr>" + txt + "</tr></thead>");
 }
-
 
 function configDetailChart(data) {
     var recData = data.data;
@@ -213,7 +210,6 @@ function configDetailChart(data) {
                         };
                         serie.push(item);
                     }
-                    console.log(serie);
                     return serie;
                 } (),
 
@@ -288,10 +284,10 @@ function configDetailChart(data) {
                     type: "bar",
                     smooth:true,
                     itemStyle: {
-		                normal: {
-		                    color: 'rgb(87, 139, 187)'
-		                }
-		            },
+                        normal: {
+                            color: 'rgb(87, 139, 187)'
+                        }
+                    },
                     data: recData[key]
                 }
                 serie.push(item);
@@ -305,7 +301,7 @@ function configDetailChart(data) {
 jQuery.extend(jQuery.fn.dataTableExt.oSort, {
             "num-html-pre": function(a) {
                 var time = String(a).split(" ")[1];
-                var num = String(a).split(" ")[0].split("-")[0];
+                var num = String(a).split(" ")[0].split("~")[0];
                 if (num == ">60") {
                     num = 60;
                 }
@@ -322,13 +318,13 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
             "num-html-desc": function(a, b) {
                 return ((a < b) ? 1 : ((a > b) ? -1 : 0));
             }
-        });
+});
 
 function configDetailTable(data) {
     appendDetailTableHeader(data);
     var tableData = dealTableData(data, true);
-    $('#data-table-active-details').dataTable().fnClearTable(); 
-    table = $('#data-table-active-details').dataTable({
+    $('#data-table-add-players-details').dataTable().fnClearTable(); 
+    table = $('#data-table-add-players-details').dataTable({
         destroy: true,
         // retrive:true,
         "data": tableData,
@@ -351,7 +347,6 @@ function configDetailTable(data) {
     });
 }
 
-
 function appendDetailTableHeader(data) {
     var type = data.type;
     var category = data.category;
@@ -364,26 +359,28 @@ function appendDetailTableHeader(data) {
         txt = txt + "<th><span>" + type[i] + "</span></th>"
     }
     txt = txt + "<th><span>百分比</span></th>";
-    if ($("table#data-table-active-details > thead").length != 0) {
-        $("table#data-table-active-details > thead").empty();
-        $("#data-table-active-details").prepend("<thead><tr>" + txt + "</tr></thead>");
+    if ($("table#data-table-add-players-details > thead").length != 0) {
+        $("table#data-table-add-players-details > thead").empty();
+        $("#data-table-add-players-details").prepend("<thead><tr>" + txt + "</tr></thead>");
         return;
     }
-    $("#data-table-active-details").append("<thead><tr>" + txt + "</tr></thead>");
+    $("#data-table-add-players-details").append("<thead><tr>" + txt + "</tr></thead>");
 }
 
 
-
-$("ul.nav.nav-tabs.activeplayer > li").click(function(){
-	var playerTagInfo = $(this).children("a").attr("data-info");
-	loadActivePlayerData(playerTagInfo);
+$("ul.nav.nav-tabs.add-players > li").click(function(){
+    var addTagInfo = $(this).children("a").attr("data-info");
+    if(addTagInfo=="players-change-rate"){
+        $("#newPlayer-note").hide();
+    }
+    loadAddPlayerData(addTagInfo);
 });
 
-
-$("ul.nav.nav-tabs.active-details > li").click(function(){
-    var detailTagInfo = $(this).children("a").attr("data-info");
-    loadActiveDetailData(detailTagInfo);
+$("ul.nav.nav-tabs.add-details > li").click(function(){
+    var addDetailTagInfo = $(this).children("a").attr("data-info");
+    loadAddDetailData(addDetailTagInfo);
 });
+
 
 //explain up and down button 
 $("#btn-explain-up").click(function(){

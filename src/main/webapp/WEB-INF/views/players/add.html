@@ -36,7 +36,7 @@
         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">admin <span class="caret"></span></button> 
         <ul class="dropdown-menu user-bars" aria-labelledby="dropdownMenu1"> 
          <li> <a href="#">Action</a></li> 
-         <li> <a href="#">Another action</a></li> 
+         <li> <a href="#">Action1</a></li> 
         </ul> 
        </div> 
        <div class="glyphicon glyphicon-user" aria-hidden="true" id="login-user"></div> 
@@ -77,12 +77,11 @@
       <li> <a href="#"> <i class="fa fa-line-chart "></i>报表</a> </li> 
       <li> <a href="#"> <i class="fa fa-user"></i>玩家分析 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
-        <li> <a href="add.html"> <i class="fa fa-user-plus" aria-hidden="true"></i>新增玩家</a> </li> 
-        <li> <a href="active.html"> <i class="fa fa-users "></i>活跃玩家</a> </li> 
-        <li> <a href="retain.html"> <i class="fa fa-bars "></i>留存统计</a> </li> 
-        <li> <a href="effective.html"> <i class="fa fa-user-secret "></i>有效玩家</a> </li> 
-        <li> <a href="#"> <i class="fa fa-code "></i>标签分析</a> </li> 
-        <li> <a href="#"> <i class="fa fa-tablet "></i>设备分析</a> </li> 
+        <li> <a href="/players/add"> <i class="fa fa-user-plus" aria-hidden="true"></i>新增玩家</a> </li> 
+        <li> <a href="/players/active"> <i class="fa fa-users "></i>活跃玩家</a> </li> 
+        <li> <a href="/players/retain"> <i class="fa fa-bars "></i>留存统计</a> </li> 
+        <li> <a href="/players/effective"> <i class="fa fa-user-secret "></i>有效玩家</a> </li> 
+        <li> <a href="/players/equipment"> <i class="fa fa-tablet "></i>设备分析</a> </li> 
         <li> <a href="#"> <i class="fa fa-circle-o-notch "></i>生命轨迹</a> </li> 
        </ul> </li> 
       <li> <a href="#"> <i class="fa fa-money "></i>付费分析 <span class="fa arrow"></span></a> 
@@ -245,14 +244,7 @@
          </div> 
         </div> 
        </div> 
-       <div class="nav-tab">
-         <ul class="nav nav-pills"> 
-           <li class="active"><a href="#" ><span>留存</span></a></li> 
-           <li class=""><a href="customize-retained.html" ><span>自定义留存</span></a> </li> 
-           <li class=""><a href="retain-equipment.html" ><span>设备留存</span></a> </li> 
-         </ul> 
-       </div>
-      </div>   
+      </div> 
      </div> 
      <!-- /. ROW --> 
      <div class="row" id="explain-row"> 
@@ -262,17 +254,17 @@
          <span class="explain-heading">指标说明</span> 
          <button class="btn btn-2 btn-2c" id="btn-explain-switch">关闭</button> 
         </div> 
-        <div class="panel-body fix-explain-box" id="explain-panel"> 
+        <div class="panel-body" id="explain-panel"> 
          <div class="explain-content-panel cut"> 
           <div class="explain-content-box"> 
            <div class="explain-content-row"> 
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              次日留存率:
+              设备激活:
              </dt> 
              <dd>
-              统计所选时期内，当日成功登陆游戏的新增玩家中，第二日再次登陆游戏的玩家数量，占当日游戏新增玩家数量的比例。
+              统计所选时期内，每日新增的玩家安装游戏客户端，并运行游戏的可连接网络设备的数量，每台设备只计算一次。
              </dd> 
             </dl> 
            </div> 
@@ -280,27 +272,106 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              7日留存率:
+              新增账户:
              </dt> 
              <dd>
-              统计所选时期内，当日成功登陆游戏的新增玩家中，往后推第7日（当日不计入天数）登陆游戏的玩家数量，占当日游戏新增玩家数量的比例。
+              统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家账户数量。
              </dd> 
             </dl> 
-           </div>
+           </div> 
            <div class="explain-content-row"> 
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              30日留存率:
+              新增设备:
              </dt> 
              <dd>
-              统计所选时期内，当日成功登陆游戏的新增玩家中，往后推第30日（当日不计入天数）登陆游戏的玩家数量，占当日游戏新增玩家数量的比例。
+              统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家设备数量，每台设备只计算一次。
+             </dd> 
+            </dl> 
+           </div> 
+           <div class="explain-content-row"> 
+            <i class="fa fa-circle" aria-hidden="true"></i> 
+            <dl> 
+             <dt>
+              玩家转化率:
+             </dt> 
+             <dd>
+               统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家设备数量，即当日激活并注册的设备占比，如激活游戏后不在当日进行注册则不计算。
+             </dd> 
+            </dl> 
+           </div> 
+           <div class="explain-content-row"> 
+            <i class="fa fa-circle" aria-hidden="true"></i> 
+            <dl> 
+             <dt>
+              首次游戏时长:
+             </dt> 
+             <dd>
+               统计所选时期内，新增玩家首次进行游戏的游戏时间区间分布。
+             </dd> 
+            </dl> 
+           </div> 
+           <div class="explain-content-row"> 
+            <i class="fa fa-circle" aria-hidden="true"></i> 
+            <dl> 
+             <dt>
+              小号分析:
+             </dt> 
+             <dd>
+               统计所选时期内，新增设备上存在多个新增玩家游戏账号的数量情况。
+             </dd> 
+            </dl> 
+           </div> 
+           <div class="explain-content-row"> 
+            <i class="fa fa-circle" aria-hidden="true"></i> 
+            <dl> 
+             <dt>
+              新增玩家地区/国家:
+             </dt> 
+             <dd>
+               统计所选时期内，新增玩家注册信息中地区和国家分布情况。
+             </dd> 
+            </dl> 
+           </div> 
+           <div class="explain-content-row"> 
+            <i class="fa fa-circle" aria-hidden="true"></i> 
+            <dl> 
+             <dt>
+              新增玩家性别:
+             </dt> 
+             <dd>
+               统计所选时期内，新增玩家注册信息中性别分布情况。
+             </dd> 
+            </dl> 
+           </div> 
+           <div class="explain-content-row"> 
+            <i class="fa fa-circle" aria-hidden="true"></i> 
+            <dl> 
+             <dt>
+              新增玩家年龄:
+             </dt> 
+             <dd>
+               统计所选时期内，新增玩家注册信息中年龄分布情况。
+             </dd> 
+            </dl> 
+           </div> 
+           <div class="explain-content-row"> 
+            <i class="fa fa-circle" aria-hidden="true"></i> 
+            <dl> 
+             <dt>
+              新增玩家账户类型:
+             </dt> 
+             <dd>
+               统计所选时期内，新增玩家所选注册账户类型分布情况。
              </dd> 
             </dl> 
            </div> 
           </div> 
          </div> 
         </div> 
+        <button type="button" class="btn btn-default disabled" id="btn-explain-up"> <span class="fa fa-chevron-up" aria-hidden="true"></span> </button> 
+        <button type="button" class="btn btn-default" id="btn-explain-down"> <span class="fa fa-chevron-down" aria-hidden="true"></span> </button> 
        </div> 
       </div> 
      </div> 
@@ -308,31 +379,53 @@
      <div class="row" id="data-first"> 
       <div class="panel panel-default"> 
        <div class="panel-heading"> 
-        <span class="data-first-panel-heading">新增玩家留存率</span>
+        <span class="data-first-panel-heading">新增玩家</span>
         <button class="btn btn-2 btn-2c" id="btn-first-data-panel-switch">关闭</button> 
-       </div>
+       </div> 
        <div class="panel-body"> 
-         <div id="retain-note" class="data-results">
+        <ul class="nav nav-tabs add-players"> 
+         <li class="active"> <a data-toggle="tab" data-info="new-activate">新增与激活</a></li> 
+         <li class=""> <a data-toggle="tab" data-info="players-change-rate">玩家转化率</a></li> 
+        </ul> 
+        <div class="tab-content">
+          <div id="newPlayer-note" class="data-results">
             <span>
-              <em>次日留存率(AVG) :</em>
-              <font> 0.00% </font>
+              <em>SUM</em>
+              激活|玩家|设备:
+              <font>48 | 0 | 50 </font>
             </span>
             <span>
-              <em>7日留存率(AVG) :</em>
-              <font> 0.00% </font>
+              <em>AVG</em>
+              激活|玩家|设备:
+              <font>7 | 0 | 7 </font>
             </span>
-            <span>
-              <em>30日留存率(AVG) :</em>
-              <font> 0.00% </font>
-            </span>
-         </div>
-         <div id="newPlayers-retain-chart" style="width: 1400px;height:400px;"></div>
-         <div class="table-zoom-first">
-           <table id="data-table-newPlayers-retain" class="hover stripe row-border"></table>
-         </div>
+          </div> 
+          <div id="add-players-chart" style="width:1400px;height:400px;display:inline;float:left"></div> 
+          <div class="table-zoom-first"> 
+           <table id="data-table-add-players" class="hover stripe row-border"></table> 
+          </div>              
+        </div> 
        </div> 
       </div> 
-     </div>     
+     </div>
+     <div class="row" id="data-second">
+        <ul class="nav nav-tabs add-details"> 
+         <li class="active"> <a data-toggle="tab" data-info="first-game-period">首次游戏时间</a></li> 
+         <li class=""> <a data-toggle="tab" data-info="subsidiary-account-analyze">小号分析</a></li>
+         <li class=""> <a data-toggle="tab" data-info="area">地区</a></li> 
+         <li class=""> <a data-toggle="tab" data-info="country">国家</a></li>
+         <li class=""> <a data-toggle="tab" data-info="sex">性别</a></li> 
+         <li class=""> <a data-toggle="tab" data-info="age">年龄</a></li>
+         <li class=""> <a data-toggle="tab" data-info="account">账户类型</a></li>
+         <button class="btn btn-2 btn-2c" id="btn-gamedetail-switch">关闭</button>  
+        </ul> 
+        <div class="tab-content">          
+            <div id="add-players-details-chart" style="width:1400px;height:400px;display:inline;float:left"></div>
+            <div class="table-zoom-second"> 
+             <table id="data-table-add-players-details" class="hover stripe row-border"></table> 
+            </div>                    
+        </div>
+     </div>
      <div class="row"> 
       <div class="alert alert-warning fade in" data-dismiss="alert" id="platform-selected"> 
        <a href="#" class="close" data-dismiss="alert">&times;</a> 
@@ -370,6 +463,6 @@
   <script src="../../js/dateselector/monthPicker.js"></script> 
   <script src="../../js/checkbox/icheck.js"></script>
   <script src="../../js/common.js"></script>
-  <script src="../../js/retain.js"></script>
+  <script src="../../js/addPlayers.js"></script> 
  </body>
 </html>

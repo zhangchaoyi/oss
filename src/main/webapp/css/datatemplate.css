@@ -12,6 +12,12 @@ div.filter-tool {
     border: 1px solid #bfbfbf;
     right: 26px;
 }
+
+div#page-inner.fix-style-v1 {
+    position: relative;
+    top: -14px;
+}
+
 div.date-bar {
     float:left;
     position:relative;
@@ -435,7 +441,7 @@ div#newPlayer-note {
     margin-bottom:20px;
 }
 
-div#page-inner > div.row > a.back-top {
+a.back-top {
     background:rgba(43,57,69,0.95);
     border-radius: 3px 0 0 3px;
     border: 1px solid #22282e;
@@ -668,7 +674,3 @@ th.center.thead {
         background: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
 }
 
-button#customize-retain-type + ul.dropdown-menu {
-    /*position: relative;*/
-    /*left:800px;*/
-}

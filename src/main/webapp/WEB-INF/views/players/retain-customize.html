@@ -35,8 +35,9 @@
        <div class="btn-group" id="admin-btn"> 
         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">admin <span class="caret"></span></button> 
         <ul class="dropdown-menu user-bars" aria-labelledby="dropdownMenu1"> 
+         <li> <a href="#">admin</a></li> 
          <li> <a href="#">Action</a></li> 
-         <li> <a href="#">Another action</a></li> 
+         <li> <a href="#">Action2</a></li> 
         </ul> 
        </div> 
        <div class="glyphicon glyphicon-user" aria-hidden="true" id="login-user"></div> 
@@ -63,7 +64,7 @@
         <li> <button type="button" class="btn btn-primary" onclick="iconsView()">确定</button></li> 
        </ul> 
       </div> 
-     </div> 
+     </div> 		
      <div class="clear-data"> 
       <button type="button" class="btn btn-default btn-circle" aria-label="Left Align"> <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> <em>清除数据</em></button> 
      </div> 
@@ -75,14 +76,14 @@
      <ul class="nav" id="main-menu"> 
       <li> <a href="#"> <i class="fa fa-clock-o "></i>实时概况</a> </li> 
       <li> <a href="#"> <i class="fa fa-line-chart "></i>报表</a> </li> 
-      <li> <a href="#"> <i class="fa fa-user"></i>玩家分析 <span class="fa arrow"></span></a> 
+      <li> <a href="#"> <i class="fa fa-user"></i>玩家分析 
+        <spa啊n class="fa arrow"></spa啊n></a> 
        <ul class="nav nav-second-level"> 
-        <li> <a href="add.html"> <i class="fa fa-user-plus" aria-hidden="true"></i>新增玩家</a> </li> 
-        <li> <a href="active.html"> <i class="fa fa-users "></i>活跃玩家</a> </li> 
-        <li> <a href="retain.html"> <i class="fa fa-bars "></i>留存统计</a> </li> 
-        <li> <a href="#"> <i class="fa fa-user-secret "></i>有效玩家</a> </li> 
-        <li> <a href="#"> <i class="fa fa-code "></i>标签分析</a> </li> 
-        <li> <a href="#"> <i class="fa fa-tablet "></i>设备分析</a> </li> 
+        <li> <a href="/players/add"> <i class="fa fa-user-plus" aria-hidden="true"></i>新增玩家</a> </li> 
+        <li> <a href="/players/active"> <i class="fa fa-users "></i>活跃玩家</a> </li> 
+        <li> <a href="/players/retain"> <i class="fa fa-bars "></i>留存统计</a> </li> 
+        <li> <a href="/players/effective"> <i class="fa fa-user-secret "></i>有效玩家</a> </li>  
+        <li> <a href="/players/equipment"> <i class="fa fa-tablet "></i>设备分析</a> </li> 
         <li> <a href="#"> <i class="fa fa-circle-o-notch "></i>生命轨迹</a> </li> 
        </ul> </li> 
       <li> <a href="#"> <i class="fa fa-money "></i>付费分析 <span class="fa arrow"></span></a> 
@@ -101,7 +102,7 @@
       <li> <a href="#"> <i class="fa fa-shopping-cart "></i>渠道分析 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
         <li> <a href="#"> <i class="fa fa-shopping-cart"></i>渠道分析</a> </li> 
-        <li> <a href="#"> <i class="fa fa-link "></i>渠道短链追踪</a> </li> 
+        <li> <a href="#"> <i class="fa fa-link "></i>渠道短链追踪啊</a> </li> 
        </ul> </li> 
       <li> <a href="#"> <i class="fa fa-gamepad "></i>系统分析 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
@@ -110,7 +111,7 @@
         <li> <a href="#"> <i class="fa fa-rocket "></i>关卡分析</a> </li> 
         <li> <a href="#"> <i class="fa fa-flag "></i>等级分析</a> </li> 
         <li> <a href="#"> <i class="fa fa-bitcoin "></i>虚拟币统计</a> </li> 
-       </ul> </li> effective-distributed.html
+       </ul> </li> 
       <li> <a href="#"> <i class="fa fa-file "></i>版本分析</a> </li> 
       <li> <a href="#"> <i class="fa fa-cog "></i>自定义事件 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
@@ -127,7 +128,8 @@
         <li> <a href="#"> <i class="fa fa-shopping-cart"></i>新玩家价值</a> </li> 
        </ul> </li> 
       <li> <a href="#"> <i class="fa fa-bar-chart "></i>市场分析</a> </li> 
-      <li> <a href="#"> <i class="fa fa-wrench "></i>技术支持 <span class="fa arrow"></span></a> 
+      <li> <a href="#"> <i class="fa fa-wrench "></i>技术支持 
+        <s啊pan class="fa arrow"></s啊pan></a> 
        <ul class="nav nav-second-level"> 
         <li> <a href="#"> <i class="fa fa-vine"></i>在线参数</a> </li> 
         <li> <a href="#"> <i class="fa fa-bookmark "></i>实时日志</a> </li> 
@@ -141,7 +143,7 @@
        </ul> </li> 
      </ul> 
     </div> 
-   </nav> retain-equipment
+   </nav> 
    <!-- /. NAV SIDE --> 
    <div id="page-wrapper" style="overflow-x: hidden;overflow-y:hidden;"> 
     <div id="page-inner"> 
@@ -154,7 +156,7 @@
           <a class="opt_sel" id="input_trigger" hre2f="#"> <i class="fa fa-calendar" aria-hidden="true"></i> </a> 
          </div> 
          <div id="datePicker"></div> 
-        </div> 
+        </div> 啊 
         <div class="time-title"> 
          <a id="aToday" onclick="dateSelected(this)">今日</a> 
          <a id="aYesterday" onclick="dateSelected(this)">昨日</a> 
@@ -174,7 +176,7 @@
              <h4 class="modal-title" id="myModalLabel"><i>筛选</i></h4> 
             </div> 
             <div class="modal-body"> 
-             <div class="panel panel-default">
+             <div class="panel panel-default"> 
               <div class="panel-body"> 
                <div class="filter-header"> 
                 <ul class="nav nav-pills"> 
@@ -245,13 +247,14 @@
          </div> 
         </div> 
        </div> 
-       <div class="nav-tab effective">
-         <ul class="nav nav-pills"> 
-           <li class="active"><a href="#" ><span>有效玩家</span></a></li> 
-           <li class=""><a href="effective-distributed.html" ><span>有效玩家分布</span></a> </li> 
-         </ul> 
-       </div>
-      </div>   
+       <div class="nav-tab"> 
+        <ul class="nav nav-pills"> 
+         <li class=""><a href="/players/retain"><span>留存</span></a></li> 
+         <li class="active"><a href="/players/retain-customize"><span>自定义留存</span></a> </li> 
+         <li class=""><a href="/players/retain-equipment"><span>设备留存</span></a> </li> 
+        </ul> 
+       </div> 
+      </div> 
      </div> 
      <!-- /. ROW --> 
      <div class="row" id="explain-row"> 
@@ -263,37 +266,15 @@
         </div> 
         <div class="panel-body fix-explain-box" id="explain-panel"> 
          <div class="explain-content-panel cut"> 
-          <div class="explain-content-box"> 
+          <div class="explain-content-box" style="position:relative;top:5px;"> 
            <div class="explain-content-row"> 
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              日有效玩家：
+               自定义留存: 
              </dt> 
              <dd>
-              统计所选时期内，每日进行至少3局的玩家（新增玩家/活跃玩家）数量。
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              7日有效玩家：
-             </dt> 
-             <dd>
-              统计所选时期内，累计登陆游戏至少2天，进行至少6局的玩家（新增玩家/活跃玩家）数量。
-             </dd> 
-            </dl> 
-           </div>
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              30日有效玩家：
-             </dt> 
-             <dd>
-              统计所选时期内，累计登陆游戏至少5天，进行至少15局的玩家（新增玩家/活跃玩家）数量。
+               统计所选时期内，符合某自定义条件下的玩家留存情况，可以通过选择不同的限制条件来对比不同纬度的玩家留存数据。 
              </dd> 
             </dl> 
            </div> 
@@ -307,42 +288,68 @@
      <div class="row" id="data-first"> 
       <div class="panel panel-default"> 
        <div class="panel-heading"> 
-        <span class="data-first-panel-heading">有效玩家</span>
-        <button class="btn btn-2 btn-2c" id="btn-first-data-panel-switch">关闭</button> 
-       </div>
+        <span class="data-first-panel-heading">自定义留存</span> 
+       </div> 
        <div class="panel-body"> 
-          <ul class="nav nav-tabs effective"> 
-           <li class="active"> <a data-toggle="tab" data-info="add-players">新增玩家</a></li> 
-           <li class=""> <a data-toggle="tab" data-info="active-players">活跃玩家</a></li>
-          </ul>
-          <div class="tab-content"> 
-              <div id="effective-chart" style="width: 1400px;height:400px;display:inline;position:relative;float:left"></div> 
-              <div class="table-zoom-first">
-               <table id="effective-table" class="hover stripe row-border"></table>  
-              </div>
-          </div>
-            
+        <div class="panel-body-nav-tab-row"> 
+         <ul class="nav nav-pills customize-period-selected"> 
+          <li class="active"><a  data-toggle="tab" aria-expanded="true" data-info="queryDay"><span>日</span></a></li> 
+          <li class=""><a  data-toggle="tab" aria-expanded="true" data-info="queryWeek"><span>周</span></a> </li> 
+          <li class=""><a  data-toggle="tab" aria-expanded="true" data-info="queryMonth"><span>月</span></a> </li> 
+         </ul> 
+         <div class="dropdown"> 
+          <button class="btn btn-default dropdown-toggle" type="button" id="customize-retain-players" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" data-info="add-player"> 新增玩家 <span class="caret"></span> </button> 
+          <ul class="dropdown-menu" aria-labelledby="customize-retain-players"> 
+           <li><a data-info="add-player">新增玩家</a></li> 
+           <li><a data-info="active-player">活跃玩家</a></li> 
+           <li><a data-info="paid-player">付费玩家</a></li> 
+          </ul> 
+         </div> 
+         <span>留存行为:在之后的使用中</span> 
+         <div class="dropdown"> 
+          <button class="btn btn-default dropdown-toggle" type="button" id="customize-retain-game-type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" data-info="start-game"> 启动游戏 <span class="caret"></span> </button> 
+          <ul class="dropdown-menu" aria-labelledby="customize-retain-game-type"> 
+           <li><a data-info="start-game">启动游戏</a></li> 
+          </ul> 
+         </div> 
+         <div class="dropdown"> 
+          <button class="btn btn-default dropdown-toggle" type="button" id="customize-retain-times" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" data-info="at-lease-one"> 至少1次 <span class="caret" ></span> </button> 
+          <ul class="dropdown-menu" aria-labelledby="customize-retain-times"> 
+           <li><a data-info="at-lease-one">至少1次</a></li> 
+           <li><a data-info="at-lease-two">至少2次</a></li> 
+           <li><a data-info="at-lease-three">至少3次</a></li> 
+          </ul> 
+         </div> 
+         <span>计为留存玩家</span> 
+         <div class="dropdown retention"> 
+          <button class="btn btn-default dropdown-toggle" type="button" id="customize-retain-type" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true" data-info="retention-rate"> 留存率 <span class="caret"></span> </button> 
+          <ul class="dropdown-menu" aria-labelledby="customize-retain-type"> 
+           <li><a data-info="retention-rate">留存率</a></li> 
+           <li><a data-info="retention-people">留存人数</a></li> 
+          </ul> 
+         </div> 
+        </div>
+        <div class="table-zoom">
+           <table id="data-table-customize-retain" class="hover stripe row-border"></table>
+        </div> 
        </div> 
       </div> 
-     </div>     
+     </div> 
      <div class="row"> 
       <div class="alert alert-warning fade in" data-dismiss="alert" id="platform-selected"> 
        <a href="#" class="close" data-dismiss="alert">&times;</a> 
        <strong>请选择平台</strong> 
       </div> 
-     </div>
-     <div class="row">  
-       <a href="#" class="back-top">
-        <span class="fa fa-angle-up" aria-hidden="true"></span>
-       </a> 
+     </div> 
+     <div class="row"> 
+      <a href="#" class="back-top"> <span class="fa fa-angle-up" aria-hidden="true"></span> </a> 
      </div> 
     </div> 
     <!-- /. PAGE INNER --> 
    </div> 
    <!-- /. PAGE WRAPPER --> 
   </div> 
-  <!-- /. WRAPPER -->
-  </div> 
+  <!-- /. WRAPPER -->  
   <div id="footer-sec">
     Copyright &copy; 2016.koogame All rights reserved. 
    <a target="_blank" href="#/"></a> 
@@ -360,8 +367,8 @@
   <script src="../../js/filter/jcfilter.min.js"></script> 
   <script src="../../js/dateselector/dateRange.js"></script> 
   <script src="../../js/dateselector/monthPicker.js"></script> 
-  <script src="../../js/checkbox/icheck.js"></script>
-  <script src="../../js/common.js"></script>
-  <script src="../../js/effective.js"></script>
+  <script src="../../js/checkbox/icheck.js"></script> 
+  <script src="../../js/common.js"></script> 
+  <script src="../../js/customizeRetain.js"></script> 
  </body>
 </html>

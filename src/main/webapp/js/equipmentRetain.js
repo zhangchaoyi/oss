@@ -6,13 +6,13 @@ $(function(){
 
 function loadData() {
 
-    $.post("/api/retain/equipment/rate", {
+    $.post("/api/players/retain-equipment/rate", {
     },
     function(data, status) {
         configChart(data);
     });
 
-    $.post("/api/retain/equipment/detail", {
+    $.post("/api/players/retain-equipment/detail", {
     },
     function(data, status) {
         configTable(data);

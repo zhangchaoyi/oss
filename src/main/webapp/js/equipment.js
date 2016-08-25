@@ -1,25 +1,26 @@
-var activeChart = echarts.init(document.getElementById('active-players-chart'));
-var detailChart = echarts.init(document.getElementById('active-details-chart'));
+var equipmentChart = echarts.init(document.getElementById('equipment-chart'));
+var equipmentDetailChart = echarts.init(document.getElementById('equipment-details-chart'));
 
 $(function(){
-    loadActivePlayerData($("ul.nav.nav-tabs.activeplayer > li.active").children("a").attr("data-info"));
-    loadActiveDetailData("played-days");
+    loadEquipmentData($("div.nav-tab.equipment > ul > li.active").children("a").attr("data-info"));
+    loadEquipmentDetailsData($("div.nav-tab.equipment > ul > li.active").children("a").attr("data-info"),"resolution");
 });
 
-function loadActivePlayerData(playerTag) {
+function loadEquipmentData(playerTagInfo) {
 
-    $.post("/api/players/active", {
-    	playerTag:playerTag
+    $.post("/api/players/equipment", {
+        playerTagInfo:playerTagInfo
     },
     function(data, status) {
-        configPlayerChart(data);
-        configPlayerTable(data);   
+        configEquipmentChart(data);
+        configEquipmentTable(data);   
     });
 }
 
-function loadActiveDetailData(detailTagInfo) {
-	$.post("/api/players/active/details", {
-    	detailTagInfo:detailTagInfo
+function loadEquipmentDetailsData(playerTagInfo, detailTagInfo) {
+    $.post("/api/players/equipment/details", {
+        playerTagInfo:playerTagInfo,
+        detailTagInfo:detailTagInfo
     },
     function(data, status) {
         configDetailChart(data);
@@ -27,10 +28,10 @@ function loadActiveDetailData(detailTagInfo) {
     });
 }
 
-function configPlayerChart(data) {
+function configEquipmentChart(data) {
     var recData = data.data;
-    activeChart.clear();
-    activeChart.setOption({
+    equipmentChart.clear();
+    equipmentChart.setOption({
         tooltip: {
             trigger: 'axis',
         },
@@ -94,14 +95,12 @@ function configPlayerChart(data) {
     });
 }
 
+function configEquipmentTable(data) {
+    appendEquipmentTableHeader(data);
+    $('#data-table-equipment').dataTable().fnClearTable();  
+    var tableData = dealTableData(data,true);
 
-
-function configPlayerTable(data) {
-	appendPlayerTableHeader(data);
-	$('#data-table-active-players').dataTable().fnClearTable();  
-    var tableData = dealTableData(data,false);
-
-    $('#data-table-active-players').dataTable({
+    $('#data-table-equipment').dataTable({
         "destroy": true,
         // retrive:true,
         "data": tableData,
@@ -120,7 +119,6 @@ function configPlayerTable(data) {
     });
 }
 
-
 function dealTableData(data,percent) {
     var type = data.type;
     var categories;
@@ -134,12 +132,12 @@ function dealTableData(data,percent) {
     var dataArray = [];
 
     if(percent===true){
-	    for(var t in serie){
-	    	for(var k in serie[t]){
-	    		sum = sum + serie[t][k];
-	    	}
-	    }
-	}
+        for(var t in serie){
+            for(var k in serie[t]){
+                sum = sum + serie[t][k];
+            }
+        }
+    }
 
 
     for (var i = 0; i < categories.length; i++) {
@@ -148,7 +146,7 @@ function dealTableData(data,percent) {
         for (var j = 0; j < type.length; j++) {
             item.push(serie[type[j]][i]);
             if(percent===true){
-            	item.push(((serie[type[j]][i]/sum*100)).toFixed(2) + '%');
+                item.push(((serie[type[j]][i]/sum*100)).toFixed(2) + '%');
             }
         }
         dataArray.push(item);
@@ -157,7 +155,7 @@ function dealTableData(data,percent) {
 }
 
 
-function appendPlayerTableHeader(data) {
+function appendEquipmentTableHeader(data) {
     var type = data.type;
     var category = data.category;
     var txt = "";
@@ -168,68 +166,22 @@ function appendPlayerTableHeader(data) {
     for (var i = 0; i < type.length; i++) {
         txt = txt + "<th><span>" + type[i] + "</span></th>"
     }
-    if ($("table#data-table-active-players > thead").length != 0) {
-        $("table#data-table-active-players > thead").empty();
-        $("#data-table-active-players").prepend("<thead><tr>" + txt + "</tr></thead>");
+    txt = txt + "<th><span>百分比</span></th>";
+
+    if ($("table#data-table-equipment > thead").length != 0) {
+        $("table#data-table-equipment > thead").empty();
+        $("#data-table-equipment").prepend("<thead><tr>" + txt + "</tr></thead>");
         return;
     }
-    $("#data-table-active-players").append("<thead><tr>" + txt + "</tr></thead>");
+    $("#data-table-equipment").append("<thead><tr>" + txt + "</tr></thead>");
 }
 
 
 function configDetailChart(data) {
     var recData = data.data;
-    var categoryName;
-    var categories;
-    for(var i in data.category) {
-        categoryName = i;
-        categories = data.category[i];
-    }
-    detailChart.clear();
 
-    if(categoryName=="性别"){
-        detailChart.setOption({
-            tooltip: {
-                trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-                orient: 'vertical',
-                // left: 'left',
-                data: data.type
-            },
-            backgroundColor: "white",
-            series: [{
-                name: data.type,
-                type: 'pie',
-                radius: '65%',
-                center: ['50%', '50%'],
-                data: function() {
-                    var serie = [];
-                    for (var i = 0; i < categories.length; i++) {
-                        var item = {
-                            name: categories[i],
-                            value: recData[data.type][i],
-                        };
-                        serie.push(item);
-                    }
-                    console.log(serie);
-                    return serie;
-                } (),
-
-                itemStyle: {
-                    emphasis: {
-                        shadowBlur: 10,
-                        shadowOffsetX: 0,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                    }
-                }
-            }]
-        });
-        return;
-    }
-
-    detailChart.setOption({
+    equipmentDetailChart.clear();
+    equipmentDetailChart.setOption({
         tooltip: {
             trigger: 'axis',
         },
@@ -288,10 +240,10 @@ function configDetailChart(data) {
                     type: "bar",
                     smooth:true,
                     itemStyle: {
-		                normal: {
-		                    color: 'rgb(87, 139, 187)'
-		                }
-		            },
+                        normal: {
+                            color: 'rgb(87, 139, 187)'
+                        }
+                    },
                     data: recData[key]
                 }
                 serie.push(item);
@@ -302,33 +254,11 @@ function configDetailChart(data) {
     });
 }
 
-jQuery.extend(jQuery.fn.dataTableExt.oSort, {
-            "num-html-pre": function(a) {
-                var time = String(a).split(" ")[1];
-                var num = String(a).split(" ")[0].split("-")[0];
-                if (num == ">60") {
-                    num = 60;
-                }
-                if (time == "min") {
-                    num *= 60;
-                }
-                return parseFloat(num);
-            },
-
-            "num-html-asc": function(a, b) {
-                return ((a < b) ? -1 : ((a > b) ? 1 : 0));
-            },
-
-            "num-html-desc": function(a, b) {
-                return ((a < b) ? 1 : ((a > b) ? -1 : 0));
-            }
-        });
-
 function configDetailTable(data) {
     appendDetailTableHeader(data);
     var tableData = dealTableData(data, true);
-    $('#data-table-active-details').dataTable().fnClearTable(); 
-    table = $('#data-table-active-details').dataTable({
+    $('#data-table-equipment-details').dataTable().fnClearTable(); 
+    $('#data-table-equipment-details').dataTable({
         destroy: true,
         // retrive:true,
         "data": tableData,
@@ -364,28 +294,37 @@ function appendDetailTableHeader(data) {
         txt = txt + "<th><span>" + type[i] + "</span></th>"
     }
     txt = txt + "<th><span>百分比</span></th>";
-    if ($("table#data-table-active-details > thead").length != 0) {
-        $("table#data-table-active-details > thead").empty();
-        $("#data-table-active-details").prepend("<thead><tr>" + txt + "</tr></thead>");
+
+    if ($("table#data-table-equipment-details > thead").length != 0) {
+        $("table#data-table-equipment-details > thead").empty();
+        $("#data-table-equipment-details").prepend("<thead><tr>" + txt + "</tr></thead>");
         return;
     }
-    $("#data-table-active-details").append("<thead><tr>" + txt + "</tr></thead>");
+    $("#data-table-equipment-details").append("<thead><tr>" + txt + "</tr></thead>");
 }
 
+//player tag event
+$("div.nav-tab.equipment > ul > li").click(function(){
+    $("div.nav-tab.equipment > ul > li.active").toggleClass("active");
+    $(this).toggleClass("active");
 
+    var playerTagInfo = $(this).children("a").attr("data-info");
+    var detailTagInfo = $("ul.nav.nav-tabs.equipment-details > li.active > a").attr("data-info");
 
-$("ul.nav.nav-tabs.activeplayer > li").click(function(){
-	var playerTagInfo = $(this).children("a").attr("data-info");
-	loadActivePlayerData(playerTagInfo);
+    loadEquipmentData(playerTagInfo);
+    loadEquipmentDetailsData(playerTagInfo, detailTagInfo);
 });
 
-
-$("ul.nav.nav-tabs.active-details > li").click(function(){
+//detail tag event
+$("ul.nav.nav-tabs.equipment-details > li").click(function(){
     var detailTagInfo = $(this).children("a").attr("data-info");
-    loadActiveDetailData(detailTagInfo);
-});
+    var playerTagInfo = $("div.nav-tab.equipment > ul > li.active").children("a").attr("data-info");
 
-//explain up and down button 
+    loadEquipmentDetailsData(playerTagInfo, detailTagInfo);
+})
+
+
+//explain button event
 $("#btn-explain-up").click(function(){
     $("div.explain-content-box").css("margin-top", function(index,value){
         value = parseFloat(value) + 155;
@@ -401,7 +340,7 @@ $("#btn-explain-up").click(function(){
 $("#btn-explain-down").click(function(){
     $("div.explain-content-box").css("margin-top", function(index,value){
         value = parseFloat(value) - 155;
-        if(value <= -310){
+        if(value <= -155){
             $("#btn-explain-down").addClass("disabled");
         }
         if($("#btn-explain-up").hasClass("disabled")){ 
@@ -410,3 +349,4 @@ $("#btn-explain-down").click(function(){
         return value;
     });
 });
+

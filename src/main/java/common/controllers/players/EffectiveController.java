@@ -10,12 +10,26 @@ import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.POST;
+import com.jfinal.ext.interceptor.GET;
 import common.interceptor.AuthInterceptor;
 
-@Clear(AuthInterceptor.class)
+//@Clear(AuthInterceptor.class)
+@Before(AuthInterceptor.class)
 public class EffectiveController extends Controller {
+	@Before(GET.class)
+	@ActionKey("/players/effective")
+	public void effective() {
+		render("effective.html");
+	}
+	
+	@Before(GET.class)
+	@ActionKey("/players/effective-distributed")
+	public void effectiveDistributed() {
+		render("effective-distributed.html");
+	}
+	
 	@Before(POST.class)
-	@ActionKey("/api/effective")
+	@ActionKey("/api/players/effective")
 	public void testData() {
 		String tagDataInfo = getPara("tagDataInfo");
 		Map<String, Object> data = new LinkedHashMap<String,Object>();
@@ -51,7 +65,7 @@ public class EffectiveController extends Controller {
 	}
 	
 	@Before(POST.class)
-	@ActionKey("/api/effective-distributed")
+	@ActionKey("/api/players/effective-distributed")
 	public void testDistributedData() {
 		String tagDataInfo = getPara("tagDataInfo");
 		String subTagDataInfo = getPara("subTagDataInfo");

@@ -5,7 +5,7 @@ function login(){
 	}
 	$.post("/api/login", $("form").serialize(), function(data){
 		if(data.message == "success"){
-			location.href = location.protocol + "//" + location.host + "/views/dashboard.html";
+			location.href = location.protocol + "//" + location.host + "/dashboard";
 		}else{
 			alert("用户名或密码错误");
 		}
