@@ -16,7 +16,10 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 public class _MappingKit {
 
 	public static void mapping(ActiveRecordPlugin arp) {
-		arp.addMapping("user", "id", User.class);
+		arp.addMapping("create_role", "account", CreateRole.class);
+		arp.addMapping("device_info", "openudid", DeviceInfo.class);
+		arp.addMapping("login", "id", Login.class);
+		arp.addMapping("logout", "id", Logout.class);
 	}
 }
 

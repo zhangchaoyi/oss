@@ -1,10 +1,12 @@
 package common.controllers.players;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
@@ -14,9 +16,12 @@ import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 
 import common.interceptor.AuthInterceptor;
+import common.model.CreateRole;
+import common.utils.DateUtils;
 
-//@Clear(AuthInterceptor.class)
-@Before(AuthInterceptor.class)
+
+@Clear(AuthInterceptor.class)
+//@Before(AuthInterceptor.class)
 public class AddController extends Controller{
 	@Before(GET.class)
 	@ActionKey("/players/add")
@@ -28,32 +33,38 @@ public class AddController extends Controller{
 	@ActionKey("/api/players/add")
 	public void queryAddPlayer() {
 		String addTagInfo = getPara("addTagInfo", "new-activate");
+		String startDate = getPara("startDate");
+		String endDate = getPara("endDate");
+
+		//查询数据
+		String addPlayersSql = "select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(*) count from create_role where DATE_FORMAT(create_time,'%Y-%m-%d') >= ? and DATE_FORMAT(create_time,'%Y-%m-%d') <= ? group by DATE_FORMAT(create_time,'%Y-%m-%d')";	
+		List<CreateRole> addPlayersSource = CreateRole.dao.find(addPlayersSql, startDate, endDate);
 		
+		//返回数据
 		Map<String, Object> data = new LinkedHashMap<String,Object>();	
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();	
+		List<String> categories = DateUtils.getDateList(startDate, endDate);
 		//保存chart中数据
-		Map<String, List<Integer>> seriesMap = new LinkedHashMap<String, List<Integer>>();
+		Map<String, List<Long>> seriesMap = new LinkedHashMap<String, List<Long>>();
 		
 		switch(addTagInfo){
 			case "new-activate":{
-				List<Integer> data1 =  Arrays.asList(1,2,10,31,17,0,3,0);
-				List<Integer> data2 =  Arrays.asList(0,10,110,110,10,100,50,10);
-				List<Integer> data3 =  Arrays.asList(30,20,30,20,30,20,30,20);
+				List<Long> addPlayers =  dealQueryData(addPlayersSource, categories);			
 				
-				seriesMap.put("设备激活", data1);
-				seriesMap.put("新增账户", data2);
-				seriesMap.put("新增设备", data3);
+//				seriesMap.put("设备激活", data1);
+				seriesMap.put("新增账户", addPlayers);
+//				seriesMap.put("新增设备", data3);
 				break;
 			}
 			case "players-change-rate":{
-				List<Integer> data1 =  Arrays.asList(1,2,10,31,17,0,3,0);
+				List<Long> data1 =  Arrays.asList(1L,2L,10L,31L,17L,0L,3L,0L);
 				seriesMap.put("玩家转化率", data1);
 				break;
 			}
 		}
 		
 		Set<String> type = seriesMap.keySet();
-		List<String> categories = Arrays.asList("2016-08-11","2016-08-12","2016-08-13","2016-08-14","2016-08-15","2016-08-16","2016-08-17","2016-08-18");
+		
 		category.put("日期", categories);	
 		data.put("type", type.toArray());
 		data.put("category", category);
@@ -65,7 +76,11 @@ public class AddController extends Controller{
 	@ActionKey("/api/players/add/detail")
 	public void queryaddPlayerDetails() {
 		String addDetailTagInfo = getPara("addDetailTagInfo", "first-game-period");		
-
+		String startDate = getPara("startDate");
+		String endDate = getPara("endDate");
+		
+		
+		
 		Map<String, Object> data = new LinkedHashMap<String,Object>();
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
 		//保存chart中数据
@@ -120,8 +135,24 @@ public class AddController extends Controller{
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
-		renderJson(data);
-		
-		
+		renderJson(data);	
 	}
+
+	//整理数据 源数据可能存在缺失
+	private List<Long> dealQueryData(List<CreateRole> source, List<String> categories){
+		List<Long> data = new ArrayList<Long>();
+		Map<String, Long> sort = new TreeMap<String,Long>();
+		//将日期作为Map的key保证查询出来的数据不会缺失
+		for(String category : categories ){
+			sort.put(category, 0L);
+		}		
+		for(CreateRole cr : source){
+			sort.put(cr.getStr("date"), cr.getLong("count"));
+		}
+		for(Map.Entry<String, Long> entry : sort.entrySet()){
+			data.add(entry.getValue());
+		}
+		return data;
+	}
+	
 }

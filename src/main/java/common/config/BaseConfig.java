@@ -11,7 +11,7 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 
 import common.interceptor.AuthInterceptor;
-import common.model.User;
+import common.model.CreateRole;
 import common.routes.AdminRoute;
 
 public class BaseConfig extends JFinalConfig {
@@ -32,7 +32,7 @@ public class BaseConfig extends JFinalConfig {
 		me.add(cp);
 		ActiveRecordPlugin arp = new ActiveRecordPlugin(cp);
 		me.add(arp);
-		arp.addMapping("user", User.class);
+		arp.addMapping("create_role", CreateRole.class);
 	}
 
 	@Override

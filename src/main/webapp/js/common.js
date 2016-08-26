@@ -73,7 +73,7 @@ $("#btn-filtersave").click(function(){
     for(var i=0;i<filterCheckBoxs.length;i++) { 
         if($(filterCheckBoxs[i]).hasClass("checked")){
             //extend
-            // console.log($(filterCheckBoxs[i]).siblings("span").text());
+            console.log($(filterCheckBoxs[i]).siblings("span").text());
         }
     }
 });
@@ -91,7 +91,10 @@ $(function() {
         defaultText: ' 至 ',
         inputTrigger: 'input_trigger',
         theme: 'ta',
-
+        success : function(obj) { 
+        //设置回调句柄 
+            loadData();
+        } 
     });
 });
 
@@ -120,3 +123,4 @@ $(function(){
     });
 
 });
+

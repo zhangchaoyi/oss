@@ -28,12 +28,20 @@ public class JFinalGenerator {
 		Generator gernerator = new Generator(getDataSource(), baseModelPackageName, baseModelOutputDir,
 				modelPackageName, modelOutputDir);
 		// 添加不需要生成的表名
-//		gernerator.addExcludedTable("adv");
+		gernerator.addExcludedTable("arena_score");
+		gernerator.addExcludedTable("ladder_score");
+		gernerator.addExcludedTable("level_up");
+		gernerator.addExcludedTable("log_RMB");
+		gernerator.addExcludedTable("log_battle");
+		gernerator.addExcludedTable("log_charge");
+		gernerator.addExcludedTable("log_gold");
+		gernerator.addExcludedTable("refresh_arena_exp_count");
+		
 		// 设置是否在 Model 中生成 dao 对象
 		gernerator.setGenerateDaoInModel(true);
 		// 设置是否生成字典文件
 		gernerator.setGenerateDataDictionary(false);
-		// 设置需要被移除的表名前缀用于生成modelName。例如表名 "osc_user"，移除前缀 "osc_"后生成的model名为
+		// 设置需要被移除的表名前缀用于生成modelNaloginme。例如表名 "osc_user"，移除前缀 "osc_"后生成的model名为
 		// "User"而非 OscUser
 		// gernerator.setRemovedTableNamePrefixes("t_");
 		// 生成

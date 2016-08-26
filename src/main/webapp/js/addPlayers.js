@@ -2,13 +2,19 @@ var addChart = echarts.init(document.getElementById('add-players-chart'));
 var detailChart = echarts.init(document.getElementById('add-players-details-chart'));
 
 $(function(){
-    loadAddPlayerData("new-activate");
-    loadAddDetailData("first-game-period");
+    loadData();
 })
+
+function loadData() {
+    loadAddPlayerData($("ul.nav.nav-tabs.add-players > li.active > a").attr("data-info"));
+    loadAddDetailData($("ul.nav.nav-tabs.add-details > li.active > a").attr("data-info"));
+}
 
 function loadAddPlayerData(addTagInfo) {
     $.post("/api/players/add", {
-        addTagInfo:addTagInfo
+        addTagInfo:addTagInfo,
+        startDate:$("input#startDate").attr("value"),
+        endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
         configPlayerChart(data);
@@ -18,7 +24,9 @@ function loadAddPlayerData(addTagInfo) {
 
 function loadAddDetailData(addDetailTagInfo) {
     $.post("/api/players/add/detail", {
-        addDetailTagInfo:addDetailTagInfo
+        addDetailTagInfo:addDetailTagInfo,
+        startDate:$("input#startDate").attr("value"),
+        endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
         configDetailChart(data);
