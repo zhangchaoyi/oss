@@ -37,11 +37,13 @@ function loadAddDetailData(addDetailTagInfo) {
 
 function configPlayerChart(data) {
     var recData = data.data;
+    var type = data.type;
     addChart.clear();
     addChart.setOption({
         tooltip: {
             trigger: 'axis',
         },
+        
         legend: {
             data: data.type
         },
@@ -63,8 +65,8 @@ function configPlayerChart(data) {
         },
         dataZoom: [{
             type: 'slider',
-            start: 10,
-            end: 80
+            start: 0,
+            end: 100
         },
         {
             type: 'inside',
@@ -82,7 +84,13 @@ function configPlayerChart(data) {
         yAxis: {
             type: 'value',
             axisLabel: {
-                formatter: '{value}'
+                formatter: function(){
+                    var serie = [];
+                    if(type=='玩家转化率'){
+                        return '{value} %'
+                    }
+                    return '{value}'
+                }()
             }
         },
         series: function() {
@@ -106,7 +114,7 @@ function configPlayerTable(data) {
     appendPlayerTableHeader(data);
     $('#data-table-add-players').dataTable().fnClearTable();  
     var tableData = dealTableData(data,false);
-
+    
     $('#data-table-add-players').dataTable({
         "destroy": true,
         // retrive:true,
@@ -147,11 +155,14 @@ function dealTableData(data,percent) {
         }
     }
 
-
     for (var i = 0; i < categories.length; i++) {
         var item = [];
         item.push(categories[i]);
-        for (var j = 0; j < type.length; j++) {
+        for (var j = 0; j < type.length; j++) {           
+            if(type=="玩家转化率"){
+                item.push(serie[type[j]][i] + '%');
+                continue;
+            }
             item.push(serie[type[j]][i]);
             if(percent===true){
                 item.push(((serie[type[j]][i]/sum*100)).toFixed(2) + '%');
@@ -161,7 +172,6 @@ function dealTableData(data,percent) {
     }
     return dataArray;
 }
-
 
 function appendPlayerTableHeader(data) {
     var type = data.type;

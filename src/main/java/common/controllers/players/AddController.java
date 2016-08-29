@@ -1,28 +1,27 @@
 package common.controllers.players;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
-
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
-
 import common.interceptor.AuthInterceptor;
-import common.model.CreateRole;
+import common.service.AddPlayersService;
+import common.service.impl.AddPlayersServiceImpl;
 import common.utils.DateUtils;
 
 
 @Clear(AuthInterceptor.class)
 //@Before(AuthInterceptor.class)
 public class AddController extends Controller{
+	private AddPlayersService addPlayersService = new AddPlayersServiceImpl();
+	
 	@Before(GET.class)
 	@ActionKey("/players/add")
 	public void addIndex() {
@@ -34,31 +33,34 @@ public class AddController extends Controller{
 	public void queryAddPlayer() {
 		String addTagInfo = getPara("addTagInfo", "new-activate");
 		String startDate = getPara("startDate");
-		String endDate = getPara("endDate");
-
-		//查询数据
-		String addPlayersSql = "select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(*) count from create_role where DATE_FORMAT(create_time,'%Y-%m-%d') >= ? and DATE_FORMAT(create_time,'%Y-%m-%d') <= ? group by DATE_FORMAT(create_time,'%Y-%m-%d')";	
-		List<CreateRole> addPlayersSource = CreateRole.dao.find(addPlayersSql, startDate, endDate);
+		String endDate = getPara("endDate");	
+		startDate = startDate + " 00:00:00";
+		endDate = endDate + " 23:59:59";
 		
-		//返回数据
+		//返回数据格式
 		Map<String, Object> data = new LinkedHashMap<String,Object>();	
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();	
 		List<String> categories = DateUtils.getDateList(startDate, endDate);
 		//保存chart中数据
 		Map<String, List<Long>> seriesMap = new LinkedHashMap<String, List<Long>>();
-		
+	
 		switch(addTagInfo){
 			case "new-activate":{
-				List<Long> addPlayers =  dealQueryData(addPlayersSource, categories);			
-				
-//				seriesMap.put("设备激活", data1);
+				List<Long> addPlayers = addPlayersService.queryAddPlayersData(categories, startDate, endDate);	
+				List<Long> activateEquipment = addPlayersService.queryDeviceInfoData(categories, startDate, endDate);
+				List<Long> addEquipment = addPlayersService.queryAddEquipmentData(categories, startDate, endDate);
+								
 				seriesMap.put("新增账户", addPlayers);
-//				seriesMap.put("新增设备", data3);
+				seriesMap.put("设备激活", activateEquipment);				
+				seriesMap.put("新增设备", addEquipment);
 				break;
 			}
 			case "players-change-rate":{
-				List<Long> data1 =  Arrays.asList(1L,2L,10L,31L,17L,0L,3L,0L);
-				seriesMap.put("玩家转化率", data1);
+				List<Long> activateEquipment = addPlayersService.queryDeviceInfoData(categories, startDate, endDate);
+				List<Long> addEquipment = addPlayersService.queryAddEquipmentData(categories, startDate, endDate);
+				List<Long> playersChangeRate = addPlayersService.dealQueryPlayersChangeRate(activateEquipment, addEquipment);
+				
+				seriesMap.put("玩家转化率", playersChangeRate);
 				break;
 			}
 		}
@@ -78,7 +80,8 @@ public class AddController extends Controller{
 		String addDetailTagInfo = getPara("addDetailTagInfo", "first-game-period");		
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
-		
+		startDate = startDate + " 00:00:00";
+		endDate = endDate + " 23:59:59";
 		
 		
 		Map<String, Object> data = new LinkedHashMap<String,Object>();
@@ -138,21 +141,6 @@ public class AddController extends Controller{
 		renderJson(data);	
 	}
 
-	//整理数据 源数据可能存在缺失
-	private List<Long> dealQueryData(List<CreateRole> source, List<String> categories){
-		List<Long> data = new ArrayList<Long>();
-		Map<String, Long> sort = new TreeMap<String,Long>();
-		//将日期作为Map的key保证查询出来的数据不会缺失
-		for(String category : categories ){
-			sort.put(category, 0L);
-		}		
-		for(CreateRole cr : source){
-			sort.put(cr.getStr("date"), cr.getLong("count"));
-		}
-		for(Map.Entry<String, Long> entry : sort.entrySet()){
-			data.add(entry.getValue());
-		}
-		return data;
-	}
+	
 	
 }

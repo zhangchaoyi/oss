@@ -33,6 +33,14 @@ public abstract class BaseLogin<M extends BaseLogin<M>> extends Model<M> impleme
 		return get("internal_id");
 	}
 
+	public void setAccountType(java.lang.String accountType) {
+		set("account_type", accountType);
+	}
+
+	public java.lang.String getAccountType() {
+		return get("account_type");
+	}
+
 	public void setLoginTime(java.util.Date loginTime) {
 		set("login_time", loginTime);
 	}

@@ -19,3 +19,10 @@ function login(){
 		}
 	})
 }
+
+function getKey(e) {
+	if(event.keyCode==13){  
+		login(); 
+	}  
+}
+

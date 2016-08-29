@@ -17,20 +17,36 @@ public abstract class BaseCreateRole<M extends BaseCreateRole<M>> extends Model<
 		return get("account");
 	}
 
-	public void setCreateTime(java.util.Date createTime) {
-		set("create_time", createTime);
-	}
-
-	public java.util.Date getCreateTime() {
-		return get("create_time");
-	}
-
 	public void setOpenudid(java.lang.String openudid) {
 		set("openudid", openudid);
 	}
 
 	public java.lang.String getOpenudid() {
 		return get("openudid");
+	}
+
+	public void setAccountType(java.lang.String accountType) {
+		set("account_type", accountType);
+	}
+
+	public java.lang.String getAccountType() {
+		return get("account_type");
+	}
+
+	public void setDateTime(java.util.Date dateTime) {
+		set("date_time", dateTime);
+	}
+
+	public java.util.Date getDateTime() {
+		return get("date_time");
+	}
+
+	public void setCreateTime(java.util.Date createTime) {
+		set("create_time", createTime);
+	}
+
+	public java.util.Date getCreateTime() {
+		return get("create_time");
 	}
 
 	public void setImei(java.lang.String imei) {

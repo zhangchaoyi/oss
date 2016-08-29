@@ -21,9 +21,9 @@
     <hr>
 	 <form class="col-lg-12">
        <div class="input-group login-page">
-         <input class="form-control input-lg " placeholder="Enter your username" type="text" id="username" name="username">
+         <input class="form-control input-lg " placeholder="Enter your username" type="text" id="username" name="username" onkeypress="getKey()">
          <span class="glyphicon glyphicon-user login-user" aria-hidden="true"></span>
-         <input class="form-control input-lg " placeholder="Enter your password" type="password" id="password" name="password">
+         <input class="form-control input-lg " placeholder="Enter your password" type="password" id="password" name="password" onkeypress="getKey()">
          <span class="glyphicon glyphicon-lock login-password" aria-hidden="true"></span>
          <button class="btn btn-lg btn-primary btn-login" type="button" onclick="login()" style="width:100%">登录</button>
        </div>
