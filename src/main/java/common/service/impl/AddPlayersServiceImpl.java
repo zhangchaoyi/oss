@@ -2,12 +2,14 @@ package common.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import common.model.CreateRole;
 import common.model.DeviceInfo;
+import common.model.Logout;
 import common.service.AddPlayersService;
 
 public class AddPlayersServiceImpl implements AddPlayersService {
@@ -79,4 +81,111 @@ public class AddPlayersServiceImpl implements AddPlayersService {
 		}
 		return data;
 	}
+	
+	//查询首次游戏时间  筛选时间区间内的每个帐号首次在线时长
+	public List<Long> queryFirstGamePeriod(List<String> gamePeriod, String startDate, String endDate){	
+		List<Long> data = new ArrayList<Long>();
+		String sql = "select B.online_time time from (select account,min(logout_time)logout_time from logout where logout_time > ? group by account) A join logout B on A.account= B.account and A.logout_time = B.logout_time join create_role C on A.account = C.account where C.create_time >= ? and C.create_time <= ?"; 	
+		List<Logout> firstGamePeriod = Logout.dao.find(sql, startDate, startDate, endDate);
+		Map<String, Integer> firstGamePeriodCollect = new LinkedHashMap<String, Integer>();
+		for(String gp :gamePeriod){
+			firstGamePeriodCollect.put(gp,0);
+		}
+
+		for(Logout logout : firstGamePeriod){
+			int oT = logout.getInt("time");
+			if(oT <= 4){
+				increaseValue("1~4 s" ,firstGamePeriodCollect);
+				continue;
+			}
+			if(oT>=5 && oT <=10){
+				increaseValue("5~10 s" ,firstGamePeriodCollect);
+				continue;
+			}
+			if(oT>=11 && oT <=30){
+				increaseValue("11~30 s" ,firstGamePeriodCollect);
+				continue;
+			}
+			if(oT>=31 && oT <=60){
+				increaseValue("31~60 s" ,firstGamePeriodCollect);
+				continue;
+			}
+			if(oT>=61 && oT <=180){
+				increaseValue("1~3 min" ,firstGamePeriodCollect);
+				continue;
+			}
+			if(oT>=181 && oT <=600){
+				increaseValue("3~10 min" ,firstGamePeriodCollect);
+				continue;
+			}
+			if(oT>=601 && oT <=1800){
+				increaseValue("10~30 min" ,firstGamePeriodCollect);
+				continue;
+			}
+			if(oT>=1801 && oT <=3600){
+				increaseValue("30~60 min" ,firstGamePeriodCollect);
+				continue;
+			}
+			increaseValue(">60 min" ,firstGamePeriodCollect);
+			
+		}	
+		for (Map.Entry<String, Integer> entry : firstGamePeriodCollect.entrySet()) {
+			data.add(Long.parseLong(String.valueOf(entry.getValue())));
+		}
+		return data;
+	}
+	
+	public List<Long> querySubsidiaryAccount(List<String> accountPeriod, String startDate, String endDate){
+		List<Long> data = new ArrayList<Long>();
+		String sql = "select accountNum,count(accountNum) equipmentCount from (select B.accountNum from (select openudid from device_info where create_time >= ? and create_time <= ?) A left join (select count(openudid)accountNum,openudid,min(create_time) create_time from create_role where create_time >= ? and create_time <= ? group by openudid) B on A.openudid = B.openudid where B.openudid is not null) C group by accountNum;";
+		List<DeviceInfo> subAccount = DeviceInfo.dao.find(sql, startDate, endDate, startDate, endDate);
+		Map<String, Long> subAccountCollect = new LinkedHashMap<String, Long>();
+		for(String ap : accountPeriod){
+			subAccountCollect.put(ap, 0L);
+		}
+		for(DeviceInfo deviceInfo : subAccount){
+			Long accountNum = deviceInfo.getLong("accountNum");
+			Long equipmentCount = deviceInfo.getLong("equipmentCount");
+			if(accountNum<=7){
+				subAccountCollect.put(String.valueOf(accountNum), equipmentCount);
+			}
+			if(accountNum>7 && accountNum <=10){
+				subAccountCollect.put("8~10", equipmentCount);
+			}
+			if(accountNum>10){
+				subAccountCollect.put(">10", equipmentCount);
+			}			
+		}
+		for (Map.Entry<String, Long> entry : subAccountCollect.entrySet()) {
+			data.add(entry.getValue());
+		}
+		return data;
+	}
+	
+	public List<CreateRole> queryArea(String startDate, String endDate){
+		String sql = "select B.province province,count(B.province) count from (select openudid from create_role where create_time >= ? and create_time <= ?) A join device_info B on A.openudid = B.openudid group by B.province";
+		List<CreateRole> area = CreateRole.dao.find(sql, startDate, endDate);
+		
+		return area;
+	}
+	
+	public List<CreateRole> queryCountry(String startDate, String endDate){
+		String sql = "select B.country country,count(B.country) count from (select openudid from create_role where create_time >= ? and create_time <= ?) A join device_info B on A.openudid = B.openudid group by B.country;";
+		List<CreateRole> countries = CreateRole.dao.find(sql, startDate, endDate);
+		
+		return countries;
+	}
+	
+	public List<CreateRole> queryAccountType(String startDate, String endDate){
+		String sql = "select account_type,count(account_type) count from create_role where create_time >= ? and create_time <= ? group by account_type";
+		List<CreateRole> accountType = CreateRole.dao.find(sql, startDate, endDate);
+		return accountType;
+	}
+	
+	private void increaseValue(String key, Map<String, Integer> map){
+		int value = map.get(key);
+		value++;
+		map.put(key, value);
+	}
+	
 }

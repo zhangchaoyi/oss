@@ -2,14 +2,20 @@ var activeChart = echarts.init(document.getElementById('active-players-chart'));
 var detailChart = echarts.init(document.getElementById('active-details-chart'));
 
 $(function(){
+    loadData();
+});
+
+function loadData(){
     loadActivePlayerData($("ul.nav.nav-tabs.activeplayer > li.active").children("a").attr("data-info"));
     loadActiveDetailData("played-days");
-});
+};
 
 function loadActivePlayerData(playerTag) {
 
     $.post("/api/players/active", {
-    	playerTag:playerTag
+    	playerTag:playerTag,
+        startDate:$("input#startDate").attr("value"),
+        endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
         configPlayerChart(data);
@@ -19,7 +25,9 @@ function loadActivePlayerData(playerTag) {
 
 function loadActiveDetailData(detailTagInfo) {
 	$.post("/api/players/active/details", {
-    	detailTagInfo:detailTagInfo
+    	detailTagInfo:detailTagInfo,
+        startDate:$("input#startDate").attr("value"),
+        endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
         configDetailChart(data);

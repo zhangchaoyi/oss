@@ -32,14 +32,17 @@ public class DateUtils {
 		
 		Calendar cal = Calendar.getInstance();
 		List<String> dateList = new ArrayList<String>();
-		
-		for(Date date=start;date.before(end)||date.equals(end);){
-			dateList.add(dateToStr(date));
-			cal.setTime(date);
-			cal.add(Calendar.DATE, 1);
-			date = cal.getTime();
+		try {
+			for(Date date=start;date.before(end)||date.equals(end);){
+				dateList.add(dateToStr(date));
+				cal.setTime(date);
+				cal.add(Calendar.DATE, 1);
+				date = cal.getTime();
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+			System.out.println("date transform fail");
 		}
-		
 		return dateList;
 	}
 	

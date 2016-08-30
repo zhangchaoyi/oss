@@ -1,5 +1,6 @@
 package common.controllers.players;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,6 +13,7 @@ import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 import common.interceptor.AuthInterceptor;
+import common.model.CreateRole;
 import common.service.AddPlayersService;
 import common.service.impl.AddPlayersServiceImpl;
 import common.utils.DateUtils;
@@ -64,7 +66,6 @@ public class AddController extends Controller{
 				break;
 			}
 		}
-		
 		Set<String> type = seriesMap.keySet();
 		
 		category.put("日期", categories);	
@@ -83,54 +84,60 @@ public class AddController extends Controller{
 		startDate = startDate + " 00:00:00";
 		endDate = endDate + " 23:59:59";
 		
-		
 		Map<String, Object> data = new LinkedHashMap<String,Object>();
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
 		//保存chart中数据
-		Map<String, List<Integer>> seriesMap = new LinkedHashMap<String, List<Integer>>();
+		Map<String, List<Long>> seriesMap = new LinkedHashMap<String, List<Long>>();
 		
 		switch(addDetailTagInfo){
 			case "first-game-period":{
 				List<String> gamePeriod = Arrays.asList("1~4 s", "5~10 s","11~30 s","31~60 s","1~3 min","3~10 min","10~30 min","30~60 min",">60 min");
-				List<Integer> peopleCount = Arrays.asList(10,20,10,3,4,8,5,10,20);
+				List<Long> peopleCount = addPlayersService.queryFirstGamePeriod(gamePeriod, startDate, endDate);
+				
 				seriesMap.put("玩家数",peopleCount);
 				category.put("首次游戏时长", gamePeriod);
 				break;
-			}case "subsidiary-account-analyze":{
-				List<String> subAccount = Arrays.asList("1","2","3","4","5","6","7","8~10",">10","未统计");
-				List<Integer> equipmentCount = Arrays.asList(50,30,18,3,2,5,2,1,1,10);
+			}
+			case "subsidiary-account-analyze":{
+				List<String> accountPeriod = Arrays.asList("1","2","3","4","5","6","7","8~10",">10");	
+				List<Long> equipmentCount = addPlayersService.querySubsidiaryAccount(accountPeriod,startDate, endDate);
+				
 				seriesMap.put("设备数", equipmentCount);
-				category.put("小号分析", subAccount);
+				category.put("小号分析", accountPeriod);
 				break;
-			}case "area":{
-				List<String> area = Arrays.asList("广东省","湖南省","广西省","福建省","江西省");
-				List<Integer> peopleCount = Arrays.asList(50,30,18,13,21);
-				seriesMap.put("新增人数", peopleCount);
-				category.put("地区", area);
+			}
+			case "area":{
+				List<CreateRole> queryData = addPlayersService.queryArea(startDate, endDate);
+				List<String> provinces = new ArrayList<String>();
+				List<Long> provinceCount = new ArrayList<Long>(); 
+				for(CreateRole cr: queryData){
+					provinces.add(cr.getStr("province"));
+					provinceCount.add(cr.getLong("count"));
+				}		
+				seriesMap.put("新增人数", provinceCount);
+				category.put("地区", provinces);
 				break;			
 			}case "country":{
-				List<String> country = Arrays.asList("中国","美国","朝鲜","马来西亚","日本");
-				List<Integer> peopleCount = Arrays.asList(50,30,18,13,21);
-				seriesMap.put("新增人数", peopleCount);
-				category.put("国家", country);
-				break;
-			}case "sex":{
-				List<String> sex = Arrays.asList("男","女","未知");
-				List<Integer> peopleCount = Arrays.asList(50,70,124);
-				seriesMap.put("新增人数", peopleCount);
-				category.put("性别", sex);
-				break;
-			}case "age":{
-				List<String> age = Arrays.asList("1~15","16~20","21~25","26~30","31~35","36~40","41~45","46~50","51~55","56~60",">60");
-				List<Integer> peopleCount = Arrays.asList(50,70,124,113,51,43,12,54,12,16,7);
-				seriesMap.put("新增人数", peopleCount);
-				category.put("年龄", age);
+				List<CreateRole> queryData = addPlayersService.queryCountry(startDate, endDate);
+				List<String> countries = new ArrayList<String>();
+				List<Long> countryCount = new ArrayList<Long>(); 
+				for(CreateRole cr: queryData){
+					countries.add(cr.getStr("country"));
+					countryCount.add(cr.getLong("count"));
+				}
+				seriesMap.put("新增人数", countryCount);
+				category.put("国家", countries);
 				break;
 			}case "account":{
-				List<String> account = Arrays.asList("admin","visitor","未知");
-				List<Integer> peopleCount = Arrays.asList(18,13,21);
-				seriesMap.put("新增人数", peopleCount);
-				category.put("账户类型", account);
+				List<CreateRole> queryData = addPlayersService.queryAccountType(startDate, endDate);
+				List<String> accountType = new ArrayList<String>();
+				List<Long> accountTypeCount = new ArrayList<Long>();
+				for(CreateRole cr: queryData){
+					accountType.add(cr.getStr("account_type"));
+					accountTypeCount.add(cr.getLong("count"));
+				}			
+				seriesMap.put("新增人数", accountTypeCount);
+				category.put("账户类型", accountType);
 				break;
 			}
 		}

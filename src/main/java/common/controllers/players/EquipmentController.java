@@ -1,5 +1,6 @@
 package common.controllers.players;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -14,9 +15,14 @@ import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 
 import common.interceptor.AuthInterceptor;
+import common.model.DeviceInfo;
+import common.service.EquipmentAnalyzeService;
+import common.service.impl.EquipmentAnalyzeServiceImpl;
 
 @Clear(AuthInterceptor.class)
 public class EquipmentController extends Controller{
+	private EquipmentAnalyzeService equipmentAnalyzeService= new EquipmentAnalyzeServiceImpl();
+	
 	@Before(GET.class)
 	@ActionKey("/players/equipment")
 	public void activePlayer() {
@@ -27,32 +33,43 @@ public class EquipmentController extends Controller{
 	@ActionKey("/api/players/equipment")
 	public void queryEquipmentPlayer() {
 		String playerTagInfo = getPara("playerTagInfo", "add-players"); 
-		
+		String startDate = getPara("startDate");
+		String endDate = getPara("endDate");	
+		startDate = startDate + " 00:00:00";
+		endDate = endDate + " 23:59:59";
+					
 		Map<String, Object> data = new LinkedHashMap<String,Object>();	
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();	
 		//保存chart中数据
-		Map<String, List<Integer>> seriesMap = new LinkedHashMap<String, List<Integer>>();
+		Map<String, List<Long>> seriesMap = new LinkedHashMap<String, List<Long>>();
+		List<String> categories = new ArrayList<String>();
 		
 		switch(playerTagInfo){
 		case "add-players":{
-			List<Integer> data1 =  Arrays.asList(1,20,0,3,7,10,30,10);
-			seriesMap.put("新增玩家", data1);
+			List<Long> equipmentsCount = new ArrayList<Long>();
+			
+			List<DeviceInfo> addPlayersEquipment = equipmentAnalyzeService.queryaddPlayersEquipment(startDate, endDate);
+			for(DeviceInfo di : addPlayersEquipment){
+				categories.add(di.getStr("model"));
+				equipmentsCount.add(di.getLong("count"));
+			}
+			
+			seriesMap.put("新增玩家", equipmentsCount);
 			break;
 		}
 		case "active-players":{
-			List<Integer> data1 =  Arrays.asList(10,2,10,13,27,0,3,1);		
-			seriesMap.put("活跃玩家", data1);
-			break;
+//			List<Integer> data1 =  Arrays.asList(10,2,10,13,27,0,3,1);		
+//			seriesMap.put("活跃玩家", data1);
+//			break;
 		}
 		case "paid-players":{
-			List<Integer> data1 =  Arrays.asList(15,12,10,13,27,1,3,10);
-			seriesMap.put("付费玩家", data1);
-			break;
+//			List<Integer> data1 =  Arrays.asList(15,12,10,13,27,1,3,10);
+//			seriesMap.put("付费玩家", data1);
+//			break;
 		}
 	}
 		
 		Set<String> type = seriesMap.keySet();
-		List<String> categories = Arrays.asList("iphone6s","iphone5s","iphone6","nexus5X","nexus6p","小米","一加","诺基亚");
 		category.put("机型", categories);	
 		data.put("type", type.toArray());
 		data.put("category", category);
@@ -65,6 +82,10 @@ public class EquipmentController extends Controller{
 	public void queryEquipmentDetails() {
 		String playerTagInfo = getPara("playerTagInfo", "add-players"); 
 		String detailTagInfo = getPara("detailTagInfo", "resolution");
+		String startDate = getPara("startDate");
+		String endDate = getPara("endDate");	
+		startDate = startDate + " 00:00:00";
+		endDate = endDate + " 23:59:59";
 		
 		String categoryName = "";
 		switch(playerTagInfo){
@@ -85,40 +106,46 @@ public class EquipmentController extends Controller{
 		Map<String, Object> data = new LinkedHashMap<String,Object>();	
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();	
 		//保存chart中数据
-		Map<String, List<Integer>> seriesMap = new LinkedHashMap<String, List<Integer>>();
+		Map<String, List<Long>> seriesMap = new LinkedHashMap<String, List<Long>>();
 		
 		switch(detailTagInfo){
 			case "resolution":{
-				List<String> solution = Arrays.asList("720*960","640*480","480*320","1024*768","1980*1080");
-				List<Integer> peopleCount = Arrays.asList(10,20,3,4,8);
+				List<DeviceInfo> resolution = equipmentAnalyzeService.queryaddPlayersEquipmentResolution(startDate, endDate);
+				List<String> categories = new ArrayList<String>();
+				List<Long> peopleCount = new ArrayList<Long>();
+				for(DeviceInfo di : resolution){
+					categories.add(di.getStr("resolution"));
+					peopleCount.add(di.getLong("count"));
+				}
+				
 				seriesMap.put(categoryName,peopleCount);
-				category.put("分辨率", solution);
+				category.put("分辨率", categories);
 				break;
 			}
 			case "operating-system":{
 				List<String> OperatingSystem = Arrays.asList("1.1","2.1","-");
-				List<Integer> peopleCount = Arrays.asList(50,30,18);
+				List<Long> peopleCount = Arrays.asList(50L,30L,18L);
 				seriesMap.put(categoryName, peopleCount);
 				category.put("操作系统", OperatingSystem);
 				break;
 			}
 			case "network-mode":{
 				List<String> networkMode = Arrays.asList("G3","WIFI","OTHER","GPRS","EDGE","UMTS","CDMA","EVDO_0","EVDO_A");
-				List<Integer> peopleCount = Arrays.asList(50,330,108,103,201,112,85,65,45);
+				List<Long> peopleCount = Arrays.asList(50L,330L,108L,103L,201L,112L,85L,65L,45L);
 				seriesMap.put(categoryName, peopleCount);
 				category.put("联网方式", networkMode);
 				break;			
 			}
 			case "band-operator":{
 				List<String> bandOperator = Arrays.asList("中国电信","中国联通","中国移动","-");
-				List<Integer> peopleCount = Arrays.asList(50,30,18,13);
+				List<Long> peopleCount = Arrays.asList(50L,30L,18L,13L);
 				seriesMap.put(categoryName, peopleCount);
 				category.put("宽带运营商", bandOperator);
 				break;
 			}
 			case "mobile-communication-operator":{
 				List<String> mobileCommunicationOperator = Arrays.asList("男","女","未知");
-				List<Integer> peopleCount = Arrays.asList(50,70,124);
+				List<Long> peopleCount = Arrays.asList(50L,70L,124L);
 				seriesMap.put(categoryName, peopleCount);
 				category.put("移动通信运营商", mobileCommunicationOperator);
 				break;

@@ -2,14 +2,20 @@ var equipmentChart = echarts.init(document.getElementById('equipment-chart'));
 var equipmentDetailChart = echarts.init(document.getElementById('equipment-details-chart'));
 
 $(function(){
+    loadData();
+});
+
+function loadData(){
     loadEquipmentData($("div.nav-tab.equipment > ul > li.active").children("a").attr("data-info"));
     loadEquipmentDetailsData($("div.nav-tab.equipment > ul > li.active").children("a").attr("data-info"),"resolution");
-});
+}
 
 function loadEquipmentData(playerTagInfo) {
 
     $.post("/api/players/equipment", {
-        playerTagInfo:playerTagInfo
+        playerTagInfo:playerTagInfo,
+        startDate:$("input#startDate").attr("value"),
+        endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
         configEquipmentChart(data);
@@ -20,7 +26,9 @@ function loadEquipmentData(playerTagInfo) {
 function loadEquipmentDetailsData(playerTagInfo, detailTagInfo) {
     $.post("/api/players/equipment/details", {
         playerTagInfo:playerTagInfo,
-        detailTagInfo:detailTagInfo
+        detailTagInfo:detailTagInfo,
+        startDate:$("input#startDate").attr("value"),
+        endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
         configDetailChart(data);

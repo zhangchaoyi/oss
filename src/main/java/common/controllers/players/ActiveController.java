@@ -14,10 +14,18 @@ import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 
 import common.interceptor.AuthInterceptor;
+import common.service.ActivePlayersService;
+import common.service.AddPlayersService;
+import common.service.impl.ActivePlayersServiceImpl;
+import common.service.impl.AddPlayersServiceImpl;
+import common.utils.DateUtils;
 
-//@Clear(AuthInterceptor.class)
-@Before(AuthInterceptor.class)
+@Clear(AuthInterceptor.class)
+//@Before(AuthInterceptor.class)
 public class ActiveController extends Controller{
+	private AddPlayersService addPlayersService = new AddPlayersServiceImpl();
+	private ActivePlayersService activePlayersService = new ActivePlayersServiceImpl();
+	
 	@Before(GET.class)
 	@ActionKey("/players/active")
 	public void activePlayer() {
@@ -28,47 +36,51 @@ public class ActiveController extends Controller{
 	@ActionKey("/api/players/active")
 	public void queryActivePlayer() {
 		String playerTag = getPara("playerTag", "dau");
+		String startDate = getPara("startDate");
+		String endDate = getPara("endDate");
+		
+		startDate = startDate + " 00:00:00";
+		endDate = endDate + " 23:59:59";
 		
 		Map<String, Object> data = new LinkedHashMap<String,Object>();	
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();	
 		//保存chart中数据
-		Map<String, List<Integer>> seriesMap = new LinkedHashMap<String, List<Integer>>();
-	
+		Map<String, List<Long>> seriesMap = new LinkedHashMap<String, List<Long>>();
+		List<String> categories = DateUtils.getDateList(startDate, endDate);
 		
 		
 		switch(playerTag){
 			case "dau":{
-				List<Integer> data1 =  Arrays.asList(1,20,0,3,7,10,30,10);
-				List<Integer> data2 =  Arrays.asList(10,10,10,10,10,10,10,10);
-				List<Integer> data3 =  Arrays.asList(30,20,30,20,30,20,30,20);
-				List<Integer> addPlayers = Arrays.asList(10,30,34,5,6,2,13,34);
-				
+				List<Long> addPlayers = addPlayersService.queryAddPlayersData(categories, startDate, endDate);
+				List<Long> dau =  activePlayersService.queryDau(categories,startDate,endDate);
+							
 				seriesMap.put("新增玩家", addPlayers);
-				seriesMap.put("付费玩家", data1);
-				seriesMap.put("非付费玩家", data2);
-				seriesMap.put("DAU", data3);
+				seriesMap.put("DAU", dau);
+//				seriesMap.put("付费玩家", data1);
+//				seriesMap.put("非付费玩家", data2);
+				
 				break;
 			}
 			case "dauwaumau":{
-				List<Integer> data1 =  Arrays.asList(10,2,10,13,27,0,3,1);
-				List<Integer> data2 =  Arrays.asList(1,1,0,0,10,0,10,1);
-				List<Integer> data3 =  Arrays.asList(3,20,0,2,3,20,30,2);
-				
-				seriesMap.put("DAU", data1);
-				seriesMap.put("WAU", data2);
-				seriesMap.put("MAU", data3);
+//				List<Integer> data1 =  Arrays.asList(10,2,10,13,27,0,3,1);
+//				List<Integer> data2 =  Arrays.asList(1,1,0,0,10,0,10,1);
+//				List<Integer> data3 =  Arrays.asList(3,20,0,2,3,20,30,2);
+//				
+//				seriesMap.put("DAU", data1);
+//				seriesMap.put("WAU", data2);
+//				seriesMap.put("MAU", data3);
 				break;
 			}
 			case "daumau":{
-				List<Integer> data1 =  Arrays.asList(15,12,10,13,27,1,3,10);
-				
-				seriesMap.put("DAU/MAU", data1);
+//				List<Integer> data1 =  Arrays.asList(15,12,10,13,27,1,3,10);
+//				
+//				seriesMap.put("DAU/MAU", data1);
 				break;
 			}
 		}
 		
 		Set<String> type = seriesMap.keySet();
-		List<String> categories = Arrays.asList("2016-08-11","2016-08-12","2016-08-13","2016-08-14","2016-08-15","2016-08-16","2016-08-17","2016-08-18");
+//		List<String> categories = Arrays.asList("2016-08-11","2016-08-12","2016-08-13","2016-08-14","2016-08-15","2016-08-16","2016-08-17","2016-08-18");
 		category.put("日期", categories);	
 		data.put("type", type.toArray());
 		data.put("category", category);

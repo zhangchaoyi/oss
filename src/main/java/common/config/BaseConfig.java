@@ -13,6 +13,8 @@ import com.jfinal.plugin.c3p0.C3p0Plugin;
 import common.interceptor.AuthInterceptor;
 import common.model.CreateRole;
 import common.model.DeviceInfo;
+import common.model.Login;
+import common.model.Logout;
 import common.routes.AdminRoute;
 
 public class BaseConfig extends JFinalConfig {
@@ -35,6 +37,8 @@ public class BaseConfig extends JFinalConfig {
 		me.add(arp);
 		arp.addMapping("create_role", CreateRole.class);
 		arp.addMapping("device_info", DeviceInfo.class);
+		arp.addMapping("logout", Logout.class);
+		arp.addMapping("login", Login.class);
 	}
 
 	@Override
