@@ -6,8 +6,8 @@ $(function(){
 });
 
 function loadData(){
-    loadEquipmentData($("div.nav-tab.equipment > ul > li.active").children("a").attr("data-info"));
-    loadEquipmentDetailsData($("div.nav-tab.equipment > ul > li.active").children("a").attr("data-info"),"resolution");
+    loadEquipmentData($("div.nav-tab.equipment > ul > li.active > a").attr("data-info"));
+    loadEquipmentDetailsData($("div.nav-tab.equipment > ul > li.active > a").attr("data-info"), $("ul.nav.nav-tabs.equipment-details > li.active > a").attr("data-info"));
 }
 
 function loadEquipmentData(playerTagInfo) {
@@ -83,7 +83,7 @@ function configEquipmentChart(data) {
         yAxis: {
             type: 'value',
             axisLabel: {
-                formatter: '{value} %'
+                formatter: '{value} '
             }
         },
         series: function() {

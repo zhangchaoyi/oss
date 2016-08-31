@@ -53,7 +53,7 @@ public class ActiveController extends Controller{
 			case "dau":{
 				List<Long> addPlayers = addPlayersService.queryAddPlayersData(categories, startDate, endDate);
 				List<Long> dau =  activePlayersService.queryDau(categories,startDate,endDate);
-							
+				activePlayersService.queryActivePlayersInfo(categories,startDate,endDate);			
 				seriesMap.put("新增玩家", addPlayers);
 				seriesMap.put("DAU", dau);
 //				seriesMap.put("付费玩家", data1);
@@ -62,17 +62,11 @@ public class ActiveController extends Controller{
 				break;
 			}
 			case "dauwaumau":{
-//				List<Integer> data1 =  Arrays.asList(10,2,10,13,27,0,3,1);
-//				List<Integer> data2 =  Arrays.asList(1,1,0,0,10,0,10,1);
-//				List<Integer> data3 =  Arrays.asList(3,20,0,2,3,20,30,2);
-//				
-//				seriesMap.put("DAU", data1);
-//				seriesMap.put("WAU", data2);
-//				seriesMap.put("MAU", data3);
+				seriesMap = activePlayersService.queryActivePlayersInfo(categories, startDate, endDate);
 				break;
 			}
 			case "daumau":{
-//				List<Integer> data1 =  Arrays.asList(15,12,10,13,27,1,3,10);
+				List<Double> data1 =  Arrays.asList(1.5,1.2,1.0,1.3,2.7,1.0,3.0,1.0);
 //				
 //				seriesMap.put("DAU/MAU", data1);
 				break;

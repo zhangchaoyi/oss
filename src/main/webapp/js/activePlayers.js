@@ -82,7 +82,7 @@ function configPlayerChart(data) {
         yAxis: {
             type: 'value',
             axisLabel: {
-                formatter: '{value} %'
+                formatter: '{value} '
             }
         },
         series: function() {
@@ -221,7 +221,7 @@ function configDetailChart(data) {
                         };
                         serie.push(item);
                     }
-                    console.log(serie);
+
                     return serie;
                 } (),
 

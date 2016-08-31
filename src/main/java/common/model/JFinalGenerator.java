@@ -30,7 +30,6 @@ public class JFinalGenerator {
 		// 添加不需要生成的表名
 		gernerator.addExcludedTable("arena_score");
 		gernerator.addExcludedTable("ladder_score");
-		gernerator.addExcludedTable("level_up");
 		gernerator.addExcludedTable("log_RMB");
 		gernerator.addExcludedTable("log_battle");
 		gernerator.addExcludedTable("log_charge");

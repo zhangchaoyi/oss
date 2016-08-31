@@ -11,6 +11,7 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 
 import common.interceptor.AuthInterceptor;
+import common.model.ActiveUser;
 import common.model.CreateRole;
 import common.model.DeviceInfo;
 import common.model.Login;
@@ -39,6 +40,7 @@ public class BaseConfig extends JFinalConfig {
 		arp.addMapping("device_info", DeviceInfo.class);
 		arp.addMapping("logout", Logout.class);
 		arp.addMapping("login", Login.class);
+		arp.addMapping("active_user", ActiveUser.class);
 	}
 
 	@Override
