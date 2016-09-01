@@ -14,6 +14,8 @@ import common.interceptor.AuthInterceptor;
 import common.model.ActiveUser;
 import common.model.CreateRole;
 import common.model.DeviceInfo;
+import common.model.LevelUp;
+import common.model.LogCharge;
 import common.model.Login;
 import common.model.Logout;
 import common.routes.AdminRoute;
@@ -41,6 +43,8 @@ public class BaseConfig extends JFinalConfig {
 		arp.addMapping("logout", Logout.class);
 		arp.addMapping("login", Login.class);
 		arp.addMapping("active_user", ActiveUser.class);
+		arp.addMapping("log_charge", LogCharge.class);
+		arp.addMapping("level_up", LevelUp.class);
 	}
 
 	@Override

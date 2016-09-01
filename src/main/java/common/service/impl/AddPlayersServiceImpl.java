@@ -27,9 +27,7 @@ public class AddPlayersServiceImpl implements AddPlayersService {
 		for (CreateRole cr : addPlayersSource) {
 			sort.put(cr.getStr("date"), cr.getLong("count"));
 		}
-		for (Map.Entry<String, Long> entry : sort.entrySet()) {
-			data.add(entry.getValue());
-		}
+		data.addAll(sort.values());
 		return data;
 	}
 
@@ -59,9 +57,7 @@ public class AddPlayersServiceImpl implements AddPlayersService {
 		for (DeviceInfo cr : source) {
 			sort.put(cr.getStr("date"), cr.getLong("count"));
 		}
-		for (Map.Entry<String, Long> entry : sort.entrySet()) {
-			data.add(entry.getValue());
-		}
+		data.addAll(sort.values());
 		return data;
 	}
 
@@ -156,9 +152,7 @@ public class AddPlayersServiceImpl implements AddPlayersService {
 				subAccountCollect.put(">10", equipmentCount);
 			}			
 		}
-		for (Map.Entry<String, Long> entry : subAccountCollect.entrySet()) {
-			data.add(entry.getValue());
-		}
+		data.addAll(subAccountCollect.values());
 		return data;
 	}
 	

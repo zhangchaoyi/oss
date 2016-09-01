@@ -98,7 +98,6 @@ function configPlayerChart(data) {
             };
             return serie;
         } ()
-
     });
 }
 
@@ -156,6 +155,10 @@ function dealTableData(data,percent) {
         for (var j = 0; j < type.length; j++) {
             item.push(serie[type[j]][i]);
             if(percent===true){
+                if(sum==0){
+                    item.push('0.00%');
+                    continue;
+                }
             	item.push(((serie[type[j]][i]/sum*100)).toFixed(2) + '%');
             }
         }
@@ -194,48 +197,6 @@ function configDetailChart(data) {
         categories = data.category[i];
     }
     detailChart.clear();
-
-    if(categoryName=="性别"){
-        detailChart.setOption({
-            tooltip: {
-                trigger: 'item',
-                formatter: "{a} <br/>{b} : {c} ({d}%)"
-            },
-            legend: {
-                orient: 'vertical',
-                // left: 'left',
-                data: data.type
-            },
-            backgroundColor: "white",
-            series: [{
-                name: data.type,
-                type: 'pie',
-                radius: '65%',
-                center: ['50%', '50%'],
-                data: function() {
-                    var serie = [];
-                    for (var i = 0; i < categories.length; i++) {
-                        var item = {
-                            name: categories[i],
-                            value: recData[data.type][i],
-                        };
-                        serie.push(item);
-                    }
-
-                    return serie;
-                } (),
-
-                itemStyle: {
-                    emphasis: {
-                        shadowBlur: 10,
-                        shadowOffsetX: 0,
-                        shadowColor: 'rgba(0, 0, 0, 0.5)'
-                    }
-                }
-            }]
-        });
-        return;
-    }
 
     detailChart.setOption({
         tooltip: {

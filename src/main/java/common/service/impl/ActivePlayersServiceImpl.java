@@ -1,11 +1,17 @@
 package common.service.impl;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
 import common.model.ActiveUser;
+import common.model.CreateRole;
+import common.model.LevelUp;
+import common.model.LogCharge;
+import common.model.Login;
 import common.service.ActivePlayersService;
 
 public class ActivePlayersServiceImpl implements ActivePlayersService {
@@ -22,18 +28,60 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		for (ActiveUser cr : dau) {
 			sort.put(cr.getStr("date"), Long.parseLong(String.valueOf(cr.getInt("dau"))));
 		}
-//		data.addAll(sort.values());
-		for (Map.Entry<String, Long> entry : sort.entrySet()) {
-			data.add(entry.getValue());
-		}
-
+		data.addAll(sort.values());
 		return data;
 	}
 	
-	public Map<String, List<Long>> queryActivePlayersInfo(List<String> categories, String startDate, String endDate){
+	public Map<String, List<Long>> queryPaidInActiveUser(List<String> categories, String startDate, String endDate){
+		Map<String, List<Long>> data = new HashMap<String, List<Long>>();
+		String sql = "select DATE_FORMAT(date,'%Y-%m-%d') date,sum(case when B.account is not null then 1 else 0 end)paid,sum(case when B.account is null then 1 else 0 end)notpaid from (select distinct account,date from login where login_time >= ? and login_time <= ? order by account) A left join (select distinct account from log_charge) B on A.account=B.account group by DATE_FORMAT(date,'%Y-%m-%d')";
+		List<LogCharge> activePlayers = LogCharge.dao.find(sql, startDate, endDate);
+		//Map<Date,Map<paid/notpaid,value>>
+		Map<String, Map<String,Long>> sort = new TreeMap<String, Map<String, Long>>();
+		//initial
+		for(String category : categories){
+			Map<String, Long> subMap = new HashMap<String, Long>();
+			subMap.put("paid", 0L);
+			subMap.put("notpaid", 0L);
+			sort.put(category, subMap);
+		}
+		for(LogCharge lc : activePlayers){
+			String date = lc.getStr("date");
+			Map<String, Long> subMap = sort.get(date);
+			subMap.put("paid", lc.getBigDecimal("paid").longValue());
+			subMap.put("notpaid", lc.getBigDecimal("notpaid").longValue());
+			sort.put(date, subMap);
+		}
+		
+		List<Long> paid = new ArrayList<Long>();
+		List<Long> notpaid = new ArrayList<Long>();
+
+		for(Map.Entry<String, Map<String, Long>> entry : sort.entrySet()){
+			for(Map.Entry<String, Long> subEntry : entry.getValue().entrySet()){
+				switch(subEntry.getKey()){
+					case "paid":{
+						paid.add(subEntry.getValue());
+						break;
+					}
+					case "notpaid":{
+						notpaid.add(subEntry.getValue());
+						break;
+					}
+				}
+			}
+		}
+
+		data.put("paid", paid);
+		data.put("notpaid", notpaid);
+		return data;
+	}
+	
+	public Map<String, Object> queryActivePlayersInfo(List<String> categories, String startDate, String endDate){
 		String sql = "select DATE_FORMAT(time,'%Y-%m-%d') date, dau, wau, mau from active_user where time >= ? and time <=?";
 		List<ActiveUser> activeUser = ActiveUser.dao.find(sql, startDate, endDate);
 		
+		
+		//Map<Date,Map<name,value>>   --Map<"2016-08-20",Map<"dau",1>>
 		Map<String,Map<String, Long>> sort = new TreeMap<String,Map<String, Long>>();
 		//初始化
 		for(String category : categories){
@@ -76,7 +124,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 			}
 		}
 
-		Map<String, List<Long>> data = new HashMap<String, List<Long>>();
+		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("DAU", dauData);
 		data.put("WAU", wauData);
 		data.put("MAU", mauData);
@@ -84,10 +132,167 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		return data;
 	}
 	
-//	public Map<String, List<Long>> queryActivePlayersInfo(List<String> categories, String startDate, String endDate){
-//		
-//	}
+	public List<Double> queryActivePlayersDauMauRate(List<String> categories, String startDate, String endDate){
+		List<Double> data = new ArrayList<Double>();
+		String sql = "select DATE_FORMAT(time,'%Y-%m-%d') date, dau, mau from active_user where time >= ? and time <= ?";
+		List<ActiveUser> activeUser = ActiveUser.dao.find(sql, startDate, endDate);
+		
+		Map<String, Double> sort = new TreeMap<String, Double>();
+		//初始化Map
+		for(String category : categories){
+			sort.put(category, 0.0);
+		}
+		
+		for(ActiveUser au : activeUser){
+			int dau = au.getInt("dau");
+			int mau = au.getInt("mau");
+			if(mau==0){
+				continue;
+			}
+			BigDecimal bg = new BigDecimal(dau*1.0/mau);
+			double rate = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			sort.put(au.getStr("date"), rate);
+		}
+
+		data.addAll(sort.values());
+		
+		return data;
+	}
 	
+	public List<Long> queryPlayDays(List<String> playDaysPeriod, String startDate, String endDate){
+		List<Long> data = new ArrayList<Long>();
+		String sql = "select count(distinct date)count from login A join (select distinct account from login where login_time >= ? and login_time <= ?) B on A.account = B.account where A.login_time <= ? group by B.account";
+		List<Login> playDays = Login.dao.find(sql, startDate, endDate, endDate);
+		Map<String,Integer> record = new LinkedHashMap<String, Integer>();
+		for(String playDayString : playDaysPeriod){
+			record.put(playDayString, 0);
+		}
+		
+		for(Login login : playDays){
+			int num = login.getLong("count").intValue();
+			if(num<=1){
+				increaseValue("1 天", record);
+				continue;
+			}
+			if(num>=2 && num<=3 ){
+				increaseValue("2~3 天", record);
+				continue;
+			}
+			if(num>=4 && num<=7 ){
+				increaseValue("4~7 天", record);
+				continue;
+			}
+			if(num>=8 && num<=14 ){
+				increaseValue("8~14 天", record);
+				continue;
+			}
+			if(num>=15 && num<=30 ){
+				increaseValue("15~30 天", record);
+				continue;
+			}
+			if(num>=31 && num<=90 ){
+				increaseValue("31~90 天", record);
+				continue;
+			}
+			if(num>=91 && num<=180 ){
+				increaseValue("91~180 天", record);
+				continue;
+			}
+			if(num>=181 && num<=365 ){
+				increaseValue("181~365 天", record);
+				continue;
+			}
+			increaseValue("365+ 天", record);
+		}
+		
+		for(Integer i : record.values()){
+			data.add(i.longValue());
+		}
+		return data;
+	}
 	
+	public Map<Integer, Long> queryRank(String startDate, String endDate){
+		String sql = "select C.level level,count(C.level) count from(select B.account account, max(level) level from level_up A join (select distinct account from login where login_time >= ? and login_time <= ? ) B on A.account=B.account group by B.account) C group by level";
+		List<LevelUp> rank = LevelUp.dao.find(sql, startDate, endDate);
+		//Map<level,count>
+		Map<Integer, Long> data = new HashMap<Integer, Long>();
+		for(LevelUp lu : rank){
+			data.put(lu.getInt("level"), lu.getLong("count"));
+		}
+		List<Integer> categories = new ArrayList<Integer>(data.keySet());
+		int max = max(categories);
+		for(int i=0;i<=max;i++){
+			if(!data.containsKey(i)){
+				data.put(i, 0L);
+			}
+		}
+		return data;
+	}
+	
+	public Map<String, Object> queryArea(String startDate, String endDate){
+		Map<String, Object> data = new HashMap<String, Object>();
+		String sql = "select C.province province,count(C.province) count from create_role A join (select distinct account from login where login_time >= ? and login_time <= ?) B on A.account=B.account join device_info C on A.openudid=C.openudid group by C.province";
+		List<CreateRole> queryData = CreateRole.dao.find(sql, startDate, endDate);
+		List<String> province = new ArrayList<String>();
+		List<Long> areaData = new ArrayList<Long>();
+		for(CreateRole cr : queryData){
+			province.add(cr.getStr("province"));
+			areaData.add(cr.getLong("count"));
+		}
+		data.put("activePlayer", areaData);
+		data.put("area", province);		
+		return data;
+	}
+	
+	public Map<String, Object> queryCountry(String startDate, String endDate){
+		Map<String, Object> data = new HashMap<String, Object>();
+		String sql = "select C.country country,count(C.country) count from create_role A join (select distinct account from login where login_time >= ? and login_time <= ?) B on A.account=B.account join device_info C on A.openudid=C.openudid group by C.country";
+		List<CreateRole> queryData = CreateRole.dao.find(sql, startDate, endDate);
+		List<String> country = new ArrayList<String>();
+		List<Long> countryData = new ArrayList<Long>();
+		for(CreateRole cr : queryData){
+			country.add(cr.getStr("country"));
+			countryData.add(cr.getLong("count"));
+		}
+		data.put("activePlayer", countryData);
+		data.put("country", country);		
+		return data;
+	}
+	
+	public Map<String, Object> queryAccountType(String startDate, String endDate){
+		Map<String, Object> data = new HashMap<String, Object>();
+		String sql = "select A.account_type account_type,count(A.account_type)count from create_role A join (select distinct account from login where login_time >= ? and login_time <= ?) B on A.account=B.account group by A.account_type;";
+		List<CreateRole> queryData = CreateRole.dao.find(sql, startDate, endDate);
+		List<String> accountType = new ArrayList<String>();
+		List<Long> accountTypeData = new ArrayList<Long>();
+		for(CreateRole cr : queryData){
+			accountType.add(cr.getStr("account_type"));
+			accountTypeData.add(cr.getLong("count"));
+		}
+		data.put("activePlayer", accountTypeData);
+		data.put("accountType", accountType);		
+		return data;
+	}
+	
+	private void increaseValue(String key, Map<String, Integer> map){
+		int value = map.get(key);
+		value++;
+		map.put(key, value);
+	}
+	
+	private int max(List<Integer> list){
+		if(list==null || list.size()==0){
+			return 0;
+		}
+		int max = 0;
+		for(int i=0;i<list.size()-1;i++){
+			if(list.get(i)>list.get(i+1)){
+				max=list.get(i);
+			}else{
+				max=list.get(i+1);
+			}
+		}
+		return max;
+	}
 	
 }

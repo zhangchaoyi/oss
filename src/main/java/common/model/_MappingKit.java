@@ -22,6 +22,7 @@ public class _MappingKit {
 		arp.addMapping("device_info", "openudid,os", DeviceInfo.class);
 		arp.addMapping("guide_step", "id", GuideStep.class);
 		arp.addMapping("level_up", "id", LevelUp.class);
+		arp.addMapping("log_charge", "id", LogCharge.class);
 		arp.addMapping("login", "id", Login.class);
 		arp.addMapping("logout", "id", Logout.class);
 	}
