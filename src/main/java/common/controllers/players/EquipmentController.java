@@ -17,6 +17,7 @@ import common.interceptor.AuthInterceptor;
 import common.model.DeviceInfo;
 import common.service.EquipmentAnalyzeService;
 import common.service.impl.EquipmentAnalyzeServiceImpl;
+import common.utils.StringUtils;
 
 @Clear(AuthInterceptor.class)
 public class EquipmentController extends Controller {
@@ -32,6 +33,7 @@ public class EquipmentController extends Controller {
 	@ActionKey("/api/players/equipment")
 	public void queryEquipmentPlayer() {
 		String playerTagInfo = getPara("playerTagInfo", "add-players");
+		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
 		startDate = startDate + " 00:00:00";
@@ -46,7 +48,7 @@ public class EquipmentController extends Controller {
 		switch (playerTagInfo) {
 		case "add-players": {
 			List<Long> equipmentsCount = new ArrayList<Long>();
-			List<DeviceInfo> addPlayersEquipment = equipmentAnalyzeService.queryaddPlayersEquipment(startDate, endDate);
+			List<DeviceInfo> addPlayersEquipment = equipmentAnalyzeService.queryAddPlayersEquipment(icons, startDate, endDate);
 			for (DeviceInfo di : addPlayersEquipment) {
 				categories.add(di.getStr("model"));
 				equipmentsCount.add(di.getLong("count"));
@@ -57,7 +59,7 @@ public class EquipmentController extends Controller {
 		}
 		case "active-players": {
 			List<Long> equipmentsCount = new ArrayList<Long>();
-			List<DeviceInfo> activePlayersEquipment = equipmentAnalyzeService.queryaddPlayersEquipment(startDate,
+			List<DeviceInfo> activePlayersEquipment = equipmentAnalyzeService.queryActivePlayersEquipment(icons, startDate,
 					endDate);
 			for (DeviceInfo di : activePlayersEquipment) {
 				categories.add(di.getStr("model"));
@@ -68,9 +70,15 @@ public class EquipmentController extends Controller {
 			break;
 		}
 		case "paid-players": {
-			// List<Integer> data1 = Arrays.asList(15,12,10,13,27,1,3,10);
-			// seriesMap.put("付费玩家", data1);
-			// break;
+			List<Long> equipmentsCount = new ArrayList<Long>();
+			List<DeviceInfo> paidPlayersEquipment = equipmentAnalyzeService.queryPaidPlayersEquipment(icons, startDate, endDate);
+			
+			for (DeviceInfo di : paidPlayersEquipment) {
+				categories.add(di.getStr("model"));
+				equipmentsCount.add(di.getLong("count"));
+			}
+			seriesMap.put("付费玩家", equipmentsCount);
+			break;
 		}
 		}
 
@@ -87,6 +95,7 @@ public class EquipmentController extends Controller {
 	public void queryEquipmentDetails() {
 		String playerTagInfo = getPara("playerTagInfo", "add-players");
 		String detailTagInfo = getPara("detailTagInfo", "resolution");
+		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
 		startDate = startDate + " 00:00:00";
@@ -103,7 +112,7 @@ public class EquipmentController extends Controller {
 				categoryName = "新增玩家";
 				switch (detailTagInfo) {
 					case "resolution": {
-						List<DeviceInfo> resolution = equipmentAnalyzeService.queryAddPlayersEquipmentResolution(startDate, endDate);
+						List<DeviceInfo> resolution = equipmentAnalyzeService.queryAddPlayersEquipmentResolution(icons, startDate, endDate);
 						List<String> categories = new ArrayList<String>();
 						List<Long> peopleCount = new ArrayList<Long>();
 						for (DeviceInfo di : resolution) {
@@ -115,11 +124,11 @@ public class EquipmentController extends Controller {
 						break;
 					}
 					case "operating-system": {
-						List<DeviceInfo> os = equipmentAnalyzeService.queryAddPlayersEquipmentOs(startDate, endDate);
+						List<DeviceInfo> os = equipmentAnalyzeService.queryAddPlayersEquipmentOsVersion(icons, startDate, endDate);
 						List<String> categories = new ArrayList<String>();
 						List<Long> peopleCount = new ArrayList<Long>();
 						for (DeviceInfo di : os) {
-							categories.add(di.getStr("os"));
+							categories.add(di.getStr("os_version"));
 							peopleCount.add(di.getLong("count"));
 						}
 						seriesMap.put(categoryName, peopleCount);
@@ -127,7 +136,7 @@ public class EquipmentController extends Controller {
 						break;
 					}
 					case "network-mode": {
-						List<DeviceInfo> net = equipmentAnalyzeService.queryAddPlayersEquipmentNet(startDate, endDate);
+						List<DeviceInfo> net = equipmentAnalyzeService.queryAddPlayersEquipmentNet(icons, startDate, endDate);
 						List<String> categories = new ArrayList<String>();
 						List<Long> peopleCount = new ArrayList<Long>();
 						for (DeviceInfo di : net) {
@@ -139,7 +148,7 @@ public class EquipmentController extends Controller {
 						break;
 					}
 					case "band-operator": {
-						List<DeviceInfo> bandOperator = equipmentAnalyzeService.queryAddPlayersEquipmentBandOperator(startDate, endDate);
+						List<DeviceInfo> bandOperator = equipmentAnalyzeService.queryAddPlayersEquipmentBandOperator(icons, startDate, endDate);
 						List<String> categories = new ArrayList<String>();
 						List<Long> peopleCount = new ArrayList<Long>();
 						for (DeviceInfo di : bandOperator) {
@@ -157,7 +166,7 @@ public class EquipmentController extends Controller {
 				categoryName = "活跃玩家";
 				switch(detailTagInfo){
 					case "resolution":{
-						List<DeviceInfo> resolution = equipmentAnalyzeService.queryActivePlayersEquipmentResolution(startDate, endDate);
+						List<DeviceInfo> resolution = equipmentAnalyzeService.queryActivePlayersEquipmentResolution(icons, startDate, endDate);
 						List<String> categories = new ArrayList<String>();
 						List<Long> peopleCount = new ArrayList<Long>();
 						for(DeviceInfo di : resolution){
@@ -169,11 +178,11 @@ public class EquipmentController extends Controller {
 						break;
 					}
 					case "operating-system":{
-						List<DeviceInfo> os = equipmentAnalyzeService.queryActivePlayersEquipmentOs(startDate, endDate);
+						List<DeviceInfo> os = equipmentAnalyzeService.queryActivePlayersEquipmentOsVersion(icons, startDate, endDate);
 						List<String> categories = new ArrayList<String>();
 						List<Long> peopleCount = new ArrayList<Long>();
 						for(DeviceInfo di : os){
-							categories.add(di.getStr("os"));
+							categories.add(di.getStr("os_version"));
 							peopleCount.add(di.getLong("count"));
 						}
 						seriesMap.put(categoryName, peopleCount);
@@ -181,7 +190,7 @@ public class EquipmentController extends Controller {
 						break;
 					}
 					case "network-mode":{
-						List<DeviceInfo> net = equipmentAnalyzeService.queryActivePlayersEquipmentNet(startDate, endDate);
+						List<DeviceInfo> net = equipmentAnalyzeService.queryActivePlayersEquipmentNet(icons, startDate, endDate);
 						List<String> categories = new ArrayList<String>();
 						List<Long> peopleCount = new ArrayList<Long>();
 						for(DeviceInfo di : net){
@@ -193,7 +202,7 @@ public class EquipmentController extends Controller {
 						break;			
 					}
 					case "band-operator":{
-						List<DeviceInfo> bandOperator = equipmentAnalyzeService.queryActivePlayersEquipmentBandOperator(startDate, endDate);
+						List<DeviceInfo> bandOperator = equipmentAnalyzeService.queryActivePlayersEquipmentBandOperator(icons, startDate, endDate);
 						List<String> categories = new ArrayList<String>();
 						List<Long> peopleCount = new ArrayList<Long>();
 						for(DeviceInfo di : bandOperator){
@@ -209,6 +218,56 @@ public class EquipmentController extends Controller {
 			}
 			case "paid-players": {
 				categoryName = "付费玩家";
+				switch(detailTagInfo){
+					case "resolution":{
+						List<DeviceInfo> resolution = equipmentAnalyzeService.queryPaidPlayersEquipmentResolution(icons, startDate, endDate);
+						List<String> categories = new ArrayList<String>();
+						List<Long> peopleCount = new ArrayList<Long>();
+						for(DeviceInfo di : resolution){
+							categories.add(di.getStr("resolution"));
+							peopleCount.add(di.getLong("count"));
+						}
+						seriesMap.put(categoryName,peopleCount);
+						category.put("分辨率", categories);
+						break;
+					}
+					case "operating-system":{
+						List<DeviceInfo> os = equipmentAnalyzeService.queryPaidPlayersEquipmentOsVersion(icons, startDate, endDate);
+						List<String> categories = new ArrayList<String>();
+						List<Long> peopleCount = new ArrayList<Long>();
+						for(DeviceInfo di : os){
+							categories.add(di.getStr("os_version"));
+							peopleCount.add(di.getLong("count"));
+						}
+						seriesMap.put(categoryName, peopleCount);
+						category.put("操作系统", categories);
+						break;
+					}
+					case "network-mode":{
+						List<DeviceInfo> net = equipmentAnalyzeService.queryPaidPlayersEquipmentNet(icons, startDate, endDate);
+						List<String> categories = new ArrayList<String>();
+						List<Long> peopleCount = new ArrayList<Long>();
+						for(DeviceInfo di : net){
+							categories.add(di.getStr("net"));
+							peopleCount.add(di.getLong("count"));
+						}
+						seriesMap.put(categoryName, peopleCount);
+						category.put("联网方式", categories);
+						break;			
+					}
+					case "band-operator":{
+						List<DeviceInfo> bandOperator = equipmentAnalyzeService.queryPaidPlayersEquipmentBandOperator(icons, startDate, endDate);
+						List<String> categories = new ArrayList<String>();
+						List<Long> peopleCount = new ArrayList<Long>();
+						for(DeviceInfo di : bandOperator){
+							categories.add(di.getStr("carrier"));
+							peopleCount.add(di.getLong("count"));
+						}
+						seriesMap.put(categoryName, peopleCount);
+						category.put("宽带运营商", categories);
+						break;
+					}
+				}
 				break;
 			}
 		}

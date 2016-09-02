@@ -14,9 +14,9 @@ import common.service.AddPlayersService;
 
 public class AddPlayersServiceImpl implements AddPlayersService {
 	// 整理数据 源数据可能存在缺失 如2016-08-01当天的数据可能返回null,则数据列表长度 和 时间列表长度 不能一一对应
-	public List<Long> queryAddPlayersData(List<String> categories, String startDate, String endDate) {
-		String addPlayersSql = "select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(*) count from create_role where create_time >= ? and create_time <= ? group by DATE_FORMAT(create_time,'%Y-%m-%d')";
-		List<CreateRole> addPlayersSource = CreateRole.dao.find(addPlayersSql, startDate, endDate);
+	public List<Long> queryAddPlayersData(List<String> categories, String icons, String startDate, String endDate) {
+		String sql = "select DATE_FORMAT(A.create_time,'%Y-%m-%d') date,count(*) count from create_role A join device_info B on A.openudid = B.openudid where A.create_time >= ? and A.create_time <= ? and B.os in(" + icons + ") group by DATE_FORMAT(A.create_time,'%Y-%m-%d')";
+		List<CreateRole> addPlayersSource = CreateRole.dao.find(sql, startDate, endDate);
 
 		List<Long> data = new ArrayList<Long>();
 		Map<String, Long> sort = new TreeMap<String, Long>();
@@ -32,16 +32,16 @@ public class AddPlayersServiceImpl implements AddPlayersService {
 	}
 
 	//查询设备激活的信息
-	public List<Long> queryDeviceInfoData(List<String> categories, String startDate, String endDate) {
-		String activateEquipmentSql = "select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(*) count from device_info where create_time >= ? and create_time <= ? group by DATE_FORMAT(create_time,'%Y-%m-%d')";
+	public List<Long> queryDeviceInfoData(List<String> categories, String icons, String startDate, String endDate) {
+		String activateEquipmentSql = "select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(*) count from device_info where create_time >= ? and create_time <= ? and os in ("+ icons +") group by DATE_FORMAT(create_time,'%Y-%m-%d')";
 		List<DeviceInfo> activateEquipmentSource = DeviceInfo.dao.find(activateEquipmentSql, startDate, endDate);
 		return dealQueryDeviceInfoData(activateEquipmentSource, categories);
 	}
 
 	//查询新增设备的信息
-	public List<Long> queryAddEquipmentData(List<String> categories, String startDate, String endDate) {
-		String addEquipmentSql = "select count(B.openudid) count,DATE_FORMAT(create_time,'%Y-%m-%d') date from (select openudid from device_info where create_time >= ? and create_time <= ? ) A left join (select openudid,min(create_time) create_time from create_role where create_time >= ? and create_time <= ? group by openudid) B on A.openudid = B.openudid where B.openudid is not null group by DATE_FORMAT(create_time,'%Y-%m-%d')";
-		List<DeviceInfo> addEquipmentSource = DeviceInfo.dao.find(addEquipmentSql, startDate, endDate, startDate,
+	public List<Long> queryAddEquipmentData(List<String> categories, String icons, String startDate, String endDate) {
+		String sql = "select count(B.openudid) count,DATE_FORMAT(B.create_time,'%Y-%m-%d') date from (select openudid from device_info where create_time >= ? and create_time <= ? and os in(" + icons + ")) A left join (select openudid,min(create_time) create_time from create_role where create_time >= ? and create_time <= ? group by openudid) B on A.openudid = B.openudid where B.openudid is not null group by DATE_FORMAT(B.create_time,'%Y-%m-%d')";
+		List<DeviceInfo> addEquipmentSource = DeviceInfo.dao.find(sql, startDate, endDate, startDate,
 				endDate);
 		return dealQueryDeviceInfoData(addEquipmentSource, categories);
 	}
@@ -79,9 +79,9 @@ public class AddPlayersServiceImpl implements AddPlayersService {
 	}
 	
 	//查询首次游戏时间  筛选时间区间内的每个帐号首次在线时长
-	public List<Long> queryFirstGamePeriod(List<String> gamePeriod, String startDate, String endDate){	
+	public List<Long> queryFirstGamePeriod(List<String> gamePeriod, String icons, String startDate, String endDate){	
 		List<Long> data = new ArrayList<Long>();
-		String sql = "select B.online_time time from (select account,min(logout_time)logout_time from logout where logout_time > ? group by account) A join logout B on A.account= B.account and A.logout_time = B.logout_time join create_role C on A.account = C.account where C.create_time >= ? and C.create_time <= ?"; 	
+		String sql = "select B.online_time time from (select account,min(logout_time)logout_time from logout where logout_time > ? group by account) A join logout B on A.account= B.account and A.logout_time = B.logout_time join create_role C on A.account = C.account join device_info D on C.openudid = D.openudid where C.create_time >= ? and C.create_time <= ? and D.os in("+ icons + ");"; 	
 		List<Logout> firstGamePeriod = Logout.dao.find(sql, startDate, startDate, endDate);
 		Map<String, Integer> firstGamePeriodCollect = new LinkedHashMap<String, Integer>();
 		for(String gp :gamePeriod){
@@ -131,10 +131,10 @@ public class AddPlayersServiceImpl implements AddPlayersService {
 		return data;
 	}
 	
-	public List<Long> querySubsidiaryAccount(List<String> accountPeriod, String startDate, String endDate){
+	public List<Long> querySubsidiaryAccount(List<String> accountPeriod, String icons, String startDate, String endDate){
 		List<Long> data = new ArrayList<Long>();
-		String sql = "select accountNum,count(accountNum) equipmentCount from (select B.accountNum from (select openudid from device_info where create_time >= ? and create_time <= ?) A left join (select count(openudid)accountNum,openudid,min(create_time) create_time from create_role where create_time >= ? and create_time <= ? group by openudid) B on A.openudid = B.openudid where B.openudid is not null) C group by accountNum;";
-		List<DeviceInfo> subAccount = DeviceInfo.dao.find(sql, startDate, endDate, startDate, endDate);
+		String sql = "select accountNum,count(accountNum) equipmentCount from (select B.accountNum from device_info A left join (select count(openudid)accountNum,openudid,min(create_time) create_time from create_role where create_time >= ? and create_time <= ? group by openudid) B on A.openudid = B.openudid where B.openudid is not null and A.os in(" + icons + ")) C group by accountNum;";
+		List<DeviceInfo> subAccount = DeviceInfo.dao.find(sql, startDate, endDate);
 		Map<String, Long> subAccountCollect = new LinkedHashMap<String, Long>();
 		for(String ap : accountPeriod){
 			subAccountCollect.put(ap, 0L);
@@ -156,22 +156,22 @@ public class AddPlayersServiceImpl implements AddPlayersService {
 		return data;
 	}
 	
-	public List<CreateRole> queryArea(String startDate, String endDate){
-		String sql = "select B.province province,count(B.province) count from (select openudid from create_role where create_time >= ? and create_time <= ?) A join device_info B on A.openudid = B.openudid group by B.province";
+	public List<CreateRole> queryArea(String icons, String startDate, String endDate){
+		String sql = "select B.province province,count(B.province) count from (select openudid from create_role where create_time >= ? and create_time <= ?) A join device_info B on A.openudid = B.openudid where B.os in (" + icons + ") group by B.province";
 		List<CreateRole> area = CreateRole.dao.find(sql, startDate, endDate);
 		
 		return area;
 	}
 	
-	public List<CreateRole> queryCountry(String startDate, String endDate){
-		String sql = "select B.country country,count(B.country) count from (select openudid from create_role where create_time >= ? and create_time <= ?) A join device_info B on A.openudid = B.openudid group by B.country;";
+	public List<CreateRole> queryCountry(String icons, String startDate, String endDate){
+		String sql = "select B.country country,count(B.country) count from (select openudid from create_role where create_time >= ? and create_time <= ?) A join device_info B on A.openudid = B.openudid where B.os in (" + icons + ") group by B.country;";
 		List<CreateRole> countries = CreateRole.dao.find(sql, startDate, endDate);
 		
 		return countries;
 	}
 	
-	public List<CreateRole> queryAccountType(String startDate, String endDate){
-		String sql = "select account_type,count(account_type) count from create_role where create_time >= ? and create_time <= ? group by account_type";
+	public List<CreateRole> queryAccountType(String icons, String startDate, String endDate){
+		String sql = "select A.account_type,count(A.account_type) count from create_role A join device_info B on A.openudid = B.openudid where A.create_time >= ? and A.create_time <= ? and B.os in (" + icons + ") group by A.account_type";
 		List<CreateRole> accountType = CreateRole.dao.find(sql, startDate, endDate);
 		return accountType;
 	}

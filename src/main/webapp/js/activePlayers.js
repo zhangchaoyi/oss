@@ -7,13 +7,14 @@ $(function(){
 
 function loadData(){
     loadActivePlayerData($("ul.nav.nav-tabs.activeplayer > li.active").children("a").attr("data-info"));
-    loadActiveDetailData("played-days");
+    loadActiveDetailData($("ul.nav.nav-tabs.active-details > li.active > a").attr("data-info"));
 };
 
 function loadActivePlayerData(playerTag) {
 
     $.post("/api/players/active", {
     	playerTag:playerTag,
+        icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
     },
@@ -26,6 +27,7 @@ function loadActivePlayerData(playerTag) {
 function loadActiveDetailData(detailTagInfo) {
 	$.post("/api/players/active/details", {
     	detailTagInfo:detailTagInfo,
+        icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
     },

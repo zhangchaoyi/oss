@@ -14,6 +14,7 @@ function loadEquipmentData(playerTagInfo) {
 
     $.post("/api/players/equipment", {
         playerTagInfo:playerTagInfo,
+        icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
     },
@@ -27,6 +28,7 @@ function loadEquipmentDetailsData(playerTagInfo, detailTagInfo) {
     $.post("/api/players/equipment/details", {
         playerTagInfo:playerTagInfo,
         detailTagInfo:detailTagInfo,
+        icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
     },
@@ -91,8 +93,12 @@ function configEquipmentChart(data) {
             for (var key in recData) {
                 var item = {
                     name: key,
-                    type: "line",
-                    smooth:true,
+                    type: "bar",
+                    itemStyle: {
+                        normal: {
+                            color: 'rgb(87, 139, 187)'
+                        }
+                    },
                     data: recData[key]
                 }
                 serie.push(item);

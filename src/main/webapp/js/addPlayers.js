@@ -15,6 +15,7 @@ function loadAddPlayerData(addTagInfo) {
     showNote = (addTagInfo=='new-activate'?true:false);
     $.post("/api/players/add", {
         addTagInfo:addTagInfo,
+        icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
     },
@@ -28,6 +29,7 @@ function loadAddPlayerData(addTagInfo) {
 function loadAddDetailData(addDetailTagInfo) {
     $.post("/api/players/add/detail", {
         addDetailTagInfo:addDetailTagInfo,
+        icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
     },
@@ -168,6 +170,10 @@ function dealTableData(data,percent) {
             }
             item.push(serie[type[j]][i]);
             if(percent===true){
+                if(sum==0){
+                    item.push('0.00%');
+                    continue;
+                }
                 item.push(((serie[type[j]][i]/sum*100)).toFixed(2) + '%');
             }
         }
@@ -373,6 +379,7 @@ function showPlayerNote(data){
     
     $('#newPlayer-note').hide();
 }
+
 
 $("ul.nav.nav-tabs.add-players > li").click(function(){
     var addTagInfo = $(this).children("a").attr("data-info");
