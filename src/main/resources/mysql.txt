@@ -1,4 +1,4 @@
-jdbcUrl = jdbc:mysql://47.90.40.67/egg_log?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+jdbcUrl = jdbc:mysql://120.25.209.140/egg_log?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
 user = zcy
 password = Zcy@0826
 devMode = true

@@ -1,6 +1,8 @@
 package common.controllers.players;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,9 +17,15 @@ import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 
 import common.interceptor.AuthInterceptor;
+import common.service.RetainPlayersService;
+import common.service.impl.RetainPlayersServiceImpl;
+import common.utils.DateUtils;
+import common.utils.StringUtils;
 
 @Clear(AuthInterceptor.class)
 public class RetainController extends Controller{
+	private RetainPlayersService retainPlayersService = new RetainPlayersServiceImpl();
+	
 	@Before(GET.class)
 	@ActionKey("/players/retain")
 	public void retain() {
@@ -39,33 +47,36 @@ public class RetainController extends Controller{
 	@Before(POST.class)
 	@ActionKey("/api/players/retain")
 	public void queryRetain() {
-		Map<String, Object> data = new LinkedHashMap<String,Object>();
+		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
+		String startDate = getPara("startDate");
+		String endDate = getPara("endDate");
 		
-		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
-		Map<String, List<Integer>> addPlayer = new LinkedHashMap<String, List<Integer>>();
+		Map<String, Object> data = new HashMap<String, Object>();
+		List<String> categories = DateUtils.getDateList(startDate, endDate);
+		Map<String, Object> queryData = retainPlayersService.queryRetainUser(categories, icons, startDate, endDate);
 		
+		Map<String, List<String>> category = new HashMap<String, List<String>>();
+		Map<String, Object> addPlayer = new HashMap<String, Object>();
+
 		//保存chart中数据
-		Map<String, List<Integer>> seriesMap = new LinkedHashMap<String, List<Integer>>();
-	
-		List<Integer> data1 =  Arrays.asList(1,20,0,3,7,10,30,10);
-		List<Integer> data2 =  Arrays.asList(10,10,10,10,10,10,10,10);
-		List<Integer> data3 =  Arrays.asList(30,20,30,20,30,20,30,20);
+		Map<String, Object> seriesMap = new HashMap<String, Object>();
 		
-		seriesMap.put("次日留存率", data1);
-		seriesMap.put("7日留存率", data2);
-		seriesMap.put("30日留存率", data3);
+		seriesMap.put("次日留存率", queryData.get("nDR"));
+		seriesMap.put("7日留存率", queryData.get("sDR"));
+		seriesMap.put("30日留存率", queryData.get("mR"));
 		
 		Set<String> type = seriesMap.keySet();
-		List<String> categories = Arrays.asList("2016-08-11","2016-08-12","2016-08-13","2016-08-14","2016-08-15","2016-08-16","2016-08-17","2016-08-18");
-		List<Integer> addPlayers = Arrays.asList(10,30,34,5,6,2,13,34);
 		
 		category.put("日期", categories);
-		addPlayer.put("新增玩家", addPlayers);
+		addPlayer.put("新增玩家", queryData.get("add"));
 		
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("addPlayer", addPlayer);
 		data.put("data", seriesMap);
+		data.put("nDRRateAvg", queryData.get("nDRRateAvg"));
+		data.put("sDRRateAvg", queryData.get("sDRRateAvg"));
+		data.put("mRRateAvg", queryData.get("mRRateAvg"));
 		renderJson(data);
 	}
 	
@@ -119,26 +130,37 @@ public class RetainController extends Controller{
 	@Before(POST.class)
 	@ActionKey("/api/players/retain-equipment/rate")
 	public void queryRetainEquipmentRate() {
-		Map<String, Object> data = new LinkedHashMap<String,Object>();
+		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
+		String startDate = getPara("startDate");
+		String endDate = getPara("endDate");
+		List<String> categories = DateUtils.getDateList(startDate, endDate);
+		Map<String, Object> queryData = retainPlayersService.queryRetainEquipment(categories, icons, startDate, endDate);
 		
-		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
+		Map<String, Object> data = new HashMap<String,Object>();
+		Map<String, List<String>> category = new HashMap<String, List<String>>();		
 		
 		//保存chart中数据
-		Map<String, List<Integer>> seriesMap = new LinkedHashMap<String, List<Integer>>();
-	
-		List<Integer> data1 =  Arrays.asList(1,20,0,3,7,10,30,10);
-		List<Integer> data2 =  Arrays.asList(10,10,10,10,10,10,10,10);
-		List<Integer> data3 =  Arrays.asList(30,20,30,20,30,20,30,20);
+		Map<String, Object> seriesMap = new HashMap<String, Object>();
+			
+		seriesMap.put("次日留存率", queryData.get("fD"));
+		seriesMap.put("7日留存率", queryData.get("sevenD"));
+		seriesMap.put("30日留存率", queryData.get("ttD"));
 		
-		seriesMap.put("次日留存率", data1);
-		seriesMap.put("7日留存率", data2);
-		seriesMap.put("30日留存率", data3);
+		//处理表数据
+		List<String> tableHeader = new LinkedList<String>();
+		List<Object> tableData = new LinkedList<Object>();
+		
+		tableHeader.addAll(Arrays.asList("首次使用日", "设备数", "第N天后 保留设备"));
+		for(int i=1; i<8; i++){
+			tableHeader.add("+"+ i + "日");
+		}
+		tableHeader.add("+14"+"日");
+		tableHeader.add("+30"+"日");
+		
+		
 		
 		Set<String> type = seriesMap.keySet();
-		List<String> categories = Arrays.asList("2016-08-11","2016-08-12","2016-08-13","2016-08-14","2016-08-15","2016-08-16","2016-08-17","2016-08-18");
-		
 		category.put("日期", categories);
-		
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);

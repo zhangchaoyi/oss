@@ -7,8 +7,12 @@ $(function(){
 function loadData() {
 
     $.post("/api/players/retain", {
+        icon:getIcons(),
+        startDate:$("input#startDate").attr("value"),
+        endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
+        showPlayerNote(data);
         configChart(data);
         configTable(data);
     });
@@ -129,11 +133,20 @@ function dealTableData(data) {
         item.push(categories[i]);
         item.push(addPlayers[i]);
         for (var j = 0; j < type.length; j++) {
-            item.push(serie[type[j]][i]);
+            item.push(serie[type[j]][i] + '%');
         }
         dataArray.push(item);
     }
     return dataArray;
+}
+
+function showPlayerNote(data){
+    var nDRRateAvg = data.nDRRateAvg;
+    var sDRRateAvg = data.sDRRateAvg;
+    var mRRateAvg = data.mRRateAvg;
+    $("#nR").text(nDRRateAvg + '%');
+    $("#sR").text(sDRRateAvg + '%');
+    $("#mR").text(mRRateAvg + '%');
 }
 
 function appendTableHeader(data) {

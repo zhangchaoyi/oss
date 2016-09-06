@@ -15,6 +15,23 @@ function getNowFormatDate() {
     return currentdate;
 }
 
+function getSevenEarlyFormatDate(){
+    var date = new Date();
+    date.setDate(date.getDate()-6);
+    var seperator1 = "-";
+    var year = date.getFullYear();
+    var month = date.getMonth() + 1;
+    var strDate = date.getDate();
+    if (month >= 1 && month <= 9) {
+        month = "0" + month;
+    }
+    if (strDate >= 0 && strDate <= 9) {
+        strDate = "0" + strDate;
+    }
+    var currentdate = year + seperator1 + month + seperator1 + strDate;
+    return currentdate;
+}
+
 $("#btn-explain-switch").click(function() {
     $("#explain-panel").toggleClass("toggle-switch");
     var txt = $(this).text();
@@ -83,7 +100,7 @@ $("#btn-filtersave").click(function(){
 $(function() {
     var dateRange = new pickerDateRange('date_seletor', {
         isTodayValid: true,
-        startDate: getNowFormatDate(),
+        startDate: getSevenEarlyFormatDate(),
         endDate: getNowFormatDate(),
         //needCompare : true,
         //isSingleDay : true,

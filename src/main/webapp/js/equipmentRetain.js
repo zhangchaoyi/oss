@@ -7,6 +7,9 @@ $(function(){
 function loadData() {
 
     $.post("/api/players/retain-equipment/rate", {
+        icon:getIcons(),
+        startDate:$("input#startDate").attr("value"),
+        endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
         configChart(data);

@@ -81,6 +81,7 @@ public class EquipmentAnalyzeServiceImpl implements EquipmentAnalyzeService{
 		return activePlayersEquipmentBandOperator;
 	}
 	
+	//付费
 	public List<DeviceInfo> queryPaidPlayersEquipment(String icons, String startDate, String endDate) {
 		String sql = "select C.model model,count(C.model) count from (select distinct account from log_charge where timestamp >= ? and timestamp <= ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") group by C.model";
 		List<DeviceInfo> paidPlayerEquipment = DeviceInfo.dao.find(sql, startDate, endDate);

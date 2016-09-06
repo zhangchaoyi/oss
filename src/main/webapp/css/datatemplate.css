@@ -1,3 +1,5 @@
+input,button,select,textarea{outline:none;}
+
 div#top-row {
     font-size: 0;
     position: relative;
@@ -321,6 +323,7 @@ button#btn-explain-up {
     bottom: 93px;
     right: 20px;
     height: 36px;
+    outline:none;
     background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fdfdfd),color-stop(1,#dedede));
 }
 
@@ -335,6 +338,7 @@ button#btn-explain-down {
     height: 36px;
     background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
     border: #252222;
+    outline:none;
 }
 
 button#btn-explain-up > span.fa.fa-chevron-up {

@@ -19,8 +19,8 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 
 	public List<Long> queryDau(List<String> categories, String icons, String startDate, String endDate) {
 		List<Long> data = new ArrayList<Long>();
-		String sql = "select DATE_FORMAT(time,'%Y-%m-%d') date, sum(dau)dau from active_user where time >= ? and time <= ? and os in ("
-				+ icons + ") group by DATE_FORMAT(time,'%Y-%m-%d')";
+		String sql = "select DATE_FORMAT(date,'%Y-%m-%d') date, sum(dau)dau from active_user where date between ? and ? and os in ("
+				+ icons + ") group by DATE_FORMAT(date,'%Y-%m-%d')";
 		List<ActiveUser> dau = ActiveUser.dao.find(sql, startDate, endDate);
 
 		Map<String, Long> sort = new TreeMap<String, Long>();
@@ -79,7 +79,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 	}
 
 	public Map<String, Object> queryActivePlayersInfo(List<String> categories, String icons, String startDate, String endDate) {
-		String sql = "select DATE_FORMAT(time,'%Y-%m-%d') date, sum(dau) dau, sum(wau) wau, sum(mau) mau from active_user where time >= ? and time <= ? and os in (" + icons + ") group by  DATE_FORMAT(time,'%Y-%m-%d')";
+		String sql = "select DATE_FORMAT(date,'%Y-%m-%d') date, sum(dau) dau, sum(wau) wau, sum(mau) mau from active_user where date between ? and ? and os in (" + icons + ") group by  DATE_FORMAT(date,'%Y-%m-%d')";
 		List<ActiveUser> activeUser = ActiveUser.dao.find(sql, startDate, endDate);
 
 		// Map<Date,Map<name,value>> --Map<"2016-08-20",Map<"dau",1>>
@@ -135,7 +135,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 
 	public List<Double> queryActivePlayersDauMauRate(List<String> categories, String icons, String startDate, String endDate) {
 		List<Double> data = new ArrayList<Double>();
-		String sql = "select DATE_FORMAT(time,'%Y-%m-%d') date, sum(dau) dau, sum(mau) mau from active_user where time >= ? and time <= ? and os in (" + icons + ") group by  DATE_FORMAT(time,'%Y-%m-%d')";
+		String sql = "select DATE_FORMAT(date,'%Y-%m-%d') date, sum(dau) dau, sum(mau) mau from active_user where date between ? and ? and os in (" + icons + ") group by  DATE_FORMAT(date,'%Y-%m-%d')";
 		List<ActiveUser> activeUser = ActiveUser.dao.find(sql, startDate, endDate);
 
 		Map<String, Double> sort = new TreeMap<String, Double>();

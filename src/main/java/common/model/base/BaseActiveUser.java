@@ -17,12 +17,12 @@ public abstract class BaseActiveUser<M extends BaseActiveUser<M>> extends Model<
 		return get("id");
 	}
 
-	public void setTime(java.util.Date time) {
-		set("time", time);
+	public void setDate(java.util.Date date) {
+		set("date", date);
 	}
 
-	public java.util.Date getTime() {
-		return get("time");
+	public java.util.Date getDate() {
+		return get("date");
 	}
 
 	public void setDau(java.lang.Integer dau) {
@@ -47,6 +47,14 @@ public abstract class BaseActiveUser<M extends BaseActiveUser<M>> extends Model<
 
 	public java.lang.Integer getMau() {
 		return get("mau");
+	}
+
+	public void setOs(java.lang.String os) {
+		set("os", os);
+	}
+
+	public java.lang.String getOs() {
+		return get("os");
 	}
 
 }
