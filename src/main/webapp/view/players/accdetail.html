@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta charset="utf-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+  <link rel="shortcut icon" type="image/x-icon" href="../../images/koogame.ico" media="screen" /> 
+  <link rel="stylesheet" type="text/css" href="../../css/dateselector/dateRange.css" /> 
+  <link rel="stylesheet" type="text/css" href="../../css/dateselector/monthPicker.css" /> 
+  <link href="../../css/bootstrap.css" rel="stylesheet" /> 
+  <link href="../../css/font-awesome.css" rel="stylesheet" /> 
+  <link href="../../css/basic.css" rel="stylesheet" /> 
+  <link href="../../css/custom.css" rel="stylesheet" /> 
+  <link href="../../css/header.css" rel="stylesheet" /> 
+  <link href="../../css/datatemplate.css" rel="stylesheet" /> 
+  <link rel="stylesheet" type="text/css" href="../../css/button/default.css" /> 
+  <link rel="stylesheet" type="text/css" href="../../css/button/component.css" /> 
+  <link rel="stylesheet" type="text/css" href="../../css/button/animation.css" /> 
+  <link href="../../css/polaris/polaris.css" rel="stylesheet" /> 
+  <link rel="stylesheet" type="text/css" href="../../css/jquery.dataTables.css" /> 
+  <title>KooGame</title> 
+ </head> 
+ <body> 
+  <div id="wrapper"> 
+   <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0"> 
+    <div id="header"> 
+     <div class="top"> 
+      <div class="logo-outer"> 
+       <a href="#" title="用心做游戏-koogame"> 
+        <div class="logo"></div> </a> 
+      </div> 
+      <div class="topnav"> 
+       <div class="envelope"> 
+        <button type="button" class="btn btn-default btn-envelope"> <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> </button> 
+       </div> 
+       <div class="btn-group" id="admin-btn"> 
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">admin <span class="caret"></span></button> 
+        <ul class="dropdown-menu user-bars" aria-labelledby="dropdownMenu1"> 
+         <li> <a href="#">admin</a></li> 
+         <li> <a href="#">Action</a></li> 
+         <li> <a href="#">Action2</a></li> 
+        </ul> 
+       </div> 
+       <div class="glyphicon glyphicon-user" aria-hidden="true" id="login-user"></div> 
+       <div class="logout-btn"> 
+        <button type="button" class="btn btn-default btn-off"> <span class="glyphicon glyphicon-off" aria-hidden="true"></span> </button> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div id="menu"> 
+     <div class="crumb"> 
+      <button type="button" class="btn btn-default btn-home" aria-label="Left Align"> <span class="glyphicon glyphicon-home" aria-hidden="true"></span> </button> 
+     </div> 
+     <div class="crumb-inner"> 
+      <em>全部数据</em> 
+     </div> 
+     <div class="service-bar"> 
+      <div class="dropdown"> 
+       <button class="btn btn-default dropdown-toggle" type="button" id="btn-dropdownIcon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <span class="caret"></span> </button> 
+       <ul class="dropdown-menu iconBar" aria-labelledby="dropdownIcon"> 
+        <li class="btn-icons" id="ios" data-value="apple"> <a> <input type="checkbox" /> <span class="fa fa-apple fa-style" aria-hidden="true"></span>iOS</a> </li> 
+        <li class="btn-icons" id="and" data-value="android"> <a> <input type="checkbox" /> <span class="fa fa-android fa-style" aria-hidden="true"></span>Android</a> </li> 
+        <li class="btn-icons" id="wp" data-value="windows"> <a> <input type="checkbox" /> <span class="fa fa-windows fa-style" aria-hidden="true"></span>WP</a> </li> 
+        <li> <button type="button" class="btn btn-primary" onclick="iconsView()">确定</button></li> 
+       </ul> 
+      </div> 
+     </div> 		
+     <div class="clear-data"> 
+      <button type="button" class="btn btn-default btn-circle" aria-label="Left Align"> <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> <em>清除数据</em></button> 
+     </div> 
+    </div> 
+   </nav> 
+   <!-- /. NAV TOP --> 
+   <nav class="navbar-default navbar-side" role="navigation"> 
+    <div class="sidebar-collapse"> 
+     <ul class="nav" id="main-menu"> 
+      <li> <a href="#"> <i class="fa fa-clock-o "></i>实时概况</a> </li> 
+      <li> <a href="#"> <i class="fa fa-line-chart "></i>报表</a> </li> 
+      <li> <a href="#"> <i class="fa fa-user"></i>玩家分析 
+        <span class="fa arrow"></span></a> 
+       <ul class="nav nav-second-level"> 
+        <li> <a href="/players/add"> <i class="fa fa-user-plus" aria-hidden="true"></i>新增玩家</a> </li> 
+        <li> <a href="/players/active"> <i class="fa fa-users "></i>活跃玩家</a> </li> 
+        <li> <a href="/players/retain"> <i class="fa fa-bars "></i>留存统计</a> </li> 
+        <li> <a href="/players/effective"> <i class="fa fa-user-secret "></i>有效玩家</a> </li>  
+        <li> <a href="/players/equipment"> <i class="fa fa-tablet "></i>设备分析</a> </li> 
+        <li> <a href="/players/accdetail"> <i class="fa fa-circle-o-notch "></i>生命轨迹</a> </li> 
+       </ul> </li> 
+      <li> <a href="#"> <i class="fa fa-money "></i>付费分析 <span class="fa arrow"></span></a> 
+       <ul class="nav nav-second-level"> 
+        <li> <a href="#"> <i class="fa fa-bar-chart"></i>付费数据</a> </li> 
+        <li> <a href="#"> <i class="fa fa-neuter "></i>付费行为</a> </li> 
+        <li> <a href="#"> <i class="fa fa-key "></i>付费转化</a> </li> 
+        <li> <a href="#"> <i class="fa fa-arrows-v "></i>付费排行</a> </li> 
+       </ul> </li> 
+      <li> <a href="#"> <i class="fa fa-spinner "></i>流失分析</a> </li> 
+      <li> <a href="#"> <i class="fa fa-check-square-o "></i>在线分析 <span class="fa arrow"></span></a> 
+       <ul class="nav nav-second-level"> 
+        <li> <a href="#"> <i class="fa fa-check-square-o"></i>在线分析</a> </li> 
+        <li> <a href="#"> <i class="fa fa-arrows "></i>在线习惯</a> </li> 
+       </ul> </li> 
+      <li> <a href="#"> <i class="fa fa-shopping-cart "></i>渠道分析 <span class="fa arrow"></span></a> 
+       <ul class="nav nav-second-level"> 
+        <li> <a href="#"> <i class="fa fa-shopping-cart"></i>渠道分析</a> </li> 
+        <li> <a href="#"> <i class="fa fa-link "></i>渠道短链追踪啊</a> </li> 
+       </ul> </li> 
+      <li> <a href="#"> <i class="fa fa-gamepad "></i>系统分析 <span class="fa arrow"></span></a> 
+       <ul class="nav nav-second-level"> 
+        <li> <a href="#"> <i class="fa fa-gavel"></i>道具分析</a> </li> 
+        <li> <a href="#"> <i class="fa fa-tasks "></i>任务分析</a> </li> 
+        <li> <a href="#"> <i class="fa fa-rocket "></i>关卡分析</a> </li> 
+        <li> <a href="#"> <i class="fa fa-flag "></i>等级分析</a> </li> 
+        <li> <a href="#"> <i class="fa fa-bitcoin "></i>虚拟币统计</a> </li> 
+       </ul> </li> 
+      <li> <a href="#"> <i class="fa fa-file "></i>版本分析</a> </li> 
+      <li> <a href="#"> <i class="fa fa-cog "></i>自定义事件 <span class="fa arrow"></span></a> 
+       <ul class="nav nav-second-level"> 
+        <li> <a href="#"> <i class="fa fa-qrcode"></i>事件列表</a> </li> 
+        <li> <a href="#"> <i class="fa fa-filter "></i>漏斗管理</a> </li> 
+       </ul> </li> 
+      <li> <a href="#"> <i class="fa fa-send "></i>运营支持 <span class="fa arrow"></span></a> 
+       <ul class="nav nav-second-level"> 
+        <li> <a href="#"> <i class="fa fa-bell"></i>数据报警</a> </li> 
+       </ul> </li> 
+      <li> <a href="#"> <i class="fa fa-anchor "></i>数据挖掘 <span class="fa arrow"></span></a> 
+       <ul class="nav nav-second-level"> 
+        <li> <a href="#"> <i class="fa fa-crop"></i>聚类分析</a> </li> 
+        <li> <a href="#"> <i class="fa fa-shopping-cart"></i>新玩家价值</a> </li> 
+       </ul> </li> 
+      <li> <a href="#"> <i class="fa fa-bar-chart "></i>市场分析</a> </li> 
+      <li> <a href="#"> <i class="fa fa-wrench "></i>技术支持 
+        <span class="fa arrow"></span></a> 
+       <ul class="nav nav-second-level"> 
+        <li> <a href="#"> <i class="fa fa-vine"></i>在线参数</a> </li> 
+        <li> <a href="#"> <i class="fa fa-bookmark "></i>实时日志</a> </li> 
+        <li> <a href="#"> <i class="fa fa-ban "></i>崩溃分析</a> </li> 
+        <li> <a href="#"> <i class="fa fa-exclamation-triangle "></i>用户错误</a> </li> 
+       </ul> </li> 
+      <li> <a href="#"> <i class="fa fa-suitcase "></i>管理中心 <span class="fa arrow"></span></a> 
+       <ul class="nav nav-second-level"> 
+        <li> <a href="#"> <i class="fa fa-gears"></i>设置</a> </li> 
+        <li> <a href="#"> <i class="fa fa-cloud-download "></i>下载中心</a> </li> 
+       </ul> </li> 
+     </ul> 
+    </div> 
+   </nav> 
+   <!-- /. NAV SIDE --> 
+   <div id="page-wrapper" style="overflow-x: hidden;overflow-y:hidden;"> 
+    <div id="page-inner"> 
+     <div class="row" id="top-row">  
+        <div class="filter-tool">
+          <form class="form-inline query-accountId" method="get" onsubmit = "return checkInput()" role="form" >
+            <div class="form-group">
+              <label class="sr-only">account-id</label>
+              <p class="form-control-static accountId">账号ID</p>
+            </div>
+            <div class="form-group">
+              <label for="account-id" class="sr-only">input</label>
+              <input type="text" class="form-control" id="account-id" name="accountId" value="">
+            </div>
+            <button class="btn btn-primary query-account-id" >查询</button>
+          </form>
+        </div>
+     </div> 
+     <!-- /. ROW -->  
+     <div class="row" id="data-first"> 
+      <div class="panel panel-default"> 
+       <div class="panel-heading"> 
+        <span class="data-first-panel-heading">生命轨迹</span> 
+       </div> 
+       <div class="panel-body"> 
+        <p>输入某玩家的账号ID后，将会以生命线的方式为您展现此玩家整个游戏历程——包括：</p>
+        <p>创建账号后到第一次付费行为期间的游戏行为，进行游戏的时间间隔、付费行为时间间隔，以非常直观的形式为您展现，随着时间的推移，帮助您了解玩家的游戏习惯。</p>
+        <div class="table-detail">
+           <table id="data-table-detail-first" class="hover stripe row-border">
+              <thead>
+                  <tr role="row">
+                      <th>机型</th>
+                      <th>分辨率</th>
+                      <th>操作系统</th>
+                      <th>操作系统版本</th>
+                      <th>国家</th>
+                      <th>省份</th>
+                      <th>运营商</th>
+                      <th>网络类型</th>
+                  </tr>
+              </thead>
+           </table>
+        </div>
+        <div class="table-detail">
+           <table id="data-table-detail-second" class="hover stripe row-border">
+              <thead>
+                  <tr role="row">
+                      <th>首登时间</th>
+                      <th>末登时间</th>
+                      <th>总在线天数</th>
+                      <th>总登录次数</th>
+                      <th>总在线时长</th>
+                      <th>首付时间</th>
+                      <th>末付时间</th>
+                      <th>总付费金额</th>
+                  </tr>
+              </thead>
+           </table>
+        </div> 
+       </div> 
+      </div> 
+     </div> 
+     <div class="row"> 
+      <div class="alert alert-warning fade in" data-dismiss="alert" id="platform-selected"> 
+       <a href="#" class="close" data-dismiss="alert">&times;</a> 
+       <strong>请选择平台</strong> 
+      </div> 
+     </div> 
+     <div class="row"> 
+      <a href="#" class="back-top"> <span class="fa fa-angle-up" aria-hidden="true"></span> </a> 
+     </div> 
+    </div> 
+    <!-- /. PAGE INNER --> 
+   </div> 
+   <!-- /. PAGE WRAPPER --> 
+  </div> 
+  <!-- /. WRAPPER -->  
+  <div id="footer-sec">
+    Copyright &copy; 2016.koogame All rights reserved. 
+   <a target="_blank" href="#/"></a> 
+  </div> 
+  <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME--> 
+  <script src="../../js/jquery.min.js"></script> 
+  <script src="../../js/bootstrap.min.js"></script> 
+  <script src="../../js/jquery.metisMenu.js"></script> 
+  <script src="../../js/jquery.dataTables.min.js"></script> 
+  <script src="../../js/custom.js"></script> 
+  <script src="../../js/header.js"></script> 
+  <script src="../../js/button/modernizr.custom.js"></script> 
+  <script src="../../js/button/classie.js"></script> 
+  <script src="../../js/echarts.min.js"></script> 
+  <script src="../../js/filter/jcfilter.min.js"></script> 
+  <script src="../../js/dateselector/dateRange.js"></script> 
+  <script src="../../js/dateselector/monthPicker.js"></script> 
+  <script src="../../js/checkbox/icheck.js"></script> 
+  <script src="../../js/common.js"></script>
+  <script src="../../js/accdetail.js"></script> 
+ </body>
+</html>

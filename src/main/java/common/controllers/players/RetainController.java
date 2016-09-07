@@ -1,6 +1,5 @@
 package common.controllers.players;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -148,7 +147,7 @@ public class RetainController extends Controller{
 		
 		//处理表数据
 		List<String> tableHeader = new LinkedList<String>();
-		List<Object> tableData = new LinkedList<Object>();
+		Map<String, Object> tableData = new LinkedHashMap<String, Object>();
 		
 		tableHeader.addAll(Arrays.asList("首次使用日", "设备数", "第N天后 保留设备"));
 		for(int i=1; i<8; i++){
@@ -157,6 +156,16 @@ public class RetainController extends Controller{
 		tableHeader.add("+14"+"日");
 		tableHeader.add("+30"+"日");
 		
+		tableData.put("addEquipment", queryData.get("addEquipment"));
+		tableData.put("fD", queryData.get("fD"));
+		tableData.put("sD", queryData.get("sD"));
+		tableData.put("tD", queryData.get("tD"));
+		tableData.put("fourD", queryData.get("fourD"));
+		tableData.put("fifD", queryData.get("fifD"));
+		tableData.put("sixD", queryData.get("sixD"));
+		tableData.put("sevenD", queryData.get("sevenD"));
+		tableData.put("ftD", queryData.get("ftD"));
+		tableData.put("ttD", queryData.get("ttD"));
 		
 		
 		Set<String> type = seriesMap.keySet();
@@ -164,6 +173,8 @@ public class RetainController extends Controller{
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
+		data.put("tableData", tableData);
+		data.put("header", tableHeader);
 		renderJson(data);
 	}
 	

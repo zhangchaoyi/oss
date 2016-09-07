@@ -1,7 +1,6 @@
 input,button,select,textarea{outline:none;}
 
 div#top-row {
-    font-size: 0;
     position: relative;
     top: -1px;
 }
@@ -678,3 +677,14 @@ th.center.thead {
         background: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
 }
 
+form.form-inline.query-accountId {
+    margin-top: 14px;
+    margin-bottom: 12px;
+    position:relative;
+    right: 705px;
+}
+
+button.btn.btn-primary.query-account-id {
+    /* font-size: 14px; */
+    width: 59px;
+}

@@ -13,11 +13,6 @@ function loadData() {
     },
     function(data, status) {
         configChart(data);
-    });
-
-    $.post("/api/players/retain-equipment/detail", {
-    },
-    function(data, status) {
         configTable(data);
     });
 }
@@ -119,7 +114,27 @@ function configTable(data) {
 }
 
 function dealTableData(data) {    
-    var dataArray = data.data;   
+    var categories;
+    var dataArray = [];
+    var table = data.tableData;
+
+    for (var key in data.category) {
+        categories = data.category[key];
+    }
+      
+    for(var i = 0; i < categories.length; i++){
+        var item = [];
+        item.push(categories[i]);
+        for(var key in table){
+            if(key=='addEquipment'){
+                item.push(table[key][i]);
+                continue;
+            }
+            item.push(table[key][i] + '%');
+        }        
+
+        dataArray.push(item);
+    }
     return dataArray;
 }
 
