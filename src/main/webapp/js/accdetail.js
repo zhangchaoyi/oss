@@ -7,13 +7,6 @@ function checkInput(){
    }
 }
 
-function GetQueryString(name)
-{
-     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
-     var r = window.location.search.substr(1).match(reg);
-     if(r!=null)return  unescape(r[2]); return null;
-}
-
 $(function(){
   	var param = GetQueryString("account-id");
   	$("#account-id").attr("value",param);
@@ -22,8 +15,17 @@ $(function(){
         accountId:param
         },
 	    function(data, status) {
+	    	if(data.code==1){
+	    		$("#account-not-exist").css("display", "block");
+    			setTimeout('$("#account-not-exist").css("display", "none")', 5000);
+	    		configTable(null);
+	    		return;		
+	    	}
 	        configTable(data)
 	    });
+  	}else{
+  		//初始化表头
+  		configTable(null);
   	}
 
 })
@@ -32,10 +34,9 @@ $(function(){
 function configTable(data) {
     $('#data-table-detail-first').dataTable().fnClearTable();
     $('#data-table-detail-second').dataTable().fnClearTable();  
-    console.log(data.detail);
     $('#data-table-detail-first').dataTable({
         "destroy": true,
-        "data": data.device,
+        "data": data==null?null:data.device,
         "dom": '',
         'language': {
             'emptyTable': '没有数据',
@@ -51,7 +52,7 @@ function configTable(data) {
     });
     $('#data-table-detail-second').dataTable({
         "destroy": true,
-        "data": data.detail,
+        "data": data==null?null:data.detail,
         "dom": '',
         'language': {
             'emptyTable': '没有数据',
@@ -66,4 +67,9 @@ function configTable(data) {
         }
     });
 }
-
+//锁死图标选择 清除按钮
+$("button.btn.btn-default.btn-circle").attr('disabled',"true");
+$("ul.dropdown-menu.iconBar > li").addClass("disabled");
+$("li.btn-icons").unbind("click");
+$('input').iCheck('disable');
+$("li.disabled > button.btn.btn-primary").attr('disabled',"true");

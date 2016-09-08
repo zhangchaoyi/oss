@@ -20,6 +20,7 @@ import common.service.impl.EquipmentAnalyzeServiceImpl;
 import common.utils.StringUtils;
 
 @Clear(AuthInterceptor.class)
+//@Before(AuthInterceptor.class)
 public class EquipmentController extends Controller {
 	private EquipmentAnalyzeService equipmentAnalyzeService = new EquipmentAnalyzeServiceImpl();
 
@@ -50,8 +51,10 @@ public class EquipmentController extends Controller {
 			List<Long> equipmentsCount = new ArrayList<Long>();
 			List<DeviceInfo> addPlayersEquipment = equipmentAnalyzeService.queryAddPlayersEquipment(icons, startDate, endDate);
 			for (DeviceInfo di : addPlayersEquipment) {
-				categories.add(di.getStr("model"));
-				equipmentsCount.add(di.getLong("count"));
+				String model = di.getStr("model");
+				Long count = di.getLong("count");
+				categories.add((model==null||"".equals(model))? "-" : model);
+				equipmentsCount.add(count==null? 0 : count);
 			}
 
 			seriesMap.put("新增玩家", equipmentsCount);
@@ -62,8 +65,10 @@ public class EquipmentController extends Controller {
 			List<DeviceInfo> activePlayersEquipment = equipmentAnalyzeService.queryActivePlayersEquipment(icons, startDate,
 					endDate);
 			for (DeviceInfo di : activePlayersEquipment) {
-				categories.add(di.getStr("model"));
-				equipmentsCount.add(di.getLong("count"));
+				String model = di.getStr("model");
+				Long count = di.getLong("count");
+				categories.add((model==null||"".equals(model))? "-" : model);
+				equipmentsCount.add(count==null? 0 : count);
 			}
 
 			seriesMap.put("活跃玩家", equipmentsCount);
@@ -74,8 +79,10 @@ public class EquipmentController extends Controller {
 			List<DeviceInfo> paidPlayersEquipment = equipmentAnalyzeService.queryPaidPlayersEquipment(icons, startDate, endDate);
 			
 			for (DeviceInfo di : paidPlayersEquipment) {
-				categories.add(di.getStr("model"));
-				equipmentsCount.add(di.getLong("count"));
+				String model = di.getStr("model");
+				Long count = di.getLong("count");
+				categories.add((model==null||"".equals(model))? "-" : model);
+				equipmentsCount.add(count==null? 0 : count);
 			}
 			seriesMap.put("付费玩家", equipmentsCount);
 			break;
@@ -116,8 +123,10 @@ public class EquipmentController extends Controller {
 						List<String> categories = new ArrayList<String>();
 						List<Long> peopleCount = new ArrayList<Long>();
 						for (DeviceInfo di : resolution) {
-							categories.add(di.getStr("resolution"));
-							peopleCount.add(di.getLong("count"));
+							String reso = di.getStr("resolution");
+							Long count = di.getLong("count");
+							categories.add((reso==null||"".equals(reso))? "-":reso);
+							peopleCount.add(count==null? 0L:count);
 						}
 						seriesMap.put(categoryName, peopleCount);
 						category.put("分辨率", categories);
@@ -128,8 +137,10 @@ public class EquipmentController extends Controller {
 						List<String> categories = new ArrayList<String>();
 						List<Long> peopleCount = new ArrayList<Long>();
 						for (DeviceInfo di : os) {
-							categories.add(di.getStr("os_version"));
-							peopleCount.add(di.getLong("count"));
+							String osV = di.getStr("os_version");
+							Long count = di.getLong("count");
+							categories.add((osV==null||"".equals(osV))? "-" : osV);
+							peopleCount.add(count==null? 0L:count);
 						}
 						seriesMap.put(categoryName, peopleCount);
 						category.put("操作系统", categories);
@@ -140,8 +151,10 @@ public class EquipmentController extends Controller {
 						List<String> categories = new ArrayList<String>();
 						List<Long> peopleCount = new ArrayList<Long>();
 						for (DeviceInfo di : net) {
-							categories.add(di.getStr("net"));
-							peopleCount.add(di.getLong("count"));
+							String netStr = di.getStr("net");
+							Long count = di.getLong("count");
+							categories.add((netStr==null||"".equals(netStr))? "-" : netStr);
+							peopleCount.add(count==null? 0L:count);
 						}
 						seriesMap.put(categoryName, peopleCount);
 						category.put("联网方式", categories);
@@ -152,8 +165,10 @@ public class EquipmentController extends Controller {
 						List<String> categories = new ArrayList<String>();
 						List<Long> peopleCount = new ArrayList<Long>();
 						for (DeviceInfo di : bandOperator) {
-							categories.add(di.getStr("carrier"));
-							peopleCount.add(di.getLong("count"));
+							String carrier = di.getStr("carrier");
+							Long count = di.getLong("count");
+							categories.add((carrier==null||"".equals(carrier))? "-" : carrier);
+							peopleCount.add(count==null? 0L:count);
 						}
 						seriesMap.put(categoryName, peopleCount);
 						category.put("宽带运营商", categories);
@@ -170,8 +185,10 @@ public class EquipmentController extends Controller {
 						List<String> categories = new ArrayList<String>();
 						List<Long> peopleCount = new ArrayList<Long>();
 						for(DeviceInfo di : resolution){
-							categories.add(di.getStr("resolution"));
-							peopleCount.add(di.getLong("count"));
+							String reso = di.getStr("resolution");
+							Long count = di.getLong("count");
+							categories.add((reso==null||"".equals(reso))? "-":reso);
+							peopleCount.add(count==null? 0L:count);
 						}
 						seriesMap.put(categoryName,peopleCount);
 						category.put("分辨率", categories);
@@ -182,8 +199,10 @@ public class EquipmentController extends Controller {
 						List<String> categories = new ArrayList<String>();
 						List<Long> peopleCount = new ArrayList<Long>();
 						for(DeviceInfo di : os){
-							categories.add(di.getStr("os_version"));
-							peopleCount.add(di.getLong("count"));
+							String osV = di.getStr("os_version");
+							Long count = di.getLong("count");
+							categories.add((osV==null||"".equals(osV))? "-" : osV);
+							peopleCount.add(count==null? 0L:count);
 						}
 						seriesMap.put(categoryName, peopleCount);
 						category.put("操作系统", categories);
@@ -194,8 +213,10 @@ public class EquipmentController extends Controller {
 						List<String> categories = new ArrayList<String>();
 						List<Long> peopleCount = new ArrayList<Long>();
 						for(DeviceInfo di : net){
-							categories.add(di.getStr("net"));
-							peopleCount.add(di.getLong("count"));
+							String netStr = di.getStr("net");
+							Long count = di.getLong("count");
+							categories.add((netStr==null||"".equals(netStr))? "-" : netStr);
+							peopleCount.add(count==null? 0L:count);
 						}
 						seriesMap.put(categoryName, peopleCount);
 						category.put("联网方式", categories);
@@ -206,8 +227,10 @@ public class EquipmentController extends Controller {
 						List<String> categories = new ArrayList<String>();
 						List<Long> peopleCount = new ArrayList<Long>();
 						for(DeviceInfo di : bandOperator){
-							categories.add(di.getStr("carrier"));
-							peopleCount.add(di.getLong("count"));
+							String carrier = di.getStr("carrier");
+							Long count = di.getLong("count");
+							categories.add((carrier==null||"".equals(carrier))? "-" : carrier);
+							peopleCount.add(count==null? 0L:count);
 						}
 						seriesMap.put(categoryName, peopleCount);
 						category.put("宽带运营商", categories);
@@ -224,8 +247,10 @@ public class EquipmentController extends Controller {
 						List<String> categories = new ArrayList<String>();
 						List<Long> peopleCount = new ArrayList<Long>();
 						for(DeviceInfo di : resolution){
-							categories.add(di.getStr("resolution"));
-							peopleCount.add(di.getLong("count"));
+							String reso = di.getStr("resolution");
+							Long count = di.getLong("count");
+							categories.add((reso==null||"".equals(reso))? "-":reso);
+							peopleCount.add(count==null? 0L:count);
 						}
 						seriesMap.put(categoryName,peopleCount);
 						category.put("分辨率", categories);
@@ -236,8 +261,10 @@ public class EquipmentController extends Controller {
 						List<String> categories = new ArrayList<String>();
 						List<Long> peopleCount = new ArrayList<Long>();
 						for(DeviceInfo di : os){
-							categories.add(di.getStr("os_version"));
-							peopleCount.add(di.getLong("count"));
+							String osV = di.getStr("os_version");
+							Long count = di.getLong("count");
+							categories.add((osV==null||"".equals(osV))? "-" : osV);
+							peopleCount.add(count==null? 0L:count);
 						}
 						seriesMap.put(categoryName, peopleCount);
 						category.put("操作系统", categories);
@@ -248,8 +275,10 @@ public class EquipmentController extends Controller {
 						List<String> categories = new ArrayList<String>();
 						List<Long> peopleCount = new ArrayList<Long>();
 						for(DeviceInfo di : net){
-							categories.add(di.getStr("net"));
-							peopleCount.add(di.getLong("count"));
+							String netStr = di.getStr("net");
+							Long count = di.getLong("count");
+							categories.add((netStr==null||"".equals(netStr))? "-" : netStr);
+							peopleCount.add(count==null? 0L:count);
 						}
 						seriesMap.put(categoryName, peopleCount);
 						category.put("联网方式", categories);
@@ -260,8 +289,10 @@ public class EquipmentController extends Controller {
 						List<String> categories = new ArrayList<String>();
 						List<Long> peopleCount = new ArrayList<Long>();
 						for(DeviceInfo di : bandOperator){
-							categories.add(di.getStr("carrier"));
-							peopleCount.add(di.getLong("count"));
+							String carrier = di.getStr("carrier");
+							Long count = di.getLong("count");
+							categories.add((carrier==null||"".equals(carrier))? "-" : carrier);
+							peopleCount.add(count==null? 0L:count);
 						}
 						seriesMap.put(categoryName, peopleCount);
 						category.put("宽带运营商", categories);

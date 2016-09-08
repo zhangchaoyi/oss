@@ -90,6 +90,7 @@ span.glyphicon.glyphicon-search {
 .btn.btn-default {
 	border:silver;
 	font-size: 70%;
+	outline: none;
 }
 
 .btn.btn-default.btn-ios {

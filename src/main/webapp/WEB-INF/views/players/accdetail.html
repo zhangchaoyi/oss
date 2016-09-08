@@ -48,8 +48,8 @@
      </div> 
     </div> 
     <div id="menu"> 
-     <div class="crumb"> 
-      <button type="button" class="btn btn-default btn-home" aria-label="Left Align"> <span class="glyphicon glyphicon-home" aria-hidden="true"></span> </button> 
+     <div class="crumb">
+      <a href="/dashboard"><button type="button" class="btn btn-default btn-home" aria-label="Left Align"> <span class="glyphicon glyphicon-home" aria-hidden="true"></span> </button></a> 
      </div> 
      <div class="crumb-inner"> 
       <em>全部数据</em> 
@@ -145,8 +145,8 @@
     </div> 
    </nav> 
    <!-- /. NAV SIDE --> 
-   <div id="page-wrapper" style="overflow-x: hidden;overflow-y:hidden;"> 
-    <div id="page-inner"> 
+   <div id="page-wrapper" style="overflow-x: hidden;overflow-y:hidden;min-height:854px"> 
+    <div id="page-inner" style="margin:0 0 0 0;"> 
      <div class="row" id="top-row">  
         <div class="filter-tool">
           <form class="form-inline query-accountId" method="get" onsubmit = "return checkInput()" role="form" >
@@ -205,11 +205,11 @@
         </div> 
        </div> 
       </div> 
-     </div> 
+     </div>
      <div class="row"> 
-      <div class="alert alert-warning fade in" data-dismiss="alert" id="platform-selected"> 
+      <div class="alert alert-warning fade in" data-dismiss="alert" id="account-not-exist"> 
        <a href="#" class="close" data-dismiss="alert">&times;</a> 
-       <strong>请选择平台</strong> 
+       <strong>帐号ID不存在</strong> 
       </div> 
      </div> 
      <div class="row"> 

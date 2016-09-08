@@ -6,6 +6,14 @@ $("#dropdownMenu1").on("mouseover", function() {
     $(this).dropdown("toggle")
 });
 
+//正则表达式获取url参数
+function GetQueryString(name)
+{
+     var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+     var r = window.location.search.substr(1).match(reg);
+     if(r!=null)return  unescape(r[2]); return null;
+}
+
 function iconsView() {
     var icons = $('.btn-icons');
     if(!$("ul.dropdown-menu.iconBar").find("div").hasClass("checked")){
@@ -57,7 +65,10 @@ $("li.btn-icons").click(function(){
 
 //onload initial
 $(document).ready(function(){
-	$("#btn-dropdownIcon").prepend("<span class='fa fa-apple icons icons-view' data-info='apple' aria-hidden='true'></span>");
+	var icon = GetQueryString("icon");
+    icon=(icon==null||icon=="iOS")?"apple":icon;
+    var htmlStr = "<span class='fa fa-" + icon + " icons icons-view' data-info=" + icon + " aria-hidden='true'></span>"
+    $("#btn-dropdownIcon").prepend(htmlStr);
 });
 
 //select more than one icon
@@ -65,3 +76,6 @@ $('.dropdown-menu.iconBar').click(function(e) {
     e.stopPropagation();
 });
 
+$("button.btn.btn-default.btn-circle").click(function(){
+    location.reload();
+})

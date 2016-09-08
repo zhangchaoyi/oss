@@ -685,6 +685,15 @@ form.form-inline.query-accountId {
 }
 
 button.btn.btn-primary.query-account-id {
-    /* font-size: 14px; */
     width: 59px;
+}
+
+div#account-not-exist {
+    position: fixed;
+    bottom:750px;
+    left: 806px;
+    opacity: 0.9;
+    z-index:1000;
+    width: 300px;
+    display: none;
 }

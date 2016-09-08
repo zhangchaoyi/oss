@@ -23,6 +23,10 @@ public class AccdetailServiceImpl implements AccdetailService{
 		List<Login> login = Login.dao.find(loginSql, accountId);
 		List<Logout> logout = Logout.dao.find(onlineSql, accountId);
 		List<LogCharge> logCharge = LogCharge.dao.find(paidSql, accountId);
+		if(device.size()==0){
+			data.put("code", 1);
+			return data;
+		}
 		
 		List<List<String>> deviceTable = new ArrayList<List<String>>();
 		List<List<String>> detailTable = new ArrayList<List<String>>();
@@ -55,6 +59,7 @@ public class AccdetailServiceImpl implements AccdetailService{
 			detailList.add(lc.getDouble("paidSum")==null? "-" : lc.getDouble("paidSum").toString());
 		}
 		detailTable.add(detailList);
+		data.put("code", 0);
 		data.put("device", deviceTable);
 		data.put("detail", detailTable);
 		return data;

@@ -44,6 +44,9 @@ function configEquipmentChart(data) {
     equipmentChart.setOption({
         tooltip: {
             trigger: 'axis',
+            axisPointer : {            // 坐标轴指示器，坐标轴触发有效
+            type : 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
+            }
         },
         legend: {
             data: data.type
@@ -94,6 +97,7 @@ function configEquipmentChart(data) {
                 var item = {
                     name: key,
                     type: "bar",
+                    barWidth:"30%",
                     itemStyle: {
                         normal: {
                             color: 'rgb(87, 139, 187)'
@@ -363,4 +367,6 @@ $("#btn-explain-down").click(function(){
         return value;
     });
 });
+
+
 

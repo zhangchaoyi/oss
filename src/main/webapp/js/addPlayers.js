@@ -47,6 +47,16 @@ function configPlayerChart(data) {
     addChart.setOption({
         tooltip: {
             trigger: 'axis',
+            formatter:function(params) {  
+               var relVal = params[0].name;
+               if(type=='玩家转化率'){
+                    return relVal += '<br/>' + params[0].seriesName + ' : ' + params[0].value+"%";
+               } 
+               for (var i = 0, l = params.length; i < l; i++) { 
+                    relVal += '<br/>' + params[i].seriesName + ' : ' + params[i].value ;  
+                }  
+               return relVal;  
+            } 
         },
         
         legend: {
@@ -105,6 +115,7 @@ function configPlayerChart(data) {
                     name: key,
                     type: "line",
                     smooth:true,
+                    barWidth:"30%",
                     data: recData[key]
                 }
                 serie.push(item);
