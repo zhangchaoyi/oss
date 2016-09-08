@@ -697,3 +697,97 @@ div#account-not-exist {
     width: 300px;
     display: none;
 }
+div.filter-tool-txt {
+    display: inline;
+    position:relative;
+    font-size: 22px;
+    line-height: 32px;
+    float: left;
+    padding: 12px 0 0px 13px;
+}
+div.channel {
+    float:left;
+    text-align: left;
+    display: inline;
+    position: relative;
+    bottom:30px;
+}
+div.channel > em {
+    position: relative;
+    left:30px;
+
+}
+span.time-true {
+    background: #5cb95e;
+    color:#FFF;
+    text-align: center;
+    border-radius:2px;
+    padding: 2px 6px;
+    margin-right: 5px;
+    line-height: 15px;
+}
+
+span.time-s {
+    background: #5bc0de;
+    color:#FFF;
+    text-align: center;
+    border-radius:2px;
+    padding: 2px 6px;
+    margin-right: 5px;
+    line-height: 15px;
+}
+
+div.realtimeInfo {
+    background: #f8f8f8;
+    height: 320px;
+}
+div.realtime-title {
+    border-top: 1px solid #ccc;
+    height: 82px;
+}
+div.realtime-data {
+    height: 82px;
+    text-align: left;
+}
+.contrast-data, .realtime-data {
+    float: left;
+    width: 19.9%;
+    border-left: 1px solid #ccc;
+    margin-left: -1px;
+    background: #f8f8f8;
+}
+div.realtime-data h3 {
+    padding-left: 15px;
+    font-size: 14px;
+    font-weight: normal;
+}
+div.realtime-data span {
+    padding: 0 0 0px 30px;
+    font-size: 30px;
+}
+div.realtime-data em {
+    font-size: 16px;
+    color: #67a600;
+    font-weight: bold;
+    margin-left: 20px;
+}
+div.contrast-data {
+    height: 73px;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    padding-left: 17px;
+}
+div.contrast-data b {
+    float: left;
+    width: 60px;
+    font-size: 12px;
+    font-weight: normal;
+    text-align: left;
+}
+div.contrast-data .contrastval {
+    width: 50px;
+    overflow: hidden;
+}
+span#incomeTodayDays30.contrastval {
+}

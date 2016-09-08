@@ -1105,7 +1105,10 @@ h6,
   font-size: 12px;
 }
 p {
-  margin: 0 0 10px;
+  /* margin-bottom: -2px; */
+  padding-bottom: -16px;
+  z-index: 20;
+  text-align: left;
 }
 .lead {
   margin-bottom: 20px;
