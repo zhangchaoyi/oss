@@ -1,6 +1,8 @@
 //get today date for dateselector
-function getNowFormatDate() {
+//获取某一天的日期,格式 yyyy-mm-dd,参数用于当前的日期相减的数
+function getFormatDate(day){
     var date = new Date();
+    date.setDate(date.getDate()-day);
     var seperator1 = "-";
     var year = date.getFullYear();
     var month = date.getMonth() + 1;
@@ -15,23 +17,7 @@ function getNowFormatDate() {
     return currentdate;
 }
 
-function getSevenEarlyFormatDate(){
-    var date = new Date();
-    date.setDate(date.getDate()-6);
-    var seperator1 = "-";
-    var year = date.getFullYear();
-    var month = date.getMonth() + 1;
-    var strDate = date.getDate();
-    if (month >= 1 && month <= 9) {
-        month = "0" + month;
-    }
-    if (strDate >= 0 && strDate <= 9) {
-        strDate = "0" + strDate;
-    }
-    var currentdate = year + seperator1 + month + seperator1 + strDate;
-    return currentdate;
-}
-
+//指标说明开关
 $("#btn-explain-switch").click(function() {
     $("#explain-panel").toggleClass("toggle-switch");
     var txt = $(this).text();
@@ -45,7 +31,7 @@ $("#btn-explain-switch").click(function() {
         $("#btn-explain-down").hide();
     }
 });
-
+//第一个数据表格开关
 $("#btn-first-data-panel-switch").click(function(){
     $("div.table-zoom-first").toggleClass("toggle-switch");
     var txt = $(this).text();
@@ -55,7 +41,7 @@ $("#btn-first-data-panel-switch").click(function(){
         $(this).text("打开");
     }
 });
-
+//第二个数据表格开关
 $('#btn-gamedetail-switch').click(function(){
     $("div.table-zoom-second").toggleClass("toggle-switch");
     var txt = $(this).text();
@@ -79,7 +65,7 @@ $("#btn-selall").click(function(){
     $("table.tab-pane.fade.active.in").find("div").iCheck("check");
     $("table[class='tab-pane fade']").find("div").iCheck("uncheck");
 });
-
+//筛选反选
 $("#btn-selreverse").click(function(){
     $("table.tab-pane.fade.active.in").find("div").iCheck("toggle");
 });
@@ -100,8 +86,8 @@ $("#btn-filtersave").click(function(){
 $(function() {
     var dateRange = new pickerDateRange('date_seletor', {
         isTodayValid: true,
-        startDate: getSevenEarlyFormatDate(),
-        endDate: getNowFormatDate(),
+        startDate: getFormatDate(6),
+        endDate: getFormatDate(0),
         //needCompare : true,
         //isSingleDay : true,
         //shortOpr : true,

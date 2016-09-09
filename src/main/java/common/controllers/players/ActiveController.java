@@ -22,8 +22,8 @@ import common.service.impl.AddPlayersServiceImpl;
 import common.utils.DateUtils;
 import common.utils.StringUtils;
 
-@Clear(AuthInterceptor.class)
-//@Before(AuthInterceptor.class)
+//@Clear(AuthInterceptor.class)
+@Before(AuthInterceptor.class)
 public class ActiveController extends Controller{
 	private AddPlayersService addPlayersService = new AddPlayersServiceImpl();
 	private ActivePlayersService activePlayersService = new ActivePlayersServiceImpl();

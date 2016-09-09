@@ -379,8 +379,8 @@
       </div> 
      </div> 
      <!-- /. explain-row --> 
-     <div class="row" >
-      <div id="realtimeInfo" class="realtimeInfo">
+     <div class="row" id="realtimeInfo">
+      <div class="realtimeInfo">
         <div class="realtime-title">
           <div class="realtime-data">
             <h3>设备激活(含重复安装):</h3>
@@ -408,7 +408,7 @@
             <em id="gameNums">3</em>
           </div>
         </div>
-        <div class="realtime-content">
+        <div class="realtime-content up">
           <div class="contrast-data">
             <p>
              <b>昨日:</b>
@@ -522,7 +522,7 @@
             <span id="gameTimes">0</span>
           </div>
         </div>
-        <div class="realtime-content">
+        <div class="realtime-content down">
           <div class="contrast-data">
             <p>
              <b>昨日:</b>
@@ -608,19 +608,33 @@
              <span class="contrastval" id="gameTimesDays30">0</span>
             </p>
           </div>
-        </div>
-        
-      </div> 
+        </div>  
+      </div>
+      <div class="realtime-btn">
+        <a id="switch-up" class="current" data-info="close"><i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+        <a id="switch-down" class="current" data-info="close"><i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+      </div>  
      </div>
-     <div class="row" id="data-retain">
-        <ul class="nav nav-tabs realtime-details"> 
+     <div class="row" id="data-info-details">
+        <ul class="nav nav-tabs"> 
          <li class="active"> <a data-toggle="tab" data-info="rto">实时在线</a></li> 
          <li class=""> <a data-toggle="tab" data-info="equ">设备激活</a></li>
          <li class=""> <a data-toggle="tab" data-info="adp">新增玩家</a></li> 
          <li class=""> <a data-toggle="tab" data-info="pay">收入金额</a></li>
         </ul> 
         <div class="tab-content">          
-            <div id="realtime-details-chart" style="width:1400px;height:400px;display:inline;float:left"></div>    
+            <div class="date-contrast-bar">
+              <em>对比时段</em>
+              <div class="calender-bar contrast"> 
+               <div class="ta_date"> 
+                <span class="date_title" id="date-contrast-seletor"></span> 
+                <a class="opt_sel" id="input-contrast-trigger" hre2f="#"> <i class="fa fa-calendar" aria-hidden="true"></i> </a>
+               </div> 
+               <div id="datePicker"></div> 
+              </div>
+              <a class="btn btn-gray" id="btn-contrast-clear" data-btn="true">清空</a>
+            </div>
+            <div id="realtime-details-chart" style="width:1400px;height:400px;display:inline;float:left"></div>
         </div>
      </div>
      <div class="row"> 

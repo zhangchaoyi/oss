@@ -8,8 +8,8 @@ import com.jfinal.ext.interceptor.GET;
 
 import common.interceptor.AuthInterceptor;
 
-//@Before(AuthInterceptor.class)
-@Clear(AuthInterceptor.class)
+@Before(AuthInterceptor.class)
+//@Clear(AuthInterceptor.class)
 public class DashboardController extends Controller{
 	@Before(GET.class)
 	@ActionKey("/dashboard")

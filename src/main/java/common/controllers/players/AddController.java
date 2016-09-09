@@ -20,8 +20,8 @@ import common.utils.DateUtils;
 import common.utils.StringUtils;
 
 
-@Clear(AuthInterceptor.class)
-//@Before(AuthInterceptor.class)
+//@Clear(AuthInterceptor.class)
+@Before(AuthInterceptor.class)
 public class AddController extends Controller{
 	private AddPlayersService addPlayersService = new AddPlayersServiceImpl();
 	

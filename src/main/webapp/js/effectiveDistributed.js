@@ -1,10 +1,14 @@
 var effectiveChart = echarts.init(document.getElementById('effective-distributed-chart'));
 
 $(function() {
-    loadData($("ul.nav.nav-tabs.effective-distributed > li.active").children("a").attr("data-info"), $("ul.nav.nav-tabs.effective.distributed > li.active").children("a").attr("data-info"));
+    loadData();
 })
 
-function loadData(tagDataInfo, subTagDataInfo) {
+function loadData(){
+    configEffectDistributedData($("ul.nav.nav-tabs.effective-distributed > li.active").children("a").attr("data-info"), $("ul.nav.nav-tabs.effective.distributed > li.active").children("a").attr("data-info"));
+}
+
+function configEffectDistributedData(tagDataInfo, subTagDataInfo) {
 
     $.post("/api/players/effective-distributed", {
         tagDataInfo: tagDataInfo,
@@ -214,11 +218,11 @@ function appendTableHeader(data) {
 $("ul.nav.nav-tabs.effective-distributed > li").click(function() {
     var tagDataInfo = $(this).children("a").attr("data-info");
     var subTagDataInfo = $("ul.nav.nav-tabs.effective.distributed > li.active").children("a").attr("data-info");
-    loadData(tagDataInfo, subTagDataInfo);
+    configEffectDistributedData(tagDataInfo, subTagDataInfo);
 })
 
 $("ul.nav.nav-tabs.effective.distributed > li").click(function() {
     var subTagDataInfo = $(this).children("a").attr("data-info");
     var tagDataInfo = $("ul.nav.nav-tabs.effective-distributed > li.active").children("a").attr("data-info");
-    loadData(tagDataInfo, subTagDataInfo);
+    configEffectDistributedData(tagDataInfo, subTagDataInfo);
 })

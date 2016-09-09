@@ -13,8 +13,8 @@ import common.interceptor.AuthInterceptor;
 import common.service.AccdetailService;
 import common.service.impl.AccdetailServiceImpl;
 
-@Clear(AuthInterceptor.class)
-//@Before(AuthInterceptor.class)
+//@Clear(AuthInterceptor.class)
+@Before(AuthInterceptor.class)
 public class AccdetailController extends Controller{
 	private AccdetailService accdetailService = new AccdetailServiceImpl();
 	

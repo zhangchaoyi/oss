@@ -1,3 +1,4 @@
+//鼠标覆盖按钮自动下拉菜单
 $("#dropdownMenu1").on("mouseover", function() {
     if ($(this).parent().is(".open")) {
         return
@@ -13,7 +14,7 @@ function GetQueryString(name)
      var r = window.location.search.substr(1).match(reg);
      if(r!=null)return  unescape(r[2]); return null;
 }
-
+//图标显示
 function iconsView() {
     var icons = $('.btn-icons');
     if(!$("ul.dropdown-menu.iconBar").find("div").hasClass("checked")){
@@ -43,6 +44,7 @@ function showIcon(icon){
 	}
 }
 
+//获取当前所有显示的图标
 function getIcons(){
     var list = [];
     var str = "";
@@ -59,6 +61,7 @@ function getIcons(){
     return list;
 }
 
+// 复选框选择/取消
 $("li.btn-icons").click(function(){
 	$(this).iCheck('toggle');
 });
@@ -75,7 +78,7 @@ $(document).ready(function(){
 $('.dropdown-menu.iconBar').click(function(e) {
     e.stopPropagation();
 });
-
+//清除按钮
 $("button.btn.btn-default.btn-circle").click(function(){
     location.reload();
 })

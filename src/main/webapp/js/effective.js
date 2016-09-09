@@ -1,10 +1,14 @@
 var effectiveChart = echarts.init(document.getElementById('effective-chart'));
 
 $(function() {
-    loadData($("ul.nav.nav-tabs.effective > li").children("a").attr("data-info"));
+    loadData();
 })
 
-function loadData(tagDataInfo) {
+function loadData(){
+    configEffectData($("ul.nav.nav-tabs.effective > li.active").children("a").attr("data-info"));
+}
+
+function configEffectData(tagDataInfo) {
 
     $.post("/api/players/effective", {
         tagDataInfo: tagDataInfo
@@ -151,5 +155,5 @@ function appendTableHeader(data) {
 
 $("ul[class='nav nav-tabs effective'] > li").click(function() {
     var tagDataInfo = $(this).children("a").attr("data-info");
-    loadData(tagDataInfo);
+    configEffectData(tagDataInfo);
 });

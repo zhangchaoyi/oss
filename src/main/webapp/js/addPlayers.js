@@ -294,7 +294,7 @@ function configDetailChart(data) {
 
     });
 }
-
+//自定义dataTable列排序
 jQuery.extend(jQuery.fn.dataTableExt.oSort, {
             "num-html-pre": function(a) {
                 var time = String(a).split(" ")[1];
@@ -364,7 +364,7 @@ function appendDetailTableHeader(data) {
     $("#data-table-add-players-details").append("<thead><tr>" + txt + "</tr></thead>");
 }
 
-
+//echart 的总数/平均数展示条
 function showPlayerNote(data){
     if(showNote==true){
         $('#newPlayer-note').show();

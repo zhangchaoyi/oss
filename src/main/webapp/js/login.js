@@ -25,4 +25,6 @@ function getKey(e) {
 		login(); 
 	}  
 }
-
+$(function(){
+	$("#username").focus();
+});

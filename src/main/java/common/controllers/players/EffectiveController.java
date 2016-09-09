@@ -13,8 +13,8 @@ import com.jfinal.ext.interceptor.POST;
 import com.jfinal.ext.interceptor.GET;
 import common.interceptor.AuthInterceptor;
 
-@Clear(AuthInterceptor.class)
-//@Before(AuthInterceptor.class)
+//@Clear(AuthInterceptor.class)
+@Before(AuthInterceptor.class)
 public class EffectiveController extends Controller {
 	@Before(GET.class)
 	@ActionKey("/players/effective")
@@ -31,7 +31,7 @@ public class EffectiveController extends Controller {
 	@Before(POST.class)
 	@ActionKey("/api/players/effective")
 	public void testData() {
-		String tagDataInfo = getPara("tagDataInfo");
+		String tagDataInfo = getPara("tagDataInfo","add-players");
 		Map<String, Object> data = new LinkedHashMap<String,Object>();
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
 		Map<String, List<Integer>> seriesMap = new LinkedHashMap<String, List<Integer>>();

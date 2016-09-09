@@ -19,8 +19,8 @@ import common.service.EquipmentAnalyzeService;
 import common.service.impl.EquipmentAnalyzeServiceImpl;
 import common.utils.StringUtils;
 
-@Clear(AuthInterceptor.class)
-//@Before(AuthInterceptor.class)
+//@Clear(AuthInterceptor.class)
+@Before(AuthInterceptor.class)
 public class EquipmentController extends Controller {
 	private EquipmentAnalyzeService equipmentAnalyzeService = new EquipmentAnalyzeServiceImpl();
 

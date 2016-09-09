@@ -273,6 +273,7 @@ function configDetailChart(data) {
     });
 }
 
+//自定义dataTable的列排序
 jQuery.extend(jQuery.fn.dataTableExt.oSort, {
             "num-html-pre": function(a) {
                 var time = String(a).split(" ")[1];

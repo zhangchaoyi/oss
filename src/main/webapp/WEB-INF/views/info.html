@@ -145,25 +145,13 @@
    <div id="page-wrapper" style="overflow-x: hidden;overflow-y:hidden;"> 
     <div id="page-inner"> 
      <div class="row" id="top-row"> 
-      <div class="filter-tool"> 
-       <div class="date-bar"> 
-        <div class="calender-bar"> 
-         <div class="ta_date"> 
-          <span class="date_title" id="date_seletor"></span> 
-          <a class="opt_sel" id="input_trigger" hre2f="#"> <i class="fa fa-calendar" aria-hidden="true"></i> </a> 
-         </div> 
-         <div id="datePicker"></div> 
-        </div> 
-        <div class="time-title active"> 
-         <a id="aToday" onclick="dateSelected(this)">今日</a> 
-         <a id="aYesterday" onclick="dateSelected(this)">昨日</a> 
-         <a id="aRecent7Days" onclick="dateSelected(this)" class="selected">近7日</a> 
-         <a id="aRecent30Days" onclick="dateSelected(this)">近30日</a> 
-         <a id="aRecent90Days" onclick="dateSelected(this)">近90日</a> 
-        </div> 
+      <div class="filter-tool" style="height:120px"> 
+       <div class="filter-tool-txt">
+         <em>实时数据</em>
+         <span id="current-time"></span>
        </div> 
        <div class="filter-bar"> 
-        <div class="row" id="notification"> 
+        <div class="row" id="notification" style="bottom:15px"> 
          <button class="btn btn-primary btn-lg btn-notify" data-toggle="modal" data-target="#myModal"> <span class="glyphicon glyphicon-filter" aria-hidden="true"></span> <i>筛选</i> </button> 
          <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
           <div class="modal-dialog"> 
@@ -243,6 +231,11 @@
           </div> 
          </div> 
         </div> 
+       </div>
+       <div class="channel">
+         <hr style="position:relative;width:1550px;top:3px;left:10px;border-top:1px solid silver;">
+         <em>渠道</em>
+         <div class="channel-result"></div>
        </div> 
       </div> 
      </div> 
@@ -261,10 +254,11 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
+              <span class="time-true">实时指标</span>
               设备激活:
              </dt> 
              <dd>
-              统计所选时期内，每日新增的玩家安装游戏客户端，并运行游戏的可连接网络设备的数量，每台设备只计算一次。
+              实时统计当日激活的设备数量，如果已安装的游戏激活标识被移除的话，则设备激活不会被去重。
              </dd> 
             </dl> 
            </div> 
@@ -272,10 +266,11 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
+              <span class="time-true">实时指标</span>
               新增账户:
              </dt> 
              <dd>
-              统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家账户数量。
+              实时统计当日新增玩家账号的数量。
              </dd> 
             </dl> 
            </div> 
@@ -283,10 +278,11 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              新增设备:
+              <span class="time-true">实时指标</span>
+              老玩家:
              </dt> 
              <dd>
-              统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家设备数量，每台设备只计算一次。
+              实时统计当日有登陆过游戏的老玩家的账号数量。
              </dd> 
             </dl> 
            </div> 
@@ -294,10 +290,11 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              玩家转化率:
+              <span class="time-true">实时指标</span>
+              总活跃：
              </dt> 
              <dd>
-               统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家设备数量，即当日激活并注册的设备占比，如激活游戏后不在当日进行注册则不计算。
+               实时统计当日所有有进行过登陆行为的玩家账号数量。
              </dd> 
             </dl> 
            </div> 
@@ -305,10 +302,11 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              首次游戏时长:
+              <span class="time-true">实时指标</span>
+              付费玩家：
              </dt> 
              <dd>
-               统计所选时期内，新增玩家首次进行游戏的游戏时间区间分布。
+               实时统计当日有进行成功付费的玩家账号数量。
              </dd> 
             </dl> 
            </div> 
@@ -316,10 +314,11 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              小号分析:
+              <span class="time-true">实时指标</span>
+              付费次数：
              </dt> 
              <dd>
-               统计所选时期内，新增设备上存在多个新增玩家游戏账号的数量情况。
+               实时统计当日玩家有成功进行付费的总次数。
              </dd> 
             </dl> 
            </div> 
@@ -327,10 +326,11 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              新增玩家地区/国家:
+              <span class="time-true">实时指标</span>
+              今日收入：
              </dt> 
              <dd>
-               统计所选时期内，新增玩家注册信息中地区和国家分布情况。
+               实时统计当日游戏总收入金额。
              </dd> 
             </dl> 
            </div> 
@@ -338,10 +338,11 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              新增玩家性别:
+              <span class="time-true">实时指标</span>
+              累计收入：
              </dt> 
              <dd>
-               统计所选时期内，新增玩家注册信息中性别分布情况。
+               实时统计截至当时为止游戏的总收入金额。
              </dd> 
             </dl> 
            </div> 
@@ -349,10 +350,11 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              新增玩家年龄:
+              <span class="time-s">小时指标</span>
+              游戏次数：
              </dt> 
              <dd>
-               统计所选时期内，新增玩家注册信息中年龄分布情况。
+               实时统计当日玩家所进行的游戏总次数。
              </dd> 
             </dl> 
            </div> 
@@ -360,10 +362,11 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              新增玩家账户类型:
+              <span class="time-s">小时指标</span>
+              平均每次游戏时长：
              </dt> 
              <dd>
-               统计所选时期内，新增玩家所选注册账户类型分布情况。
+               实时统计当日玩家平均每次进行游戏的时间。
              </dd> 
             </dl> 
            </div> 
@@ -376,52 +379,262 @@
       </div> 
      </div> 
      <!-- /. explain-row --> 
-     <div class="row" id="data-first"> 
-      <div class="panel panel-default"> 
-       <div class="panel-heading"> 
-        <span class="data-first-panel-heading">新增玩家</span>
-        <button class="btn btn-2 btn-2c" id="btn-first-data-panel-switch">关闭</button> 
-       </div> 
-       <div class="panel-body"> 
-        <ul class="nav nav-tabs add-players"> 
-         <li class="active"> <a data-toggle="tab" data-info="new-activate">新增与激活</a></li> 
-         <li class=""> <a data-toggle="tab" data-info="players-change-rate">玩家转化率</a></li> 
-        </ul> 
-        <div class="tab-content">
-          <div id="newPlayer-note" class="data-results">
-            <span>
-              <em>SUM</em>
-              激活|玩家|设备:
-              <font class="sum-note">48 | 0 | 50 </font>
-            </span>
-            <span>
-              <em>AVG</em>
-              激活|玩家|设备:
-              <font class="avg-note">7 | 0 | 7 </font>
-            </span>
-          </div> 
-          <div id="add-players-chart" style="width:1400px;height:400px;display:inline;float:left"></div> 
-          <div class="table-zoom-first"> 
-           <table id="data-table-add-players" class="hover stripe row-border"></table> 
-          </div>              
-        </div> 
-       </div> 
-      </div> 
+     <div class="row" id="realtimeInfo">
+      <div class="realtimeInfo">
+        <div class="realtime-title">
+          <div class="realtime-data">
+            <h3>设备激活(含重复安装):</h3>
+            <span id="equipment">0</span>
+            <em id="equipmentEm"></em>
+          </div>
+          <div class="realtime-data">
+            <h3>总活跃:</h3>
+            <span id="totalActive">0</span>
+            <em id="totalActiveEm"></em>
+          </div>
+          <div class="realtime-data">
+            <h3>付费玩家:</h3>
+            <span id="payPlayers">0</span>
+            <em id="payPlayersEm"></em>
+          </div>
+          <div class="realtime-data">
+            <h3>今日收入:</h3>
+            <span id="incomeToday">0</span>
+            <em id="incomeTodayEm"></em>
+          </div>
+          <div class="realtime-data">
+            <h3>游戏次数:</h3>
+            <span id="equipment">0</span>
+            <em id="gameNums">3</em>
+          </div>
+        </div>
+        <div class="realtime-content up">
+          <div class="contrast-data">
+            <p>
+             <b>昨日:</b>
+             <span class="contrastval" id="equipmentDays1">48</span>
+             <em id="equipmentEmDays1" class="red"><i class="fa fa-arrow-down" aria-hidden="true"></i>100%</em>
+            </p>
+            <p>
+             <b>7日前:</b>
+             <span class="contrastval" id="equipmentDays7">0</span>
+             <em id="equipmentEmDays7" class="red"></em>
+            </p>
+            <p>
+             <b>30日前:</b>
+             <span class="contrastval" id="equipmentDays30">0</span>
+             <em id="equipmentEmDays30" class="red"></em>
+            </p>
+          </div>
+          <div class="contrast-data">
+            <p>
+             <b>昨日:</b>
+             <span class="contrastval" id="totalActiveDays1">48</span>
+             <em id="totalActiveEmDays1" class="red"><i class="fa fa-arrow-down" aria-hidden="true"></i>100%</em>
+            </p>
+            <p>
+             <b>7日前:</b>
+             <span class="contrastval" id="totalActiveDays7">0</span>
+             <em id="totalActiveEmDays7" class="red"></em>
+            </p>
+            <p>
+             <b>30日前:</b>
+             <span class="contrastval" id="totalActiveDays30">0</span>
+             <em id="totalActiveEmDays30" class="red"></em>
+            </p>
+          </div>
+          <div class="contrast-data">
+            <p>
+             <b>昨日:</b>
+             <span class="contrastval" id="payPlayersDays1">48</span>
+             <em id="payPlayersEmDays1" class="red"><i class="fa fa-arrow-down" aria-hidden="true"></i>100%</em>
+            </p>
+            <p>
+             <b>7日前:</b>
+             <span class="contrastval" id="payPlayersDays7">0</span>
+             <em id="payPlayersEmDays7" class="red"></em>
+            </p>
+            <p>
+             <b>30日前:</b>
+             <span class="contrastval" id="payPlayersDays30">0</span>
+             <em id="payPlayersEmDays30" class="red"></em>
+            </p>
+          </div>
+          <div class="contrast-data">
+            <p>
+             <b>昨日:</b>
+             <span>¥</span>
+             <span class="contrastval" id="incomeTodayDays1">48</span>
+             <em id="incomeTodayEmDays1" class="red"><i class="fa fa-arrow-down" aria-hidden="true"></i>100%</em>
+            </p>
+            <p>
+             <b>7日前:</b>
+             <span>¥</span>
+             <span class="contrastval" id="incomeTodayDays7">0</span>
+             <em id="incomeTodayEmDays7" class="red"></em>
+            </p>
+            <p>
+             <b>30日前:</b>
+             <span>¥</span>
+             <span class="contrastval" id="incomeTodayDays30">0</span>
+             <em id="incomeTodayEmDays30" class="red"></em>
+            </p>
+          </div>
+          <div class="contrast-data">
+            <p>
+             <b>昨日:</b>
+             <span class="contrastval" id="gameNumsDays1">48</span>
+            </p>
+            <p>
+             <b>7日前:</b>
+             <span class="contrastval" id="gameNumsDays7">0</span>
+            </p>
+            <p>
+             <b>30日前:</b>
+             <span class="contrastval" id="gameNumsDays30">0</span>
+            </p>
+          </div>
+        </div>
+
+        <div class="realtime-title">
+          <div class="realtime-data">
+            <h3>新增玩家:</h3>
+            <span id="players">0</span>
+            <em id="playersEm"></em>
+          </div>
+          <div class="realtime-data">
+            <h3>老玩家:</h3>
+            <span id="oldPlayers">0</span>
+            <em id="oldPlayersEm"></em>
+          </div>
+          <div class="realtime-data">
+            <h3>付费次数:</h3>
+            <span id="payNums">0</span>
+            <em id="payNumsEm"></em>
+          </div>
+          <div class="realtime-data">
+            <h3>累计收入:</h3>
+            <span id="incomeAccumulative">0</span>
+            <em id="incomeAccumulativeEm"></em>
+          </div>
+          <div class="realtime-data">
+            <h3>平均每次游戏时长:</h3>
+            <span id="gameTimes">0</span>
+          </div>
+        </div>
+        <div class="realtime-content down">
+          <div class="contrast-data">
+            <p>
+             <b>昨日:</b>
+             <span class="contrastval" id="playersDays1">48</span>
+             <em id="playersEmDays1" class="red"><i class="fa fa-arrow-down" aria-hidden="true"></i>100%</em>
+            </p>
+            <p>
+             <b>7日前:</b>
+             <span class="contrastval" id="playersDays7">0</span>
+             <em id="playersEmDays7" class="red"></em>
+            </p>
+            <p>
+             <b>30日前:</b>
+             <span class="contrastval" id="playersDays30">0</span>
+             <em id="playersEmDays30" class="red"></em>
+            </p>
+          </div>
+          <div class="contrast-data">
+            <p>
+             <b>昨日:</b>
+             <span class="contrastval" id="oldPlayersDays1">48</span>
+             <em id="oldPlayersEmDays1" class="red"><i class="fa fa-arrow-down" aria-hidden="true"></i>100%</em>
+            </p>
+            <p>
+             <b>7日前:</b>
+             <span class="contrastval" id="oldPlayersDays7">0</span>
+             <em id="oldPlayersEmDays7" class="red"></em>
+            </p>
+            <p>
+             <b>30日前:</b>
+             <span class="contrastval" id="oldPlayersDays30">0</span>
+             <em id="oldPlayersEmDays30" class="red"></em>
+            </p>
+          </div>
+          <div class="contrast-data">
+            <p>
+             <b>昨日:</b>
+             <span class="contrastval" id="payNumsDays1">48</span>
+             <em id="payNumsEmDays1" class="red"><i class="fa fa-arrow-down" aria-hidden="true"></i>100%</em>
+            </p>
+            <p>
+             <b>7日前:</b>
+             <span class="contrastval" id="payNumsDays7">0</span>
+             <em id="payNumsEmDays7" class="red"></em>
+            </p>
+            <p>
+             <b>30日前:</b>
+             <span class="contrastval" id="payNumsDays30">0</span>
+             <em id="payNumsEmDays30" class="red"></em>
+            </p>
+          </div>
+          <div class="contrast-data">
+            <p>
+             <b>昨日:</b>
+             <span>¥</span>
+             <span class="contrastval" id="incomeAccumulativeDays1">48</span>
+             <em id="incomeAccumulativeEmDays1" class="red"><i class="fa fa-arrow-down" aria-hidden="true"></i>100%</em>
+            </p>
+            <p>
+             <b>7日前:</b>
+             <span>¥</span>
+             <span class="contrastval" id="incomeAccumulativeDays7">0</span>
+             <em id="incomeAccumulativeEmDays7" class="red"></em>
+            </p>
+            <p>
+             <b>30日前:</b>
+             <span>¥</span>
+             <span class="contrastval" id="incomeAccumulativeDays30">0</span>
+             <em id="incomeAccumulativeEmDays30" class="red"></em>
+            </p>
+          </div>
+          <div class="contrast-data">
+            <p>
+             <b>昨日:</b>
+             <span class="contrastval" id="gameTimesDays1">48</span>
+            </p>
+            <p>
+             <b>7日前:</b>
+             <span class="contrastval" id="gameTimesDays7">0</span>
+            </p>
+            <p>
+             <b>30日前:</b>
+             <span class="contrastval" id="gameTimesDays30">0</span>
+            </p>
+          </div>
+        </div>  
+      </div>
+      <div class="realtime-btn">
+        <a id="switch-up" class="current" data-info="close"><i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+        <a id="switch-down" class="current" data-info="close"><i class="fa fa-chevron-down" aria-hidden="true"></i></a>
+      </div>  
      </div>
-     <div class="row" id="data-second">
-        <ul class="nav nav-tabs add-details"> 
-         <li class="active"> <a data-toggle="tab" data-info="first-game-period">首次游戏时间</a></li> 
-         <li class=""> <a data-toggle="tab" data-info="subsidiary-account-analyze">小号分析</a></li>
-         <li class=""> <a data-toggle="tab" data-info="area">地区</a></li> 
-         <li class=""> <a data-toggle="tab" data-info="country">国家</a></li>
-         <li class=""> <a data-toggle="tab" data-info="account">账户类型</a></li>
-         <button class="btn btn-2 btn-2c" id="btn-gamedetail-switch">关闭</button>  
+     <div class="row" id="data-info-details">
+        <ul class="nav nav-tabs"> 
+         <li class="active"> <a data-toggle="tab" data-info="rto">实时在线</a></li> 
+         <li class=""> <a data-toggle="tab" data-info="equ">设备激活</a></li>
+         <li class=""> <a data-toggle="tab" data-info="adp">新增玩家</a></li> 
+         <li class=""> <a data-toggle="tab" data-info="pay">收入金额</a></li>
         </ul> 
         <div class="tab-content">          
-            <div id="add-players-details-chart" style="width:1400px;height:400px;display:inline;float:left"></div>
-            <div class="table-zoom-second"> 
-             <table id="data-table-add-players-details" class="hover stripe row-border"></table> 
-            </div>                    
+            <div class="date-contrast-bar">
+              <em>对比时段</em>
+              <div class="calender-bar contrast"> 
+               <div class="ta_date"> 
+                <span class="date_title" id="date-contrast-seletor"></span> 
+                <a class="opt_sel" id="input-contrast-trigger" hre2f="#"> <i class="fa fa-calendar" aria-hidden="true"></i> </a>
+               </div> 
+               <div id="datePicker"></div> 
+              </div>
+              <a class="btn btn-gray" id="btn-contrast-clear" data-btn="true">清空</a>
+            </div>
+            <div id="realtime-details-chart" style="width:1400px;height:400px;display:inline;float:left"></div>
         </div>
      </div>
      <div class="row"> 
@@ -460,7 +673,7 @@
   <script src="../js/dateselector/dateRange.js"></script> 
   <script src="../js/dateselector/monthPicker.js"></script> 
   <script src="../js/checkbox/icheck.js"></script>
-  <script src="../js/common.js"></script> 
-  <script src="../js/addPlayers.js"></script>
+  <script src="../js/common.js"></script>
+  <script src="../js/info.js"></script>
  </body>
 </html>
