@@ -3,5 +3,4 @@
 target/
 .classpath
 .settings/
-myapp.log
 logs/

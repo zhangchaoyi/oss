@@ -172,7 +172,7 @@ $("#data-info-details > ul > li > a").click(function(){
 
 //
 $("a#switch-up").click(function(){
-	$(this).toggleClass("current");
+	$(this).toggleClass("btn-current");
 	$(this).find("i").toggleClass("fa-chevron-down");
 	$(this).find("i").toggleClass("fa-chevron-up");
 	var info = $(this).attr("data-info");
@@ -195,7 +195,7 @@ $("a#switch-up").click(function(){
 	}
 });
 $("a#switch-down").click(function(){
-	$(this).toggleClass("current");
+	$(this).toggleClass("btn-current");
 	$(this).find("i").toggleClass("fa-chevron-down");
 	$(this).find("i").toggleClass("fa-chevron-up");
 	var info = $(this).attr("data-info");

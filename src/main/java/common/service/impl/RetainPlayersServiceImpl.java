@@ -82,19 +82,19 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 			for(Map.Entry<String, Object> subEntry : entry.getValue().entrySet()){
 				switch(subEntry.getKey()){
 					case "addUser":{
-						addData.add((long)subEntry.getValue());
+						addData.add((Long)subEntry.getValue());
 						break;
 					}
 					case "nextDayRetain":{
-						nDRData.add((double)subEntry.getValue());	
+						nDRData.add((Double)subEntry.getValue());	
 						break;
 					}
 					case "sevenDayRetain":{
-						sDRData.add((double)subEntry.getValue());
+						sDRData.add((Double)subEntry.getValue());
 						break;
 					}
 					case "monthRetain":{
-						mRData.add((double)subEntry.getValue());
+						mRData.add((Double)subEntry.getValue());
 						break;
 					}
 				}
@@ -199,43 +199,43 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 			for(Map.Entry<String, Object> subEntry : entry.getValue().entrySet()){
 				switch(subEntry.getKey()){
 					case "addEquipment":{
-						addEquipmentData.add((long)subEntry.getValue());
+						addEquipmentData.add((Long)subEntry.getValue());
 						break;
 					}
 					case "fD":{
-						fDData.add((double)subEntry.getValue());	
+						fDData.add((Double)subEntry.getValue());	
 						break;
 					}
 					case "sD":{
-						sDData.add((double)subEntry.getValue());
+						sDData.add((Double)subEntry.getValue());
 						break;
 					}
 					case "tD":{
-						tDData.add((double)subEntry.getValue());
+						tDData.add((Double)subEntry.getValue());
 						break;
 					}
 					case "fourD":{
-						fourDData.add((double)subEntry.getValue());	
+						fourDData.add((Double)subEntry.getValue());	
 						break;
 					}
 					case "fifD":{
-						fifDData.add((double)subEntry.getValue());	
+						fifDData.add((Double)subEntry.getValue());	
 						break;
 					}
 					case "sixD":{
-						sixDData.add((double)subEntry.getValue());
+						sixDData.add((Double)subEntry.getValue());
 						break;
 					}
 					case "sevenD":{
-						sevenDData.add((double)subEntry.getValue());
+						sevenDData.add((Double)subEntry.getValue());
 						break;
 					}
 					case "ftD":{
-						ftDData.add((double)subEntry.getValue());
+						ftDData.add((Double)subEntry.getValue());
 						break;
 					}
 					case "ttD":{
-						ttDData.add((double)subEntry.getValue());
+						ttDData.add((Double)subEntry.getValue());
 						break;
 					}
 					
