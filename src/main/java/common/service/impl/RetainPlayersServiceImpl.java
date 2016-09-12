@@ -60,15 +60,19 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 			subMap.put("sevenDayRetain", sDRRate);
 			subMap.put("monthRetain", mRRate);		
 		}
+		double nDRRateAvg = 0.0;
+		double sDRRateAvg = 0.0;
+		double mRRateAvg = 0.0;
+		if(addSum!=0){
+			BigDecimal nDRBgAvg = new BigDecimal(nDRSum * 100.0 / addSum);
+			BigDecimal sDRBgAvg = new BigDecimal(sDRSum * 100.0 / addSum);
+			BigDecimal mRBgAvg = new BigDecimal(mRSum * 100.0 / addSum);
+			//avg
+			nDRRateAvg = nDRBgAvg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			sDRRateAvg = sDRBgAvg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			mRRateAvg = mRBgAvg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		}
 		
-		BigDecimal nDRBgAvg = new BigDecimal(nDRSum * 100.0 / addSum);
-		BigDecimal sDRBgAvg = new BigDecimal(sDRSum * 100.0 / addSum);
-		BigDecimal mRBgAvg = new BigDecimal(mRSum * 100.0 / addSum);
-		
-		//avg
-		double nDRRateAvg = nDRBgAvg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-		double sDRRateAvg = sDRBgAvg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-		double mRRateAvg = mRBgAvg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		
 		
 		List<Long> addData = new ArrayList<Long>();
