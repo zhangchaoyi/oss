@@ -1,6 +1,8 @@
 //get today date for dateselector
-function getNowFormatDate() {
+//获取某一天的日期,格式 yyyy-mm-dd,参数用于当前的日期相减的数
+function getFormatDate(day){
     var date = new Date();
+    date.setDate(date.getDate()-day);
     var seperator1 = "-";
     var year = date.getFullYear();
     var month = date.getMonth() + 1;
@@ -15,6 +17,7 @@ function getNowFormatDate() {
     return currentdate;
 }
 
+//指标说明开关
 $("#btn-explain-switch").click(function() {
     $("#explain-panel").toggleClass("toggle-switch");
     var txt = $(this).text();
@@ -28,8 +31,8 @@ $("#btn-explain-switch").click(function() {
         $("#btn-explain-down").hide();
     }
 });
-
-$("#btn-adduser-switch").click(function(){
+//第一个数据表格开关
+$("#btn-first-data-panel-switch").click(function(){
     $("div.table-zoom-first").toggleClass("toggle-switch");
     var txt = $(this).text();
     if (txt == "打开") {
@@ -38,7 +41,7 @@ $("#btn-adduser-switch").click(function(){
         $(this).text("打开");
     }
 });
-
+//第二个数据表格开关
 $('#btn-gamedetail-switch').click(function(){
     $("div.table-zoom-second").toggleClass("toggle-switch");
     var txt = $(this).text();
@@ -62,7 +65,7 @@ $("#btn-selall").click(function(){
     $("table.tab-pane.fade.active.in").find("div").iCheck("check");
     $("table[class='tab-pane fade']").find("div").iCheck("uncheck");
 });
-
+//筛选反选
 $("#btn-selreverse").click(function(){
     $("table.tab-pane.fade.active.in").find("div").iCheck("toggle");
 });
@@ -73,35 +76,9 @@ $("#btn-filtersave").click(function(){
     for(var i=0;i<filterCheckBoxs.length;i++) { 
         if($(filterCheckBoxs[i]).hasClass("checked")){
             //extend
-            // console.log($(filterCheckBoxs[i]).siblings("span").text());
+            console.log($(filterCheckBoxs[i]).siblings("span").text());
         }
     }
-});
-
-//explain up and down button 
-$("#btn-explain-up").click(function(){
-    $("div.explain-content-box").css("margin-top", function(index,value){
-        value = parseFloat(value) + 155;
-        if(value>=0){
-            $("#btn-explain-up").addClass("disabled");
-        }
-        if($("#btn-explain-down").hasClass("disabled")){ 
-            $("#btn-explain-down ").removeClass("disabled");
-        }
-        return value;
-    });       
-});
-$("#btn-explain-down").click(function(){
-    $("div.explain-content-box").css("margin-top", function(index,value){
-        value = parseFloat(value) - 155;
-        if(value <= -310){
-            $("#btn-explain-down").addClass("disabled");
-        }
-        if($("#btn-explain-up").hasClass("disabled")){ 
-            $("#btn-explain-up").removeClass("disabled");
-        }
-        return value;
-    });
 });
 
 //onload initial
@@ -109,15 +86,18 @@ $("#btn-explain-down").click(function(){
 $(function() {
     var dateRange = new pickerDateRange('date_seletor', {
         isTodayValid: true,
-        startDate: getNowFormatDate(),
-        endDate: getNowFormatDate(),
+        startDate: getFormatDate(6),
+        endDate: getFormatDate(0),
         //needCompare : true,
         //isSingleDay : true,
         //shortOpr : true,
         defaultText: ' 至 ',
         inputTrigger: 'input_trigger',
         theme: 'ta',
-
+        success : function(obj) { 
+        //设置回调句柄 
+            loadData();
+        } 
     });
 });
 
@@ -146,3 +126,4 @@ $(function(){
     });
 
 });
+

@@ -18,7 +18,9 @@ public class LoginController extends Controller {
 
 	@ActionKey("/login")
 	@Before(GET.class)
-	public void login() {
+	public void login() { 
+		setAttr("from", getPara("from"));
+
 		render("login.html");
 	}
 
@@ -41,4 +43,5 @@ public class LoginController extends Controller {
 	public void logout() {
 		getSession().setAttribute("login_flag", false);
 	}
+	
 }
