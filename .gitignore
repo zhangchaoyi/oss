@@ -1,1 +1,7 @@
-/target/
+#忽略gitignore文件
+.gitignore
+target/
+.classpath
+.settings/
+myapp.log
+logs/

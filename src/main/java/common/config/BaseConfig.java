@@ -62,7 +62,7 @@ public class BaseConfig extends JFinalConfig {
 	}
 
 	public static C3p0Plugin createC3p0Plugin() {
-		PropKit.use("mysql.txt");
+		PropKit.use("config.txt");
 		return new C3p0Plugin(PropKit.get("jdbcUrl"), PropKit.get("user"), PropKit.get("password").trim());
 	}
 
