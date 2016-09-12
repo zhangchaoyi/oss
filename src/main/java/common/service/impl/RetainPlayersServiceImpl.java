@@ -60,6 +60,7 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 			subMap.put("sevenDayRetain", sDRRate);
 			subMap.put("monthRetain", mRRate);		
 		}
+
 		double nDRRateAvg = 0.0;
 		double sDRRateAvg = 0.0;
 		double mRRateAvg = 0.0;
@@ -72,8 +73,6 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 			sDRRateAvg = sDRBgAvg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			mRRateAvg = mRBgAvg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		}
-		
-		
 		
 		List<Long> addData = new ArrayList<Long>();
 		List<Double> nDRData = new ArrayList<Double>();

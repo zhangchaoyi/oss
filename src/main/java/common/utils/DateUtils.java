@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
 import org.apache.log4j.Logger;
 
 public class DateUtils {
@@ -21,6 +20,7 @@ public class DateUtils {
 		}catch (ParseException e){  
 			logger.debug("throwable exception",e);
 			logger.debug(e.getStackTrace());
+
 		}
 		return date;
 	}
@@ -46,13 +46,13 @@ public class DateUtils {
 		}catch(Exception e){
 			e.printStackTrace();
 			logger.debug(e.getStackTrace());
+			logger.debug("data transform failed");
 		}
 		return dateList;
 	}
 	
 	public static void main(String args[]){
 		System.out.println(getDateList("2016-08-01", "2016-08-10"));
-		logger.debug("test");
 	}
 	
 }
