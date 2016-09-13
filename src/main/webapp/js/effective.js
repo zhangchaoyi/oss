@@ -10,7 +10,7 @@ function loadData(){
 
 function configEffectData(tagDataInfo) {
 
-    $.post("/api/players/effective", {
+    $.post("/oss/api/players/effective", {
         tagDataInfo: tagDataInfo
     },
     function(data, status) {

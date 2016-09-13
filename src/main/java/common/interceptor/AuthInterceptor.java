@@ -19,9 +19,9 @@ public class AuthInterceptor implements Interceptor {
 				controller.redirect("/login");
 				return;
 			}
-			
+
 			String queryString = controller.getRequest().getQueryString();
-			String from = actionKey + (queryString==null? "":"?"+queryString);
+			String from = "/oss" + actionKey + (queryString==null? "":"?"+queryString);
 			
 			controller.redirect("/login?from="+from);
 		}

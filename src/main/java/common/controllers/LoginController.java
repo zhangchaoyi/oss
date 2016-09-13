@@ -18,11 +18,6 @@ public class LoginController extends Controller {
 		render("login.html");
 	}
 
-//	@ActionKey("/login")
-//	@Before(GET.class)
-//	public void login() { 
-//		
-//	}
 
 	@Before(POST.class)
 	@ActionKey("/api/login")

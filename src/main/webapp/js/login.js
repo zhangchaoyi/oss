@@ -4,7 +4,7 @@ function login(){
 		return;
 	}
 
-	$.post("/api/login", $("form").serialize(), function(data){
+	$.post("/oss/api/login", $("form").serialize(), function(data){
 		if(data.message == "success"){
 			var href = window.location.href;
 			if(href.indexOf("from=") != -1) {
@@ -13,7 +13,7 @@ function login(){
 				return;
 			}
 
-			location.href = location.protocol + "//" + location.host + "/dashboard";
+			location.href = location.protocol + "//" + location.host + "/oss/dashboard";
 		}else{
 			alert("用户名或密码错误");
 		}

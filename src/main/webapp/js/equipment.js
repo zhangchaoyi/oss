@@ -12,7 +12,7 @@ function loadData(){
 
 function loadEquipmentData(playerTagInfo) {
 
-    $.post("/api/players/equipment", {
+    $.post("/oss/api/players/equipment", {
         playerTagInfo:playerTagInfo,
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
@@ -25,7 +25,7 @@ function loadEquipmentData(playerTagInfo) {
 }
 
 function loadEquipmentDetailsData(playerTagInfo, detailTagInfo) {
-    $.post("/api/players/equipment/details", {
+    $.post("/oss/api/players/equipment/details", {
         playerTagInfo:playerTagInfo,
         detailTagInfo:detailTagInfo,
         icon:getIcons(),

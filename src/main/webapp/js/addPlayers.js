@@ -13,7 +13,7 @@ function loadData() {
 
 function loadAddPlayerData(addTagInfo) {
     showNote = (addTagInfo=='new-activate'?true:false);
-    $.post("/api/players/add", {
+    $.post("/oss/api/players/add", {
         addTagInfo:addTagInfo,
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
@@ -27,7 +27,7 @@ function loadAddPlayerData(addTagInfo) {
 }
 
 function loadAddDetailData(addDetailTagInfo) {
-    $.post("/api/players/add/detail", {
+    $.post("/oss/api/players/add/detail", {
         addDetailTagInfo:addDetailTagInfo,
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
