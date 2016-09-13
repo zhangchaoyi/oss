@@ -5,3 +5,4 @@ target/
 .settings/
 logs/
 .project
+bin/
