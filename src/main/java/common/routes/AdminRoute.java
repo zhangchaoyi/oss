@@ -20,7 +20,7 @@ public class AdminRoute extends Routes {
 
 	@Override
 	public void config() {
-		add("/", LoginController.class, "/WEB-INF/views");
+		add("/login", LoginController.class, "/WEB-INF/views");
 		add("/dashboard", DashboardController.class, "/WEB-INF/views");
 		add("/effective", EffectiveController.class,"/WEB-INF/views/players");
 		add("/retain", RetainController.class,"/WEB-INF/views/players");

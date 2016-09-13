@@ -10,6 +10,7 @@ import com.jfinal.kit.PropKit;
 import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 
+import common.controllers.IndexController;
 import common.interceptor.AuthInterceptor;
 import common.model.ActiveUser;
 import common.model.CreateRole;
@@ -31,6 +32,7 @@ public class BaseConfig extends JFinalConfig {
 
 	@Override
 	public void configRoute(Routes me) {
+		me.add("/", IndexController.class, "/WEB-INF/views");
 		me.add(new AdminRoute());
 	}
 
