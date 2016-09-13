@@ -13,16 +13,16 @@ public class LoginController extends Controller {
 
 	@Before(GET.class)
 	public void index() {
-		render("login.html");
-	}
-
-	@ActionKey("/login")
-	@Before(GET.class)
-	public void login() { 
 		setAttr("from", getPara("from"));
 
 		render("login.html");
 	}
+
+//	@ActionKey("/login")
+//	@Before(GET.class)
+//	public void login() { 
+//		
+//	}
 
 	@Before(POST.class)
 	@ActionKey("/api/login")
