@@ -11,7 +11,7 @@ $(function(){
   	var param = GetQueryString("account-id");
   	$("#account-id").attr("value",param);
   	if(param != null && param.toString().length>1){
-  		$.post("/api/players/accdetail", {
+  		$.post("/oss/api/players/accdetail", {
         accountId:param
         },
 	    function(data, status) {

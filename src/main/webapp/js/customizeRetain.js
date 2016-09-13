@@ -10,7 +10,7 @@ $(function(){
 
 function loadData(period, addPlayer, startGame, times, retentionType) {
 
-    $.post("/api/players/retain-customize", {
+    $.post("/oss/api/players/retain-customize", {
         period:period,
         addPlayer:addPlayer,
         startGame:startGame,

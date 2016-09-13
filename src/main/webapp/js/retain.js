@@ -6,7 +6,7 @@ $(function(){
 
 function loadData() {
 
-    $.post("/api/players/retain", {
+    $.post("/oss/api/players/retain", {
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
@@ -94,7 +94,6 @@ function configChart(data) {
 function configTable(data) {
     appendTableHeader(data);
     var tableData = dealTableData(data);
-    console.log(tableData)
     $('#data-table-newPlayers-retain').dataTable({
         destroy: true,
         // retrive:true,

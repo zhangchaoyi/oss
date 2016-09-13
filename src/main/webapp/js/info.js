@@ -87,7 +87,7 @@ function loadData(){
 }
 
 function loadInfoData(detailTag) {
-	$.post("/api/realtime/info", {
+	$.post("/oss/api/realtime/info", {
     	detailTag:detailTag,
         icon:getIcons(),
         startDate:dateCollection

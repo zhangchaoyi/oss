@@ -10,7 +10,7 @@ function loadData(){
 
 function configEffectDistributedData(tagDataInfo, subTagDataInfo) {
 
-    $.post("/api/players/effective-distributed", {
+    $.post("/oss/api/players/effective-distributed", {
         tagDataInfo: tagDataInfo,
         subTagDataInfo: subTagDataInfo
     },

@@ -12,7 +12,7 @@ function loadData(){
 
 function loadActivePlayerData(playerTag) {
 
-    $.post("/api/players/active", {
+    $.post("/oss/api/players/active", {
     	playerTag:playerTag,
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
@@ -25,7 +25,7 @@ function loadActivePlayerData(playerTag) {
 }
 
 function loadActiveDetailData(detailTagInfo) {
-	$.post("/api/players/active/details", {
+	$.post("/oss/api/players/active/details", {
     	detailTagInfo:detailTagInfo,
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
