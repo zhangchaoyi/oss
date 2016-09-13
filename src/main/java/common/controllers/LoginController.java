@@ -18,7 +18,6 @@ public class LoginController extends Controller {
 		render("login.html");
 	}
 
-
 	@Before(POST.class)
 	@ActionKey("/api/login")
 	public void loginValidate() {
