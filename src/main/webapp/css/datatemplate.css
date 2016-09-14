@@ -427,20 +427,20 @@ table.dataTable thead .sorting span:hover {
     background: url(../images/sort_both.png) no-repeat right center;
 }
 
-div#newPlayer-note > span {
+div.data-results > span {
     position: relative;
     left:5px;
     font-size:95%;
     margin-left: 20px;
 }
 
-div#newPlayer-note > span > font{
+div.data-results > span > font{
     color:#e25856;
     font-weight: bold;
     font-size: large;
 }
 
-div#newPlayer-note {
+div.data-results {
     margin-bottom:20px;
 }
 
