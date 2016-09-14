@@ -30,6 +30,13 @@ function iconsView() {
     $(".dropdown.open").toggleClass("open");
 }
 
+//点击tab跳转时添加icon参数
+$("#main-menu > li a").click(function(){
+    var href = $(this).attr("href");
+        if(href=="#")return;
+    $(this).attr("href",href + "?icon=" + getIcons());  
+});
+
 function showIcon(icon){
 	var value = $(icon).attr("data-value");
 	var className = "span.fa.fa-" + value + ".icons";
@@ -55,7 +62,6 @@ function getIcons(){
             continue;
         }
         list.push($(icon[i]).attr("data-info"));
-        // str += $(icon[i]).attr("data-info") + ',';
 
     }
     return list;
@@ -69,9 +75,30 @@ $("li.btn-icons").click(function(){
 //onload initial
 $(document).ready(function(){
 	var icon = GetQueryString("icon");
-    icon=(icon==null||icon=="iOS")?"apple":icon;
-    var htmlStr = "<span class='fa fa-" + icon + " icons icons-view' data-info=" + icon + " aria-hidden='true'></span>"
+    icon=(icon==null)?"apple":icon;
+    var iconArray = String(icon).split(",");
+    var htmlStr="";
+    for(var i=0;i<iconArray.length;i++){
+        if(iconArray[i]=="iOS"){
+            iconArray[i]="apple";
+        }
+        htmlStr += "<span class='fa fa-" + iconArray[i] + " icons icons-view' data-info=" + iconArray[i] + " aria-hidden='true'></span>";
+        switch(iconArray[i]){
+            case "apple":
+            $("#ios").find("input").iCheck('check');
+            break;
+            case "windows":
+            $("#wp").find("input").iCheck('check');
+            break;
+            case "android":
+            $("#and").find("input").iCheck('check');
+            break;
+        }
+    }
+
     $("#btn-dropdownIcon").prepend(htmlStr);
+    //去除url参数
+    window.history.pushState({},0,window.location.pathname );
 });
 
 //select more than one icon
