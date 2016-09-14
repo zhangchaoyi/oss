@@ -880,3 +880,7 @@ div.realtime-btn > a > i {
 div#data-info-details > ul.nav.nav-tabs{
     height: 50px;
 }
+
+li.btn-icons > a > span {
+    font-size: 21px;
+}
