@@ -72,35 +72,6 @@ $("li.btn-icons").click(function(){
 	$(this).iCheck('toggle');
 });
 
-//onload initial
-$(document).ready(function(){
-	var icon = GetQueryString("icon");
-    icon=(icon==null)?"apple":icon;
-    var iconArray = String(icon).split(",");
-    var htmlStr="";
-    for(var i=0;i<iconArray.length;i++){
-        if(iconArray[i]=="iOS"){
-            iconArray[i]="apple";
-        }
-        htmlStr += "<span class='fa fa-" + iconArray[i] + " icons icons-view' data-info=" + iconArray[i] + " aria-hidden='true'></span>";
-        switch(iconArray[i]){
-            case "apple":
-            $("#ios").find("input").iCheck('check');
-            break;
-            case "windows":
-            $("#wp").find("input").iCheck('check');
-            break;
-            case "android":
-            $("#and").find("input").iCheck('check');
-            break;
-        }
-    }
-
-    $("#btn-dropdownIcon").prepend(htmlStr);
-    //去除url参数
-    window.history.pushState({},0,window.location.pathname );
-});
-
 //select more than one icon
 $('.dropdown-menu.iconBar').click(function(e) {
     e.stopPropagation();
