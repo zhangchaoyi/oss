@@ -99,10 +99,8 @@ $(function() {
             loadData();
         } 
     });
-});
 
-//filter
-$(function(){
+    //filter
     jQuery(document).ready(function(){
             jQuery("#filter").jcOnPageFilter({
                 animateHideNShow: true,
@@ -114,17 +112,30 @@ $(function(){
                 parentLookupClass:'jcorgFilterTextParent',
                 childBlockClass:'jcorgFilterTextChild'
             });
-        });    
-})
+    });
 
-//icheck  checkbox
-$(function(){
-    
+    //icheck  checkbox
     $('input').iCheck({
         checkboxClass: 'icheckbox_polaris'
         // increaseArea: '-10%' // optional
     });
 
+    //导航栏
+    var hrefs = $("#main-menu").find("a");
+    var localPath = window.location.pathname;
+    for(var i=0;i<hrefs.length;i++){
+        if($(hrefs[i]).attr("href")==localPath){
+            var subParentTag = $(hrefs[i]).parent().parent();
+            var rootParentTag = $(subParentTag).parent();
+            if(rootParentTag.get(0).tagName == "LI"){
+                $(rootParentTag).addClass("active");
+                $(subParentTag).addClass("in");
+                $(subParentTag).attr("aria-expanded","true");
+                $(subParentTag).css("height","360px");
+            }
+            $(hrefs[i]).css("background","#d6d5d5");
+        }
+    }
 });
 
 //onload initial
