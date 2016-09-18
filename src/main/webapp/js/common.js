@@ -152,6 +152,6 @@ $(document).ready(function(){
     }
 
     $("#btn-dropdownIcon").prepend(htmlStr);
-    //去除url参数
+    //去除url后参数不跳转 
     window.history.pushState({},0,window.location.pathname );
 });
