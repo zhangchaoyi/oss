@@ -131,7 +131,9 @@ $(function() {
                 $(rootParentTag).addClass("active");
                 $(subParentTag).addClass("in");
                 $(subParentTag).attr("aria-expanded","true");
-                $(subParentTag).css("height","360px");
+                var length = $(subParentTag).children().length;
+                length = length * 39;
+                $(subParentTag).css("height",length + "px");
             }
             $(hrefs[i]).css("background","#d6d5d5");
         }

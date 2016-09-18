@@ -17,7 +17,7 @@ div.filter-tool {
 
 div#page-inner.fix-style-v1 {
     position: relative;
-    top: -14px;
+    top: -19px;
 }
 
 div.date-bar {
@@ -90,7 +90,7 @@ div.toggle-switch {
 div#data-first {
     text-align:left;
     position:relative;
-    top:50px;
+    top:20px;
     margin-bottom: 14px;
 }
 
@@ -302,6 +302,7 @@ div.explain-content-box {
 div.explain-content-row {
     position:relative;
     left:5px;
+    font-size:15px;
 }
 
 div.explain-content-panel.cut {

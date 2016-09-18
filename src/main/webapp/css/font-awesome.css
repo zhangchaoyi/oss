@@ -932,7 +932,7 @@
 }
 .fa-tablet:before {
   content: "\f10a";
-  font-size: xx-large;
+  font-size: 24px;
 }
 .fa-mobile-phone:before,
 .fa-mobile:before {
