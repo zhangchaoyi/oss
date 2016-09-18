@@ -345,7 +345,7 @@ $("ul.nav.nav-tabs.equipment-details > li").click(function(){
 //explain button event
 $("#btn-explain-up").click(function(){
     $("div.explain-content-box").css("margin-top", function(index,value){
-        value = parseFloat(value) + 150;
+        value = parseFloat(value) + 145;
         if(value>=0){
             $("#btn-explain-up").addClass("disabled");
         }
@@ -357,8 +357,8 @@ $("#btn-explain-up").click(function(){
 });
 $("#btn-explain-down").click(function(){
     $("div.explain-content-box").css("margin-top", function(index,value){
-        value = parseFloat(value) - 150;
-        if(value <= -150){
+        value = parseFloat(value) - 145;
+        if(value <= -140){
             $("#btn-explain-down").addClass("disabled");
         }
         if($("#btn-explain-up").hasClass("disabled")){ 
