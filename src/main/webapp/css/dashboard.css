@@ -120,3 +120,7 @@ a:link {text-decoration:none;color:#000000;}
 a:visited {text-decoration:none;color:#000000} 
 a:hover {text-decoration:none;color:#428bca;}   
 a:active {text-decoration:underline;}  
+
+#wp-icon-btn,#ios-icon-btn {
+	background: #f9f9f9;
+}

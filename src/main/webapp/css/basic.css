@@ -165,11 +165,11 @@ div#page-wrapper {}
             left: -2px;
             text-align: left;
             font-size: 14px;
-            padding: 15px 40px;
+            padding: 7px 40px;
         }
 
     .sidebar-collapse > .nav > li > a {
-        font-size: 15px;
+        font-size: 14px;
         font-weight: bold;
         height: 41px;
     }
@@ -198,7 +198,7 @@ div#page-wrapper {}
 }
 
 .navbar-cls-top {
-    background: #00CA79;
+    background: #edeef0;
     border-bottom: none;
 }
 
@@ -244,7 +244,6 @@ nav.navbar.navbar-default.navbar-cls-top {position: relative;}
     z-index: 100000000000;
     position: relative;
     top: 15px;
-    height: 15px;
     margin-top: 5px;
     padding-top: 5px;
 }
@@ -272,10 +271,14 @@ nav.navbar.navbar-default.navbar-cls-top {position: relative;}
     .navbar-side {
         position: fixed;
         width: 260px;
-        top: 110px;
+        top: 103px;
     }
 
     .navbar {
         border-radius: 0px;
     }
+}
+
+#main-menu li a i {
+    font-size: 18px;
 }
