@@ -1,11 +1,11 @@
 .logo {
 	width: 175px;
-	height: 66px;
+	height: 58px;
 	background: url("../images/logo.gif") left top;
 	position:relative;
 	margin-left: 8px;
 	border-radius:8px 8px 8px 8px;
-	margin-top: 1px;
+	/* margin-top: 1px; */
 	padding-top: 20px;
 }
 
@@ -21,7 +21,7 @@
 
 #header {
 	background: #3277b7;
-	height: 69px;
+	height: 61px;
 	background: #2E7C;
 	position: fixed;
 	z-index: 1001;
@@ -90,7 +90,7 @@ span.glyphicon.glyphicon-off::before{
 	height: 50px;
 	position: fixed;
 	width: 100%;
-	top: 68px;
+	top: 60px;
 	z-index: 1000;
 	background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#303c48),color-stop(1,#273543));
 }
