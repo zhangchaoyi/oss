@@ -18,7 +18,7 @@ setInterval(function() {
 //explain up and down button 
 $("#btn-explain-up").click(function(){
     $("div.explain-content-box").css("margin-top", function(index,value){
-        value = parseFloat(value) + 150;
+        value = parseFloat(value) + 145;
         if(value>=0){
             $("#btn-explain-up").addClass("disabled");
         }
@@ -30,8 +30,8 @@ $("#btn-explain-up").click(function(){
 });
 $("#btn-explain-down").click(function(){
     $("div.explain-content-box").css("margin-top", function(index,value){
-        value = parseFloat(value) - 150;
-        if(value <= -300){
+        value = parseFloat(value) - 145;
+        if(value <= -290){
             $("#btn-explain-down").addClass("disabled");
         }
         if($("#btn-explain-up").hasClass("disabled")){ 
