@@ -22,4 +22,4 @@ $("#btn-explain-down").click(function(){
         }
         return value;
     });
-});s
+});
