@@ -3,7 +3,7 @@ dateCollection.push(getFormatDate(0));
 dateCollection.push(getFormatDate(1));
 var realtimeDetailsChart = echarts.init(document.getElementById('realtime-details-chart'));
 
-//将个位数的补齐两位
+//将时间个位数的补齐两位
 function checkTime(i){
 	if (i<10){
 	  i="0" + i
@@ -79,11 +79,12 @@ function isExist(arr,time) {
 
 $(function(){
 	$("div.realtime-content").hide();
-	loadInfoData();
+	loadData();
 });
 
 function loadData(){
     loadInfoData($("#data-info-details > ul > li.active > a").attr("data-info"));
+    loadBeforeTableData();
 }
 
 function loadInfoData(detailTag) {
@@ -95,6 +96,47 @@ function loadInfoData(detailTag) {
     function(data, status) {
     	configChart(data);
     });
+}
+
+function loadBeforeTableData(){
+    $.post("/oss/api/realtime/beforedata", {
+    },
+    function(data, status) {
+        configBeforeTable(data);
+    });
+}
+
+function configBeforeTable(data){
+    $("#equipmentDays1").text(data["e1"]);
+    $("#equipmentDays7").text(data["e7"]);
+    $("#equipmentEmDays30").text(data["e30"]);
+    $("#totalActiveDays1").text(data["aP1"]);
+    $("#totalActiveDays7").text(data["aP7"]);
+    $("#totalActiveDays30").text(data["aP30"]);
+    $("#payPlayersDays1").text(data["pP1"]);
+    $("#payPlayersDays7").text(data["pP7"]);
+    $("#payPlayersDays30").text(data["pP30"]);
+    $("#incomeTodayDays1").text(data["r1"]);
+    $("#incomeTodayDays7").text(data["r7"]);
+    $("#incomeTodayDays30").text(data["r30"]);
+    $("#gameNumsDays1").text(data["gT1"]);
+    $("#gameNumsDays7").text(data["gT7"]);
+    $("#gameNumsDays30").text(data["gT30"]);
+    $("#playersDays1").text(data["nP1"]);
+    $("#playersDays7").text(data["nP7"]);
+    $("#playersDays30").text(data["nP30"]);
+    $("#oldPlayersDays1").text(data["oP1"]);
+    $("#oldPlayersDays7").text(data["oP7"]);
+    $("#oldPlayersDays30").text(data["oP30"]);
+    $("#payNumsDays1").text(data["pT1"]);
+    $("#payNumsDays7").text(data["pT7"]);
+    $("#payNumsDays30").text(data["pT30"]);
+    $("#incomeAccumulativeDays1").text(data["rSum1"]);
+    $("#incomeAccumulativeDays7").text(data["rSum7"]);
+    $("#incomeAccumulativeDays30").text(data["rSum30"]);
+    $("#gameTimesDays1").text(data["lGP1"]);
+    $("#gameTimesDays7").text(data["lGP7"]);
+    $("#gameTimesDays30").text(data["lGP30"]);
 }
 
 function configChart(data) {
@@ -163,6 +205,7 @@ function configChart(data) {
     });
 }
 
+//点击tag时需要清空全局时间变量
 $("#data-info-details > ul > li > a").click(function(){
     dateCollection=[];
     dateCollection.push(getFormatDate(0));
@@ -170,7 +213,7 @@ $("#data-info-details > ul > li > a").click(function(){
 	loadInfoData();
 });
 
-//
+//右侧隐藏条
 $("a#switch-up").click(function(){
 	$(this).toggleClass("btn-current");
 	$(this).find("i").toggleClass("fa-chevron-down");

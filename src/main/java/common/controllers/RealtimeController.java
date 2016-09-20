@@ -8,17 +8,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import com.jfinal.aop.Before;
+import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 import common.interceptor.AuthInterceptor;
+import common.service.RealtimeService;
+import common.service.impl.RealtimeServiceImpl;
 import common.utils.StringUtils;
 
-//@Clear(AuthInterceptor.class)
-@Before(AuthInterceptor.class)
+@Clear(AuthInterceptor.class)
+//@Before(AuthInterceptor.class)
 public class RealtimeController extends Controller{
-
+	private RealtimeService realtimeService = new RealtimeServiceImpl();
 	@Before(GET.class)
 	@ActionKey("/realtime/info")
 	public void activePlayer() {
@@ -26,8 +29,15 @@ public class RealtimeController extends Controller{
 	}
 	
 	@Before(POST.class)
+	@ActionKey("/api/realtime/beforedata")
+	public void queryBeforeData(){
+		Map<String,String> data = realtimeService.queryBeforeData();
+		renderJson(data);
+	}
+	
+	@Before(POST.class)
 	@ActionKey("/api/realtime/info")
-	public void queryActivePlayer() {
+	public void queryRealtimeData() {
 		String detailTag = getPara("detailTag","rto");
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String[] date = getParaValues("startDate[]");

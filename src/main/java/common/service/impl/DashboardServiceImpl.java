@@ -34,7 +34,7 @@ public class DashboardServiceImpl implements DashboardService{
 		String lTTSql = "select count(*)count from login";
 		String lTYSql = "select count(*)count from login where DATE_FORMAT(login_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval 1 day),'%Y-%m-%d')";
 		String lPTSql = "select sum(online_time)online_time from logout";
-		String lPYSql = "select sum(online_time)online_time from logout where date=DATE_FORMAT(date_sub(now(),interval 1 day),'%Y-%m-%d') and online_time < 86400";
+		String lPYSql = "select sum(case when online_time<86400 then online_time else 86400 end)online_time from logout where date=DATE_FORMAT(date_sub(now(),interval 1 day),'%Y-%m-%d');";
 				
 		List<DeviceInfo> eT = DeviceInfo.dao.find(eTSql);
 		List<DeviceInfo> eY = DeviceInfo.dao.find(eYSql);
