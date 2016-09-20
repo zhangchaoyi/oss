@@ -152,8 +152,8 @@ public class DashboardServiceImpl implements DashboardService{
 			revenueTSum += osRT.get(0).getDouble("revenue")==null?0.0:osRT.get(0).getDouble("revenue");
 			revenueNSum += osRN.get(0).getDouble("revenue")==null?0.0:osRN.get(0).getDouble("revenue");
 			
-			data.put(s+"DT", osDT.get(0).getLong("count").toString());
-			data.put(s+"DN", osDN.get(0).getLong("count").toString());
+			data.put(s+"ET", osDT.get(0).getLong("count").toString());
+			data.put(s+"EN", osDN.get(0).getLong("count").toString());
 			data.put(s+"PT", osPT.get(0).getLong("count").toString());
 			data.put(s+"PN", osPN.get(0).getLong("count").toString());
 			data.put(s+"GT", osGT.get(0).getLong("count").toString());
