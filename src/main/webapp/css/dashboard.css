@@ -5,8 +5,10 @@
 }
 
 div.col-lg-6 {
-	position:relative;
-	left: 100%;
+	position: relative;
+    	float: right;
+    	left: 32%;
+	top:14%;
 }
 
 div.input-group {
@@ -19,29 +21,27 @@ div.input-group {
 input.form-control {
 	position:relative;
 	top:10px;
-
-
 }
 
 div.container {
-	position:relative;
-	top:120px;
+	position: relative;
+    	width: 1718px;
+	height:800px;
+    	overflow-x: hidden;
+    	overflow-y: hidden;
 }
 
 
 .panel.panel-default {
-	margin-top: 12px;
-	margin-left: -304px;
-	border-radius:8px 8px 8px 8px;
-	width: 1750px;
-	height: inherit;
-	text-align: -webkit-auto;
-	float: left;
+	border-radius: 8px 8px 8px 8px;
+    	width: inherit;
+    	height: inherit;
+    	text-align: left;
 }
 
 .table-both {
-	position:relative;
-	top: 39px;
+	position: relative;
+	top:24%;
 }
 
 small {
@@ -93,27 +93,19 @@ span.glyphicon.glyphicon-search {
 	outline: none;
 }
 
-.btn.btn-default.btn-ios {
-	background:#f9f8f8;
+#ios-icon-btn:hover {
+	background:silver;
 }
 
-.btn.btn-default.btn-ios:hover {
-	background:white;
-}
 
-.btn.btn-default.btn-windows {
-	background:#f9f8f8;
-}
-
-.btn.btn-default.btn-windows:hover {
-	background:white;
+#wp-icon-btn:hover {
+	background:silver;
 }
 
 td.total {
 	text-align:center;
 	vertical-align:center;
 	padding-top: 15px !important;
-	/* margin-top: 83px; */
 }
 
 a:link {text-decoration:none;color:#000000;}    
