@@ -796,27 +796,31 @@ div.contrast-data > p > font{
     font-size: 13px;
 }
 
-em.red > i.fa.fa-arrow-down {
+em.red > i.fa.fa-arrow-down,em.green > i.fa.fa-arrow-down {
+    font-size: 8px;
+}
+em.red > i.fa.fa-arrow-up,em.green > i.fa.fa-arrow-up {
     font-size: 8px;
 }
 em.red {
     font-size: 8px;
     margin-left:10px;
+    color:#C12121;
+}
+em.green {
+    font-size: 8px;
+    margin-left:10px;
+    color:#67A600;
 }
 div#realtimeInfo {
     position: relative;
     top:20px;
-    /* background-color: #f8f8f8; */
     height: 329px;
-    /* margin-bottom: -47px; */
 }
 div#data-info-details {
     position:relative;
     top: -99px;
-    /* margin-top: 50px; */
-    /* bottom: 100px; */
     background-color: white;
-    /* height: 343px; */
     display: block;
 }
 div.date-contrast-bar > div.calender-bar {
