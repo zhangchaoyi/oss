@@ -10,10 +10,17 @@ function checkTime(i){
 	}
   	return i
 }
+
+//实时时间
 setInterval(function() {
     var date = new Date();
     $('#current-time').text(checkTime(date.getHours()) +":"+ checkTime(date.getMinutes()) +":"+ checkTime(date.getSeconds()));
 }, 1000);
+
+//定时发送查询请求
+setInterval(function(){
+    loadRealtimeTableData(false);
+}, 10*1000);
 
 //explain up and down button 
 $("#btn-explain-up").click(function(){
@@ -78,14 +85,16 @@ function isExist(arr,time) {
 }
 
 $(function(){
-	$("div.realtime-content").hide();
+    $("div.realtime-content").hide();
+    $("div.realtime-data > em").hide();
 	loadData();
+    
 });
 
 function loadData(){
     loadInfoData($("#data-info-details > ul > li.active > a").attr("data-info"));
     loadBeforeTableData();
-    loadRealtimeTableData();
+    loadRealtimeTableData(true);
 }
 
 function loadInfoData(detailTag) {
@@ -107,11 +116,15 @@ function loadBeforeTableData(){
     });
 }
 
-function loadRealtimeTableData(){
+function loadRealtimeTableData(initial){
     $.post("/oss/api/realtime/realtimedata", {
     },
     function(data, status) {
+        if(initial==false){
+            dealRealtimeData(data);
+        }
         configRealtimeTable(data);
+        
     });
 }
 
@@ -160,6 +173,45 @@ function configBeforeTable(data){
     $("#gameTimesDays7").text(data["aGP7"]);
     $("#gameTimesDays30").text(data["aGP30"]);
 }
+
+function dealRealtimeData(data){
+    var e = $("#equipment").text();
+    var aP = $("#totalActive").text();
+    var pP = $("#payPlayers").text();
+    var rT = $("#incomeToday").text();
+    var gT = $("#gameNums").text();
+    var nP = $("#players").text();
+    var oP = $("#oldPlayers").text();
+    var pT = $("#payNums").text();
+    var rSum = $("#incomeAccumulative").text();
+    var aGPT = $("#gameTimes").text();
+
+    var eDif = parseInt(data["e"])-parseInt(e);
+    var aPDif = parseInt(data["aP"])-parseInt(aP);
+    var pPDif = parseInt(data["pP"])-parseInt(pP);
+    var rTDif = parseInt(data["rT"])-parseInt(rT);
+    var gTDif = parseInt(data["gT"])-parseInt(gT);
+    var nPDif = parseInt(data["nP"])-parseInt(nP);
+    var oPDif = parseInt(data["oP"])-parseInt(oP);
+    var pTDif = parseInt(data["pT"])-parseInt(pT);
+    var rSum = parseInt(data["rSum"])-parseInt(rSum);
+    var aGPT = parseInt(data["aGPT"])-parseInt(aGPT);
+
+    $("#equipmentEm").text("+" + eDif);
+    $("#totalActiveEm").text("+" + aPDif);
+    $("#payPlayersEm").text("+" + pPDif);
+    $("#incomeTodayEm").text("+" + rTDif);
+    $("#gameNumsEm").text("+" + gTDif);
+    $("#playersEm").text("+" + nPDif);
+    $("#oldPlayersEm").text("+" + oPDif);
+    $("#payNumsEm").text("+" + pTDif);
+    $("#incomeAccumulativeEm").text("+" + rSum);
+    $("#gameTimesEm").text(parseInt(aGPT)>=0?"+" + aGPT:aGPT);
+
+    $("div.realtime-data > em").fadeIn();
+    setTimeout('$("div.realtime-data > em").fadeOut()', 4000);
+
+ }
 
 function configChart(data) {
     var recData = data.data;

@@ -787,7 +787,15 @@ div.contrast-data b {
 div.contrast-data .contrastval {
     width: 50px;
     overflow: hidden;
+    font-size: 13px;
 }
+div.contrast-data > p > b + span{
+    font-size: 13px;
+}
+div.contrast-data > p > font{
+    font-size: 13px;
+}
+
 em.red > i.fa.fa-arrow-down {
     font-size: 8px;
 }
@@ -819,9 +827,7 @@ div.date-contrast-bar > em{
     float:left;
 }
 a#btn-contrast-clear {
-    /* height: 6px; */
     float:left;
-    /* line-height: 30px; */
     border: #c8c8c8 1px solid;
     background: #dadada;
     background-image: -ms-linear-gradient(top,#fff,#dadada);
@@ -832,7 +838,6 @@ a#btn-contrast-clear {
     text-align: center;
     z-index: 10;
     margin-left: 43px;
-    /* padding-bottom: 33px; */
     margin-top: 2px;
 }
 a#btn-contrast-clear:hover {
