@@ -115,7 +115,6 @@ function loadBeforeTableData(){
     function(data, status) {
         configBeforeTable(data);
         showBeforeArrowData();
-
     });
 }
 
@@ -127,7 +126,7 @@ function loadRealtimeTableData(initial){
             dealRealtimeData(data);
         }
         configRealtimeTable(data);
-        
+        showRealtimeArrowData();
     });
 }
 
@@ -214,10 +213,52 @@ function dealRealtimeData(data){
 
     $("div.realtime-data > em").fadeIn();
     setTimeout('$("div.realtime-data > em").fadeOut()', 4000);
-
-
-
  }
+
+function showRealtimeArrowData(){
+    var e = $("#equipment").text();
+    var e1 = $("#equipmentDays1").text();
+    var aP = $("#totalActive").text();
+    var aP1 = $("#totalActiveDays1").text();
+    var pP = $("#payPlayers").text();
+    var pP1 = $("#payPlayersDays1").text();
+    var rT = $("#incomeToday").text();
+    var rT1 = $("#incomeTodayDays1").text();
+    var gT = $("#gameNums").text();
+    var gT1 = $("#gameNumsDays1").text();
+    var nP = $("#players").text();
+    var nP1 = $("#playersDays1").text();
+    var oP = $("#oldPlayers").text();
+    var oP1 = $("#oldPlayersDays1").text();
+    var pT = $("#payNums").text();
+    var pT1 = $("#payNumsDays1").text();
+    var rSum = $("#incomeAccumulative").text();
+    var rSum1 = $("#incomeAccumulativeDays1").text();
+    var aGPT = $("#gameTimes").text();
+    var aGPT1 = $("#gameTimesDays1").text();
+
+    var pE1 = calArrowData(e,e1);
+    var pAP1 = calArrowData(aP,aP1);
+    var pPP1 = calArrowData(pP,pP1); 
+    var pRT1 = calArrowData(rT,rT1);
+    var pGT1 = calArrowData(gT,gT1);
+    var pNP1 = calArrowData(nP,nP1);
+    var pOP1 = calArrowData(oP,oP1);
+    var pPT1 = calArrowData(pT,pT1);
+    var pRS1 = calArrowData(rSum,rSum1);
+    var pAGPT1 = calArrowData(aGPT,aGPT1);
+
+    showArrow("#equipmentEmDays1",pE1);
+    showArrow("#totalActiveEmDays1",pAP1);
+    showArrow("#payPlayersEmDays1",pPP1);
+    showArrow("#incomeTodayEmDays1",pRT1);
+    showArrow("#gameNumsDaysEm1",pGT1);
+    showArrow("#playersEmDays1",pNP1);
+    showArrow("#oldPlayersEmDays1",pOP1);
+    showArrow("#payNumsEmDays1",pPT1);
+    showArrow("#incomeAccumulativeEmDays1",pRS1);
+    showArrow("#gameTimesEmDays1",pAGPT1);
+}
 
 function showBeforeArrowData(){
     var e1 = $("#equipmentDays1").text();
@@ -320,14 +361,14 @@ function showArrow(id,value){
 
 function calArrowData(f,b){
     if(b==0){
-        return parseInt(f)>0?"+100%":"+0%";
+        return parseFloat(f)>0?"+100%":"+0%";
     }
     var percent = "";
-    if(parseInt(f)-parseInt(b)>=0){
-        percent = ((parseInt(f)-parseInt(b))/parseInt(b)*100).toFixed(1);
+    if(parseFloat(f)-parseFloat(b)>=0){
+        percent = ((parseFloat(f)-parseFloat(b))/parseFloat(b)*100).toFixed(1);
         return '+' + percent + '%';
     }else{
-        percent = ((parseInt(b)-parseInt(f))/parseInt(b)*100).toFixed(1);
+        percent = ((parseFloat(b)-parseFloat(f))/parseFloat(b)*100).toFixed(1);
         return '-' + percent + '%'; 
     }
 }
