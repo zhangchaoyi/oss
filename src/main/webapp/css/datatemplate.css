@@ -883,3 +883,6 @@ div#data-info-details > ul.nav.nav-tabs{
 li.btn-icons > a > span {
     font-size: 19px;
 }
+span#gameTimes + font {
+    font-size: 22px;
+}

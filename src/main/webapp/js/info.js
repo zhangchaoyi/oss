@@ -85,6 +85,7 @@ $(function(){
 function loadData(){
     loadInfoData($("#data-info-details > ul > li.active > a").attr("data-info"));
     loadBeforeTableData();
+    loadRealtimeTableData();
 }
 
 function loadInfoData(detailTag) {
@@ -104,6 +105,27 @@ function loadBeforeTableData(){
     function(data, status) {
         configBeforeTable(data);
     });
+}
+
+function loadRealtimeTableData(){
+    $.post("/oss/api/realtime/realtimedata", {
+    },
+    function(data, status) {
+        configRealtimeTable(data);
+    });
+}
+
+function configRealtimeTable(data){
+    $("#equipment").text(data["e"]);
+    $("#totalActive").text(data["aP"]);
+    $("#payPlayers").text(data["pP"]);
+    $("#incomeToday").text(data["rT"]);
+    $("#gameNums").text(data["gT"]);
+    $("#players").text(data["nP"]);
+    $("#oldPlayers").text(data["oP"]);
+    $("#payNums").text(data["pT"]);
+    $("#incomeAccumulative").text(data["rSum"]);
+    $("#gameTimes").text(data["aGPT"]);
 }
 
 function configBeforeTable(data){
@@ -134,9 +156,9 @@ function configBeforeTable(data){
     $("#incomeAccumulativeDays1").text(data["rSum1"]);
     $("#incomeAccumulativeDays7").text(data["rSum7"]);
     $("#incomeAccumulativeDays30").text(data["rSum30"]);
-    $("#gameTimesDays1").text(data["lGP1"]);
-    $("#gameTimesDays7").text(data["lGP7"]);
-    $("#gameTimesDays30").text(data["lGP30"]);
+    $("#gameTimesDays1").text(data["aGP1"]);
+    $("#gameTimesDays7").text(data["aGP7"]);
+    $("#gameTimesDays30").text(data["aGP30"]);
 }
 
 function configChart(data) {

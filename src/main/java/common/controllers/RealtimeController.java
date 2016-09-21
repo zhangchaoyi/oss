@@ -36,8 +36,15 @@ public class RealtimeController extends Controller{
 	}
 	
 	@Before(POST.class)
+	@ActionKey("/api/realtime/realtimedata")
+	public void queryRealtimeData(){
+		Map<String,String> data = realtimeService.queryRealtimeData();
+		renderJson(data);
+	}
+	
+	@Before(POST.class)
 	@ActionKey("/api/realtime/info")
-	public void queryRealtimeData() {
+	public void queryRealtimeInfo() {
 		String detailTag = getPara("detailTag","rto");
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String[] date = getParaValues("startDate[]");
