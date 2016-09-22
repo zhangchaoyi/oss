@@ -1,7 +1,13 @@
 var dateCollection=[];
-dateCollection.push(getFormatDate(0));
-dateCollection.push(getFormatDate(1));
 var realtimeDetailsChart = echarts.init(document.getElementById('realtime-details-chart'));
+
+function initialDateArray(){
+    dateCollection=[];
+    dateCollection.push(getFormatDate(0));
+    dateCollection.push(getFormatDate(1));
+    dateCollection.push(getFormatDate(7));
+    dateCollection.push(getFormatDate(30));
+}
 
 //将时间个位数的补齐两位
 function checkTime(i){
@@ -63,16 +69,16 @@ $(function(){
             var time = $("#startDate").attr("value");
             if(isExist(dateCollection,time))return; 
 			dateCollection.push(time);
-			loadInfoData();
+			loadInfoData($("#data-info-details > ul > li.active > a").attr("data-info"));
 		} 
 	}); 
 })
 
+//清除
 $("#btn-contrast-clear").click(function(){
-	dateCollection=[];
-	dateCollection.push(getFormatDate(0));
-	dateCollection.push(getFormatDate(1));
-	loadInfoData();
+	initialDateArray();
+	$("#date-contrast-seletor").text(getFormatDate(0));
+    loadInfoData($("#data-info-details > ul > li.active > a").attr("data-info"));
 });
 
 
@@ -86,6 +92,7 @@ function isExist(arr,time) {
 }
 
 $(function(){
+    initialDateArray();
     $("div.realtime-content").hide();
     $("div.realtime-data > em").hide();
 	loadData();
@@ -313,7 +320,6 @@ function showBeforeArrowData(){
     var pAGPT30 = calArrowData(aGPT7,aGPT30);
     var pAGPT7 = calArrowData(aGPT1,aGPT7);
 
-
     showArrow("#equipmentEmDays30",pE30);
     showArrow("#equipmentEmDays7",pE7);
     showArrow("#totalActiveEmDays30",pAP30);
@@ -401,8 +407,8 @@ function configChart(data) {
         },
         dataZoom: [{
             type: 'slider',
-            start: 10,
-            end: 80
+            start: 0,
+            end: 100
         },
         {
             type: 'inside',
@@ -441,10 +447,9 @@ function configChart(data) {
 
 //点击tag时需要清空全局时间变量
 $("#data-info-details > ul > li > a").click(function(){
-    dateCollection=[];
-    dateCollection.push(getFormatDate(0));
-    dateCollection.push(getFormatDate(1));
-	loadInfoData();
+    initialDateArray();
+    $("#date-contrast-seletor").text(getFormatDate(0));
+    loadInfoData($(this).attr("data-info"));
 });
 
 //右侧隐藏条

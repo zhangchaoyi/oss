@@ -1,9 +1,12 @@
 package common.service.impl;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import common.model.CreateRole;
 import common.model.DeviceInfo;
@@ -11,6 +14,7 @@ import common.model.LogCharge;
 import common.model.Login;
 import common.model.Logout;
 import common.service.RealtimeService;
+import common.utils.DateUtils;
 
 /*
  * eT=equipmentToday   aPT=activePlayersToday  pPT=paidPlayersToday  rT=revenueToday        gTT=gameTimesToday
@@ -114,4 +118,85 @@ public class RealtimeServiceImpl implements RealtimeService{
 		}
 		return data;
 	} 
+	
+	public Map<String, Object> queryRealtimeDevice(String icons, String[] date){
+		String sql ="select count(*)count,hour(create_time)hour from device_info where DATE_FORMAT(create_time,'%Y-%m-%d')= ?  and os in (" + icons + ") group by hour(create_time)";
+		Map<String, Object> data = new TreeMap<String, Object>(new Comparator<String>(){
+			@Override
+			public int compare(String o1, String o2) {
+				if("昨日".equals(o1)){
+					return 1;
+				}
+				return o2.compareTo(o1);
+			}});
+		for(String d : date){
+			List<DeviceInfo> deviceInfo = DeviceInfo.dao.find(sql,d);
+			Map<Integer, Long> sort = new TreeMap<Integer, Long>();
+			for(int i=0;i<24;i++){
+				sort.put(i, 0L);
+			}
+			for(DeviceInfo di:deviceInfo){
+				sort.put(di.getInt("hour"), di.getLong("count"));
+			}
+			List<Long> al = new ArrayList<Long>();
+			al.addAll(sort.values());
+			d = DateUtils.convertDate(d);
+			data.put(d,al);
+		}
+		return data;
+	}
+	
+	public Map<String, Object> queryRealtimeAddPlayers(String icons, String[] date){
+		String sql = "select count(*)count,hour(A.create_time)hour from create_role A join device_info B on A.openudid  = B.openudid where DATE_FORMAT(A.create_time,'%Y-%m-%d')= ? and B.os in (" + icons + ") group by hour(A.create_time)";
+		Map<String, Object> data = new TreeMap<String, Object>(new Comparator<String>(){
+			@Override
+			public int compare(String o1, String o2) {
+				if("昨日".equals(o1)){
+					return 1;
+				}
+				return o2.compareTo(o1);
+			}});
+		for(String d: date){
+			List<CreateRole> createRole = CreateRole.dao.find(sql,d);
+			Map<Integer, Long> sort = new TreeMap<Integer, Long>();
+			for(int i=0;i<24;i++){
+				sort.put(i, 0L);
+			}
+			for(CreateRole cr : createRole){
+				sort.put(cr.getInt("hour"), cr.getLong("count"));
+			}
+			List<Long> al = new ArrayList<Long>();
+			al.addAll(sort.values());
+			d = DateUtils.convertDate(d);
+			data.put(d, al);
+		}
+		return data;
+	}
+	
+	public Map<String, Object> queryRealtimeRevenue(String icons, String[] date){
+		String sql = "select sum(A.count)revenue,hour(A.timestamp)hour from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d')= ? and C.os in (" + icons + ") group by hour(A.timestamp)";
+		Map<String, Object> data = new TreeMap<String, Object>(new Comparator<String>(){
+			@Override
+			public int compare(String o1, String o2) {
+				if("昨日".equals(o1)){
+					return 1;
+				}
+				return o2.compareTo(o1);
+			}});
+		for(String d: date){
+			List<LogCharge> logCharge = LogCharge.dao.find(sql,d);
+			Map<Integer, Double> sort = new TreeMap<Integer, Double>();
+			for(int i=0;i<24;i++){
+				sort.put(i, 0.0);
+			}
+			for(LogCharge lc : logCharge){
+				sort.put(lc.getInt("hour"),lc.getDouble("revenue"));
+			}
+			List<Double> al = new ArrayList<Double>();
+			al.addAll(sort.values());
+			d = DateUtils.convertDate(d);
+			data.put(d, al);
+		}
+		return data;
+	}
 }
