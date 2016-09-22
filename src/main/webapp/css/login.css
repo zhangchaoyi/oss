@@ -3,20 +3,19 @@
 	height: 69px;
 	background: url("../images/logobackup.gif");
 	position:relative;
-	bottom: 30px;
+	bottom: 19px;
 	border-radius:8px 8px 8px 8px;
 	text-align: center;
 	opacity: 0.9;
-	left: 200px;
+	left: 24%;
 }
 .login_container {
 	position: relative;
-	margin-left: 30%;
-	margin-right: 25%;
 	text-align: center;
-	top: 300;
+	top: 35%;
 	margin: 0 auto;
-	width: 800px;
+	width: 43%;
+	left:4%;
 	}
 
 span.glyphicon.glyphicon-user.login-user::before{
@@ -50,7 +49,7 @@ button.btn.btn-lg.btn-primary.btn-login {
 }
 div.input-group.login-page {
 	width: 50%;
-	left: 95px;
+	left: 13%;
 	}
 
 form.col-lg-12.input-user-password {
