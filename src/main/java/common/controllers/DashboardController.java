@@ -13,8 +13,8 @@ import common.interceptor.AuthInterceptor;
 import common.service.DashboardService;
 import common.service.impl.DashboardServiceImpl;
 
-//@Before(AuthInterceptor.class)
-@Clear(AuthInterceptor.class)
+@Before(AuthInterceptor.class)
+//@Clear(AuthInterceptor.class)
 public class DashboardController extends Controller{
 	private DashboardService ds = new DashboardServiceImpl();
 	@Before(GET.class)

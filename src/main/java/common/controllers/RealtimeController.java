@@ -19,8 +19,8 @@ import common.service.RealtimeService;
 import common.service.impl.RealtimeServiceImpl;
 import common.utils.StringUtils;
 
-@Clear(AuthInterceptor.class)
-// @Before(AuthInterceptor.class)
+//@Clear(AuthInterceptor.class)
+@Before(AuthInterceptor.class)
 public class RealtimeController extends Controller {
 	private RealtimeService realtimeService = new RealtimeServiceImpl();
 

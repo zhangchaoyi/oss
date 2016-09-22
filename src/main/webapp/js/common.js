@@ -120,9 +120,9 @@ $(function() {
         // increaseArea: '-10%' // optional
     });
 
-    //导航栏
+    //左侧导航栏
     var hrefs = $("#main-menu").find("a");
-    var localPath = window.location.pathname;
+    var localPath = window.location.pathname.split("-")[0];
     for(var i=0;i<hrefs.length;i++){
         if($(hrefs[i]).attr("href")==localPath){
             var subParentTag = $(hrefs[i]).parent().parent();

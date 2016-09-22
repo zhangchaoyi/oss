@@ -3588,7 +3588,6 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   padding-left: 0;
   margin-bottom: 0;
   list-style: none;
-  background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
   border-radius: 4px 4px 4px 4px;
 }
 .nav > li {
