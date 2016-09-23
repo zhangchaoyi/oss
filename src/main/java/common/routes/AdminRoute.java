@@ -6,6 +6,7 @@ import com.jfinal.config.Routes;
 import common.controllers.DashboardController;
 import common.controllers.LoginController;
 import common.controllers.RealtimeController;
+import common.controllers.payment.PaymentDataController;
 import common.controllers.players.AccdetailController;
 import common.controllers.players.ActiveController;
 import common.controllers.players.AddController;
@@ -29,6 +30,7 @@ public class AdminRoute extends Routes {
 		add("/equipment", EquipmentController.class, "/WEB-INF/views/players");
 		add("/accdetail", AccdetailController.class, "/WEB-INF/views/players");
 		add("/realtime", RealtimeController.class, "/WEB-INF/views");
+		add("/paymentdata", PaymentDataController.class, "/WEB-INF/views/paid");
 	}
 
 }
