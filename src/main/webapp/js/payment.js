@@ -1,3 +1,93 @@
+var dataPaymentChart = echarts.init(document.getElementById('data-payment-chart'));
+
+$(function(){
+    loadData();
+});
+
+function loadData(){
+    loadDataPayment($("ul.nav.nav-tabs.payment-tab > li.active").children("a").attr("data-info"));
+};
+
+function loadDataPayment(tag) {
+
+    $.post("/oss/api/payment/data", {
+        tag:tag,
+        icon:getIcons(),
+        startDate:$("input#startDate").attr("value"),
+        endDate:$("input#endDate").attr("value")
+    },
+    function(data, status) {
+        configDataPaymentChart(data);
+        // configDataPaymentTable(data);   
+    });
+}
+
+function configDataPaymentChart(data) {
+    var recData = data.data;
+    dataPaymentChart.clear();
+    dataPaymentChart.setOption({
+        tooltip: {
+            trigger: 'axis',
+        },
+        legend: {
+            data: data.type
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                dataView: {
+                    readOnly: false
+                },
+                magicType: {
+                    type: ['line', 'bar']
+                },
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        dataZoom: [{
+            type: 'slider',
+            start: 10,
+            end: 80
+        },
+        {
+            type: 'inside',
+            start: 10,
+            end: 50
+        }],
+        xAxis: {
+            type: 'category',
+            data: function() {
+                for (var key in data.category) {
+                    return data.category[key];
+                }
+            } ()
+        },
+        yAxis: {
+            type: 'value',
+            axisLabel: {
+                formatter: '{value} '
+            }
+        },
+        series: function() {
+            var serie = [];
+            for (var key in recData) {
+                var item = {
+                    name: key,
+                    type: "line",
+                    smooth:true,
+                    data: recData[key]
+                }
+                serie.push(item);
+            };
+            return serie;
+        } ()
+    });
+}
+
 //explain up and down button 
 $("#btn-explain-up").click(function(){
     $("div.explain-content-box").css("margin-top", function(index,value){
@@ -59,20 +149,12 @@ $("ul.nav.nav-tabs.paid-details > li").click(function(){
     }
 });
 
-
-//付费分析时间tab
-// $("div.nav-tab.paid-analyze-tab > ul > li").click(function(){
-//     $("div.nav-tab.paid-analyze-tab > ul > li.active").toggleClass("active");
-//     $(this).addClass("active");
-// });
-// $("div.nav-tab.paid-analyze-arp-tab > ul > li").click(function(){
-//     $("div.nav-tab.paid-analyze-arp-tab > ul > li.active").toggleClass("active");
-//     $(this).addClass("active");
-// });
-
 //details sub tag
 $("div.nav-tab.paid-detail-subtab > ul > li, div.nav-tab.paid-detail-consumepackage > ul > li, div.nav-tab.paid-analyze-arp-tab > ul > li, div.nav-tab.paid-analyze-tab > ul > li").click(function(){
     $(this).siblings("li.active").toggleClass("active");
     $(this).addClass("active");
 });
 
+$("ul.nav.nav-tabs.payment-tab > li").click(function(){
+    loadDataPayment($(this).children("a").attr("data-info"));
+});

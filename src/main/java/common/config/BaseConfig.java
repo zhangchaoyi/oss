@@ -19,6 +19,7 @@ import common.model.LevelUp;
 import common.model.LogCharge;
 import common.model.Login;
 import common.model.Logout;
+import common.model.PaymentDetail;
 import common.model.RetainEquipment;
 import common.model.RetainUser;
 import common.routes.AdminRoute;
@@ -51,6 +52,7 @@ public class BaseConfig extends JFinalConfig {
 		arp.addMapping("level_up", LevelUp.class);
 		arp.addMapping("retain_user", RetainUser.class);
 		arp.addMapping("retain_equipment", RetainEquipment.class);
+		arp.addMapping("payment_detail", PaymentDetail.class);
 	}
 
 	@Override

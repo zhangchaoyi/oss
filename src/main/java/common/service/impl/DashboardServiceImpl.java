@@ -161,6 +161,10 @@ public class DashboardServiceImpl implements DashboardService{
 			data.put(s+"RT", osRT.get(0).getDouble("revenue")==null?"0.0":osRT.get(0).getDouble("revenue").toString());
 			data.put(s+"RN", osRN.get(0).getDouble("revenue")==null?"0.0":osRN.get(0).getDouble("revenue").toString());
 		}
+		BigDecimal bgRTSum = new BigDecimal(revenueTSum);
+		BigDecimal bgRNSum = new BigDecimal(revenueNSum);
+		revenueTSum = bgRTSum.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+		revenueNSum = bgRNSum.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		
 		data.put("deviceTSum", String.valueOf(deviceTSum));
 		data.put("deviceNSum", String.valueOf(deviceNSum));

@@ -33,6 +33,14 @@ public abstract class BaseLogin<M extends BaseLogin<M>> extends Model<M> impleme
 		return get("internal_id");
 	}
 
+	public void setOpenudid(java.lang.String openudid) {
+		set("openudid", openudid);
+	}
+
+	public java.lang.String getOpenudid() {
+		return get("openudid");
+	}
+
 	public void setAccountType(java.lang.String accountType) {
 		set("account_type", accountType);
 	}

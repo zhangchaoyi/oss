@@ -33,6 +33,30 @@ public abstract class BaseLogout<M extends BaseLogout<M>> extends Model<M> imple
 		return get("internal_id");
 	}
 
+	public void setArenaWinTimes(java.lang.Integer arenaWinTimes) {
+		set("arena_win_times", arenaWinTimes);
+	}
+
+	public java.lang.Integer getArenaWinTimes() {
+		return get("arena_win_times");
+	}
+
+	public void setArenaTieTimes(java.lang.Integer arenaTieTimes) {
+		set("arena_tie_times", arenaTieTimes);
+	}
+
+	public java.lang.Integer getArenaTieTimes() {
+		return get("arena_tie_times");
+	}
+
+	public void setArenaLoseTimes(java.lang.Integer arenaLoseTimes) {
+		set("arena_lose_times", arenaLoseTimes);
+	}
+
+	public java.lang.Integer getArenaLoseTimes() {
+		return get("arena_lose_times");
+	}
+
 	public void setOnlineTime(java.lang.Integer onlineTime) {
 		set("online_time", onlineTime);
 	}
