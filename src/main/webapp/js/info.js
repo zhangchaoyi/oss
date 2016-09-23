@@ -355,10 +355,10 @@ function showArrow(id,value){
         var classNAme ="green";
         switch(direct){
             case "up":
-            className="red";
+            className="green";
             break;
             case "down":
-            className="green"
+            className="red"
             break;
         }
         return className;

@@ -11,7 +11,7 @@
   <link href="http://oss.koogame.cn/oss/css/basic.css" rel="stylesheet" /> 
   <link href="http://oss.koogame.cn/oss/css/custom.css" rel="stylesheet" /> 
   <link href="http://oss.koogame.cn/oss/css/header.css" rel="stylesheet" /> 
-  <link href="http://oss.koogame.cn/oss/css/datatemplate.css" rel="stylesheet" /> 
+  <link href="../../css/datatemplate.css" rel="stylesheet" /> 
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/default.css" /> 
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/component.css" /> 
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/animation.css" /> 
@@ -389,6 +389,127 @@
              </dd> 
             </dl> 
            </div>
+           <div class="explain-content-row"> 
+            <i class="fa fa-circle" aria-hidden="true"></i> 
+            <dl> 
+             <dt>
+              各地区/国家日均ARPU：
+             </dt> 
+             <dd>
+               统计所选时期内，各地区/国家每日ARPU平均值。
+             </dd> 
+            </dl> 
+           </div>
+           <div class="explain-content-row"> 
+            <i class="fa fa-circle" aria-hidden="true"></i> 
+            <dl> 
+             <dt>
+              各地区/国家日均ARPPU：
+             </dt> 
+             <dd>
+               统计所选时期内，各地区/国家每日ARPPU平均值。
+             </dd> 
+            </dl> 
+           </div>
+           <div class="explain-content-row"> 
+            <i class="fa fa-circle" aria-hidden="true"></i> 
+            <dl> 
+             <dt>
+              各渠道收入：
+             </dt> 
+             <dd>
+               统计所选时期内，根据玩家所处渠道的充值总额度分布。
+             </dd> 
+            </dl> 
+           </div>
+           <div class="explain-content-row"> 
+            <i class="fa fa-circle" aria-hidden="true"></i> 
+            <dl> 
+             <dt>
+              各渠道日均ARPU：
+             </dt> 
+             <dd>
+               统计所选时期内，各渠道每日ARPU平均值。
+             </dd> 
+            </dl> 
+           </div>
+           <div class="explain-content-row"> 
+            <i class="fa fa-circle" aria-hidden="true"></i> 
+            <dl> 
+             <dt>
+              各渠道日均ARPPU：
+             </dt> 
+             <dd>
+               统计所选时期内，各渠道每日ARPPU平均值。
+             </dd> 
+            </dl> 
+           </div>
+           <div class="explain-content-row"> 
+            <i class="fa fa-circle" aria-hidden="true"></i> 
+            <dl> 
+             <dt>
+              各性别收入：
+             </dt> 
+             <dd>
+               统计所选时期内，根据玩家注册信息中性别归类充值总额度分布。
+             </dd> 
+            </dl> 
+           </div>
+           <div class="explain-content-row"> 
+            <i class="fa fa-circle" aria-hidden="true"></i> 
+            <dl> 
+             <dt>
+              各性别日均ARPU：
+             </dt> 
+             <dd>
+               统计所选时期内，各性别玩家每日ARPU平均值。
+             </dd> 
+            </dl> 
+           </div>
+           <div class="explain-content-row"> 
+            <i class="fa fa-circle" aria-hidden="true"></i> 
+            <dl> 
+             <dt>
+              各性别日均ARPPU：
+             </dt> 
+             <dd>
+               统计所选时期内，各性别玩家每日ARPPU平均值。
+             </dd> 
+            </dl> 
+           </div>
+           <div class="explain-content-row"> 
+            <i class="fa fa-circle" aria-hidden="true"></i> 
+            <dl> 
+             <dt>
+              各年龄段收入：
+             </dt> 
+             <dd>
+               统计所选时期内，根据玩家注册信息中年龄段归类充值总额度分布。
+             </dd> 
+            </dl> 
+           </div>
+           <div class="explain-content-row"> 
+            <i class="fa fa-circle" aria-hidden="true"></i> 
+            <dl> 
+             <dt>
+              各年龄日均ARPU：
+             </dt> 
+             <dd>
+               统计所选时期内，各年龄段玩家每日ARPU平均值。
+             </dd> 
+            </dl> 
+           </div>
+           <div class="explain-content-row"> 
+            <i class="fa fa-circle" aria-hidden="true"></i> 
+            <dl> 
+             <dt>
+              各年龄日均ARPPU：
+             </dt> 
+             <dd>
+               统计所选时期内，各年龄段玩家每日ARPPU平均值。
+             </dd> 
+            </dl> 
+           </div>
           </div> 
          </div> 
         </div> 
@@ -411,7 +532,7 @@
          <li class=""> <a data-toggle="tab" data-info="data-payment-times">付费次数</a></li>
         </ul> 
         <div class="tab-content">
-          <div id="payment-note" class="data-results去除去除参数url在">
+          <div id="payment-note" class="data-results">
             <span>
               SUM活跃 | 首次付费 | 首日付费:
               <font class="sum-note">¥200.00 | ¥0.00 | ¥0.00 </font>
@@ -436,7 +557,25 @@
          <li class="active"> <a data-toggle="tab" data-info="analyze-payment-money">付费金额</a></li> 
          <li class=""> <a data-toggle="tab" data-info="analyze-payment-people">付费次数</a></li>
          <li class=""> <a data-toggle="tab" data-info="analyze-payment-times">ARPU/ARPPU</a></li>
-        </ul> 
+        </ul>
+        <div class="nav-tab paid-analyze-tab">
+         <ul class="nav nav-pills"> 
+           <li class="active"><a><span>日</span></a></li> 
+           <li class=""><a><span>周</span></a> </li> 
+           <li class=""><a><span>月</span></a> </li> 
+         </ul> 
+        </div>
+        <div class="arpu-block">
+          <div id="pay-note"><span><em>AVG :</em><font>¥0.00</font></span></div>
+          <div class="nav-tab paid-analyze-arp-tab">
+            <ul class="nav nav-pills"> 
+              <li class="active"><a><span>ARPU(日)</span></a></li> 
+              <li class=""><a><span>ARPU(月)</span></a> </li> 
+              <li class=""><a><span>ARPPU(日)</span></a> </li>
+              <li class=""><a><span>ARPPU(月)</span></a> </li> 
+            </ul> 
+          </div>
+        </div> 
         <div class="tab-content">
           <div id="analyse-payment-chart" style="width:1400px;height:400px;display:inline;float:left"></div> 
           <div class="table-zoom-third"> 
@@ -456,7 +595,20 @@
          <li class=""> <a data-toggle="tab" data-info="comsume-package">消费包类型</a></li>
          <li class=""> <a data-toggle="tab" data-info="currency-type">货币类型</a></li>
          <button class="btn btn-2 btn-2c" id="btn-gamedetail-switch">关闭</button>  
-        </ul> 
+        </ul>
+        <div class="nav-tab paid-detail-subtab">
+          <ul class="nav nav-pills"> 
+            <li class="active"><a><span>收入</span></a></li> 
+            <li class=""><a><span>日均ARPU</span></a> </li> 
+            <li class=""><a><span>日均ARPPU</span></a> </li>
+          </ul> 
+        </div>
+        <div class="nav-tab paid-detail-consumepackage">
+          <ul class="nav nav-pills"> 
+            <li class="active"><a><span>收入金额</span></a></li> 
+            <li class=""><a><span>充值人次</span></a> </li> 
+          </ul> 
+        </div> 
         <div class="tab-content">          
             <div id="paid-details-chart" style="width:1400px;height:400px;display:inline;float:left"></div>
             <div class="table-zoom-second"> 

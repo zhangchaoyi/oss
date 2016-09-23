@@ -108,6 +108,7 @@ div.panel.panel-default {
 
 div.panel-heading {
     border-radius:10px 10px 0 0;
+    text-align: left;
 }
 
 span.data-first-panel-heading {
@@ -894,4 +895,45 @@ li.btn-icons > a > span {
 }
 span#gameTimes + font {
     font-size: 22px;
+}
+
+div.nav-tab.paid-analyze-tab {
+    position:relative;
+    top:20px;
+    font-size: 3px;
+}
+
+div.nav-tab.paid-analyze-tab > ul {
+    width: 70px;
+}
+
+div.nav-tab.paid-analyze-arp-tab {
+    top: 18%;
+    font-size: 3px;
+}
+
+div.nav-tab.paid-analyze-arp-tab > ul {
+    width: 100px;
+}
+
+#pay-note {
+    width: inherit;
+    margin-left: 12px;
+}
+#pay-note > span > font {
+    color:#e25856;
+    font-weight: bold;
+    margin-left:3px;
+}
+.arpu-block{
+    height:50px;
+    width: 29%;
+    display:none; 
+}
+div.nav-tab.paid-detail-subtab {
+    margin-top: 30px;
+}
+div.nav-tab.paid-detail-consumepackage {
+    margin-top: 30px;
+    display:none;   
 }
