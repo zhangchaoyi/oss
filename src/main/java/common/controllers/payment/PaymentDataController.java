@@ -1,7 +1,5 @@
 package common.controllers.payment;
 
-
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -41,17 +39,25 @@ public class PaymentDataController extends Controller{
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
 		Map<String, Object> seriesMap = new LinkedHashMap<String, Object>();
+		Map<String, Object> sum = new LinkedHashMap<String, Object>();
+		Map<String, Map<String,Object>> recData = new LinkedHashMap<String, Map<String,Object>>();
 		
 		List<String> categories = DateUtils.getDateList(startDate, endDate);
 		switch(tag){
 		case "data-payment-money":
-			seriesMap = paymentDataService.queryMoneyPayment(categories, startDate, endDate, icons);
+			recData = paymentDataService.queryMoneyPayment(categories, startDate, endDate, icons);
+			sum = recData.get("sum");
+			seriesMap = recData.get("series");
 			break;
 		case "data-payment-people":
-			seriesMap = paymentDataService.queryPeoplePayment(categories, startDate, endDate, icons);
+			recData = paymentDataService.queryPeoplePayment(categories, startDate, endDate, icons);
+			sum = recData.get("sum");
+			seriesMap = recData.get("series");
 			break;
 		case "data-payment-times":
-			seriesMap = paymentDataService.queryNumPayment(categories, startDate, endDate, icons);
+			recData = paymentDataService.queryNumPayment(categories, startDate, endDate, icons);
+			sum = recData.get("sum");
+			seriesMap = recData.get("series");
 			break;
 		}
 		
@@ -59,6 +65,7 @@ public class PaymentDataController extends Controller{
 
 		category.put("日期", categories);
 		
+		data.put("sum", sum);
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);

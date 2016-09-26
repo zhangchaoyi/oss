@@ -17,6 +17,7 @@ function loadDataPayment(tag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
+        showPaidNote(data);
         configDataPaymentChart(data);
         // configDataPaymentTable(data);   
     });
@@ -50,8 +51,8 @@ function configDataPaymentChart(data) {
         },
         dataZoom: [{
             type: 'slider',
-            start: 10,
-            end: 80
+            start: 0,
+            end: 100
         },
         {
             type: 'inside',
@@ -87,6 +88,26 @@ function configDataPaymentChart(data) {
         } ()
     });
 }
+
+
+function showPaidNote(data){
+    var sum = data.sum;
+    var htmlStr = "";
+    var noteText = "SUM ";
+    var noteValue = "";
+    for(var key in sum){
+        noteText += key + ' | ';
+        noteValue += sum[key] + ' | ';
+    }
+    noteText = String(noteText).substring(0,noteText.length-2);
+    noteText += ' : ';
+    noteValue = String(noteValue).substring(0,noteValue.length-2);
+   
+    htmlStr += "<span>" + noteText + "<font class='sum-note'>" + noteValue + "</font></span>"
+    $("div#payment-note").text("");
+    $("div#payment-note").append(htmlStr);
+}
+
 
 //explain up and down button 
 $("#btn-explain-up").click(function(){
