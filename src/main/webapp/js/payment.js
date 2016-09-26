@@ -157,4 +157,5 @@ $("div.nav-tab.paid-detail-subtab > ul > li, div.nav-tab.paid-detail-consumepack
 
 $("ul.nav.nav-tabs.payment-tab > li").click(function(){
     loadDataPayment($(this).children("a").attr("data-info"));
+    
 });
