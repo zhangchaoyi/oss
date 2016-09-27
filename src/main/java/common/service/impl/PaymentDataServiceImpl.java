@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 
 import common.model.LogCharge;
+import common.model.Login;
 import common.model.PaymentDetail;
 import common.service.PaymentDataService;
 
@@ -309,6 +310,42 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		data.addAll(paymentPeriod.values());
 		return data;
 	}
+	
+	//计算日ARPU   每天的收入/每天活跃玩家
+	public Map<String,Object> queryDayARPU(List<String> categories, String icons, String startDate, String endDate){
+		String arpuSql = "select DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,sum(count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? group by date;";
+		String aPSql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where date between ? and ? and B.os in (" + icons + ") group by date;";
+		
+		List<LogCharge> logCharge = LogCharge.dao.find(arpuSql, startDate, endDate);
+		List<Login> aP = Login.dao.find(aPSql, startDate, endDate);
+		//init
+		Map<String, Double> lcMap = new LinkedHashMap<String, Double>();
+		Map<String, Long> aPMap = new LinkedHashMap<String, Long>();
+		for(String date : categories){
+			lcMap.put(date, 0.0);
+			aPMap.put(date, 0L);
+		}
+		//load
+		for(LogCharge lc : logCharge){
+			lcMap.put(lc.getStr("date"),lc.getDouble("revenue"));
+		}		
+		for(Login l : aP){
+			aPMap.put(l.getStr("date"),l.getLong("count"));
+		}
+		Map<String, Object> data = new LinkedHashMap<String, Object>();
+		List<Double> arpu = new ArrayList<Double>();
+		for(String date : categories){
+			double revenue = lcMap.get(date);
+			long apNum = aPMap.get(date);
+			revenue = revenue/(double)apNum;
+			BigDecimal bg = new BigDecimal(revenue);
+			revenue = bg.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue(); 
+			arpu.add(revenue);
+		}
+		data.put("ARPU(日)",arpu);
+		return data;
+	}
+	
 	private void increaseValue(String key, Map<String, Integer> map){
 		int value = map.get(key);
 		value++;

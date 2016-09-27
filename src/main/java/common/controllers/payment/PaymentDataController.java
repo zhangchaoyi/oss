@@ -96,6 +96,7 @@ public class PaymentDataController extends Controller{
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
 		Map<String, Object> seriesMap = new LinkedHashMap<String, Object>();
 		List<String> categories = new ArrayList<String>();
+		data.put("chartType", "bar");
 		switch(tag){
 		case "analyze-payment-money":
 			switch(subTag){
@@ -138,10 +139,19 @@ public class PaymentDataController extends Controller{
 			}
 			break;
 		case "analyze-payment-arpu":
+			data.put("chartType", "line");
+			categories = DateUtils.getDateList(startDate, endDate);
+			category.put("日期", categories);
 			switch(subTag){
 			case "ARPU-D":
+				seriesMap = paymentDataService.queryDayARPU(categories, icons, startDate, endDate);
 				break;
 			case "ARPU-M":
+				List<Double> list = new ArrayList<Double>();
+				for(String date:categories){
+					list.add(0.0);
+				}
+				seriesMap.put("ARPU(月)",list);
 				break;
 			case "ARPPU-D":
 				break;

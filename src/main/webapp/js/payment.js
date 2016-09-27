@@ -118,8 +118,8 @@ function configDataPaymentChart(data) {
 
 function configAnalyzePaymentChart(data) {
     var recData = data.data;
+    var chartType = data.chartType;
     analysePaymentChart.clear();
-
     analysePaymentChart.setOption({
         tooltip: {
             trigger: 'axis',
@@ -176,7 +176,7 @@ function configAnalyzePaymentChart(data) {
             for (var key in recData) {
                 var item = {
                     name: key,
-                    type: "bar",
+                    type: chartType,
                     smooth:true,
                     itemStyle: {
                         normal: {
@@ -266,6 +266,7 @@ $("ul.nav.nav-tabs.analyze-payment-tab > li").click(function(){
     if(info=="analyze-payment-arpu"){
         $("div.nav-tab.paid-analyze-tab").hide();
         $("div.arpu-block").show();
+        loadAnalyzePayment($(this).children("a").attr("data-info"),$("div.nav-tab.paid-analyze-arp-tab > ul > li.active > a > span").attr("data-info"));
         return;
     }
     $("div.nav-tab.paid-analyze-tab").show();
@@ -308,4 +309,8 @@ $("ul.nav.nav-tabs.payment-tab > li").click(function(){
 
 $("div.nav-tab.paid-analyze-tab > ul > li").click(function(){
     loadAnalyzePayment($("ul.nav.nav-tabs.analyze-payment-tab > li.active > a").attr("data-info"),$(this).find("span").attr("data-info"));
+});
+
+$("div.nav-tab.paid-analyze-arp-tab > ul > li").click(function(){
+    loadAnalyzePayment("analyze-payment-arpu",$(this).find("span").attr("data-info"));
 });
