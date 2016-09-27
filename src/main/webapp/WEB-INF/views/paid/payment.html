@@ -540,7 +540,26 @@
           </div> 
           <div id="data-payment-chart" style="width:100%;height:400px;display:inline;float:left"></div> 
           <div class="table-zoom-first"> 
-           <table id="data-table-data-payment" class="hover stripe row-border"></table> 
+           <table id="data-table-data-payment" class="hover stripe row-border">
+             <thead>
+               <tr>
+                 <th rowspan="2" colspan="1"><span>日期</span></th>
+                 <th colspan="3" rowspan="1"><span>活跃玩家</span></th>
+                 <th colspan="3" rowspan="1"><span>首次付费玩家</span></th>
+                 <th colspan="3" rowspan="1"><span>首日付费玩家</span></th>
+               </tr>
+               <tr>
+                 <th rowspan="1" colspan="1"><span>付费金额(¥)</span></th>
+                 <th rowspan="1" colspan="1"><span>付费人数</span></th>
+                 <th rowspan="1" colspan="1"><span>付费次数</span></th>
+                 <th rowspan="1" colspan="1"><span>付费金额(¥)</span></th>
+                 <th rowspan="1" colspan="1"><span>付费人数</span></th>
+                 <th rowspan="1" colspan="1"><span>付费金额(¥)</span></th>
+                 <th rowspan="1" colspan="1"><span>付费人数</span></th>
+                 <th rowspan="1" colspan="1"><span>付费次数</span></th>
+               </tr>
+             </thead> 
+           </table> 
           </div>              
         </div> 
        </div> 
@@ -553,26 +572,26 @@
         <button class="btn btn-2 btn-2c" id="btn-third-data-panel-switch">关闭</button> 
        </div> 
        <div class="panel-body"> 
-        <ul class="nav nav-tabs payment-tab"> 
+        <ul class="nav nav-tabs analyze-payment-tab"> 
          <li class="active"> <a data-toggle="tab" data-info="analyze-payment-money">付费金额</a></li> 
-         <li class=""> <a data-toggle="tab" data-info="analyze-payment-people">付费次数</a></li>
-         <li class=""> <a data-toggle="tab" data-info="analyze-payment-times">ARPU/ARPPU</a></li>
+         <li class=""> <a data-toggle="tab" data-info="analyze-payment-times">付费次数</a></li>
+         <li class=""> <a data-toggle="tab" data-info="analyze-payment-arpu">ARPU/ARPPU</a></li>
         </ul>
         <div class="nav-tab paid-analyze-tab">
          <ul class="nav nav-pills"> 
-           <li class="active"><a><span>日</span></a></li> 
-           <li class=""><a><span>周</span></a> </li> 
-           <li class=""><a><span>月</span></a> </li> 
+           <li class="active"><a><span data-info="day">日</span></a></li> 
+           <li class=""><a><span data-info="week">周</span></a> </li> 
+           <li class=""><a><span data-info="month">月</span></a> </li> 
          </ul> 
         </div>
         <div class="arpu-block">
           <div id="pay-note"><span><em>AVG :</em><font>¥0.00</font></span></div>
           <div class="nav-tab paid-analyze-arp-tab">
             <ul class="nav nav-pills"> 
-              <li class="active"><a><span>ARPU(日)</span></a></li> 
-              <li class=""><a><span>ARPU(月)</span></a> </li> 
-              <li class=""><a><span>ARPPU(日)</span></a> </li>
-              <li class=""><a><span>ARPPU(月)</span></a> </li> 
+              <li class="active"><a><span data-info="ARPU-D">ARPU(日)</span></a></li> 
+              <li class=""><a><span data-info="ARPU-M">ARPU(月)</span></a> </li> 
+              <li class=""><a><span data-info="ARPPU-D">ARPPU(日)</span></a> </li>
+              <li class=""><a><span data-info="ARPPU-M">ARPPU(月)</span></a> </li> 
             </ul> 
           </div>
         </div> 

@@ -33,7 +33,7 @@ function iconsView() {
 //点击tab跳转时添加icon参数
 $("#main-menu > li a").click(function(){
     var href = $(this).attr("href");
-        if(href=="#")return;
+    if(href=="#")return;
     $(this).attr("href",href + "?icon=" + getIcons());  
 });
 

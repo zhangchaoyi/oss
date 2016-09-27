@@ -226,3 +226,8 @@ $("ul.nav.nav-tabs.effective.distributed > li").click(function() {
     var tagDataInfo = $("ul.nav.nav-tabs.effective-distributed > li.active").children("a").attr("data-info");
     configEffectDistributedData(tagDataInfo, subTagDataInfo);
 })
+
+$("div.nav-tab.effective > ul > li > a").click(function(){
+    var href = $(this).attr("href");
+    $(this).attr("href",href + "?icon=" + getIcons());
+});

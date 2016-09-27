@@ -130,3 +130,8 @@ $("ul.dropdown-menu > li").click(function(){
 	loadData(periodInfo, addPlayerInfo, startGameInfo, timesInfo, retentionInfo);
 });
 
+
+$("div.nav-tab.retain-tab > ul > li > a").click(function(){
+    var href = $(this).attr("href");
+    $(this).attr("href",href + "?icon=" + getIcons());
+});

@@ -160,3 +160,8 @@ function appendTableHeader(data) {
     }
     $("#data-table-equipment-retain").append("<thead><tr>" + txt + "</tr></thead>");
 }
+
+$("div.nav-tab.retain-tab > ul > li > a").click(function(){
+    var href = $(this).attr("href");
+    $(this).attr("href",href + "?icon=" + getIcons());
+});

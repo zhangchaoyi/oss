@@ -7,6 +7,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import common.model.LogCharge;
 import common.model.PaymentDetail;
 import common.service.PaymentDataService;
 
@@ -156,5 +157,161 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		data.put("sum", sum);
 		data.put("series", series);
 		return data;
+	}
+
+	//查询所有付费数据的table数据
+	public List<List<Object>> queryDataPayment(List<String> categories, String startDate, String endDate, String icons){
+		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(paid_money)paid_money,sum(paid_people)paid_people,sum(paid_num)paid_num,sum(ft_paid_money)ft_paid_money,sum(ft_paid_people)ft_paid_people,sum(fd_paid_money)fd_paid_money,sum(fd_paid_people)fd_paid_people,sum(fd_paid_num)fd_paid_num from payment_detail where date between ? and ? and os in (" + icons + ") group by date";
+		List<PaymentDetail> paymentDetail = PaymentDetail.dao.find(sql, startDate, endDate);
+		Map<String, Map<String, Object>> sort = new LinkedHashMap<String, Map<String, Object>>();
+		//初始化
+		for(String date : categories){
+			Map<String, Object> emptySubMap = new LinkedHashMap<String, Object>();
+			emptySubMap.put("pM", 0.00);
+			emptySubMap.put("pP", 0);
+			emptySubMap.put("pN", 0);
+			emptySubMap.put("ftPM", 0.00);
+			emptySubMap.put("ftPP", 0);
+			emptySubMap.put("fdPM", 0.00);
+			emptySubMap.put("fdPP", 0);
+			emptySubMap.put("fdPN", 0);
+			sort.put(date, emptySubMap);
+		}
+		//load query data
+		for(PaymentDetail pd : paymentDetail){
+			String date = pd.getStr("date");
+			Map<String, Object> subMap = sort.get(date);
+			subMap.put("pM", pd.getDouble("paid_money"));
+			subMap.put("pP", pd.getBigDecimal("paid_people").longValue());
+			subMap.put("pN", pd.getBigDecimal("paid_num").longValue());
+			subMap.put("ftPM", pd.getDouble("ft_paid_money"));
+			subMap.put("ftPP", pd.getBigDecimal("ft_paid_people").longValue());
+			subMap.put("fdPM", pd.getDouble("fd_paid_money"));
+			subMap.put("fdPP", pd.getBigDecimal("fd_paid_people").longValue());
+			subMap.put("fdPN", pd.getBigDecimal("fd_paid_num").longValue());
+			sort.put(date, subMap);
+		}
+		
+		List<List<Object>> data = new ArrayList<List<Object>>();
+		for(Map.Entry<String, Map<String, Object>> entry : sort.entrySet()){
+				List<Object> per = new ArrayList<Object>();
+				per.add(entry.getKey());
+				per.addAll(entry.getValue().values());
+				data.add(per);
+		}
+		return data;
+	}
+
+	public List<Integer> queryDayPaymentMoney(List<String> categories, String icons, String startDate, String endDate){
+		String sql = "select A.count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ?";
+		List<LogCharge> logCharge = LogCharge.dao.find(sql, startDate, endDate);
+		//init
+		Map<String,Integer> paymentPeriod = new LinkedHashMap<String, Integer>();
+		for(String category:categories){
+			paymentPeriod.put(category, 0);
+		}
+		//load data
+		for(LogCharge lc : logCharge){
+			double r = lc.getDouble("count");
+			BigDecimal bg = new BigDecimal(r);
+			r = bg.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();  	
+			if(r>0.00&&r<=2.00){
+				increaseValue("1",paymentPeriod);
+			}else if(r>2.00&&r<=3.00){
+				increaseValue("2",paymentPeriod);
+			}else if(r>3.00&&r<=4.00){
+				increaseValue("3",paymentPeriod);
+			}else if(r>4.00&&r<=5.00){
+				increaseValue("4",paymentPeriod);
+			}else if(r>5.00&&r<=6.00){
+				increaseValue("5",paymentPeriod);
+			}else if(r>6.00&&r<=10.00){
+				increaseValue("6~10",paymentPeriod);
+			}else if(r>10.00&&r<=50.00){
+				increaseValue("11~50",paymentPeriod);
+			}else if(r>50.00&&r<=100.00){
+				increaseValue("51~100",paymentPeriod);
+			}else if(r>100.00&&r<=500.00){
+				increaseValue("101~500",paymentPeriod);
+			}else if(r>500.00&&r<=1000.00){
+				increaseValue("501~1000",paymentPeriod);
+			}else if(r>1000.00&&r<=2000.00){
+				increaseValue("1001~2000",paymentPeriod);
+			}else if(r>2000.00){
+				increaseValue(">2000",paymentPeriod);
+			}
+		}
+		List<Integer> data = new ArrayList<Integer>();
+		data.addAll(paymentPeriod.values());
+		return data;
+	}
+	
+	public List<Integer> queryDayPaymentTimes(List<String> categories, String icons, String startDate, String endDate){
+		String sql = "select count(A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? group by A.account";
+		List<LogCharge> logCharge = LogCharge.dao.find(sql, startDate, endDate);
+		//init
+		Map<String,Integer> paymentPeriod = new LinkedHashMap<String, Integer>();
+		for(String category:categories){
+			paymentPeriod.put(category, 0);
+		}
+		//load data
+		for(LogCharge lc : logCharge){
+			int c = lc.getLong("count").intValue();
+			switch(c){
+			case 1:
+				increaseValue("1",paymentPeriod);
+				break;
+			case 2:
+				increaseValue("2",paymentPeriod);
+				break;
+			case 3:
+				increaseValue("3",paymentPeriod);
+				break;
+			case 4:
+				increaseValue("4",paymentPeriod);
+				break;
+			case 5:
+				increaseValue("5",paymentPeriod);
+				break;
+			case 6:
+				increaseValue("6",paymentPeriod);
+				break;
+			case 7:
+				increaseValue("7",paymentPeriod);
+				break;
+			case 8:
+				increaseValue("8",paymentPeriod);
+				break;
+			case 9:
+				increaseValue("9",paymentPeriod);
+				break;
+			case 10:
+				increaseValue("10",paymentPeriod);
+				break;
+			default:{
+				if(c>10&&c<=20){
+					increaseValue("11~20",paymentPeriod);
+				}else if(c>20&&c<=30){
+					increaseValue("21~30",paymentPeriod);
+				}else if(c>30&&c<=40){
+					increaseValue("31~40",paymentPeriod);
+				}else if(c>40&&c<=50){
+					increaseValue("41~50",paymentPeriod);
+				}else if(c>50&&c<=100){
+					increaseValue("51~100",paymentPeriod);
+				}else if(c>100){
+					increaseValue(">100",paymentPeriod);
+				}
+			  }	
+			}	
+		}
+		List<Integer> data = new ArrayList<Integer>();
+		data.addAll(paymentPeriod.values());
+		return data;
+	}
+	private void increaseValue(String key, Map<String, Integer> map){
+		int value = map.get(key);
+		value++;
+		map.put(key, value);
 	}
 }

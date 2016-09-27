@@ -157,3 +157,8 @@ $("ul[class='nav nav-tabs effective'] > li").click(function() {
     var tagDataInfo = $(this).children("a").attr("data-info");
     configEffectData(tagDataInfo);
 });
+
+$("div.nav-tab.effective > ul > li > a").click(function(){
+    var href = $(this).attr("href");
+    $(this).attr("href",href + "?icon=" + getIcons());
+});

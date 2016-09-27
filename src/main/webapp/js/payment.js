@@ -1,4 +1,5 @@
 var dataPaymentChart = echarts.init(document.getElementById('data-payment-chart'));
+var analysePaymentChart = echarts.init(document.getElementById('analyse-payment-chart'));
 
 $(function(){
     loadData();
@@ -6,6 +7,8 @@ $(function(){
 
 function loadData(){
     loadDataPayment($("ul.nav.nav-tabs.payment-tab > li.active").children("a").attr("data-info"));
+    loadDataPaymentTable();
+    loadAnalyzePayment($("ul.nav.nav-tabs.analyze-payment-tab > li.active > a").attr("data-info"),$("div.nav-tab.paid-analyze-tab > ul > li.active > a > span").attr("data-info"));
 };
 
 function loadDataPayment(tag) {
@@ -19,7 +22,31 @@ function loadDataPayment(tag) {
     function(data, status) {
         showPaidNote(data);
         configDataPaymentChart(data);
-        // configDataPaymentTable(data);   
+    });
+}
+
+function loadDataPaymentTable() {
+    $.post("/oss/api/payment/data/table", {
+        icon:getIcons(),
+        startDate:$("input#startDate").attr("value"),
+        endDate:$("input#endDate").attr("value")
+    },
+    function(data, status) {
+        configDataPaymentTable(data);
+    });
+}
+
+function loadAnalyzePayment(tag,subTag) {
+
+    $.post("/oss/api/payment/analyze", {
+        tag:tag,
+        subTag:subTag,
+        icon:getIcons(),
+        startDate:$("input#startDate").attr("value"),
+        endDate:$("input#endDate").attr("value")
+    },
+    function(data, status) {
+        configAnalyzePaymentChart(data);
     });
 }
 
@@ -89,6 +116,82 @@ function configDataPaymentChart(data) {
     });
 }
 
+function configAnalyzePaymentChart(data) {
+    var recData = data.data;
+    analysePaymentChart.clear();
+
+    analysePaymentChart.setOption({
+        tooltip: {
+            trigger: 'axis',
+        },
+        legend: {
+            data: data.type
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                dataView: {
+                    readOnly: false
+                },
+                magicType: {
+                    type: ['line', 'bar']
+                },
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        dataZoom: [{
+            type: 'slider',
+            start: 0,
+            end: 100
+        },
+        {
+            type: 'inside',
+            start: 0,
+            end: 50
+        }],
+        yAxis: {
+            type: 'category',
+            data: function() {
+                for (var key in data.category) {
+                    return data.category[key];
+                }
+            } ()
+        },
+        xAxis: {
+            type: 'value',
+            boundaryGap: [0, 0.01],
+        },
+        series: function() {
+            var serie = [];
+            for (var key in recData) {
+                var item = {
+                    name: key,
+                    type: "bar",
+                    smooth:true,
+                    itemStyle: {
+                        normal: {
+                            color: 'rgb(87, 139, 187)'
+                        }
+                    },
+                    data: recData[key]
+                }
+                serie.push(item);
+            };
+            return serie;
+        } ()
+
+    });
+}   
 
 function showPaidNote(data){
     var sum = data.sum;
@@ -107,6 +210,28 @@ function showPaidNote(data){
     $("div#payment-note").text("");
     $("div#payment-note").append(htmlStr);
 }
+
+function configDataPaymentTable(data) {
+    $('#data-table-data-payment').dataTable().fnClearTable();  
+    $('#data-table-data-payment').dataTable({
+        "destroy": true,
+        // retrive:true,
+        "data": data,
+        "dom": '<"top"f>rt<"left"lip>',
+        'language': {
+            'emptyTable': '没有数据',
+            'loadingRecords': '加载中...',
+            'processing': '查询中...',
+            'search': '查询:',
+            'lengthMenu': '每页显示 _MENU_ 条记录',
+            'zeroRecords': '没有数据',
+            "sInfo": "(共 _TOTAL_ 条记录)",
+            'infoEmpty': '没有数据',
+            'infoFiltered': '(过滤总件数 _MAX_ 条)'
+        }
+    });
+}
+
 
 
 //explain up and down button 
@@ -136,15 +261,16 @@ $("#btn-explain-down").click(function(){
 });
 
 //付费分析选择tab
-$("ul.nav.nav-tabs.payment-tab > li").click(function(){
+$("ul.nav.nav-tabs.analyze-payment-tab > li").click(function(){
     var info = $(this).children("a").attr("data-info");
-    if(info=="analyze-payment-times"){
+    if(info=="analyze-payment-arpu"){
         $("div.nav-tab.paid-analyze-tab").hide();
         $("div.arpu-block").show();
         return;
     }
     $("div.nav-tab.paid-analyze-tab").show();
     $("div.arpu-block").hide();
+    loadAnalyzePayment($(this).children("a").attr("data-info"),$("div.nav-tab.paid-analyze-tab > ul > li.active > a > span").attr("data-info"));
 });
 
 //detail tag
@@ -178,5 +304,8 @@ $("div.nav-tab.paid-detail-subtab > ul > li, div.nav-tab.paid-detail-consumepack
 
 $("ul.nav.nav-tabs.payment-tab > li").click(function(){
     loadDataPayment($(this).children("a").attr("data-info"));
-    
+});
+
+$("div.nav-tab.paid-analyze-tab > ul > li").click(function(){
+    loadAnalyzePayment($("ul.nav.nav-tabs.analyze-payment-tab > li.active > a").attr("data-info"),$(this).find("span").attr("data-info"));
 });
