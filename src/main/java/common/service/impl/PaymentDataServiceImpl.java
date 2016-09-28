@@ -2,6 +2,7 @@ package common.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -312,7 +313,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 	}
 	
 	//计算日ARPU   每天的收入/每天活跃玩家
-	public Map<String,Object> queryDayARPU(List<String> categories, String icons, String startDate, String endDate){
+	public List<Double> queryDayARPU(List<String> categories, String icons, String startDate, String endDate){
 		String arpuSql = "select DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,sum(count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? group by date;";
 		String aPSql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where date between ? and ? and B.os in (" + icons + ") group by date;";
 		
@@ -337,12 +338,96 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		for(String date : categories){
 			double revenue = lcMap.get(date);
 			long apNum = aPMap.get(date);
-			revenue = revenue/(double)apNum;
+			if(apNum==0){
+				revenue = 0.0;
+			}else{
+				revenue = revenue/(double)apNum;
+			}
 			BigDecimal bg = new BigDecimal(revenue);
 			revenue = bg.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue(); 
 			arpu.add(revenue);
 		}
-		data.put("ARPU(日)",arpu);
+		return arpu;
+	}
+	
+	public List<Double> queryDayARPPU(List<String> categories, String icons, String startDate, String endDate){
+		String sql = "select DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,sum(count)revenue,count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("+ icons + ") and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? group by date";
+		List<LogCharge> logCharge = LogCharge.dao.find(sql, startDate, endDate);
+		Map<String, Double> sort = new LinkedHashMap<String, Double>();
+		//init
+		for(String date : categories){
+			sort.put(date,0.0);
+		}
+		//load
+		for(LogCharge lc : logCharge){
+			double r = lc.getDouble("revenue");
+			long num = lc.getLong("count");
+			if(num==0){
+				r=0.0;
+			}else{
+				r = r/(double)num;
+			}
+			BigDecimal bg = new BigDecimal(r);
+			r = bg.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+			sort.put(lc.getStr("date"), r);
+		}
+		List<Double> arppu = new ArrayList<Double>();
+		arppu.addAll(sort.values());
+		
+		return arppu;
+	}
+	
+	public List<List<Object>> queryAllPaymentMoney(List<String> categories, String icons, String startDate, String endDate){
+		List<Integer> day = queryDayPaymentMoney(categories,icons,startDate,endDate);
+		List<Integer> week = Arrays.asList(0,0,0,0,0,0,0,0,0,0,0,0);
+		List<Integer> month = Arrays.asList(0,0,0,0,0,0,0,0,0,0,0,0);
+		List<List<Object>> data = new ArrayList<List<Object>>();
+		for(int i=0;i<categories.size();i++){
+			List<Object> per = new ArrayList<Object>();
+			per.add(categories.get(i));
+			per.add(day.get(i));
+			per.add(week.get(i));
+			per.add(month.get(i));
+			data.add(per);
+		}
+		return data;
+	}
+	
+	public List<List<Object>> queryAllPaymentTimes(List<String> categories, String icons, String startDate, String endDate){
+		List<Integer> day = queryDayPaymentTimes(categories,icons,startDate,endDate);
+		List<Integer> week = Arrays.asList(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+		List<Integer> month = Arrays.asList(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
+		List<List<Object>> data = new ArrayList<List<Object>>();
+		for(int i=0;i<categories.size();i++){
+			List<Object> per = new ArrayList<Object>();
+			per.add(categories.get(i));
+			per.add(day.get(i));
+			per.add(week.get(i));
+			per.add(month.get(i));
+			data.add(per);
+		}
+		return data;
+	}
+	public List<List<Object>> queryArpu(List<String> categories, String icons, String startDate, String endDate){
+		List<Double> queryData = queryDayARPU(categories,icons,startDate,endDate);
+		List<List<Object>> data = new ArrayList<List<Object>>();
+		for(int i=0;i<categories.size();i++){
+			List<Object> per = new ArrayList<Object>();
+			per.add(categories.get(i));
+			per.add(queryData.get(i));
+			data.add(per);
+		}
+		return data;
+	}
+	public List<List<Object>> queryArppu(List<String> categories, String icons, String startDate, String endDate){
+		List<Double> queryData = queryDayARPU(categories,icons,startDate,endDate);
+		List<List<Object>> data = new ArrayList<List<Object>>();
+		for(int i=0;i<categories.size();i++){
+			List<Object> per = new ArrayList<Object>();
+			per.add(categories.get(i));
+			per.add(queryData.get(i));
+			data.add(per);
+		}
 		return data;
 	}
 	

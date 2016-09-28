@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.Set;
 
 import com.jfinal.aop.Before;
+import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
@@ -59,7 +60,6 @@ public class RetainController extends Controller{
 
 		//保存chart中数据
 		Map<String, Object> seriesMap = new HashMap<String, Object>();
-		
 		seriesMap.put("次日留存率", queryData.get("nDR"));
 		seriesMap.put("7日留存率", queryData.get("sDR"));
 		seriesMap.put("30日留存率", queryData.get("mR"));
@@ -175,30 +175,6 @@ public class RetainController extends Controller{
 		data.put("data", seriesMap);
 		data.put("tableData", tableData);
 		data.put("header", tableHeader);
-		renderJson(data);
-	}
-	
-	@Before(POST.class)
-	@ActionKey("/api/players/retain-equipment/detail")
-	public void queryRetainEquipmentDetail() {
-
-		Map<String, Object> data = new LinkedHashMap<String,Object>();
-		List<String> tableHeader = new LinkedList<String>();
-		List<Object> sourceData = new LinkedList<Object>();
-		
-		tableHeader.addAll(Arrays.asList("首次使用日", "设备数", "第N天后 保留设备"));
-		for(int i=1; i<8; i++){
-			tableHeader.add("+"+ i + "日");
-		}
-		tableHeader.add("+14"+"日");
-		tableHeader.add("+30"+"日");
-		
-		for(int i=0; i<10; i++){
-			List<String> perData = Arrays.asList("2016-08-1"+i, String.valueOf(i), "0%", "0%", "0%","0%","0%","0%","0%","0%","0%");
-			sourceData.add(perData);
-		}
-		data.put("header", tableHeader);
-		data.put("data", sourceData);
 		renderJson(data);
 	}
 }

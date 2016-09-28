@@ -18,5 +18,15 @@ public interface PaymentDataService {
 	
 	public List<Integer> queryDayPaymentTimes(List<String> categories, String icons, String startDate, String endDate);
 	
-	public Map<String,Object> queryDayARPU(List<String> categories, String icons, String startDate, String endDate);
+	public List<Double> queryDayARPU(List<String> categories, String icons, String startDate, String endDate);
+	
+	public List<Double> queryDayARPPU(List<String> categories, String icons, String startDate, String endDate);
+	
+	public List<List<Object>> queryAllPaymentMoney(List<String> categories, String icons, String startDate, String endDate);
+
+	public List<List<Object>> queryAllPaymentTimes(List<String> categories, String icons, String startDate, String endDate);
+	
+	public List<List<Object>> queryArpu(List<String> categories, String icons, String startDate, String endDate);
+	
+	public List<List<Object>> queryArppu(List<String> categories, String icons, String startDate, String endDate);
 }

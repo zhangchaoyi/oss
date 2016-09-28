@@ -8,7 +8,7 @@ $(function(){
 function loadData(){
     loadDataPayment($("ul.nav.nav-tabs.payment-tab > li.active").children("a").attr("data-info"));
     loadDataPaymentTable();
-    loadAnalyzePayment($("ul.nav.nav-tabs.analyze-payment-tab > li.active > a").attr("data-info"),$("div.nav-tab.paid-analyze-tab > ul > li.active > a > span").attr("data-info"));
+    loadAnalyzePayment($("ul.nav.nav-tabs.analyze-payment-tab > li.active > a").attr("data-info"),$("div.nav-tab.paid-analyze-arp-tab > ul > li.active > a > span").attr("data-info"));
 };
 
 function loadDataPayment(tag) {
