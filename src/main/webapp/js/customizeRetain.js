@@ -1,4 +1,6 @@
 $(function(){
+	initTimeSelector();
+
 	var periodInfo = $(".nav.nav-pills.customize-period-selected > li.active").children("a").attr("data-info");
 	var addPlayerInfo = $("#customize-retain-players").attr("data-info");
 	var startGameInfo = $("#customize-retain-game-type").attr("data-info");
@@ -72,6 +74,13 @@ function appendTableHeader(data) {
     $("#data-table-customize-retain").append("<thead><tr>" + txt + "</tr></thead>");
 }
 
+function initTimeSelector(){
+       var startDate = getFormatDate(13);
+       var endDate = getFormatDate(0);
+       $("#startDate").text(startDate);
+       $("#startDate").attr('value',startDate);
+       $('#date_seletor').text(startDate + ' 至 ' + endDate);
+}
 
 $('.dropdown-menu > li').click(function(){
 	$(this).parent().siblings("button").html($(this).text()+ " " + "<span class='caret'></span>");

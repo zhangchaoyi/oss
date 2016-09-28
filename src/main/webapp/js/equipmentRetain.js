@@ -1,6 +1,7 @@
 var retainEquipmentChart = echarts.init(document.getElementById('equipment-retain-chart'));
 
 $(function(){
+    initTimeSelector();
     loadData();
 });
 
@@ -52,8 +53,8 @@ function configChart(data) {
         },
         dataZoom: [{
             type: 'slider',
-            start: 10,
-            end: 80
+            start: 0,
+            end: 100
         },
         {
             type: 'inside',
@@ -159,6 +160,14 @@ function appendTableHeader(data) {
         return;
     }
     $("#data-table-equipment-retain").append("<thead><tr>" + txt + "</tr></thead>");
+}
+
+function initTimeSelector(){
+       var startDate = getFormatDate(13);
+       var endDate = getFormatDate(0);
+       $("#startDate").text(startDate);
+       $("#startDate").attr('value',startDate);
+       $('#date_seletor').text(startDate + ' 至 ' + endDate);
 }
 
 $("div.nav-tab.retain-tab > ul > li > a").click(function(){
