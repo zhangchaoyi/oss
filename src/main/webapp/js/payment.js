@@ -159,18 +159,46 @@ function configAnalyzePaymentChart(data) {
             start: 0,
             end: 50
         }],
-        yAxis: {
-            type: 'category',
-            data: function() {
-                for (var key in data.category) {
-                    return data.category[key];
-                }
-            } ()
-        },
-        xAxis: {
-            type: 'value',
-            boundaryGap: [0, 0.01],
-        },
+        yAxis: function() {
+            if(chartType=='line'){
+                var item = {
+                    type:'value',
+                    axisLabel: {
+                        formatter: '{value} '
+                    }
+                };
+                return item;
+            }
+            var item = {
+                type: 'category',
+                data: function() {
+                    for (var key in data.category) {
+                        return data.category[key];
+                    }
+                } ()
+            };
+            return item;
+        } (),
+        xAxis: function() {
+            if(chartType=='line') {
+                var item = {
+                    type: 'category',
+                    data: function() {
+                    for (var key in data.category) {
+                        return data.category[key];
+                        }
+                    } ()
+                };
+                return item;
+            }
+            var item = {
+                    type:'value',
+                    axisLabel: {
+                        formatter: '{value} '
+                    }
+            };
+            return item;
+        } (),
         series: function() {
             var serie = [];
             for (var key in recData) {

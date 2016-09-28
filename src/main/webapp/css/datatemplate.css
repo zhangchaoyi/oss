@@ -910,10 +910,11 @@ div.nav-tab.paid-analyze-tab > ul {
 div.nav-tab.paid-analyze-arp-tab {
     top: 18%;
     font-size: 3px;
+    width:472px;
 }
 
 div.nav-tab.paid-analyze-arp-tab > ul {
-    width: 100px;
+    /*width: 100px;*/
 }
 
 #pay-note {
