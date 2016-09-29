@@ -118,7 +118,6 @@ function appendAnalyzeTableHeader(header) {
     }
 
     $("#data-table-analyze-payment").append("<thead><tr>" + txt + "</tr></thead>");
-    console.log(txt);
 }
 
 function configDataPaymentChart(data) {

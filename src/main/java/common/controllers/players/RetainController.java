@@ -21,8 +21,8 @@ import common.service.impl.RetainPlayersServiceImpl;
 import common.utils.DateUtils;
 import common.utils.StringUtils;
 
-@Clear(AuthInterceptor.class)
-//@Before(AuthInterceptor.class)
+//@Clear(AuthInterceptor.class)
+@Before(AuthInterceptor.class)
 public class RetainController extends Controller{
 	private RetainPlayersService retainPlayersService = new RetainPlayersServiceImpl();
 	

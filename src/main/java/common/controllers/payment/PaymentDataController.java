@@ -21,7 +21,8 @@ import common.service.impl.PaymentDataServiceImpl;
 import common.utils.DateUtils;
 import common.utils.StringUtils;
 
-@Clear(AuthInterceptor.class)
+//@Clear(AuthInterceptor.class)
+@Before(AuthInterceptor.class)
 public class PaymentDataController extends Controller{
 	private PaymentDataService paymentDataService = new PaymentDataServiceImpl();
 	
