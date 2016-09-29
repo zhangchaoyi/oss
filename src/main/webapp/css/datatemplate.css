@@ -901,6 +901,7 @@ div.nav-tab.paid-analyze-tab {
     position:relative;
     top:20px;
     font-size: 3px;
+    z-index:1;
 }
 
 div.nav-tab.paid-analyze-tab > ul {

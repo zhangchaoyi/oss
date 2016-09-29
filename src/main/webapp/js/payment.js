@@ -8,7 +8,8 @@ $(function(){
 function loadData(){
     loadDataPayment($("ul.nav.nav-tabs.payment-tab > li.active").children("a").attr("data-info"));
     loadDataPaymentTable();
-    loadAnalyzePayment($("ul.nav.nav-tabs.analyze-payment-tab > li.active > a").attr("data-info"),$("div.nav-tab.paid-analyze-arp-tab > ul > li.active > a > span").attr("data-info"));
+    loadAnalyzePayment($("ul.nav.nav-tabs.analyze-payment-tab > li.active > a").attr("data-info"),$("div.nav-tab.paid-analyze-tab > ul > li.active > a > span").attr("data-info"));
+    loadAnalyzePaymentTable($("ul.nav.nav-tabs.analyze-payment-tab > li.active > a").attr("data-info"),"");
 };
 
 function loadDataPayment(tag) {
@@ -48,6 +49,76 @@ function loadAnalyzePayment(tag,subTag) {
     function(data, status) {
         configAnalyzePaymentChart(data);
     });
+}
+
+function loadAnalyzePaymentTable(tag, subTag){
+    $.post("/oss/api/payment/analyze/table", {
+        icon:getIcons(),
+        startDate:$("input#startDate").attr("value"),
+        endDate:$("input#endDate").attr("value"),
+        tag:tag,
+        subTag:subTag
+    },
+    function(data, status) {
+        configAnalyzePaymentTable(data);
+    });
+}
+
+jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+            "num-html-pre": function(a) {
+                var num = String(a).split("~")[0];
+                return parseInt(num);
+            },
+
+            "num-html-asc": function(a, b) {
+                return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+            },
+
+            "num-html-desc": function(a, b) {
+                return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+            }
+});
+
+function configAnalyzePaymentTable(data){
+    appendAnalyzeTableHeader(data.header);
+    $('#data-table-analyze-payment').dataTable().fnClearTable();  
+    $('#data-table-analyze-payment').dataTable({
+        "destroy": true,
+        // retrive:true,
+        "data": data.data,
+        columnDefs: [{
+                type: 'num-html',
+                targets: 0
+            }],
+        "dom": '<"top"f>rt<"left"lip>',
+        'language': {
+            'emptyTable': '没有数据',
+            'loadingRecords': '加载中...',
+            'processing': '查询中...',
+            'search': '查询:',
+            'lengthMenu': '每页显示 _MENU_ 条记录',
+            'zeroRecords': '没有数据',
+            "sInfo": "(共 _TOTAL_ 条记录)",
+            'infoEmpty': '没有数据',
+            'infoFiltered': '(过滤总件数 _MAX_ 条)'
+        }
+    });
+}
+
+function appendAnalyzeTableHeader(header) {
+    var txt = "";
+    for (var key in header) {
+        txt += "<th><span>" + header[key] + "</span></th>";
+    }
+    
+    if ($("table#data-table-analyze-payment > thead").length != 0) {
+        $("table#data-table-analyze-payment > thead").empty();
+        $("#data-table-analyze-payment").prepend("<thead><tr>" + txt + "</tr></thead>");
+        return;
+    }
+
+    $("#data-table-analyze-payment").append("<thead><tr>" + txt + "</tr></thead>");
+    console.log(txt);
 }
 
 function configDataPaymentChart(data) {
@@ -262,6 +333,8 @@ function configDataPaymentTable(data) {
 
 
 
+
+
 //explain up and down button 
 $("#btn-explain-up").click(function(){
     $("div.explain-content-box").css("margin-top", function(index,value){
@@ -294,12 +367,14 @@ $("ul.nav.nav-tabs.analyze-payment-tab > li").click(function(){
     if(info=="analyze-payment-arpu"){
         $("div.nav-tab.paid-analyze-tab").hide();
         $("div.arpu-block").show();
-        loadAnalyzePayment($(this).children("a").attr("data-info"),$("div.nav-tab.paid-analyze-arp-tab > ul > li.active > a > span").attr("data-info"));
+        loadAnalyzePayment(info,$("div.nav-tab.paid-analyze-arp-tab > ul > li.active > a > span").attr("data-info"));
+        loadAnalyzePaymentTable(info,$("div.nav-tab.paid-analyze-arp-tab > ul > li.active > a > span").attr("data-info"));
         return;
     }
     $("div.nav-tab.paid-analyze-tab").show();
     $("div.arpu-block").hide();
-    loadAnalyzePayment($(this).children("a").attr("data-info"),$("div.nav-tab.paid-analyze-tab > ul > li.active > a > span").attr("data-info"));
+    loadAnalyzePayment(info,$("div.nav-tab.paid-analyze-tab > ul > li.active > a > span").attr("data-info"));
+    loadAnalyzePaymentTable(info, "");
 });
 
 //detail tag
@@ -341,4 +416,5 @@ $("div.nav-tab.paid-analyze-tab > ul > li").click(function(){
 
 $("div.nav-tab.paid-analyze-arp-tab > ul > li").click(function(){
     loadAnalyzePayment("analyze-payment-arpu",$(this).find("span").attr("data-info"));
+    loadAnalyzePaymentTable("analyze-payment-arpu", $(this).find("span").attr("data-info"));
 });

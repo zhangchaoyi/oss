@@ -384,7 +384,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		List<List<Object>> data = new ArrayList<List<Object>>();
 		for(int i=0;i<categories.size();i++){
 			List<Object> per = new ArrayList<Object>();
-			per.add(categories.get(i));
+			per.add(categories.get(i) + "(¥)");
 			per.add(day.get(i));
 			per.add(week.get(i));
 			per.add(month.get(i));
