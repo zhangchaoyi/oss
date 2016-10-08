@@ -3,6 +3,8 @@ package common.service;
 import java.util.List;
 import java.util.Map;
 
+import common.model.LogCharge;
+
 
 public interface PaymentDataService {
 	
@@ -29,4 +31,8 @@ public interface PaymentDataService {
 	public List<List<Object>> queryArpu(List<String> categories, String icons, String startDate, String endDate);
 	
 	public List<List<Object>> queryArppu(List<String> categories, String icons, String startDate, String endDate);
+	
+	public List<LogCharge> queryAreaRevenue(String icons, String startDate, String endDate);
+	
+	public Map<String, Object> queryAreaARPU(String icons, String startDate, String endDate);
 }

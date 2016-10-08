@@ -11,6 +11,7 @@ import java.util.Map;
 import common.model.LogCharge;
 import common.model.Login;
 import common.model.PaymentDetail;
+import common.pojo.AreaARPU;
 import common.service.PaymentDataService;
 
 public class PaymentDataServiceImpl implements PaymentDataService {
@@ -429,6 +430,75 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 			data.add(per);
 		}
 		return data;
+	}
+	
+	public List<LogCharge> queryAreaRevenue(String icons, String startDate, String endDate) {
+		String sql = "select province,sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by province";
+		List<LogCharge> logCharge = LogCharge.dao.find(sql,startDate,endDate);
+		return logCharge;
+	}
+	
+	public Map<String, Object> queryAreaARPU(String icons, String startDate, String endDate) {
+		String rSql = "select C.province,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by date,C.province;";
+		String aSql = "select B.province,DATE_FORMAT(A.login_time,'%Y-%m-%d')date,count(*)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d') between ? and ? and B.os in (" + icons +") group by B.province,date;";
+		List<LogCharge> logCharge = LogCharge.dao.find(rSql, startDate, endDate);
+		List<Login> login = Login.dao.find(aSql, startDate, endDate);
+		//Map<Area,Map<date,AreaARPU>>
+		Map<String, Map<String,AreaARPU>> sort = new HashMap<String, Map<String, AreaARPU>>();
+		//load charge
+		for(LogCharge lc : logCharge){
+			String area = lc.getStr("province");
+			String date = lc.getStr("date");
+			double revenue = lc.getDouble("revenue");
+			Map<String, AreaARPU> subMap = new HashMap<String, AreaARPU>();
+			AreaARPU aA = new AreaARPU(revenue);
+			subMap.put(date, aA);
+			sort.put(area, subMap);
+		}
+		//load active player
+		for(Login l : login) {
+			String area = l.getStr("province");
+			String date = l.getStr("date");
+			long count = l.getLong("count");
+			Map<String,AreaARPU> subMap = sort.get(area);
+			if(subMap==null)continue;
+			AreaARPU aA = subMap.get(date);
+			if(aA==null)continue;
+			aA.setCount(count);
+		}
+		Map<String, Double> avgArpu = dealAreaARPU(sort);
+		Map<String, Object> data = new HashMap<String, Object>();
+		List<String> area = new ArrayList<String>();
+		List<Double> series = new ArrayList<Double>();
+		area.addAll(avgArpu.keySet());
+		series.addAll(avgArpu.values());
+		data.put("area", area);
+		data.put("data", series);
+		return data;
+	}
+	
+	private Map<String,Double> dealAreaARPU(Map<String,Map<String,AreaARPU>> sort){
+		Map<String,Double> arpu = new HashMap<String,Double>();
+		
+		for(Map.Entry<String,Map<String,AreaARPU>> entry : sort.entrySet()){
+			int num = 0;
+			double avgARPU = 0.0;
+			double calSum = 0.0;
+			for(Map.Entry<String,AreaARPU> subEntry : entry.getValue().entrySet()){
+  				 AreaARPU aA = subEntry.getValue();
+				 double cal = 0.0;
+  				 long c = aA.getCount();
+				 double r = aA.getRevenue();
+				 cal = r/(double)c;
+				 BigDecimal bg = new BigDecimal(cal);
+				 cal = bg.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+				 calSum += cal;
+				 num++;
+			}
+			avgARPU = calSum/(double)num;
+			arpu.put(entry.getKey(), avgARPU);
+		}
+		return arpu;
 	}
 	
 	private void increaseValue(String key, Map<String, Integer> map){

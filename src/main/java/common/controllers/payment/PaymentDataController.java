@@ -1,12 +1,16 @@
 package common.controllers.payment;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.swing.event.ListSelectionEvent;
 
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
@@ -16,19 +20,20 @@ import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 
 import common.interceptor.AuthInterceptor;
+import common.model.LogCharge;
 import common.service.PaymentDataService;
 import common.service.impl.PaymentDataServiceImpl;
 import common.utils.DateUtils;
 import common.utils.StringUtils;
 
-//@Clear(AuthInterceptor.class)
-@Before(AuthInterceptor.class)
+@Clear(AuthInterceptor.class)
+//@Before(AuthInterceptor.class)
 public class PaymentDataController extends Controller{
 	private PaymentDataService paymentDataService = new PaymentDataServiceImpl();
 	
 	@Before(GET.class)
 	@ActionKey("/payment/data")
-	public void addIndex() {
+	public void paymentIndex() {
 		render("payment.html");
 	}
 	
@@ -237,6 +242,95 @@ public class PaymentDataController extends Controller{
 		}
 		data.put("header", header);
 		data.put("data", queryData);
+		renderJson(data);
+	}
+	
+	@Before(POST.class)
+	@ActionKey("/api/payment/detail")
+	public void queryDetailTable(){
+		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
+		String startDate = getPara("startDate");
+		String endDate = getPara("endDate");
+		String tag = getPara("tag");
+		String subTag = getPara("subTag","");
+		List<String> header = new ArrayList<String>();
+		Map<String, Object> category = new LinkedHashMap<String, Object>();
+		Map<String, Object> seriesMap = new LinkedHashMap<String, Object>();
+		Map<String, Object> data = new HashMap<String, Object>();
+		
+		switch(tag){
+		case "area":
+			List<String> provinces = new ArrayList<String>();
+			List<Double> revenue = new ArrayList<Double>();
+			switch(subTag){
+			case "revenue":
+				List<LogCharge> logCharge = paymentDataService.queryAreaRevenue(icons, startDate, endDate);
+				for(LogCharge lc : logCharge){
+					provinces.add(lc.getStr("province"));
+					revenue.add(lc.getDouble("revenue"));
+				}
+				header.addAll(Arrays.asList("地区", "收入", "百分比"));
+				category.put("地区", provinces);
+				seriesMap.put("付费金额", revenue);
+				break;
+			case "avg-arpu":
+				Map<String, Object> arpu = paymentDataService.queryAreaARPU(icons, startDate, endDate);
+				header.addAll(Arrays.asList("地区", "日均ARPU", "百分比"));
+				category.put("地区", arpu.get("area"));
+				seriesMap.put("日均ARPU", arpu.get("data"));
+				break;
+			case "avg-arppu":
+				break;
+			}
+			break;
+		case "country":
+			switch(subTag){
+			case "revenue":
+				break;
+			case "avg-arpu":
+				break;
+			case "avg-arppu":
+				break;
+			}
+			break;
+		case "channel":
+			switch(subTag){
+			case "revenue":
+				break;
+			case "avg-arpu":
+				break;
+			case "avg-arppu":
+				break;
+			}
+			break;
+		case "mobileoperator":
+			switch(subTag){
+			case "revenue":
+				break;
+			case "avg-arpu":
+				break;
+			case "avg-arppu":
+				break;
+			}
+			break;
+		case "paid-way":
+			break;
+		case "comsume-package":
+			switch(subTag){
+			case "revenue":
+				break;
+			case "recharge-people":
+				break;
+			}
+			break;
+		case "currency-type":
+			break;
+		}
+		Set<String> type = seriesMap.keySet();
+		data.put("type", type.toArray());
+		data.put("header", header);
+		data.put("category", category);
+		data.put("data", seriesMap);
 		renderJson(data);
 	}
 }
