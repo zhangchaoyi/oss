@@ -51,6 +51,17 @@ $('#btn-gamedetail-switch').click(function(){
         $(this).text("打开");
     }
 });
+//第三个数据表格开关
+$('#btn-third-data-panel-switch').click(function(){
+    $("div.table-zoom-third").toggleClass("toggle-switch");
+    var txt = $(this).text();
+    if (txt == "打开") {
+        $(this).text("关闭");
+    } else {
+        $(this).text("打开");
+    }
+});
+
 //change the css when mouse cover date
 function dateSelected(obj) {
     var nodes = $(obj).siblings("a");

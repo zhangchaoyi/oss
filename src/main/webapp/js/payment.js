@@ -547,13 +547,12 @@ $("ul.nav.nav-tabs.paid-details > li").click(function(){
     switch(info){
         case "area":
         case "country":
-        case "channel":
         $("div.nav-tab.paid-detail-subtab").show();
         $("div.nav-tab.paid-detail-consumepackage").hide();
+        loadDetailPayment(info, $("div.nav-tab.paid-detail-subtab > ul > li.active > a > span").attr("data-info"));
         break;
         case "mobileoperator":
         case "paid-way":
-        case "currency-type":
         $("div.nav-tab.paid-detail-subtab").hide();
         $("div.nav-tab.paid-detail-consumepackage").hide();
         break;
@@ -581,4 +580,8 @@ $("div.nav-tab.paid-analyze-tab > ul > li").click(function(){
 $("div.nav-tab.paid-analyze-arp-tab > ul > li").click(function(){
     loadAnalyzePayment("analyze-payment-arpu",$(this).find("span").attr("data-info"));
     loadAnalyzePaymentTable("analyze-payment-arpu", $(this).find("span").attr("data-info"));
+});
+
+$("div.nav-tab.paid-detail-subtab > ul > li").click(function(){
+    loadDetailPayment($("ul.nav.nav-tabs.paid-details > li.active > a").attr("data-info"), $(this).find("span").attr("data-info"));
 });

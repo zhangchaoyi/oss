@@ -110,17 +110,17 @@ public class PaymentDataController extends Controller{
 			case "day":
 				categories = Arrays.asList("1","2","3","4","5","6~10","11~50","51~100","101~500","501~1000","1001~2000",">2000");
 				List<Integer> queryPeriod = paymentDataService.queryDayPaymentMoney(categories, icons, startDate, endDate);
-				categories = Arrays.asList("1(¥)","2(¥)","3(¥)","4(¥)","5(¥)","6~10(¥)","11~50(¥)","51~100(¥)","101~500(¥)","501~1000(¥)","1001~2000(¥)",">2000(¥)");
+				categories = Arrays.asList("1($)","2($)","3($)","4($)","5($)","6~10($)","11~50($)","51~100($)","101~500($)","501~1000($)","1001~2000($)",">2000($)");
 				category.put("付费金额区间", categories);
 				seriesMap.put("人数", queryPeriod);
 				break;
 			case "week":
-				categories = Arrays.asList("1(¥)","2(¥)","3(¥)","4(¥)","5(¥)","6~10(¥)","11~50(¥)","51~100(¥)","101~500(¥)","501~1000(¥)","1001~2000(¥)",">2000(¥)");
+				categories = Arrays.asList("1($)","2($)","3($)","4($)","5($)","6~10($)","11~50($)","51~100($)","101~500($)","501~1000($)","1001~2000($)",">2000($)");
 				category.put("付费金额区间", categories);
 				seriesMap.put("人数", Arrays.asList(0,0,0,0,0,0,0,0,0,0,0,0));
 				break;
 			case "month":
-				categories = Arrays.asList("1(¥)","2(¥)","3(¥)","4(¥)","5(¥)","6~10(¥)","11~50(¥)","51~100(¥)","101~500(¥)","501~1000(¥)","1001~2000(¥)",">2000(¥)");
+				categories = Arrays.asList("1($)","2($)","3($)","4($)","5($)","6~10($)","11~50($)","51~100($)","101~500($)","501~1000($)","1001~2000($)",">2000($)");
 				category.put("付费金额区间", categories);
 				seriesMap.put("人数", Arrays.asList(0,0,0,0,0,0,0,0,0,0,0,0));
 				break;
@@ -260,10 +260,10 @@ public class PaymentDataController extends Controller{
 		
 		switch(tag){
 		case "area":
-			List<String> provinces = new ArrayList<String>();
-			List<Double> revenue = new ArrayList<Double>();
 			switch(subTag){
 			case "revenue":
+				List<String> provinces = new ArrayList<String>();
+				List<Double> revenue = new ArrayList<Double>();
 				List<LogCharge> logCharge = paymentDataService.queryAreaRevenue(icons, startDate, endDate);
 				for(LogCharge lc : logCharge){
 					provinces.add(lc.getStr("province"));
@@ -280,26 +280,38 @@ public class PaymentDataController extends Controller{
 				seriesMap.put("日均ARPU", arpu.get("data"));
 				break;
 			case "avg-arppu":
+				Map<String, Object> arppu = paymentDataService.queryAreaARPPU(icons, startDate, endDate);
+				header.addAll(Arrays.asList("地区", "日均ARPPU", "百分比"));
+				category.put("地区", arppu.get("area"));
+				seriesMap.put("日均ARPPU", arppu.get("data"));
 				break;
 			}
 			break;
 		case "country":
 			switch(subTag){
 			case "revenue":
+				List<String> countries = new ArrayList<String>();
+				List<Double> revenue = new ArrayList<Double>();
+				List<LogCharge> logCharge = paymentDataService.queryCountryRevenue(icons, startDate, endDate);
+				for(LogCharge lc : logCharge){
+					countries.add(lc.getStr("country"));
+					revenue.add(lc.getDouble("revenue"));
+				}
+				header.addAll(Arrays.asList("国家", "收入", "百分比"));
+				category.put("国家", countries);
+				seriesMap.put("付费金额", revenue);
 				break;
 			case "avg-arpu":
+				Map<String, Object> arpu = paymentDataService.queryCountryARPU(icons, startDate, endDate);
+				header.addAll(Arrays.asList("国家", "日均ARPU", "百分比"));
+				category.put("国家", arpu.get("country"));
+				seriesMap.put("日均ARPU", arpu.get("data"));
 				break;
 			case "avg-arppu":
-				break;
-			}
-			break;
-		case "channel":
-			switch(subTag){
-			case "revenue":
-				break;
-			case "avg-arpu":
-				break;
-			case "avg-arppu":
+				Map<String, Object> arppu = paymentDataService.queryCountryARPPU(icons, startDate, endDate);
+				header.addAll(Arrays.asList("国家", "日均ARPPU", "百分比"));
+				category.put("国家", arppu.get("country"));
+				seriesMap.put("日均ARPPU", arppu.get("data"));
 				break;
 			}
 			break;
@@ -322,8 +334,6 @@ public class PaymentDataController extends Controller{
 			case "recharge-people":
 				break;
 			}
-			break;
-		case "currency-type":
 			break;
 		}
 		Set<String> type = seriesMap.keySet();

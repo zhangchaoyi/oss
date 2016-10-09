@@ -11,7 +11,7 @@ import java.util.Map;
 import common.model.LogCharge;
 import common.model.Login;
 import common.model.PaymentDetail;
-import common.pojo.AreaARPU;
+import common.pojo.AreaARU;
 import common.service.PaymentDataService;
 
 public class PaymentDataServiceImpl implements PaymentDataService {
@@ -53,9 +53,9 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		ftPDSum = bgftPDSum.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		fdPDSum = bgfdPDSum.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		
-		sum.put("活跃", "¥" + String.valueOf(pDSum));
-		sum.put("首次付费", "¥" + String.valueOf(ftPDSum));
-		sum.put("首日付费", "¥" + String.valueOf(fdPDSum));
+		sum.put("活跃", "$" + String.valueOf(pDSum));
+		sum.put("首次付费", "$" + String.valueOf(ftPDSum));
+		sum.put("首日付费", "$" + String.valueOf(fdPDSum));
 		List<Double> paidList = new ArrayList<Double>();
 		List<Double> ftPaidList = new ArrayList<Double>();
 		List<Double> fdPaidList = new ArrayList<Double>();
@@ -64,9 +64,9 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		fdPaidList.addAll(fdPaid.values());
 		
 		Map<String, Map<String,Object>> data = new HashMap<String, Map<String, Object>>();
-		series.put("活跃玩家(¥)", paidList);
-		series.put("首次付费玩家(¥)", ftPaidList);
-		series.put("首日付费玩家(¥)", fdPaidList);
+		series.put("活跃玩家($)", paidList);
+		series.put("首次付费玩家($)", ftPaidList);
+		series.put("首日付费玩家($)", fdPaidList);
 		data.put("sum", sum);
 		data.put("series", series);
 		return data;
@@ -389,7 +389,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		List<List<Object>> data = new ArrayList<List<Object>>();
 		for(int i=0;i<categories.size();i++){
 			List<Object> per = new ArrayList<Object>();
-			per.add(categories.get(i) + "(¥)");
+			per.add(categories.get(i) + "($)");
 			per.add(day.get(i));
 			per.add(week.get(i));
 			per.add(month.get(i));
@@ -448,23 +448,23 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 	//查询地区日均ARPU  --先load付费情况,再load 活跃人数   日ARPU = 当日充值总额度/当日活跃玩家数量
 	public Map<String, Object> queryAreaARPU(String icons, String startDate, String endDate) {
 		String rSql = "select C.province,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by date,C.province";
-		String aSql = "select B.province,DATE_FORMAT(A.login_time,'%Y-%m-%d')date,count(*)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d') between ? and ? and B.os in (" + icons +") group by B.province,date;";
+		String aSql = "select B.province,DATE_FORMAT(A.login_time,'%Y-%m-%d')date,count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d') between ? and ? and B.os in (" + icons +") group by B.province,date;";
 		List<LogCharge> logCharge = LogCharge.dao.find(rSql, startDate, endDate);
 		List<Login> login = Login.dao.find(aSql, startDate, endDate);
 		//Map<Area,Map<date,AreaARPU>>
-		Map<String, Map<String,AreaARPU>> sort = new HashMap<String, Map<String, AreaARPU>>();
+		Map<String, Map<String,AreaARU>> sort = new HashMap<String, Map<String, AreaARU>>();
 		//load charge
 		for(LogCharge lc : logCharge){
 			String area = lc.getStr("province");
 			String date = lc.getStr("date");
 			double revenue = lc.getDouble("revenue");
-			Map<String, AreaARPU> subMap;
+			Map<String, AreaARU> subMap;
 			if(sort.containsKey(area)){
 				subMap = sort.get(area);
 			}else{
-				subMap = new HashMap<String, AreaARPU>();
+				subMap = new HashMap<String, AreaARU>();
 			}
-			AreaARPU aA = new AreaARPU(revenue);
+			AreaARU aA = new AreaARU(revenue);
 			subMap.put(date, aA);
 			sort.put(area, subMap);
 		}
@@ -476,14 +476,14 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 			if(!sort.containsKey(area)){
 				continue;
 			}
-			Map<String,AreaARPU> subMap = sort.get(area);
+			Map<String,AreaARU> subMap = sort.get(area);
 			if(!subMap.containsKey(date)){
 				continue;
 			}
-			AreaARPU aA = subMap.get(date);
+			AreaARU aA = subMap.get(date);
 			aA.setCount(count);
 		}
-		Map<String, Double> avgArpu = dealAreaARPU(sort);
+		Map<String, Double> avgArpu = dealAreaARU(sort);
 		Map<String, Object> data = new HashMap<String, Object>();
 		List<String> area = new ArrayList<String>();
 		List<Double> series = new ArrayList<Double>();
@@ -494,15 +494,45 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		return data;
 	}
 	
-	private Map<String,Double> dealAreaARPU(Map<String,Map<String,AreaARPU>> sort){
-		Map<String,Double> arpu = new HashMap<String,Double>();
-		
-		for(Map.Entry<String,Map<String,AreaARPU>> entry : sort.entrySet()){
+	//查询地区日均ARPPU   日ARPPU = 当日充值总额度/当日付费玩家数量
+	public Map<String,Object> queryAreaARPPU(String icons, String startDate, String endDate) {
+		String sql = "select C.province,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,sum(A.count)revenue,count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by C.province,date";
+		List<LogCharge> logCharge = LogCharge.dao.find(sql, startDate, endDate);
+		Map<String, Map<String,AreaARU>> sort = new HashMap<String, Map<String, AreaARU>>();
+		for(LogCharge lc : logCharge){
+			String area = lc.getStr("province");
+			String date = lc.getStr("date");
+			double revenue = lc.getDouble("revenue");
+			long count = lc.getLong("count");
+			Map<String,AreaARU> subMap;
+			if(sort.containsKey(area)){
+				subMap = sort.get(area);
+			}else{
+				subMap = new HashMap<String,AreaARU>();
+			}
+			AreaARU aA = new AreaARU(revenue,count);
+			subMap.put(date, aA);
+			sort.put(area,subMap);
+		}
+		Map<String, Double> avgArppu = dealAreaARU(sort);
+		Map<String, Object> data = new HashMap<String, Object>();
+		List<String> area = new ArrayList<String>();
+		List<Double> series = new ArrayList<Double>();
+		area.addAll(avgArppu.keySet());
+		series.addAll(avgArppu.values());
+		data.put("area", area);
+		data.put("data", series);
+		return data;
+	}
+	//处理中间数据
+	private Map<String, Double> dealAreaARU(Map<String, Map<String, AreaARU>> sort){
+		Map<String,Double> data = new HashMap<String,Double>();
+		for(Map.Entry<String,Map<String,AreaARU>> entry : sort.entrySet()){
 			int num = 0;
-			double avgARPU = 0.0;
+			double avg = 0.0;
 			double calSum = 0.0;
-			for(Map.Entry<String,AreaARPU> subEntry : entry.getValue().entrySet()){
-  				 AreaARPU aA = subEntry.getValue();
+			for(Map.Entry<String,AreaARU> subEntry : entry.getValue().entrySet()){
+  				 AreaARU aA = subEntry.getValue();
 				 double cal = 0.0;
   				 long c = aA.getCount();
 				 double r = aA.getRevenue();
@@ -512,10 +542,100 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 				 calSum += cal;
 				 num++;
 			}
-			avgARPU = calSum/(double)num;
-			arpu.put(entry.getKey(), avgARPU);
+			avg = calSum/(double)num;
+			BigDecimal bg = new BigDecimal(avg);
+			avg = bg.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+			data.put(entry.getKey(), avg);
 		}
-		return arpu;
+		return data;
+	}
+	
+	//查询国家收入
+	public List<LogCharge> queryCountryRevenue(String icons, String startDate, String endDate) {
+		String sql = "select country,sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by country;";
+		List<LogCharge> logCharge = LogCharge.dao.find(sql,startDate,endDate);
+		return logCharge;
+	}
+	//查询国家 ARPU
+	public Map<String, Object> queryCountryARPU(String icons, String startDate, String endDate) {
+		String rSql = "select C.country,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by date,C.country";
+		String aSql = "select B.country,DATE_FORMAT(A.login_time,'%Y-%m-%d')date,count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d') between ? and ? and B.os in (" + icons + ") group by B.country,date;";
+		
+		List<LogCharge> logCharge = LogCharge.dao.find(rSql, startDate, endDate);
+		List<Login> login = Login.dao.find(aSql, startDate, endDate);
+		
+		//Map<Area,Map<date,AreaARPU>>
+		Map<String, Map<String,AreaARU>> sort = new HashMap<String, Map<String, AreaARU>>();
+		//load charge
+		for(LogCharge lc : logCharge){
+			String country = lc.getStr("country");
+			String date = lc.getStr("date");
+			double revenue = lc.getDouble("revenue");
+			Map<String, AreaARU> subMap;
+			if(sort.containsKey(country)){
+				subMap = sort.get(country);
+			}else{
+				subMap = new HashMap<String, AreaARU>();
+			}
+			AreaARU aA = new AreaARU(revenue);
+			subMap.put(date, aA);
+			sort.put(country, subMap);
+		}
+		//load active player
+		for(Login l : login) {
+			String country = l.getStr("country");
+			String date = l.getStr("date");
+			long count = l.getLong("count");
+			if(!sort.containsKey(country)){
+				continue;
+			}
+			Map<String,AreaARU> subMap = sort.get(country);
+			if(!subMap.containsKey(date)){
+				continue;
+			}
+			AreaARU aA = subMap.get(date);
+			aA.setCount(count);
+		}
+		Map<String, Double> avgArpu = dealAreaARU(sort);
+		Map<String, Object> data = new HashMap<String, Object>();
+		List<String> country = new ArrayList<String>();
+		List<Double> series = new ArrayList<Double>();
+		country.addAll(avgArpu.keySet());
+		series.addAll(avgArpu.values());
+		data.put("country", country);
+		data.put("data", series);
+		return data;
+	}
+	
+	//查询国家日均ARPPU   日ARPPU = 当日充值总额度/当日付费玩家数量
+	public Map<String,Object> queryCountryARPPU(String icons, String startDate, String endDate) {
+		String sql = "select C.country,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,sum(A.count)revenue,count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by C.country,date";
+		List<LogCharge> logCharge = LogCharge.dao.find(sql, startDate, endDate);
+		Map<String, Map<String,AreaARU>> sort = new HashMap<String, Map<String, AreaARU>>();
+		for(LogCharge lc : logCharge){
+			String country = lc.getStr("country");
+			String date = lc.getStr("date");
+			double revenue = lc.getDouble("revenue");
+			long count = lc.getLong("count");
+			Map<String,AreaARU> subMap;
+			if(sort.containsKey(country)){
+				subMap = sort.get(country);
+			}else{
+				subMap = new HashMap<String,AreaARU>();
+			}
+			AreaARU aA = new AreaARU(revenue,count);
+			subMap.put(date, aA);
+			sort.put(country,subMap);
+		}
+		Map<String, Double> avgArppu = dealAreaARU(sort);
+		Map<String, Object> data = new HashMap<String, Object>();
+		List<String> country = new ArrayList<String>();
+		List<Double> series = new ArrayList<Double>();
+		country.addAll(avgArppu.keySet());
+		series.addAll(avgArppu.values());
+		data.put("country", country);
+		data.put("data", series);
+		return data;
 	}
 	
 	private void increaseValue(String key, Map<String, Integer> map){

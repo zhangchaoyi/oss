@@ -1,19 +1,19 @@
 package common.pojo;
 
-public class AreaARPU {
+public class AreaARU {
 	private double revenue;
 	private long count;
 
-	public AreaARPU(){
+	public AreaARU(){
 		
 	}
 	
-	public AreaARPU(double revenue, long count){
+	public AreaARU(double revenue, long count){
 		this.revenue = revenue;
 		this.count = count;
 	}
 	
-	public AreaARPU(double revenue){
+	public AreaARU(double revenue){
 		this.revenue = revenue;
 		this.count = 0;
 	}

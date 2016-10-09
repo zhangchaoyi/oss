@@ -35,4 +35,12 @@ public interface PaymentDataService {
 	public List<LogCharge> queryAreaRevenue(String icons, String startDate, String endDate);
 	
 	public Map<String, Object> queryAreaARPU(String icons, String startDate, String endDate);
+
+	public Map<String,Object> queryAreaARPPU(String icons, String startDate, String endDate);
+	
+	public List<LogCharge> queryCountryRevenue(String icons, String startDate, String endDate);
+	
+	public Map<String, Object> queryCountryARPU(String icons, String startDate, String endDate);
+	
+	public Map<String,Object> queryCountryARPPU(String icons, String startDate, String endDate);
 }
