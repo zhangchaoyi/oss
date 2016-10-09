@@ -638,6 +638,13 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		return data;
 	}
 	
+	//查询移动运营商
+	public List<LogCharge> queryMobile(String icons, String startDate, String endDate) {
+		String sql = "select C.carrier,sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by C.carrier";
+		List<LogCharge> logCharge = LogCharge.dao.find(sql, startDate, endDate);
+		return logCharge;
+	}
+	
 	private void increaseValue(String key, Map<String, Integer> map){
 		int value = map.get(key);
 		value++;

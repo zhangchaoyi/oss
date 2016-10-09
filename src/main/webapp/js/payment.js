@@ -552,9 +552,9 @@ $("ul.nav.nav-tabs.paid-details > li").click(function(){
         loadDetailPayment(info, $("div.nav-tab.paid-detail-subtab > ul > li.active > a > span").attr("data-info"));
         break;
         case "mobileoperator":
-        case "paid-way":
         $("div.nav-tab.paid-detail-subtab").hide();
         $("div.nav-tab.paid-detail-consumepackage").hide();
+        loadDetailPayment(info, "");
         break;
         case "comsume-package":
         $("div.nav-tab.paid-detail-subtab").hide();

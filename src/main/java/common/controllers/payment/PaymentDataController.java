@@ -22,8 +22,8 @@ import common.service.impl.PaymentDataServiceImpl;
 import common.utils.DateUtils;
 import common.utils.StringUtils;
 
-//@Clear(AuthInterceptor.class)
-@Before(AuthInterceptor.class)
+@Clear(AuthInterceptor.class)
+//@Before(AuthInterceptor.class)
 public class PaymentDataController extends Controller{
 	private PaymentDataService paymentDataService = new PaymentDataServiceImpl();
 	
@@ -312,16 +312,16 @@ public class PaymentDataController extends Controller{
 			}
 			break;
 		case "mobileoperator":
-			switch(subTag){
-			case "revenue":
-				break;
-			case "avg-arpu":
-				break;
-			case "avg-arppu":
-				break;
+			List<String> carrier = new ArrayList<String>();
+			List<Double> revenue = new ArrayList<Double>();
+			List<LogCharge> logCharge = paymentDataService.queryMobile(icons, startDate, endDate);
+			for(LogCharge lc : logCharge){
+				carrier.add(lc.getStr("carrier"));
+				revenue.add(lc.getDouble("revenue"));
 			}
-			break;
-		case "paid-way":
+			header.addAll(Arrays.asList("移动运营商","收入","百分比"));
+			category.put("移动运营商", carrier);
+			seriesMap.put("付费金额", revenue);
 			break;
 		case "comsume-package":
 			switch(subTag){

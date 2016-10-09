@@ -43,4 +43,6 @@ public interface PaymentDataService {
 	public Map<String, Object> queryCountryARPU(String icons, String startDate, String endDate);
 	
 	public Map<String,Object> queryCountryARPPU(String icons, String startDate, String endDate);
+	
+	public List<LogCharge> queryMobile(String icons, String startDate, String endDate);
 }
