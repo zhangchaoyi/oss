@@ -3,9 +3,9 @@ package common.service;
 import java.util.Map;
 
 public interface RealtimeService {
-	public Map<String, String> queryBeforeData();
+	public Map<String, String> queryBeforeData(String icons);
 	
-	public Map<String, String> queryRealtimeData();
+	public Map<String, String> queryRealtimeData(String icons);
 	
 	public Map<String, Object> queryRealtimeDevice(String icons, String[] date);
 	

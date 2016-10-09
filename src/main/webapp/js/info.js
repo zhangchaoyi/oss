@@ -118,6 +118,7 @@ function loadInfoData(detailTag) {
 
 function loadBeforeTableData(){
     $.post("/oss/api/realtime/beforedata", {
+        icon:getIcons()
     },
     function(data, status) {
         configBeforeTable(data);
@@ -127,6 +128,7 @@ function loadBeforeTableData(){
 
 function loadRealtimeTableData(initial){
     $.post("/oss/api/realtime/realtimedata", {
+        icon:getIcons()
     },
     function(data, status) {
         if(initial==false){
@@ -137,6 +139,7 @@ function loadRealtimeTableData(initial){
     });
 }
 
+//显示实时的数据
 function configRealtimeTable(data){
     $("#equipment").text(data["e"]);
     $("#totalActive").text(data["aP"]);
@@ -149,7 +152,7 @@ function configRealtimeTable(data){
     $("#incomeAccumulative").text(data["rSum"]);
     $("#gameTimes").text(data["aGPT"]);
 }
-
+//昨日 7日前 30日前的数据
 function configBeforeTable(data){
     $("#equipmentDays1").text(data["e1"]);
     $("#equipmentDays7").text(data["e7"]);
@@ -183,6 +186,7 @@ function configBeforeTable(data){
     $("#gameTimesDays30").text(data["aGP30"]);
 }
 
+//渐入渐出显示右侧 +X 
 function dealRealtimeData(data){
     //calculate the diffent
     var e = $("#equipment").text();
@@ -267,6 +271,7 @@ function showRealtimeArrowData(){
     showArrow("#gameTimesEmDays1",pAGPT1);
 }
 
+//显示箭头方向和百分号数据
 function showBeforeArrowData(){
     var e1 = $("#equipmentDays1").text();
     var e7 = $("#equipmentDays7").text();
@@ -274,9 +279,9 @@ function showBeforeArrowData(){
     var aP1 = $("#totalActiveDays1").text();
     var aP7 = $("#totalActiveDays7").text();
     var aP30 = $("#totalActiveDays30").text();
-    var pP1 = $("#payPlayersEmDays1").text();
-    var pP7 = $("#payPlayersEmDays7").text();
-    var pP30 = $("#payPlayersEmDays30").text();
+    var pP1 = $("#payPlayersDays1").text();
+    var pP7 = $("#payPlayersDays7").text();
+    var pP30 = $("#payPlayersDays30").text();
     var rT1 = $("#incomeTodayDays1").text();
     var rT7 = $("#incomeTodayDays7").text();
     var rT30 = $("#incomeTodayDays30").text();

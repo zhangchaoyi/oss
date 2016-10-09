@@ -33,14 +33,16 @@ public class RealtimeController extends Controller {
 	@Before(POST.class)
 	@ActionKey("/api/realtime/beforedata")
 	public void queryBeforeData() {
-		Map<String, String> data = realtimeService.queryBeforeData();
+		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
+		Map<String, String> data = realtimeService.queryBeforeData(icons);
 		renderJson(data);
 	}
 
 	@Before(POST.class)
 	@ActionKey("/api/realtime/realtimedata")
 	public void queryRealtimeData() {
-		Map<String, String> data = realtimeService.queryRealtimeData();
+		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
+		Map<String, String> data = realtimeService.queryRealtimeData(icons);
 		renderJson(data);
 	}
 
