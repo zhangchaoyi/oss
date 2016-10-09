@@ -10,7 +10,7 @@ function loadData() {
     $.post("/oss/api/players/retain-equipment/rate", {
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
-        endDate:$("input#endDate").attr("value")
+        endDate:validateDate($("input#endDate").attr("value"))
     },
     function(data, status) {
         configChart(data);
@@ -165,9 +165,21 @@ function appendTableHeader(data) {
 function initTimeSelector(){
        var startDate = getFormatDate(13);
        var endDate = getFormatDate(0);
-       $("#startDate").text(startDate);
        $("#startDate").attr('value',startDate);
        $('#date_seletor').text(startDate + ' 至 ' + endDate);
+}
+
+//留存统计只对前两天有效,因此需要判断日期去除当前日期和昨天日期
+function validateDate(date) {
+    var today = getFormatDate(0);
+    var yesterday = getFormatDate(1);
+    if(date==today || yesterday==date) {
+        date=getFormatDate(2);
+        var startDate = $("#startDate").attr("value");
+        $("#endDate").attr("value",date);
+        $('#date_seletor').text(startDate + ' 至 ' + date);
+    }
+    return date;
 }
 
 $("div.nav-tab.retain-tab > ul > li > a").click(function(){

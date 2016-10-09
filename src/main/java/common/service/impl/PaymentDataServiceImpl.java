@@ -15,6 +15,7 @@ import common.pojo.AreaARPU;
 import common.service.PaymentDataService;
 
 public class PaymentDataServiceImpl implements PaymentDataService {
+	//计算付费金额
 	public Map<String, Map<String,Object>> queryMoneyPayment(List<String> categories, String startDate, String endDate, String icons){
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(paid_money)paid_money, sum(ft_paid_money)ft_paid_money, sum(fd_paid_money)fd_paid_money from payment_detail where date between ? and ? and os in (" + icons + ") group by date";
 		List<PaymentDetail> paymentDetail = PaymentDetail.dao.find(sql, startDate, endDate);
@@ -70,7 +71,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		data.put("series", series);
 		return data;
 	}
-	
+	//计算付费人数
 	public Map<String, Map<String,Object>> queryPeoplePayment(List<String> categories, String startDate, String endDate, String icons) {
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(paid_people)paid_people, sum(ft_paid_people)ft_paid_people, sum(fd_paid_people)fd_paid_people from payment_detail where date between ? and ? and os in (" + icons + ") group by date";
 		List<PaymentDetail> paymentDetail = PaymentDetail.dao.find(sql, startDate, endDate);
@@ -121,7 +122,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		data.put("series", series);
 		return data;
 	}
-	
+	//计算付费次数
 	public Map<String, Map<String,Object>> queryNumPayment(List<String> categories, String startDate, String endDate, String icons) {
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date, sum(paid_num)paid_num, sum(fd_paid_num)fd_paid_num from payment_detail where date between ? and ? and os in (" + icons + ") group by date";
 		List<PaymentDetail> paymentDetail = PaymentDetail.dao.find(sql, startDate, endDate);
@@ -204,7 +205,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		}
 		return data;
 	}
-
+	//计算日 付费金额
 	public List<Integer> queryDayPaymentMoney(List<String> categories, String icons, String startDate, String endDate){
 		String sql = "select A.count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ?";
 		List<LogCharge> logCharge = LogCharge.dao.find(sql, startDate, endDate);
@@ -249,6 +250,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		return data;
 	}
 	
+	//计算日付费次数
 	public List<Integer> queryDayPaymentTimes(List<String> categories, String icons, String startDate, String endDate){
 		String sql = "select count(A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? group by A.account";
 		List<LogCharge> logCharge = LogCharge.dao.find(sql, startDate, endDate);
@@ -351,6 +353,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		return arpu;
 	}
 	
+	//查询日 ARPPU
 	public List<Double> queryDayARPPU(List<String> categories, String icons, String startDate, String endDate){
 		String sql = "select DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,sum(count)revenue,count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("+ icons + ") and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? group by date";
 		List<LogCharge> logCharge = LogCharge.dao.find(sql, startDate, endDate);
@@ -378,6 +381,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		return arppu;
 	}
 	
+	//查询所有付费金额 --表格
 	public List<List<Object>> queryAllPaymentMoney(List<String> categories, String icons, String startDate, String endDate){
 		List<Integer> day = queryDayPaymentMoney(categories,icons,startDate,endDate);
 		List<Integer> week = Arrays.asList(0,0,0,0,0,0,0,0,0,0,0,0);
@@ -394,6 +398,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		return data;
 	}
 	
+	//查询所有付费次数 --表格
 	public List<List<Object>> queryAllPaymentTimes(List<String> categories, String icons, String startDate, String endDate){
 		List<Integer> day = queryDayPaymentTimes(categories,icons,startDate,endDate);
 		List<Integer> week = Arrays.asList(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
@@ -409,6 +414,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		}
 		return data;
 	}
+	//查询ARPU --表格
 	public List<List<Object>> queryArpu(List<String> categories, String icons, String startDate, String endDate){
 		List<Double> queryData = queryDayARPU(categories,icons,startDate,endDate);
 		List<List<Object>> data = new ArrayList<List<Object>>();
@@ -420,6 +426,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		}
 		return data;
 	}
+	//查询ARPPU --表格
 	public List<List<Object>> queryArppu(List<String> categories, String icons, String startDate, String endDate){
 		List<Double> queryData = queryDayARPU(categories,icons,startDate,endDate);
 		List<List<Object>> data = new ArrayList<List<Object>>();
@@ -432,14 +439,15 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		return data;
 	}
 	
+	//查询地区收入
 	public List<LogCharge> queryAreaRevenue(String icons, String startDate, String endDate) {
 		String sql = "select province,sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by province";
 		List<LogCharge> logCharge = LogCharge.dao.find(sql,startDate,endDate);
 		return logCharge;
 	}
-	
+	//查询地区日均ARPU  --先load付费情况,再load 活跃人数   日ARPU = 当日充值总额度/当日活跃玩家数量
 	public Map<String, Object> queryAreaARPU(String icons, String startDate, String endDate) {
-		String rSql = "select C.province,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by date,C.province;";
+		String rSql = "select C.province,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by date,C.province";
 		String aSql = "select B.province,DATE_FORMAT(A.login_time,'%Y-%m-%d')date,count(*)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d') between ? and ? and B.os in (" + icons +") group by B.province,date;";
 		List<LogCharge> logCharge = LogCharge.dao.find(rSql, startDate, endDate);
 		List<Login> login = Login.dao.find(aSql, startDate, endDate);
@@ -450,7 +458,12 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 			String area = lc.getStr("province");
 			String date = lc.getStr("date");
 			double revenue = lc.getDouble("revenue");
-			Map<String, AreaARPU> subMap = new HashMap<String, AreaARPU>();
+			Map<String, AreaARPU> subMap;
+			if(sort.containsKey(area)){
+				subMap = sort.get(area);
+			}else{
+				subMap = new HashMap<String, AreaARPU>();
+			}
 			AreaARPU aA = new AreaARPU(revenue);
 			subMap.put(date, aA);
 			sort.put(area, subMap);
@@ -460,10 +473,14 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 			String area = l.getStr("province");
 			String date = l.getStr("date");
 			long count = l.getLong("count");
+			if(!sort.containsKey(area)){
+				continue;
+			}
 			Map<String,AreaARPU> subMap = sort.get(area);
-			if(subMap==null)continue;
+			if(!subMap.containsKey(date)){
+				continue;
+			}
 			AreaARPU aA = subMap.get(date);
-			if(aA==null)continue;
 			aA.setCount(count);
 		}
 		Map<String, Double> avgArpu = dealAreaARPU(sort);

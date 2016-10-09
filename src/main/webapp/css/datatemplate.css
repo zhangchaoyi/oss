@@ -934,8 +934,10 @@ div.nav-tab.paid-analyze-arp-tab > ul {
 }
 div.nav-tab.paid-detail-subtab {
     margin-top: 30px;
+    z-index:10;
 }
 div.nav-tab.paid-detail-consumepackage {
     margin-top: 30px;
+    z-index:10;
     display:none;   
 }
