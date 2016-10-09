@@ -118,12 +118,16 @@ function dealTableData(data) {
     var type = data.type;
     var categories;
     var addPlayers;
+    var activeDevice;
 
     for (var key in data.category) {
         categories = data.category[key];
     }
     for (var key in data.addPlayer){
         addPlayers = data.addPlayer[key];
+    }
+    for (var key in data.activeDevice){
+        activeDevice = data.activeDevice[key];
     }
     var serie = data.data;
     var dataArray = [];
@@ -132,6 +136,7 @@ function dealTableData(data) {
         var item = [];
         item.push(categories[i]);
         item.push(addPlayers[i]);
+        item.push(activeDevice[i]);
         for (var j = 0; j < type.length; j++) {
             item.push(serie[type[j]][i] + '%');
         }
@@ -153,11 +158,15 @@ function appendTableHeader(data) {
     var type = data.type;
     var category = data.category;
     var addPlayer = data.addPlayer;
+    var activeDevice = data.activeDevice;
     var txt = "";
     for (var key in category) {
         txt = "<th><span>" + key + "</span></th>";
     }
     for (var key in addPlayer) {
+        txt = txt + "<th><span>" + key + "</span></th>";
+    }
+    for (var key in activeDevice) {
         txt = txt + "<th><span>" + key + "</span></th>";
     }
 

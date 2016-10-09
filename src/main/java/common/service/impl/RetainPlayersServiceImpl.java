@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import common.model.DeviceInfo;
 import common.model.RetainEquipment;
 import common.model.RetainUser;
 import common.service.RetainPlayersService;
@@ -15,7 +16,9 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 	public Map<String, Object> queryRetainUser(List<String> categories, String icons, String startDate, String endDate) {
 		Map<String, Object> data = new HashMap<String, Object>();
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(add_user) add_user,sum(next_day_retain) next_day_retain,sum(seven_day_retain)seven_day_retain,sum(month_retain)month_retain from retain_user where date between ? and ? and os in (" + icons + ") group by date";
+		String eSql = "select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(*) count from device_info where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and os in (" + icons + ") group by date";
 		List<RetainUser> retainUser = RetainUser.dao.find(sql, startDate, endDate);
+		List<DeviceInfo> deviceInfo = DeviceInfo.dao.find(eSql, startDate, endDate);
 		//Map<Date,Map<type,value>>
 		Map<String, Map<String, Object>> sort = new TreeMap<String, Map<String, Object>>();
 		//initial in case NullPointer
@@ -25,6 +28,7 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 			subMap.put("nextDayRetain", 0D);
 			subMap.put("sevenDayRetain", 0D);
 			subMap.put("monthRetain", 0D);
+			subMap.put("activeDevice", 0L);
 			sort.put(category, subMap);
 		}
 		
@@ -61,6 +65,10 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 			subMap.put("monthRetain", mRRate);		
 		}
 
+		for(DeviceInfo di : deviceInfo){
+			Map<String, Object> subMap = sort.get(di.getStr("date"));
+			subMap.put("activeDevice", di.getLong("count"));
+		}	
 		double nDRRateAvg = 0.0;
 		double sDRRateAvg = 0.0;
 		double mRRateAvg = 0.0;
@@ -78,6 +86,7 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 		List<Double> nDRData = new ArrayList<Double>();
 		List<Double> sDRData = new ArrayList<Double>();
 		List<Double> mRData = new ArrayList<Double>();
+		List<Long> aDData = new ArrayList<Long>();
 		for(Map.Entry<String, Map<String, Object>> entry : sort.entrySet()) {
 			for(Map.Entry<String, Object> subEntry : entry.getValue().entrySet()){
 				switch(subEntry.getKey()){
@@ -97,6 +106,10 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 						mRData.add((Double)subEntry.getValue());
 						break;
 					}
+					case "activeDevice":{
+						aDData.add((Long) subEntry.getValue());
+						break;
+					}
 				}
 			}
 		}
@@ -105,6 +118,7 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 		data.put("nDR", nDRData);
 		data.put("sDR", sDRData);
 		data.put("mR", mRData);
+		data.put("activeDevice", aDData);
 		data.put("nDRRateAvg", nDRRateAvg);
 		data.put("sDRRateAvg", sDRRateAvg);
 		data.put("mRRateAvg", mRRateAvg);

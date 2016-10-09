@@ -21,8 +21,8 @@ import common.service.impl.RetainPlayersServiceImpl;
 import common.utils.DateUtils;
 import common.utils.StringUtils;
 
-//@Clear(AuthInterceptor.class)
-@Before(AuthInterceptor.class)
+@Clear(AuthInterceptor.class)
+//@Before(AuthInterceptor.class)
 public class RetainController extends Controller{
 	private RetainPlayersService retainPlayersService = new RetainPlayersServiceImpl();
 	
@@ -57,6 +57,7 @@ public class RetainController extends Controller{
 		
 		Map<String, List<String>> category = new HashMap<String, List<String>>();
 		Map<String, Object> addPlayer = new HashMap<String, Object>();
+		Map<String, Object> activeDevice = new HashMap<String, Object>();
 
 		//保存chart中数据
 		Map<String, Object> seriesMap = new LinkedHashMap<String, Object>();
@@ -68,10 +69,12 @@ public class RetainController extends Controller{
 		
 		category.put("日期", categories);
 		addPlayer.put("新增玩家", queryData.get("add"));
+		activeDevice.put("激活设备", queryData.get("activeDevice"));
 		
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("addPlayer", addPlayer);
+		data.put("activeDevice", activeDevice);
 		data.put("data", seriesMap);
 		data.put("nDRRateAvg", queryData.get("nDRRateAvg"));
 		data.put("sDRRateAvg", queryData.get("sDRRateAvg"));
