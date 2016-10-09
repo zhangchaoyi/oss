@@ -1,16 +1,12 @@
 package common.controllers.payment;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.swing.event.ListSelectionEvent;
 
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
@@ -26,8 +22,8 @@ import common.service.impl.PaymentDataServiceImpl;
 import common.utils.DateUtils;
 import common.utils.StringUtils;
 
-@Clear(AuthInterceptor.class)
-//@Before(AuthInterceptor.class)
+//@Clear(AuthInterceptor.class)
+@Before(AuthInterceptor.class)
 public class PaymentDataController extends Controller{
 	private PaymentDataService paymentDataService = new PaymentDataServiceImpl();
 	
