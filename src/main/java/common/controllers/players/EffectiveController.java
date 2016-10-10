@@ -12,6 +12,11 @@ import com.jfinal.ext.interceptor.POST;
 import com.jfinal.ext.interceptor.GET;
 import common.interceptor.AuthInterceptor;
 
+/**
+ * 目前有效玩家页为假数据
+ * @author chris
+ *
+ */
 //@Clear(AuthInterceptor.class)
 @Before(AuthInterceptor.class)
 public class EffectiveController extends Controller {

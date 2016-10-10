@@ -11,10 +11,13 @@ import common.model.LogCharge;
 import common.model.Login;
 import common.model.Logout;
 import common.service.DashboardService;
-/* T=Total  Y=Yesterday  N=Nowadays
+/**
+ * 查询dashboard 页 --数据不分终端
+ *  T=Total  Y=Yesterday  N=Nowadays
  * eT=equipmentTotal  eY=equipmentYesterday  p=players  aP=activePlayers  pP=paidPlayers  pT=paidTimes  r=revenue  lT=loginTimes lP=loginPeriod
  * aGT=averageGameTimes  aGP=averageGamePeriod 
  * D=device GT=gameTimes  
+ * @author chris
  */
 public class DashboardServiceImpl implements DashboardService{
 	public Map<String, String>queryDashboardData(){

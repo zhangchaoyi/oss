@@ -15,8 +15,13 @@ import common.model.LogCharge;
 import common.model.Login;
 import common.service.ActivePlayersService;
 
+/**
+ * 查询活跃玩家页数据
+ * @author chris
+ *
+ */
 public class ActivePlayersServiceImpl implements ActivePlayersService {
-
+	//dau
 	public List<Long> queryDau(List<String> categories, String icons, String startDate, String endDate) {
 		List<Long> data = new ArrayList<Long>();
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d') date, sum(dau)dau from active_user where date between ? and ? and os in ("
@@ -33,7 +38,8 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		data.addAll(sort.values());
 		return data;
 	}
-
+	
+	// 付费 / 非付费
 	public Map<String, List<Long>> queryPaidInActiveUser(List<String> categories, String icons, String startDate, String endDate){
 		Map<String, List<Long>> data = new HashMap<String, List<Long>>();
 		String sql = "select DATE_FORMAT(E.date,'%Y-%m-%d') date,sum(case when F.account is not null then 1 else 0 end)paid,sum(case when F.account is null then 1 else 0 end)notpaid from(select A.date,A.account from (select distinct account,date from login where login_time >= ? and login_time <= ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in("+ icons +")) E left join (select distinct account from log_charge) F on E.account=F.account group by DATE_FORMAT(E.date,'%Y-%m-%d')";
@@ -77,7 +83,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		data.put("notpaid", notpaid);
 		return data;
 	}
-
+	// dau | wau | mau
 	public Map<String, Object> queryActivePlayersInfo(List<String> categories, String icons, String startDate, String endDate) {
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d') date, sum(dau) dau, sum(wau) wau, sum(mau) mau from active_user where date between ? and ? and os in (" + icons + ") group by  DATE_FORMAT(date,'%Y-%m-%d')";
 		List<ActiveUser> activeUser = ActiveUser.dao.find(sql, startDate, endDate);
@@ -132,7 +138,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 
 		return data;
 	}
-
+	// dau/mau
 	public List<Double> queryActivePlayersDauMauRate(List<String> categories, String icons, String startDate, String endDate) {
 		List<Double> data = new ArrayList<Double>();
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d') date, sum(dau) dau, sum(mau) mau from active_user where date between ? and ? and os in (" + icons + ") group by  DATE_FORMAT(date,'%Y-%m-%d')";
@@ -159,7 +165,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 
 		return data;
 	}
-
+	//已玩天数
 	public List<Long> queryPlayDays(List<String> playDaysPeriod, String icons, String startDate, String endDate) {
 		List<Long> data = new ArrayList<Long>();
 		String sql = "select count(distinct E.date) count from login E join (select A.account from(select distinct account from login where login_time >= ? and login_time <= ? ) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in(" + icons + ")) F on E.account = F.account where E.login_time <= ? group by E.account";
@@ -211,7 +217,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		}
 		return data;
 	}
-
+	//等级
 	public Map<Integer, Long> queryRank(String icons, String startDate, String endDate) {
 		String sql = "select F.level,count(F.level) count from (select D.account,max(D.level)level from level_up D join(select A.account from (select distinct account from login where login_time >= ? and login_time <= ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ")) E on D.account = E.account group by D.account) F group by F.level";
 		List<LevelUp> rank = LevelUp.dao.find(sql, startDate, endDate);
@@ -229,7 +235,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		}
 		return data;
 	}
-
+	//地区 --省份
 	public Map<String, Object> queryArea(String icons, String startDate, String endDate) {
 		Map<String, Object> data = new HashMap<String, Object>();
 		String sql = "select C.province province,count(C.province) count from create_role A join (select distinct account from login where login_time >= ? and login_time <= ?) B on A.account=B.account join device_info C on A.openudid=C.openudid where C.os in (" + icons + ") group by C.province";
@@ -244,7 +250,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		data.put("area", province);
 		return data;
 	}
-
+	//国家
 	public Map<String, Object> queryCountry(String icons, String startDate, String endDate) {
 		Map<String, Object> data = new HashMap<String, Object>();
 		String sql = "select C.country country,count(C.country) count from create_role A join (select distinct account from login where login_time >= ? and login_time <= ?) B on A.account=B.account join device_info C on A.openudid=C.openudid where C.os in (" + icons + ") group by C.country";
@@ -259,7 +265,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		data.put("country", country);
 		return data;
 	}
-
+	//账户类型
 	public Map<String, Object> queryAccountType(String icons, String startDate, String endDate) {
 		Map<String, Object> data = new HashMap<String, Object>();
 		String sql = "select A.account_type account_type,count(A.account_type)count from create_role A join (select distinct account from login where login_time >= ? and login_time <= ?) B on A.account=B.account join device_info C on A.openudid = C.openudid where C.os in (" + icons + ") group by A.account_type";

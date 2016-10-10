@@ -14,6 +14,11 @@ import common.model.PaymentDetail;
 import common.pojo.AreaARU;
 import common.service.PaymentDataService;
 
+/**
+ * 查询处理付费数据页
+ * @author chris
+ *
+ */
 public class PaymentDataServiceImpl implements PaymentDataService {
 	//计算付费金额
 	public Map<String, Map<String,Object>> queryMoneyPayment(List<String> categories, String startDate, String endDate, String icons){

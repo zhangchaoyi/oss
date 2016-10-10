@@ -12,6 +12,11 @@ import common.model.DeviceInfo;
 import common.model.Logout;
 import common.service.AddPlayersService;
 
+/**
+ * 处理新增玩家页的数据
+ * @author chris
+ *
+ */
 public class AddPlayersServiceImpl implements AddPlayersService {
 	// 整理数据 源数据可能存在缺失 如2016-08-01当天的数据可能返回null,则数据列表长度 和 时间列表长度 不能一一对应
 	public List<Long> queryAddPlayersData(List<String> categories, String icons, String startDate, String endDate) {
@@ -130,7 +135,7 @@ public class AddPlayersServiceImpl implements AddPlayersService {
 		}
 		return data;
 	}
-	
+	//小号分析
 	public List<Long> querySubsidiaryAccount(List<String> accountPeriod, String icons, String startDate, String endDate){
 		List<Long> data = new ArrayList<Long>();
 		String sql = "select accountNum,count(accountNum) equipmentCount from (select B.accountNum from device_info A left join (select count(openudid)accountNum,openudid,min(create_time) create_time from create_role where create_time >= ? and create_time <= ? group by openudid) B on A.openudid = B.openudid where B.openudid is not null and A.os in(" + icons + ")) C group by accountNum;";
@@ -155,21 +160,21 @@ public class AddPlayersServiceImpl implements AddPlayersService {
 		data.addAll(subAccountCollect.values());
 		return data;
 	}
-	
+	//地区 --对应国内省份
 	public List<CreateRole> queryArea(String icons, String startDate, String endDate){
 		String sql = "select B.province province,count(B.province) count from (select openudid from create_role where create_time >= ? and create_time <= ?) A join device_info B on A.openudid = B.openudid where B.os in (" + icons + ") group by B.province";
 		List<CreateRole> area = CreateRole.dao.find(sql, startDate, endDate);
 		
 		return area;
 	}
-	
+	//国家
 	public List<CreateRole> queryCountry(String icons, String startDate, String endDate){
 		String sql = "select B.country country,count(B.country) count from (select openudid from create_role where create_time >= ? and create_time <= ?) A join device_info B on A.openudid = B.openudid where B.os in (" + icons + ") group by B.country;";
 		List<CreateRole> countries = CreateRole.dao.find(sql, startDate, endDate);
 		
 		return countries;
 	}
-	
+	//账户类型
 	public List<CreateRole> queryAccountType(String icons, String startDate, String endDate){
 		String sql = "select A.account_type,count(A.account_type) count from create_role A join device_info B on A.openudid = B.openudid where A.create_time >= ? and A.create_time <= ? and B.os in (" + icons + ") group by A.account_type";
 		List<CreateRole> accountType = CreateRole.dao.find(sql, startDate, endDate);

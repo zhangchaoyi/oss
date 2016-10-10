@@ -16,14 +16,16 @@ import common.model.Logout;
 import common.service.RealtimeService;
 import common.utils.DateUtils;
 
-/*
+/**
+ * 查询实时数据页 --包括上方表格 和 下方echart
+ * 指标说明
  * eT=equipmentToday   aPT=activePlayersToday  pPT=paidPlayersToday  rT=revenueToday        gTT=gameTimesToday
  * nPT=newPlayersToday  oPT=oldPlayersToday    pTT=paidTimesToday    rSum=revenueSum   lGPT=loginGamePeriodToday    
- * 
+ * @author chris
  *
  */
 public class RealtimeServiceImpl implements RealtimeService{
-	
+	//实时查询十个数据,用于动态更新
 	public Map<String, String> queryRealtimeData(String icons){
 		String eSql = "select count(*)count from device_info where DATE_FORMAT(create_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and os in (" + icons + ")";
 		String aPSql = "select count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and B.os in (" + icons + ")";
@@ -69,6 +71,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 		
 		return data;
 	}
+	//查询昨日,七日,三十日过往不变数据
 	public Map<String, String> queryBeforeData(String icons){
 		String eSql = "select count(*)count from device_info where DATE_FORMAT(create_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and os in (" + icons + ")";
 		String aPSql = "select count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and B.os in (" + icons + ")";
@@ -84,7 +87,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 
 		Map<String, String> data = new HashMap<String, String>();
 		int[] day = {1,7,30};
-		
+		//分别处理 昨日 七日 三十日
 		for(int d : day){
 			List<DeviceInfo> e = DeviceInfo.dao.find(eSql, d);
 			List<Login> aP = Login.dao.find(aPSql, d);

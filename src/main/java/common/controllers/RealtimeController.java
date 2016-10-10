@@ -19,6 +19,12 @@ import common.service.RealtimeService;
 import common.service.impl.RealtimeServiceImpl;
 import common.utils.StringUtils;
 
+/**
+ * 实时数据页 --逻辑控制层
+ * 目前实时在线为假数据
+ * @author chris
+ *
+ */
 //@Clear(AuthInterceptor.class)
 @Before(AuthInterceptor.class)
 public class RealtimeController extends Controller {

@@ -5,6 +5,11 @@ import java.util.List;
 import common.model.DeviceInfo;
 import common.service.EquipmentAnalyzeService;
 
+/**
+ * 查询设备分析页数据
+ * @author chris
+ *
+ */
 public class EquipmentAnalyzeServiceImpl implements EquipmentAnalyzeService{
 
 	//新增

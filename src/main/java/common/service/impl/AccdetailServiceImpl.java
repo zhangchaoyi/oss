@@ -11,6 +11,11 @@ import common.model.Login;
 import common.model.Logout;
 import common.service.AccdetailService;
 
+/**
+ * 查询生命轨迹页
+ * @author chris
+ *
+ */
 public class AccdetailServiceImpl implements AccdetailService{
 	public Map<String, Object> queryAccdetail(String accountId) {
 		Map<String, Object> data = new HashMap<String, Object>();

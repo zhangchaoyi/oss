@@ -127,7 +127,7 @@ function dealTableData(data) {
         var item = [];
         item.push(categories[i]);
         for(var key in table){
-            if(key=='addEquipment'){
+            if(key=='addEquipment' || key=='activeDevice'){
                 item.push(table[key][i]);
                 continue;
             }
@@ -143,11 +143,11 @@ function appendTableHeader(data) {
     var header = data.header;
     var txt="";
     for(var i=0;i<header.length;i++){
-        if(i<2){
+        if(i<3){
             txt = txt + "<th rowspan=2><span>" + header[i] + "</span></th>"
             continue;
         }
-        if(i==2){
+        if(i==3){
             txt = txt + "<th colspan=9 class='center thead'><span>" + header[i] + "</span></th></tr><tr>"
             continue;
         }
@@ -161,7 +161,7 @@ function appendTableHeader(data) {
     }
     $("#data-table-equipment-retain").append("<thead><tr>" + txt + "</tr></thead>");
 }
-
+//默认选择前七天,在留存统计中 选择前14天
 function initTimeSelector(){
        var startDate = getFormatDate(13);
        var endDate = getFormatDate(0);

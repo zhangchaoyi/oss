@@ -113,12 +113,13 @@ function configTable(data) {
         }
     });
 }
-
+//处理表格对应的列数据
 function dealTableData(data) {
     var type = data.type;
     var categories;
     var addPlayers;
     var activeDevice;
+    var addDevice;
 
     for (var key in data.category) {
         categories = data.category[key];
@@ -129,6 +130,9 @@ function dealTableData(data) {
     for (var key in data.activeDevice){
         activeDevice = data.activeDevice[key];
     }
+    for(var key in data.addDevice){
+        addDevice = data.addDevice[key];
+    }
     var serie = data.data;
     var dataArray = [];
 
@@ -137,6 +141,7 @@ function dealTableData(data) {
         item.push(categories[i]);
         item.push(addPlayers[i]);
         item.push(activeDevice[i]);
+        item.push(addDevice[i]);
         for (var j = 0; j < type.length; j++) {
             item.push(serie[type[j]][i] + '%');
         }
@@ -153,23 +158,31 @@ function showPlayerNote(data){
     $("#sR").text(sDRRateAvg + '%');
     $("#mR").text(mRRateAvg + '%');
 }
-
+//处理表格对应的 头列
 function appendTableHeader(data) {
     var type = data.type;
     var category = data.category;
     var addPlayer = data.addPlayer;
     var activeDevice = data.activeDevice;
+    var addDevice = data.addDevice;
     var txt = "";
+    //表头 时间
     for (var key in category) {
         txt = "<th><span>" + key + "</span></th>";
     }
+    //表头 新增玩家
     for (var key in addPlayer) {
         txt = txt + "<th><span>" + key + "</span></th>";
     }
+    //表头 激活设备
     for (var key in activeDevice) {
         txt = txt + "<th><span>" + key + "</span></th>";
     }
-
+    //表头 新增设备
+    for (var key in addDevice) {
+        txt = txt + "<th><span>" + key + "</span></th>";
+    }
+    //表头 留存
     for (var i = 0; i < type.length; i++) {
         txt = txt + "<th><span>" + type[i] + "</span></th>"
     }

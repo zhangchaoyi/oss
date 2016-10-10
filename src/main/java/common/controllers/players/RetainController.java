@@ -21,8 +21,13 @@ import common.service.impl.RetainPlayersServiceImpl;
 import common.utils.DateUtils;
 import common.utils.StringUtils;
 
-@Clear(AuthInterceptor.class)
-//@Before(AuthInterceptor.class)
+/**
+ * 处理留存用户和留存设备,逻辑控制层
+ * 自定义留存使用假数据
+ * @author chris
+ */
+//@Clear(AuthInterceptor.class)
+@Before(AuthInterceptor.class)
 public class RetainController extends Controller{
 	private RetainPlayersService retainPlayersService = new RetainPlayersServiceImpl();
 	
@@ -58,6 +63,7 @@ public class RetainController extends Controller{
 		Map<String, List<String>> category = new HashMap<String, List<String>>();
 		Map<String, Object> addPlayer = new HashMap<String, Object>();
 		Map<String, Object> activeDevice = new HashMap<String, Object>();
+		Map<String, Object> addDevice = new HashMap<String, Object>();
 
 		//保存chart中数据
 		Map<String, Object> seriesMap = new LinkedHashMap<String, Object>();
@@ -70,11 +76,13 @@ public class RetainController extends Controller{
 		category.put("日期", categories);
 		addPlayer.put("新增玩家", queryData.get("add"));
 		activeDevice.put("激活设备", queryData.get("activeDevice"));
+		addDevice.put("新增设备", queryData.get("addDevice"));
 		
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("addPlayer", addPlayer);
 		data.put("activeDevice", activeDevice);
+		data.put("addDevice", addDevice);
 		data.put("data", seriesMap);
 		data.put("nDRRateAvg", queryData.get("nDRRateAvg"));
 		data.put("sDRRateAvg", queryData.get("sDRRateAvg"));
@@ -152,13 +160,14 @@ public class RetainController extends Controller{
 		List<String> tableHeader = new LinkedList<String>();
 		Map<String, Object> tableData = new LinkedHashMap<String, Object>();
 		
-		tableHeader.addAll(Arrays.asList("首次使用日", "设备数", "第N天后 保留设备"));
+		tableHeader.addAll(Arrays.asList("首次使用日", "激活设备", "新增设备", "第N天后 保留设备"));
 		for(int i=1; i<8; i++){
 			tableHeader.add("+"+ i + "日");
 		}
 		tableHeader.add("+14"+"日");
 		tableHeader.add("+30"+"日");
 		
+		tableData.put("activeDevice", queryData.get("activeDevice"));
 		tableData.put("addEquipment", queryData.get("addEquipment"));
 		tableData.put("fD", queryData.get("fD"));
 		tableData.put("sD", queryData.get("sD"));
@@ -169,7 +178,6 @@ public class RetainController extends Controller{
 		tableData.put("sevenD", queryData.get("sevenD"));
 		tableData.put("ftD", queryData.get("ftD"));
 		tableData.put("ttD", queryData.get("ttD"));
-		
 		
 		Set<String> type = seriesMap.keySet();
 		category.put("日期", categories);

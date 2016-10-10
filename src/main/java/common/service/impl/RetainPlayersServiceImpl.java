@@ -12,13 +12,21 @@ import common.model.RetainEquipment;
 import common.model.RetainUser;
 import common.service.RetainPlayersService;
 
+/**
+ * 查询和处理留存用户和留存设备的数据
+ * @author chris
+ *
+ */
 public class RetainPlayersServiceImpl implements RetainPlayersService{
 	public Map<String, Object> queryRetainUser(List<String> categories, String icons, String startDate, String endDate) {
 		Map<String, Object> data = new HashMap<String, Object>();
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(add_user) add_user,sum(next_day_retain) next_day_retain,sum(seven_day_retain)seven_day_retain,sum(month_retain)month_retain from retain_user where date between ? and ? and os in (" + icons + ") group by date";
 		String eSql = "select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(*) count from device_info where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and os in (" + icons + ") group by date";
+		String aSql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(add_equipment)add_equipment from retain_equipment where date between ? and ? and os in (" + icons + ") group by date";
 		List<RetainUser> retainUser = RetainUser.dao.find(sql, startDate, endDate);
-		List<DeviceInfo> deviceInfo = DeviceInfo.dao.find(eSql, startDate, endDate);
+		List<DeviceInfo> activeDevice = DeviceInfo.dao.find(eSql, startDate, endDate);
+		List<RetainEquipment> addDevice = RetainEquipment.dao.find(aSql, startDate, endDate);
+		
 		//Map<Date,Map<type,value>>
 		Map<String, Map<String, Object>> sort = new TreeMap<String, Map<String, Object>>();
 		//initial in case NullPointer
@@ -31,7 +39,7 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 			subMap.put("activeDevice", 0L);
 			sort.put(category, subMap);
 		}
-		
+		//载入留存用户数据并计算留存率
 		int nDRSum=0;
 		int sDRSum=0;
 		int mRSum=0;
@@ -62,13 +70,24 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 			subMap.put("addUser", (long)add);
 			subMap.put("nextDayRetain", nDRRate);
 			subMap.put("sevenDayRetain", sDRRate);
-			subMap.put("monthRetain", mRRate);		
+			subMap.put("monthRetain", mRRate);
+			sort.put(date, subMap);
 		}
-
-		for(DeviceInfo di : deviceInfo){
-			Map<String, Object> subMap = sort.get(di.getStr("date"));
+		//计算激活设备
+		for(DeviceInfo di : activeDevice){
+			String date = di.getStr("date");
+			Map<String, Object> subMap = sort.get(date);
 			subMap.put("activeDevice", di.getLong("count"));
-		}	
+			sort.put(date, subMap);
+		}
+		//计算新增设备
+		for(RetainEquipment re : addDevice) {
+			String date = re.getStr("date");
+			Map<String, Object> subMap = sort.get(date);
+			subMap.put("addDevice", re.getBigDecimal("add_equipment").longValue());
+			sort.put(date, subMap);
+		}
+		//计算留存用户平均值
 		double nDRRateAvg = 0.0;
 		double sDRRateAvg = 0.0;
 		double mRRateAvg = 0.0;
@@ -87,6 +106,7 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 		List<Double> sDRData = new ArrayList<Double>();
 		List<Double> mRData = new ArrayList<Double>();
 		List<Long> aDData = new ArrayList<Long>();
+		List<Long> addDData = new ArrayList<Long>();
 		for(Map.Entry<String, Map<String, Object>> entry : sort.entrySet()) {
 			for(Map.Entry<String, Object> subEntry : entry.getValue().entrySet()){
 				switch(subEntry.getKey()){
@@ -110,6 +130,9 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 						aDData.add((Long) subEntry.getValue());
 						break;
 					}
+					case "addDevice":{
+						addDData.add((Long) subEntry.getValue());
+					}
 				}
 			}
 		}
@@ -119,6 +142,7 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 		data.put("sDR", sDRData);
 		data.put("mR", mRData);
 		data.put("activeDevice", aDData);
+		data.put("addDevice", addDData);
 		data.put("nDRRateAvg", nDRRateAvg);
 		data.put("sDRRateAvg", sDRRateAvg);
 		data.put("mRRateAvg", mRRateAvg);
@@ -128,12 +152,16 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 	public Map<String, Object> queryRetainEquipment(List<String> categories, String icons, String startDate, String endDate){
 		Map<String, Object> data = new HashMap<String, Object>();
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(add_equipment)add_equipment,sum(first_day)first_day,sum(second_day)second_day,sum(third_day)third_day,sum(forth_day)forth_day,sum(fifth_day)fifth_day,sum(sixth_day)sixth_day,sum(seven_day)seven_day,sum(fourteen_day)fourteen_day,sum(thirty_day)thirty_day from retain_equipment where date between ? and ? and os in (" + icons + ") group by date";
+		String eSql = "select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(*) count from device_info where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and os in (" + icons + ") group by date";
 		List<RetainEquipment> retainEquipment = RetainEquipment.dao.find(sql,startDate,endDate);
+		List<DeviceInfo> activeDevice = DeviceInfo.dao.find(eSql, startDate, endDate);
 		
+		//Map<Date, Map<type,value>>
 		Map<String, Map<String, Object>> sort = new TreeMap<String, Map<String, Object>>();
 		for (String category : categories) {
 			Map<String, Object> subMap = new HashMap<String, Object>();
 			subMap.put("addEquipment", 0L);
+			subMap.put("activeDevice", 0L);;
 			subMap.put("fD", 0D);
 			subMap.put("sD", 0D);
 			subMap.put("tD", 0D);
@@ -195,9 +223,16 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 			subMap.put("sevenD", sevenDRate);
 			subMap.put("ftD", ftDRate);
 			subMap.put("ttD", ttDRate);
+			sort.put(date, subMap);
 		}
-		
+		for(DeviceInfo di : activeDevice) {
+			String date = di.getStr("date");
+			Map<String, Object> subMap = sort.get(date);
+			subMap.put("activeDevice", di.getLong("count"));
+			sort.put(date, subMap);
+		}
 		List<Long> addEquipmentData = new ArrayList<Long>();
+		List<Long> activeDeviceData = new ArrayList<Long>();
 		List<Double> fDData = new ArrayList<Double>();
 		List<Double> sDData = new ArrayList<Double>();
 		List<Double> tDData = new ArrayList<Double>();
@@ -214,6 +249,10 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 				switch(subEntry.getKey()){
 					case "addEquipment":{
 						addEquipmentData.add((Long)subEntry.getValue());
+						break;
+					}
+					case "activeDevice":{
+						activeDeviceData.add((Long)subEntry.getValue());
 						break;
 					}
 					case "fD":{
@@ -258,6 +297,7 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 		}
 		
 		data.put("addEquipment", addEquipmentData);
+		data.put("activeDevice", activeDeviceData);
 		data.put("fD", fDData);
 		data.put("sD", sDData);
 		data.put("tD", tDData);
