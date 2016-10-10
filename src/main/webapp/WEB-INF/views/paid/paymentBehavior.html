@@ -261,10 +261,10 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              设备激活:
+              付费金额(等级):
              </dt> 
              <dd>
-              统计所选时期内，每日新增的玩家安装游戏客户端，并运行游戏的可连接网络设备的数量，每台设备只计算一次。
+              统计所选时期内，玩家所处等级进行充值时，充值金额和等级对应分布情况。
              </dd> 
             </dl> 
            </div> 
@@ -272,10 +272,10 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              新增账户:
+              付费次数(等级)：
              </dt> 
              <dd>
-              统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家账户数量。
+              统计所选时期内，玩家所处等级付费总次数与等级对应分布。
              </dd> 
             </dl> 
            </div> 
@@ -283,10 +283,10 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              新增设备:
+              首充游戏时间:
              </dt> 
              <dd>
-              统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家设备数量，每台设备只计算一次。
+              统计所选时期内，玩家从注册游戏开始第一次有成功充值行为时，累计进行的游戏时间区间分布。
              </dd> 
             </dl> 
            </div> 
@@ -294,10 +294,10 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              玩家转化率:
+              二充到首充游戏时间：
              </dt> 
              <dd>
-               统计所选时期内，每日玩家激活游戏后，进行了自动或者手动注册有ID信息或者账户信息的玩家设备数量，即当日激活并注册的设备占比，如激活游戏后不在当日进行注册则不计算。
+               统计所选时期内，玩家第二次成功充值距离第一次成功充值时，累计进行的游戏时间区间分布。
              </dd> 
             </dl> 
            </div> 
@@ -305,10 +305,10 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              首次游戏时长:
+              三充到二充游戏时间：
              </dt> 
              <dd>
-               统计所选时期内，新增玩家首次进行游戏的游戏时间区间分布。
+               统计所选时期内，玩家第三次成功充值距离第二次成功充值时，累计进行的游戏时间区间分布。
              </dd> 
             </dl> 
            </div> 
@@ -316,10 +316,10 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              小号分析:
+              首付游戏天数：
              </dt> 
              <dd>
-               统计所选时期内，新增设备上存在多个新增玩家游戏账号的数量情况。
+              统计所选时期内成功登陆游戏的玩家中，首次付费时累计进行游戏天数区间的玩家数量分布。
              </dd> 
             </dl> 
            </div> 
@@ -327,10 +327,10 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              新增玩家地区/国家:
+              首付累计游戏时长：
              </dt> 
              <dd>
-               统计所选时期内，新增玩家注册信息中地区和国家分布情况。
+              统计所选时期内成功登陆游戏的玩家中，从新增日开始到首次付费时，累计进行游戏时长区间的玩家数量分布。
              </dd> 
             </dl> 
            </div> 
@@ -338,10 +338,10 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              新增玩家性别:
+              玩家首付等级：
              </dt> 
              <dd>
-               统计所选时期内，新增玩家注册信息中性别分布情况。
+              统计所选时期内登陆游戏的玩家中，首次付费时所处等级区间的玩家数量分布。
              </dd> 
             </dl> 
            </div> 
@@ -349,21 +349,10 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              新增玩家年龄:
+              玩家首付金额：
              </dt> 
              <dd>
-               统计所选时期内，新增玩家注册信息中年龄分布情况。
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              新增玩家账户类型:
-             </dt> 
-             <dd>
-               统计所选时期内，新增玩家所选注册账户类型分布情况。
+               统计所选时期内登陆游戏的玩家中，首次成功充值金额区间的玩家数量分布。
              </dd> 
             </dl> 
            </div> 
@@ -379,48 +368,61 @@
      <div class="row" id="data-first"> 
       <div class="panel panel-default"> 
        <div class="panel-heading"> 
-        <span class="data-first-panel-heading">新增玩家</span>
+        <span class="data-first-panel-heading">付费等级</span>
         <button class="btn btn-2 btn-2c" id="btn-first-data-panel-switch">关闭</button> 
        </div> 
        <div class="panel-body"> 
-        <ul class="nav nav-tabs add-players"> 
-         <li class="active"> <a data-toggle="tab" data-info="new-activate">新增与激活</a></li> 
-         <li class=""> <a data-toggle="tab" data-info="players-change-rate">玩家转化率</a></li> 
+        <ul class="nav nav-tabs payment-tab"> 
+         <li class="active"> <a data-toggle="tab" data-info="rank-paymentBehavior-money">付费金额</a></li> 
+         <li class=""> <a data-toggle="tab" data-info="rank-paymentBehavior-times">付费次数</a></li>
         </ul> 
         <div class="tab-content">
-          <div id="newPlayer-note" class="data-results">
-            <span>
-              <em>SUM</em>
-              激活|玩家|设备:
-              <font class="sum-note">48 | 0 | 50 </font>
-            </span>
-            <span>
-              <em>AVG</em>
-              激活|玩家|设备:
-              <font class="avg-note">7 | 0 | 7 </font>
-            </span>
-          </div> 
-          <div id="add-players-chart" style="width:100%;height:400px;display:inline;float:left"></div> 
+          <div id="rank-paymentBehavior-chart" style="width:100%;height:400px;display:inline;float:left"></div> 
           <div class="table-zoom-first"> 
-           <table id="data-table-add-players" class="hover stripe row-border"></table> 
+           <table id="data-table-rank-paymentBehavior" class="hover stripe row-border"></table> 
+          </div>              
+        </div> 
+       </div> 
+      </div> 
+     </div>
+     <div class="row" id="data-third"> 
+      <div class="panel panel-default"> 
+       <div class="panel-heading"> 
+        <span class="data-first-panel-heading">付费间隔</span>
+        <button class="btn btn-2 btn-2c" id="btn-third-data-panel-switch">关闭</button> 
+       </div> 
+       <div class="panel-body"> 
+        <ul class="nav nav-tabs analyze-payment-tab"> 
+         <li class="active"> <a data-toggle="tab" data-info="fp-period">首充游戏时间分布</a></li> 
+         <li class=""> <a data-toggle="tab" data-info="stfp-period">二充到首充时间分布</a></li>
+         <li class=""> <a data-toggle="tab" data-info="ttsp-period">三充到二充时间分布</a></li>
+        </ul>
+        <div class="tab-content">
+          <div id="period-paymentBehavior-chart" style="width:100%;height:400px;display:inline;float:left"></div> 
+          <div class="table-zoom-third"> 
+           <table id="data-table-period-paymentBehavior" class="hover stripe row-border"></table> 
           </div>              
         </div> 
        </div> 
       </div> 
      </div>
      <div class="row" id="data-second">
-        <ul class="nav nav-tabs add-details"> 
-         <li class="active"> <a data-toggle="tab" data-info="first-game-period">首次游戏时间</a></li> 
-         <li class=""> <a data-toggle="tab" data-info="subsidiary-account-analyze">小号分析</a></li>
-         <li class=""> <a data-toggle="tab" data-info="area">地区</a></li> 
-         <li class=""> <a data-toggle="tab" data-info="country">国家</a></li>
-         <li class=""> <a data-toggle="tab" data-info="account">账户类型</a></li>
+        <ul class="nav nav-tabs paid-details"> 
+         <li class="active"> <a data-toggle="tab" data-info="fp-cycle">玩家首付周期</a></li> 
+         <li class=""> <a data-toggle="tab" data-info="fp-rank">玩家首付等级</a></li>
+         <li class=""> <a data-toggle="tab" data-info="fp-money">玩家首付金额</a></li>
          <button class="btn btn-2 btn-2c" id="btn-gamedetail-switch">关闭</button>  
-        </ul> 
+        </ul>
+        <div class="nav-tab paid-detail-subtab">
+          <ul class="nav nav-pills"> 
+            <li class="active"><a><span data-info="game-days">游戏天数</span></a></li> 
+            <li class=""><a><span data-info="game-period">累计时长</span></a> </li> 
+          </ul> 
+        </div>
         <div class="tab-content">          
-            <div id="add-players-details-chart" style="width:100%;height:400px;display:inline;float:left"></div>
+            <div id="fp-details-chart" style="width:100%;height:400px;display:inline;float:left"></div>
             <div class="table-zoom-second"> 
-             <table id="data-table-add-players-details" class="hover stripe row-border"></table> 
+             <table id="data-table-fp-details" class="hover stripe row-border"></table> 
             </div>                    
         </div>
      </div>
@@ -461,6 +463,6 @@
   <script src="http://oss.koogame.cn/oss/js/dateselector/monthPicker.js?v=0.1"></script> 
   <script src="http://oss.koogame.cn/oss/js/checkbox/icheck.js?v=0.1"></script>
   <script src="http://oss.koogame.cn/oss/js/common.js?v=0.1"></script> 
-  <script src="http://oss.koogame.cn/oss/js/addPlayers.js?v=0.1"></script>
+  <script src="http://oss.koogame.cn/oss/js/paymentBehavior.js?v=0.1"></script>
  </body>
 </html>

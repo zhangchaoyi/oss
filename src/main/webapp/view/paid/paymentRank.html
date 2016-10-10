@@ -4,19 +4,19 @@
   <meta charset="utf-8" /> 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
   <link rel="shortcut icon" type="image/x-icon" href="http://oss.koogame.cn/oss/images/koogame.ico" media="screen" /> 
-  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/dateselector/dateRange.css" /> 
-  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/dateselector/monthPicker.css" /> 
-  <link href="http://oss.koogame.cn/oss/css/bootstrap.css" rel="stylesheet" /> 
-  <link href="http://oss.koogame.cn/oss/css/font-awesome.css" rel="stylesheet" /> 
-  <link href="http://oss.koogame.cn/oss/css/basic.css" rel="stylesheet" /> 
-  <link href="http://oss.koogame.cn/oss/css/custom.css" rel="stylesheet" /> 
-  <link href="http://oss.koogame.cn/oss/css/header.css" rel="stylesheet" /> 
-  <link href="../../css/datatemplate.css" rel="stylesheet" /> 
-  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/default.css" /> 
-  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/component.css" /> 
-  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/animation.css" /> 
-  <link href="http://oss.koogame.cn/oss/css/polaris/polaris.css" rel="stylesheet" /> 
-  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/jquery.dataTables.css" /> 
+  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/dateselector/dateRange.css?v=0.1" /> 
+  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/dateselector/monthPicker.css?v=0.1" /> 
+  <link href="http://oss.koogame.cn/oss/css/bootstrap.css?v=0.1" rel="stylesheet" /> 
+  <link href="http://oss.koogame.cn/oss/css/font-awesome.css?v=0.1" rel="stylesheet" /> 
+  <link href="http://oss.koogame.cn/oss/css/basic.css?v=0.1" rel="stylesheet" /> 
+  <link href="http://oss.koogame.cn/oss/css/custom.css?v=0.1" rel="stylesheet" /> 
+  <link href="http://oss.koogame.cn/oss/css/header.css?v=0.1" rel="stylesheet" /> 
+  <link href="http://oss.koogame.cn/oss/css/datatemplate.css?v=0.1" rel="stylesheet" /> 
+  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/default.css?v=0.1" /> 
+  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/component.css?v=0.1" /> 
+  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/animation.css?v=0.1" /> 
+  <link href="http://oss.koogame.cn/oss/css/polaris/polaris.css?v=0.1" rel="stylesheet" /> 
+  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/jquery.dataTables.css?v=0.1" /> 
   <title>KooGame</title> 
  </head> 
  <body> 
@@ -86,10 +86,10 @@
        </ul> </li> 
       <li> <a href="#"> <i class="fa fa-money "></i>付费分析 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
-        <li> <a href="#"> <i class="fa fa-bar-chart"></i>付费数据</a> </li> 
-        <li> <a href="#"> <i class="fa fa-neuter "></i>付费行为</a> </li> 
-        <li> <a href="#"> <i class="fa fa-key "></i>付费转化</a> </li> 
-        <li> <a href="#"> <i class="fa fa-arrows-v "></i>付费排行</a> </li> 
+        <li> <a href="/oss/payment/data"> <i class="fa fa-bar-chart"></i>付费数据</a> </li> 
+        <li> <a href="/oss/payment/behavior"> <i class="fa fa-neuter "></i>付费行为</a> </li> 
+        <li> <a href="/oss/payment/transform"> <i class="fa fa-key "></i>付费转化</a> </li> 
+        <li> <a href="/oss/payment/rank"> <i class="fa fa-arrows-v "></i>付费排行</a> </li> 
        </ul> </li> 
       <li> <a href="#"> <i class="fa fa-spinner "></i>流失分析</a> </li> 
       <li> <a href="#"> <i class="fa fa-check-square-o "></i>在线分析 <span class="fa arrow"></span></a> 
@@ -261,260 +261,16 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              付费金额:
+              充值玩家:
              </dt> 
              <dd>
-              统计所选时期内，每日玩家成功充值的金额总值。
+              统计所选时期内，充值额度排名占同时期充值金额前10%的玩家排名，详细展示其新增日期、首充日期、充值金额（截至统计日期为止总充值额度）、付费次数、在线天数、总游戏时长（游戏内时间）、总游戏次数和所处等级。
              </dd> 
             </dl> 
            </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              付费次数：
-             </dt> 
-             <dd>
-              统计所选时期内，每日玩家成功充值总次数。
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              付费人数:
-             </dt> 
-             <dd>
-              统计所选时期内，每日成功充值的玩家数量，去重。
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              首次付费玩家：
-             </dt> 
-             <dd>
-               统计所选时期内，在当日进行第一次付费的玩家数量以及金额。
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              首日付费玩家：
-             </dt> 
-             <dd>
-               统计所选时期内，在首日新增当天进行付费的玩家数量、金额以及次数。
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              付费金额/次数分布：
-             </dt> 
-             <dd>
-              统计所选时期内,每日/自然周/自然月进行成功充值总金额/总次数区间的玩家数量分布。(注:多天、多周、或多月是区间中玩家数量的累加计算,未去重)
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              ARPU（日）：
-             </dt> 
-             <dd>
-               Average Revenue Per Pay User 每付费用户平均收入，指当天时间内，游戏能从付费玩家身上获取收益的能力。计算公式为：日ARPPU=当日充值总额度/当日付费玩家数量
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              ARPU（月）：
-             </dt> 
-             <dd>
-               计算公式为：月ARPU=当自然月充值总额度/当月活跃玩家数量
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              ARPPU（日）：
-             </dt> 
-             <dd>
-               Average Revenue Per Pay User 每付费用户平均收入，指当天时间内，游戏能从付费玩家身上获取收益的能力。计算公式为：日ARPPU=当日充值总额度/当日付费玩家数量
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              ARPPU（月）：
-             </dt> 
-             <dd>
-               计算公式为：日ARPPU=当自然月充值总额度/当月付费玩家数量
-             </dd> 
-            </dl> 
-           </div>
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              付费方式：
-             </dt> 
-             <dd>
-               统计所选时期内，每日成功充值的各种充值方式。
-             </dd> 
-            </dl> 
-           </div>
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              各地区/国家收入：
-             </dt> 
-             <dd>
-               统计所选时期内，根据玩家所处地区/国家的充值总额度分布。
-             </dd> 
-            </dl> 
-           </div>
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              各地区/国家日均ARPU：
-             </dt> 
-             <dd>
-               统计所选时期内，各地区/国家每日ARPU平均值。
-             </dd> 
-            </dl> 
-           </div>
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              各地区/国家日均ARPPU：
-             </dt> 
-             <dd>
-               统计所选时期内，各地区/国家每日ARPPU平均值。
-             </dd> 
-            </dl> 
-           </div>
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              各渠道收入：
-             </dt> 
-             <dd>
-               统计所选时期内，根据玩家所处渠道的充值总额度分布。
-             </dd> 
-            </dl> 
-           </div>
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              各渠道日均ARPU：
-             </dt> 
-             <dd>
-               统计所选时期内，各渠道每日ARPU平均值。
-             </dd> 
-            </dl> 
-           </div>
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              各渠道日均ARPPU：
-             </dt> 
-             <dd>
-               统计所选时期内，各渠道每日ARPPU平均值。
-             </dd> 
-            </dl> 
-           </div>
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              各性别收入：
-             </dt> 
-             <dd>
-               统计所选时期内，根据玩家注册信息中性别归类充值总额度分布。
-             </dd> 
-            </dl> 
-           </div>
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              各性别日均ARPU：
-             </dt> 
-             <dd>
-               统计所选时期内，各性别玩家每日ARPU平均值。
-             </dd> 
-            </dl> 
-           </div>
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              各性别日均ARPPU：
-             </dt> 
-             <dd>
-               统计所选时期内，各性别玩家每日ARPPU平均值。
-             </dd> 
-            </dl> 
-           </div>
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              各年龄段收入：
-             </dt> 
-             <dd>
-               统计所选时期内，根据玩家注册信息中年龄段归类充值总额度分布。
-             </dd> 
-            </dl> 
-           </div>
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              各年龄日均ARPU：
-             </dt> 
-             <dd>
-               统计所选时期内，各年龄段玩家每日ARPU平均值。
-             </dd> 
-            </dl> 
-           </div>
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              各年龄日均ARPPU：
-             </dt> 
-             <dd>
-               统计所选时期内，各年龄段玩家每日ARPPU平均值。
-             </dd> 
-            </dl> 
-           </div>
           </div> 
          </div> 
         </div> 
-        <button type="button" class="btn btn-default disabled" id="btn-explain-up"> <span class="fa fa-chevron-up" aria-hidden="true"></span> </button> 
-        <button type="button" class="btn btn-default" id="btn-explain-down"> <span class="fa fa-chevron-down" aria-hidden="true"></span> </button> 
        </div> 
       </div> 
      </div> 
@@ -522,99 +278,50 @@
      <div class="row" id="data-first"> 
       <div class="panel panel-default"> 
        <div class="panel-heading"> 
-        <span class="data-first-panel-heading">付费数据</span>
+        <span class="data-first-panel-heading">充值玩家</span>
         <button class="btn btn-2 btn-2c" id="btn-first-data-panel-switch">关闭</button> 
        </div> 
        <div class="panel-body"> 
-        <ul class="nav nav-tabs payment-tab"> 
-         <li class="active"> <a data-toggle="tab" data-info="data-payment-money">付费金额</a></li> 
-         <li class=""> <a data-toggle="tab" data-info="data-payment-people">付费人数</a></li>
-         <li class=""> <a data-toggle="tab" data-info="data-payment-times">付费次数</a></li>
+        <ul class="nav nav-tabs rank-payment-tab"> 
+         <li class="active"> <a data-toggle="tab" data-info="whaleRegion">区服</a></li> 
+         <li class=""> <a data-toggle="tab" data-info="whaleVersion">版本</a></li>
+         <li class=""> <a data-toggle="tab" data-info="whaleChannel">渠道</a></li>
         </ul> 
+        <div class="btn-group btn-rank-payment">
+          <button type="button" class="btn btn-default">全部</button>
+          <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            <span class="caret"></span>
+            <span class="sr-only">Toggle Dropdown</span>
+          </button>
+          <ul class="dropdown-menu" id="rank-menu" role="menu">
+            <li><a href="#">全部</a></li>
+            <li><a href="#">区服1</a></li>
+            <li><a href="#">区服2</a></li>
+            <li><a href="#">区服3</a></li>
+          </ul>
+        </div>
         <div class="tab-content">
-          <div id="payment-note" class="data-results">
-            <span>
-              SUM活跃 | 首次付费 | 首日付费:
-              <font class="sum-note">¥200.00 | ¥0.00 | ¥0.00 </font>
-            </span>
-          </div> 
-          <div id="data-payment-chart" style="width:1400px;height:400px;display:inline;float:left"></div> 
           <div class="table-zoom-first"> 
-           <table id="data-table-data-payment" class="hover stripe row-border"></table> 
+           <table id="data-table-rank-paymentBehavior" class="hover stripe row-border">
+             <thead>
+                  <tr role="row">
+                      <th>排名</th>
+                      <th>帐号</th>
+                      <th>新增日期</th>
+                      <th>首付日期</th>
+                      <th>付费金额</th>
+                      <th>付费次数</th>
+                      <th>在线天数</th>
+                      <th>总游戏时长</th>
+                      <th>总游戏次数</th>
+                      <th>等级</th>
+                  </tr>
+             </thead>   
+           </table> 
           </div>              
         </div> 
        </div> 
       </div> 
-     </div>
-     <div class="row" id="data-third"> 
-      <div class="panel panel-default"> 
-       <div class="panel-heading"> 
-        <span class="data-first-panel-heading">付费分析</span>
-        <button class="btn btn-2 btn-2c" id="btn-third-data-panel-switch">关闭</button> 
-       </div> 
-       <div class="panel-body"> 
-        <ul class="nav nav-tabs payment-tab"> 
-         <li class="active"> <a data-toggle="tab" data-info="analyze-payment-money">付费金额</a></li> 
-         <li class=""> <a data-toggle="tab" data-info="analyze-payment-people">付费次数</a></li>
-         <li class=""> <a data-toggle="tab" data-info="analyze-payment-times">ARPU/ARPPU</a></li>
-        </ul>
-        <div class="nav-tab paid-analyze-tab">
-         <ul class="nav nav-pills"> 
-           <li class="active"><a><span>日</span></a></li> 
-           <li class=""><a><span>周</span></a> </li> 
-           <li class=""><a><span>月</span></a> </li> 
-         </ul> 
-        </div>
-        <div class="arpu-block">
-          <div id="pay-note"><span><em>AVG :</em><font>¥0.00</font></span></div>
-          <div class="nav-tab paid-analyze-arp-tab">
-            <ul class="nav nav-pills"> 
-              <li class="active"><a><span>ARPU(日)</span></a></li> 
-              <li class=""><a><span>ARPU(月)</span></a> </li> 
-              <li class=""><a><span>ARPPU(日)</span></a> </li>
-              <li class=""><a><span>ARPPU(月)</span></a> </li> 
-            </ul> 
-          </div>
-        </div> 
-        <div class="tab-content">
-          <div id="analyse-payment-chart" style="width:1400px;height:400px;display:inline;float:left"></div> 
-          <div class="table-zoom-third"> 
-           <table id="data-table-analyze-payment" class="hover stripe row-border"></table> 
-          </div>              
-        </div> 
-       </div> 
-      </div> 
-     </div>
-     <div class="row" id="data-second">
-        <ul class="nav nav-tabs paid-details"> 
-         <li class="active"> <a data-toggle="tab" data-info="area">地区</a></li> 
-         <li class=""> <a data-toggle="tab" data-info="country">国家</a></li>
-         <li class=""> <a data-toggle="tab" data-info="channel">渠道</a></li> 
-         <li class=""> <a data-toggle="tab" data-info="mobileoperator">移动运营商</a></li>
-         <li class=""> <a data-toggle="tab" data-info="paid-way">付费方式</a></li>
-         <li class=""> <a data-toggle="tab" data-info="comsume-package">消费包类型</a></li>
-         <li class=""> <a data-toggle="tab" data-info="currency-type">货币类型</a></li>
-         <button class="btn btn-2 btn-2c" id="btn-gamedetail-switch">关闭</button>  
-        </ul>
-        <div class="nav-tab paid-detail-subtab">
-          <ul class="nav nav-pills"> 
-            <li class="active"><a><span>收入</span></a></li> 
-            <li class=""><a><span>日均ARPU</span></a> </li> 
-            <li class=""><a><span>日均ARPPU</span></a> </li>
-          </ul> 
-        </div>
-        <div class="nav-tab paid-detail-consumepackage">
-          <ul class="nav nav-pills"> 
-            <li class="active"><a><span>收入金额</span></a></li> 
-            <li class=""><a><span>充值人次</span></a> </li> 
-          </ul> 
-        </div> 
-        <div class="tab-content">          
-            <div id="paid-details-chart" style="width:1400px;height:400px;display:inline;float:left"></div>
-            <div class="table-zoom-second"> 
-             <table id="data-table-paid-details" class="hover stripe row-border"></table> 
-            </div>                    
-        </div>
      </div>
      <div class="row"> 
       <div class="alert alert-warning fade in" data-dismiss="alert" id="platform-selected"> 
@@ -639,20 +346,20 @@
    <a target="_blank" href="#/"></a> 
   </div> 
   <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME--> 
-  <script src="http://oss.koogame.cn/oss/js/jquery.min.js"></script> 
-  <script src="http://oss.koogame.cn/oss/js/bootstrap.min.js"></script> 
-  <script src="http://oss.koogame.cn/oss/js/jquery.metisMenu.js"></script> 
-  <script src="http://oss.koogame.cn/oss/js/jquery.dataTables.min.js"></script> 
-  <script src="http://oss.koogame.cn/oss/js/custom.js"></script> 
-  <script src="http://oss.koogame.cn/oss/js/header.js"></script> 
-  <script src="http://oss.koogame.cn/oss/js/button/modernizr.custom.js"></script> 
-  <script src="http://oss.koogame.cn/oss/js/button/classie.js"></script> 
-  <script src="http://oss.koogame.cn/oss/js/echarts.min.js"></script> 
-  <script src="http://oss.koogame.cn/oss/js/filter/jcfilter.min.js"></script> 
-  <script src="http://oss.koogame.cn/oss/js/dateselector/dateRange.js"></script> 
-  <script src="http://oss.koogame.cn/oss/js/dateselector/monthPicker.js"></script> 
-  <script src="http://oss.koogame.cn/oss/js/checkbox/icheck.js"></script>
-  <script src="http://oss.koogame.cn/oss/js/common.js"></script> 
-  <script src="../../js/payment.js"></script>
+  <script src="http://oss.koogame.cn/oss/js/jquery.min.js?v=0.1"></script> 
+  <script src="http://oss.koogame.cn/oss/js/bootstrap.min.js?v=0.1"></script> 
+  <script src="http://oss.koogame.cn/oss/js/jquery.metisMenu.js?v=0.1"></script> 
+  <script src="http://oss.koogame.cn/oss/js/jquery.dataTables.min.js?v=0.1"></script> 
+  <script src="http://oss.koogame.cn/oss/js/custom.js?v=0.1"></script> 
+  <script src="http://oss.koogame.cn/oss/js/header.js?v=0.1"></script> 
+  <script src="http://oss.koogame.cn/oss/js/button/modernizr.custom.js?v=0.1"></script> 
+  <script src="http://oss.koogame.cn/oss/js/button/classie.js?v=0.1"></script> 
+  <script src="http://oss.koogame.cn/oss/js/echarts.min.js?v=0.1"></script> 
+  <script src="http://oss.koogame.cn/oss/js/filter/jcfilter.min.js?v=0.1"></script> 
+  <script src="http://oss.koogame.cn/oss/js/dateselector/dateRange.js?v=0.1"></script> 
+  <script src="http://oss.koogame.cn/oss/js/dateselector/monthPicker.js?v=0.1"></script> 
+  <script src="http://oss.koogame.cn/oss/js/checkbox/icheck.js?v=0.1"></script>
+  <script src="http://oss.koogame.cn/oss/js/common.js?v=0.1"></script> 
+  <script src="http://oss.koogame.cn/oss/js/paymentRank.js?v=0.1"></script>
  </body>
 </html>

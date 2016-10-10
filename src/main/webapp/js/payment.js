@@ -559,6 +559,7 @@ $("ul.nav.nav-tabs.paid-details > li").click(function(){
         case "comsume-package":
         $("div.nav-tab.paid-detail-subtab").hide();
         $("div.nav-tab.paid-detail-consumepackage").show();
+        alert("暂无数据");
         break;
     }
 });
