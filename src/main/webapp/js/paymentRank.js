@@ -1,6 +1,6 @@
 //调整指标说明的高度
 $(function(){
-	$("div#explain-panel").css("height", "inherit");
+	// $("div#explain-panel").css("height", "inherit");
 	configTable(null);
 })
 
