@@ -1,14 +1,17 @@
 var rankChart = echarts.init(document.getElementById('rank-paymentBehavior-chart'));
+var periodChart = echarts.init(document.getElementById('period-paymentBehavior-chart'));
+
 
 $(function(){
     loadData();
 })
 
-function loadData(){
-    loadRankData($("ul.nav.nav-tabs.payment-tab > li.active > a").attr("data-info"));
+function loadData() {
+    loadRankData($("ul.nav.nav-tabs.rank-payment-tab > li.active > a").attr("data-info"));
+    loadPeriodData($("ul.nav.nav-tabs.period-payment-tab > li.actice > a").attr("data-info"));
 }
 
-function loadRankData(tag){
+function loadRankData(tag) {
     $.post("/oss/api/payment/behavior/rank", {
         tag:tag,
         icon:getIcons(),
@@ -18,6 +21,19 @@ function loadRankData(tag){
     function(data, status) {
         configRankChart(data);
         configRankTable(data);
+    });
+}
+
+function loadPeriodData(tag) {
+    $.post("/oss/api/payment/behavior/period", {
+        tag:tag,
+        icon:getIcons(),
+        startDate:$("input#startDate").attr("value"),
+        endDate:$("input#endDate").attr("value")
+    },
+    function(data, status) {
+        configPeriodChart(data);
+        configPeriodTable(data);
     });
 }
 
@@ -99,9 +115,8 @@ function configRankChart(data) {
 }
 
 function configRankTable(data) {
-    appendTableHeader(data.header);
-    var tableData = dealTableData(data);
-    console.log(tableData);
+    appendTableHeader(data);
+    var tableData = dealTableData(data,false);
     $('#data-table-rank-paymentBehavior').dataTable().fnClearTable();  
     $('#data-table-rank-paymentBehavior').dataTable({
         "destroy": true,
@@ -122,24 +137,39 @@ function configRankTable(data) {
     });
 }
 
-function appendTableHeader(header){
+function appendTableHeader(data){
+    var header = data.header;
+    var tableType = data.table;
     var txt = "";
+
+    var tableId = "";
+    switch(tableType){
+        case "rank":
+        tableId = "#data-table-rank-paymentBehavior";
+        break;
+        case "period":
+        tableId = "#data-table-period-paymentBehavior";
+        break;
+        case "":
+        break;
+    }
 
     for (var i = 0; i < header.length; i++) {
         txt = txt + "<th><span>" + header[i] + "</span></th>"
     }
 
-    if ($("table#data-table-rank-paymentBehavior > thead").length != 0) {
-        $("table#data-table-rank-paymentBehavior > thead").empty();
-        $("#data-table-rank-paymentBehavior").prepend("<thead><tr>" + txt + "</tr></thead>");
+    if ($(tableId).children("thead").length != 0) {
+        $(tableId).children("thead").empty();
+        $(tableId).prepend("<thead><tr>" + txt + "</tr></thead>");
         return;
     }
-    $("#data-table-rank-paymentBehavior").append("<thead><tr>" + txt + "</tr></thead>");
+    $(tableId).append("<thead><tr>" + txt + "</tr></thead>");
 }
 
-function dealTableData(data) {
+function dealTableData(data, percent) {
     var type = data.type;
     var categories;
+    var sum = 0;
 
     for (var key in data.category) {
         categories = data.category[key];
@@ -148,16 +178,163 @@ function dealTableData(data) {
     var serie = data.data;
     var dataArray = [];
 
+    if(percent===true){
+        for(var t in serie){
+            for(var k in serie[t]){
+                sum = sum + serie[t][k];
+            }
+        }
+    }
+
     for (var i = 0; i < categories.length; i++) {
         var item = [];
         item.push(categories[i]);
         for (var j = 0; j < type.length; j++) {   
             item.push(serie[type[j]][i]);     
+            if(percent===true){
+                if(sum==0){
+                    item.push('0.00%');
+                    continue;
+                }
+                item.push(((serie[type[j]][i]/sum*100)).toFixed(2) + '%');
+            }
         }
         dataArray.push(item);
     }
     return dataArray;
 }
+
+function configPeriodChart(data) {
+    var recData = data.data;
+    periodChart.clear();
+    periodChart.setOption({
+        tooltip: {
+            trigger: 'axis',
+        },
+        legend: {
+            data: data.type
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                dataView: {
+                    readOnly: false
+                },
+                magicType: {
+                    type: ['line', 'bar']
+                },
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        dataZoom: [{
+            type: 'slider',
+            start: 0,
+            end: 100
+        },
+        {
+            type: 'inside',
+            start: 0,
+            end: 50
+        }],
+        yAxis: {
+            type: 'category',
+            data: function() {
+                for (var key in data.category) {
+                    return data.category[key];
+                }
+            } ()
+        },
+        xAxis: {
+            type: 'value',
+            boundaryGap: [0, 0.01],
+        },
+        series: function() {
+            var serie = [];
+            for (var key in recData) {
+                var item = {
+                    name: key,
+                    type: "bar",
+                    smooth:true,
+                    barWidth:"30%",
+                    itemStyle: {
+                        normal: {
+                            color: 'rgb(87, 139, 187)'
+                        }
+                    },
+                    data: recData[key]
+                }
+                serie.push(item);
+            };
+            return serie;
+        } ()
+
+    });
+}
+
+//自定义dataTable列排序
+jQuery.extend(jQuery.fn.dataTableExt.oSort, {
+            "num-html-pre": function(a) {
+                var time = String(a).split(" ")[1];
+                var num = String(a).split(" ")[0].split("~")[0];
+                if (num == ">100") {
+                    num = 100;
+                }
+                if(num == "<10") {
+                    num = 9;
+                }
+                if (time == "小时") {
+                    num *= 60;
+                }
+                return parseFloat(num);
+            },
+
+            "num-html-asc": function(a, b) {
+                return ((a < b) ? -1 : ((a > b) ? 1 : 0));
+            },
+
+            "num-html-desc": function(a, b) {
+                return ((a < b) ? 1 : ((a > b) ? -1 : 0));
+            }
+});
+
+function configPeriodTable(data) {
+    appendTableHeader(data);
+    var tableData = dealTableData(data,true);
+    $('#data-table-period-paymentBehavior').dataTable().fnClearTable();  
+    $('#data-table-period-paymentBehavior').dataTable({
+        "destroy": true,
+        // retrive:true,
+        "data": tableData,
+        columnDefs: [{
+                type: 'num-html',
+                targets: 0
+        }],
+        "dom": '<"top"f>rt<"left">i',
+        "lengthMenu": [ -1 ],
+        'language': {
+            'emptyTable': '没有数据',
+            'loadingRecords': '加载中...',
+            'processing': '查询中...',
+            'search': '查询:',
+            'lengthMenu': '每页显示 _MENU_ 条记录',
+            'zeroRecords': '没有数据',
+            "sInfo": "(共 _TOTAL_ 条记录)",
+            'infoEmpty': '没有数据',
+            'infoFiltered': '(过滤总件数 _MAX_ 条)'
+        }
+    });
+}
+
 
 //explain up and down button 
 $("#btn-explain-up").click(function(){
@@ -186,8 +363,13 @@ $("#btn-explain-down").click(function(){
 });
 
 //付费等级选择栏
-$("ul.nav.nav-tabs.payment-tab > li").click(function(){
+$("ul.nav.nav-tabs.rank-payment-tab > li").click(function(){
     loadRankData($(this).children("a").attr("data-info"));
+});
+
+//付费间隔选择栏
+$("ul.nav.nav-tabs.period-payment-tab > li").click(function(){
+    loadPeriodData($(this).children("a").attr("data-info"));
 });
 
 //首付选择区
