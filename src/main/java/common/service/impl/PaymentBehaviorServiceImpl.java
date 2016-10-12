@@ -26,7 +26,7 @@ public class PaymentBehaviorServiceImpl implements PaymentBehaviorService{
 		List<Double> revenue = new ArrayList<Double>();
 		
 		for(LogCharge lc : rankMoney) {
-			level.add(lc.getInt("level"));
+			level.add(lc.getInt("level")==null?0:lc.getInt("level"));
 			revenue.add(lc.getDouble("revenue"));
 		}
 		data.put("level", level);
@@ -44,7 +44,7 @@ public class PaymentBehaviorServiceImpl implements PaymentBehaviorService{
 		List<Long> count = new ArrayList<Long>();
 		
 		for(LogCharge lc : rankTimes) {
-			level.add(lc.getInt("level"));
+			level.add(lc.getInt("level")==null?0:lc.getInt("level"));
 			count.add(lc.getLong("count"));
 		}
 		data.put("level", level);
@@ -115,6 +115,128 @@ public class PaymentBehaviorServiceImpl implements PaymentBehaviorService{
 			long diff = thirdPaid - secondPaid;
 			diff = diff/60;
 			collectSort(diff, sort);
+		}
+		
+		List<Integer> data = new ArrayList<Integer>();
+		data.addAll(sort.values());
+		return data;
+	}
+	
+	//玩家首付周期 --游戏天数
+	public List<Integer> queryFpGameDays(List<String> categories, String icons, String startDate, String endDate) {
+		String sql = "select count(*)count from (select*from log_charge where DATE_FORMAT(timestamp,'%Y-%m-%d')between ? and ? and charge_times = 1)A join (select E.account,E.date from login E join device_info F on E.openudid = F.openudid where E.date <= ? and F.os in (" + icons + ") group by E.date,E.account) B on A.account = B.account where DATE_FORMAT(A.timestamp,'%Y-%m-%d') >= B.date group by A.account;";
+		List<LogCharge> gdPeriod = LogCharge.dao.find(sql, startDate, endDate, endDate);
+		
+		//inital
+		Map<String, Integer> sort = new LinkedHashMap<String, Integer>();
+		for(String period : categories){
+			sort.put(period, 0);
+		}
+		
+		//load data
+		for(LogCharge lc : gdPeriod) {
+			long count = lc.getLong("count");
+			if(count==1){
+				increaseValue("d1", sort);
+			}else if(count>=2 && count<=3){
+				increaseValue("d2", sort);
+			}else if(count>=4 && count<=7){
+				increaseValue("d4", sort);
+			}else if(count>=8 && count<=14){
+				increaseValue("w2", sort);
+			}else if(count>=15 && count<=21){
+				increaseValue("w3", sort);
+			}else if(count>=22 && count<=28){
+				increaseValue("w4", sort);
+			}else if(count>=29 && count<=35){
+				increaseValue("w5", sort);
+			}else if(count>=36 && count<=42){
+				increaseValue("w6", sort);
+			}else if(count>=43 && count<=49){
+				increaseValue("w7", sort);
+			}else if(count>=50 && count<=56){
+				increaseValue("w8", sort);
+			}else if(count>=57 && count<=84){
+				increaseValue("w9", sort);
+			}else if(count>84){
+				increaseValue("w12", sort);
+			}
+		}
+		
+		List<Integer> data = new ArrayList<Integer>();
+		data.addAll(sort.values());
+		return data;
+	}
+	
+	//玩家首付周期 --累计游戏时长
+	public List<Integer> queryFpGamePeriod(List<String> categories, String icons, String startDate, String endDate) {
+		String sql = "select sum(online_time)online_time from (select*from log_charge where DATE_FORMAT(timestamp,'%Y-%m-%d')between ? and ? and charge_times = 1)A join (select * from logout where date < ?) B on A.account = B.account join create_role C on A.account = C.account join device_info D on C.openudid = D.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') >= B.date and D.os in (" + icons + ") group by A.account";
+		List<LogCharge> gamePeriod = LogCharge.dao.find(sql, startDate, endDate, endDate);
+		
+		//inital
+		Map<String, Integer> sort = new LinkedHashMap<String, Integer>();
+		for(String period : categories){
+			sort.put(period, 0);
+		}
+		//load data
+		for(LogCharge lc : gamePeriod) {
+			long onlineTime = lc.getBigDecimal("online_time").longValue();
+			collectSort(onlineTime, sort);
+		}
+		
+		List<Integer> data = new ArrayList<Integer>();
+		data.addAll(sort.values());
+		return data;
+	}
+	
+	//玩家首付等级
+	public Map<String, Object> queryFpRank(String icons, String startDate, String endDate) {
+		String sql = "select A.level,count(*)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d')between ? and ? and A.charge_times = 1 and C.os in (" + icons + ") group by A.level";
+		List<LogCharge> fpRank = LogCharge.dao.find(sql, startDate, endDate);
+		
+		Map<String, Object> data = new HashMap<String, Object>();
+		List<Integer> levelList = new ArrayList<Integer>();
+		List<Long> countList = new ArrayList<Long>();
+		
+		//load data
+		for(LogCharge lc : fpRank) {
+			int level = lc.getInt("level");
+			long count = lc.getLong("count");
+			levelList.add(level);
+			countList.add(count);
+		}
+		data.put("level", levelList);
+		data.put("count", countList);
+		return data;
+	}
+	
+	public List<Integer> queryFpMoney(List<String> categories, String icons, String startDate, String endDate) {
+		String sql = "select A.count revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d')between ? and ? and A.charge_times = 1 and C.os in (" + icons + ")";
+		List<LogCharge> fpMoney = LogCharge.dao.find(sql, startDate, endDate);
+		
+		//inital
+		Map<String, Integer> sort = new LinkedHashMap<String, Integer>();
+		for(String period : categories){
+			sort.put(period, 0);
+		}
+		//load data
+		for(LogCharge lc : fpMoney) {
+			double revenue = lc.getDouble("revenue");
+			if(revenue<=10){
+				increaseValue("m1", sort);
+			}else if(revenue>10 && revenue<=50){
+				increaseValue("m11", sort);
+			}else if(revenue>50 && revenue<=100){
+				increaseValue("m51", sort);
+			}else if(revenue>100 && revenue<=200){
+				increaseValue("m101", sort);
+			}else if(revenue>200 && revenue<=500){
+				increaseValue("m201", sort);
+			}else if(revenue>500 && revenue<=1000){
+				increaseValue("m501", sort);
+			}else if(revenue>1000){
+				increaseValue("m1000", sort);
+			}
 		}
 		
 		List<Integer> data = new ArrayList<Integer>();

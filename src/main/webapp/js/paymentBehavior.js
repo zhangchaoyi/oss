@@ -1,6 +1,6 @@
 var rankChart = echarts.init(document.getElementById('rank-paymentBehavior-chart'));
 var periodChart = echarts.init(document.getElementById('period-paymentBehavior-chart'));
-
+var fpDetailsChart = echarts.init(document.getElementById('fp-details-chart'));
 
 $(function(){
     loadData();
@@ -9,6 +9,7 @@ $(function(){
 function loadData() {
     loadRankData($("ul.nav.nav-tabs.rank-payment-tab > li.active > a").attr("data-info"));
     loadPeriodData($("ul.nav.nav-tabs.period-payment-tab > li.actice > a").attr("data-info"));
+    loadFdData($("ul.nav.nav-tabs.paid-details > li.active > a").attr("data-info"),$("div.nav-tab.paid-detail-subtab > ul > li.active > a > span").attr("data-info"));
 }
 
 function loadRankData(tag) {
@@ -34,6 +35,20 @@ function loadPeriodData(tag) {
     function(data, status) {
         configPeriodChart(data);
         configPeriodTable(data);
+    });
+}
+
+function loadFdData(tag, subTag) {
+    $.post("/oss/api/payment/behavior/fp/detail", {
+        tag:tag,
+        subTag:subTag,
+        icon:getIcons(),
+        startDate:$("input#startDate").attr("value"),
+        endDate:$("input#endDate").attr("value")
+    },
+    function(data, status) {
+        configFpChart(data);
+        configFpTable(data);
     });
 }
 
@@ -150,7 +165,8 @@ function appendTableHeader(data){
         case "period":
         tableId = "#data-table-period-paymentBehavior";
         break;
-        case "":
+        case "detail":
+        tableId = "#data-table-fp-details";
         break;
     }
 
@@ -286,13 +302,13 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
             "num-html-pre": function(a) {
                 var time = String(a).split(" ")[1];
                 var num = String(a).split(" ")[0].split("~")[0];
-                if (num == ">100") {
+                if(num == ">100") {
                     num = 100;
                 }
                 if(num == "<10") {
                     num = 9;
                 }
-                if (time == "小时") {
+                if(time == "小时") {
                     num *= 60;
                 }
                 return parseFloat(num);
@@ -335,6 +351,138 @@ function configPeriodTable(data) {
     });
 }
 
+function configFpChart(data) {
+    var recData = data.data;
+    var chartType = data.chartType;
+    fpDetailsChart.clear();
+    fpDetailsChart.setOption({
+        tooltip: {
+            trigger: 'axis',
+        },
+        legend: {
+            data: data.type
+        },
+        grid: {
+            left: '3%',
+            right: '4%',
+            bottom: '3%',
+            containLabel: true
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                dataZoom: {
+                    yAxisIndex: 'none'
+                },
+                dataView: {
+                    readOnly: false
+                },
+                magicType: {
+                    type: ['line', 'bar']
+                },
+                restore: {},
+                saveAsImage: {}
+            }
+        },
+        dataZoom: [{
+            type: 'slider',
+            start: 0,
+            end: 100
+        },
+        {
+            type: 'inside',
+            start: 0,
+            end: 50
+        }],
+        yAxis: function() {
+            if(chartType=='line'){
+                var item = {
+                    type:'value',
+                    axisLabel: {
+                        formatter: '{value} '
+                    }
+                };
+                return item;
+            }
+            var item = {
+                type: 'category',
+                data: function() {
+                    for (var key in data.category) {
+                        return data.category[key];
+                    }
+                } ()
+            };
+            return item;
+        } (),
+        xAxis: function() {
+            if(chartType=='line') {
+                var item = {
+                    type: 'category',
+                    data: function() {
+                    for (var key in data.category) {
+                        return data.category[key];
+                        }
+                    } ()
+                };
+                return item;
+            }
+            var item = {
+                    type:'value',
+                    axisLabel: {
+                        formatter: '{value} '
+                    }
+            };
+            return item;
+        } (),
+        series: function() {
+            var serie = [];
+            for (var key in recData) {
+                var item = {
+                    name: key,
+                    type: chartType,
+                    smooth:true,
+                    itemStyle: {
+                        normal: {
+                            color: 'rgb(87, 139, 187)'
+                        }
+                    },
+                    data: recData[key]
+                }
+                serie.push(item);
+            };
+            return serie;
+        } ()
+
+    });
+}
+
+function configFpTable(data) {
+    appendTableHeader(data);
+    var tableData = dealTableData(data,true);
+    $('#data-table-fp-details').dataTable().fnClearTable();  
+    $('#data-table-fp-details').dataTable({
+        "destroy": true,
+        // retrive:true,
+        "data": tableData,
+        columnDefs: [{
+                type: 'num-html',
+                targets: 0
+        }],
+        "dom": '<"top"f>rt<"left">i',
+        "lengthMenu": [ -1 ],
+        'language': {
+            'emptyTable': '没有数据',
+            'loadingRecords': '加载中...',
+            'processing': '查询中...',
+            'search': '查询:',
+            'lengthMenu': '每页显示 _MENU_ 条记录',
+            'zeroRecords': '没有数据',
+            "sInfo": "(共 _TOTAL_ 条记录)",
+            'infoEmpty': '没有数据',
+            'infoFiltered': '(过滤总件数 _MAX_ 条)'
+        }
+    });
+}
 
 //explain up and down button 
 $("#btn-explain-up").click(function(){
@@ -384,10 +532,12 @@ $("ul.nav.nav-tabs.paid-details > li").click(function(){
         $("div.nav-tab.paid-detail-subtab").hide();
         break;
     }
+    loadFdData(info, $("div.nav-tab.paid-detail-subtab > ul > li.active > a > span").attr("data-info"));
 });
 
 //首付选择区域的子选择栏
 $("div.nav-tab.paid-detail-subtab > ul > li").click(function(){
     $(this).siblings("li.active").toggleClass("active");
     $(this).addClass("active");
+    loadFdData($("ul.nav.nav-tabs.paid-details > li.active > a").attr("data-info"), $(this).children("a").children("span").attr("data-info"));
 });

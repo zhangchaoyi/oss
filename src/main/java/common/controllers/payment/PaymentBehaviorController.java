@@ -80,23 +80,7 @@ public class PaymentBehaviorController extends Controller {
 		Map<String, Object> seriesMap = new LinkedHashMap<String, Object>();
 		List<String> header = new ArrayList<String>();
 		List<String> categories = new ArrayList<String>();
-		Map<String, String> period = new LinkedHashMap<String, String>();
-		
-		
-		period.put("l10min", "<10 分钟");
-		period.put("l30min", "10~30 分钟");
-		period.put("l60min", "30~60 分钟");
-		period.put("l2h", "1~2 小时");
-		period.put("l4h", "2~4 小时");
-		period.put("l6h", "4~6 小时");
-		period.put("l10h", "6~10 小时");
-		period.put("l15h", "10~15 小时");
-		period.put("l20h", "15~20 小时");
-		period.put("l30h", "20~30 小时");
-		period.put("l40h", "30~40 小时");
-		period.put("l60h", "40~60 小时");
-		period.put("l100h", "60~100 小时");
-		period.put("m100h", ">100 小时");
+		Map<String, String> period = initGamePeriodMap();
 		
 		categories.addAll(period.keySet());
 		
@@ -136,4 +120,122 @@ public class PaymentBehaviorController extends Controller {
 		renderJson(data);
 	}
 	
+	@Before(POST.class)
+	@ActionKey("/api/payment/behavior/fp/detail")
+	public void queryPaymentBehaviorDetail() {
+		String tag = getPara("tag", "fp-cycle");
+		String subTag = getPara("subTag", "game-days");
+		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
+		String startDate = getPara("startDate");
+		String endDate = getPara("endDate");
+		
+		Map<String, Object> data = new LinkedHashMap<String, Object>();
+		Map<String, Object> category = new LinkedHashMap<String, Object>();
+		Map<String, Object> seriesMap = new LinkedHashMap<String, Object>();
+		List<String> header = new ArrayList<String>();
+		List<String> categories = new ArrayList<String>();
+		Map<String, String> period; 
+		
+		switch(tag) {
+		case "fp-cycle":
+			data.put("chartType","bar");
+			switch(subTag) {
+			case "game-days":
+				period = initGameDaysMap();
+				categories.addAll(period.keySet());
+				List<Integer> gdCount = paymentBehaviorService.queryFpGameDays(categories, icons, startDate, endDate);
+				categories.clear();
+				categories.addAll(period.values());
+				category.put("游戏天数", categories);
+				seriesMap.put("付费玩家", gdCount);
+				header.addAll(Arrays.asList("游戏天数", "付费玩家", "百分比"));
+				break;
+			case "game-period":
+				period = initGamePeriodMap();
+				categories.addAll(period.keySet());
+				List<Integer> gpCount = paymentBehaviorService.queryFpGamePeriod(categories, icons, startDate, endDate);
+				categories.clear();
+				categories.addAll(period.values());
+				category.put("累计游戏时长", categories);
+				seriesMap.put("付费玩家", gpCount);
+				header.addAll(Arrays.asList("累计游戏时长", "付费玩家", "百分比"));
+				break;
+			}
+			break;
+		case "fp-rank":
+			Map<String, Object> fpRank = paymentBehaviorService.queryFpRank(icons, startDate, endDate);
+			category.put("玩家首付等级", fpRank.get("level"));
+			seriesMap.put("付费玩家", fpRank.get("count"));
+			header.addAll(Arrays.asList("玩家首付等级", "付费玩家", "百分比"));
+			data.put("chartType","line");
+			break;
+		case "fp-money":
+			period = initPaidPeriod();
+			categories.addAll(period.keySet());
+			List<Integer> mCount = paymentBehaviorService.queryFpMoney(categories, icons, startDate, endDate);
+			categories.clear();
+			categories.addAll(period.values());
+			category.put("玩家首付金额", categories);
+			seriesMap.put("付费玩家", mCount);
+			header.addAll(Arrays.asList("玩家首付金额", "付费玩家", "百分比"));
+			data.put("chartType","bar");
+			break;
+		}
+		
+		Set<String> type = seriesMap.keySet();
+		data.put("table", "detail");
+		data.put("type", type.toArray());
+		data.put("header", header);
+		data.put("category", category);
+		data.put("data", seriesMap);
+		renderJson(data);
+	}
+	
+	private Map<String,String> initGameDaysMap(){
+		Map<String, String> period = new LinkedHashMap<String, String>();
+		period.put("d1", "首日");
+		period.put("d2", "2~3 天");
+		period.put("d4", "4~7 天");
+		period.put("w2", "2 周");
+		period.put("w3", "3 周");
+		period.put("w4", "4 周");
+		period.put("w5", "5 周");
+		period.put("w6", "6 周");
+		period.put("w7", "7 周");
+		period.put("w8", "8 周");
+		period.put("w9", "9~12 周");
+		period.put("w12", ">12 周");
+		return period;
+	}
+	
+	private Map<String, String> initGamePeriodMap(){
+		Map<String, String> period = new LinkedHashMap<String, String>();
+		period.put("l10min", "<10 分钟");
+		period.put("l30min", "10~30 分钟");
+		period.put("l60min", "30~60 分钟");
+		period.put("l2h", "1~2 小时");
+		period.put("l4h", "2~4 小时");
+		period.put("l6h", "4~6 小时");
+		period.put("l10h", "6~10 小时");
+		period.put("l15h", "10~15 小时");
+		period.put("l20h", "15~20 小时");
+		period.put("l30h", "20~30 小时");
+		period.put("l40h", "30~40 小时");
+		period.put("l60h", "40~60 小时");
+		period.put("l100h", "60~100 小时");
+		period.put("m100h", ">100 小时");
+		return period;
+	}
+	
+	private Map<String, String> initPaidPeriod(){
+		Map<String, String> period = new LinkedHashMap<String, String>();
+		period.put("m1", "1~10 $");
+		period.put("m11", "11~50 $");
+		period.put("m51", "51~100 $");
+		period.put("m101", "101~200 $");
+		period.put("m201", "201~500 $");
+		period.put("m501", "501~1000 $");
+		period.put("m1000", ">1000 $");
+		return period;
+	}
 }
