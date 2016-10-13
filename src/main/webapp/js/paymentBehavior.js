@@ -302,6 +302,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
             "num-html-pre": function(a) {
                 var time = String(a).split(" ")[1];
                 var num = String(a).split(" ")[0].split("~")[0];
+                //分钟--小时
                 if(num == ">100") {
                     num = 100;
                 }
@@ -310,6 +311,16 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
                 }
                 if(time == "小时") {
                     num *= 60;
+                }
+                //天--周
+                if(num == "首日") {
+                    num =1 ;
+                }
+                if(num == ">12") {
+                    num =12 ;
+                }
+                if(time == "周"){
+                    num *= 7;
                 }
                 return parseFloat(num);
             },

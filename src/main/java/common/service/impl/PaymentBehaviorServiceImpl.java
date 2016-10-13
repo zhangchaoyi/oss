@@ -209,7 +209,7 @@ public class PaymentBehaviorServiceImpl implements PaymentBehaviorService{
 		data.put("count", countList);
 		return data;
 	}
-	
+	//玩家首付金额
 	public List<Integer> queryFpMoney(List<String> categories, String icons, String startDate, String endDate) {
 		String sql = "select A.count revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d')between ? and ? and A.charge_times = 1 and C.os in (" + icons + ")";
 		List<LogCharge> fpMoney = LogCharge.dao.find(sql, startDate, endDate);

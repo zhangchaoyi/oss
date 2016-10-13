@@ -19,8 +19,8 @@ import common.service.PaymentBehaviorService;
 import common.service.impl.PaymentBehaviorServiceImpl;
 import common.utils.StringUtils;
 
-@Clear(AuthInterceptor.class)
-//@Before(AuthInterceptor.class)
+//@Clear(AuthInterceptor.class)
+@Before(AuthInterceptor.class)
 public class PaymentBehaviorController extends Controller {
 	private PaymentBehaviorService paymentBehaviorService = new PaymentBehaviorServiceImpl();
 	
