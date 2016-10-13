@@ -171,7 +171,7 @@ function appendTableHeader(data){
     }
 
     for (var i = 0; i < header.length; i++) {
-        txt = txt + "<th><span>" + header[i] + "</span></th>"
+        txt = txt + "<th><span>" + header[i] + "</span></th>";
     }
 
     if ($(tableId).children("thead").length != 0) {
