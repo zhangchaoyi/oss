@@ -20,7 +20,7 @@ function loadRankData(tag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
-        configRankChart(data);
+        configChart(data, rankChart);
         configRankTable(data);
     });
 }
@@ -33,7 +33,7 @@ function loadPeriodData(tag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
-        configPeriodChart(data);
+        configChart(data, periodChart);
         configPeriodTable(data);
     });
 }
@@ -47,85 +47,8 @@ function loadFdData(tag, subTag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
-        configFpChart(data);
+        configChart(data, fpDetailsChart);
         configFpTable(data);
-    });
-}
-
-function configRankChart(data) {
-    var recData = data.data;
-    rankChart.clear();
-    rankChart.setOption({
-        tooltip: {
-            trigger: 'axis',
-        },
-        legend: {
-            data: data.type
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        toolbox: {
-            show: true,
-            feature: {
-                dataZoom: {
-                    yAxisIndex: 'none'
-                },
-                dataView: {
-                    readOnly: false
-                },
-                magicType: {
-                    type: ['line', 'bar']
-                },
-                restore: {},
-                saveAsImage: {}
-            }
-        },
-        dataZoom: [{
-            type: 'slider',
-            start: 0,
-            end: 100
-        },
-        {
-            type: 'inside',
-            start: 0,
-            end: 50
-        }],
-        xAxis: {
-            type: 'category',
-            data: function() {
-                for (var key in data.category) {
-                    return data.category[key];
-                }
-            } ()
-        },
-        yAxis: {
-            type: 'value',
-            boundaryGap: [0, 0.01],
-        },
-        series: function() {
-            var serie = [];
-            for (var key in recData) {
-                var item = {
-                    name: key,
-                    type: "bar",
-                    smooth:true,
-                    barWidth:"30%",
-                    itemStyle: {
-                        normal: {
-                            color: 'rgb(87, 139, 187)'
-                        }
-                    },
-                    data: recData[key]
-                }
-                serie.push(item);
-            };
-            return serie;
-        } ()
-
     });
 }
 
@@ -220,83 +143,6 @@ function dealTableData(data, percent) {
     return dataArray;
 }
 
-function configPeriodChart(data) {
-    var recData = data.data;
-    periodChart.clear();
-    periodChart.setOption({
-        tooltip: {
-            trigger: 'axis',
-        },
-        legend: {
-            data: data.type
-        },
-        grid: {
-            left: '3%',
-            right: '4%',
-            bottom: '3%',
-            containLabel: true
-        },
-        toolbox: {
-            show: true,
-            feature: {
-                dataZoom: {
-                    yAxisIndex: 'none'
-                },
-                dataView: {
-                    readOnly: false
-                },
-                magicType: {
-                    type: ['line', 'bar']
-                },
-                restore: {},
-                saveAsImage: {}
-            }
-        },
-        dataZoom: [{
-            type: 'slider',
-            start: 0,
-            end: 100
-        },
-        {
-            type: 'inside',
-            start: 0,
-            end: 50
-        }],
-        yAxis: {
-            type: 'category',
-            data: function() {
-                for (var key in data.category) {
-                    return data.category[key];
-                }
-            } ()
-        },
-        xAxis: {
-            type: 'value',
-            boundaryGap: [0, 0.01],
-        },
-        series: function() {
-            var serie = [];
-            for (var key in recData) {
-                var item = {
-                    name: key,
-                    type: "bar",
-                    smooth:true,
-                    barWidth:"30%",
-                    itemStyle: {
-                        normal: {
-                            color: 'rgb(87, 139, 187)'
-                        }
-                    },
-                    data: recData[key]
-                }
-                serie.push(item);
-            };
-            return serie;
-        } ()
-
-    });
-}
-
 //自定义dataTable列排序
 jQuery.extend(jQuery.fn.dataTableExt.oSort, {
             "num-html-pre": function(a) {
@@ -362,11 +208,11 @@ function configPeriodTable(data) {
     });
 }
 
-function configFpChart(data) {
+function configChart(data,chart) {
     var recData = data.data;
     var chartType = data.chartType;
-    fpDetailsChart.clear();
-    fpDetailsChart.setOption({
+    chart.clear();
+    chart.setOption({
         tooltip: {
             trigger: 'axis',
         },
@@ -406,7 +252,7 @@ function configFpChart(data) {
             end: 50
         }],
         yAxis: function() {
-            if(chartType=='line'){
+            if(chartType=='rankChart'){
                 var item = {
                     type:'value',
                     axisLabel: {
@@ -426,7 +272,7 @@ function configFpChart(data) {
             return item;
         } (),
         xAxis: function() {
-            if(chartType=='line') {
+            if(chartType=='rankChart') {
                 var item = {
                     type: 'category',
                     data: function() {
@@ -450,7 +296,7 @@ function configFpChart(data) {
             for (var key in recData) {
                 var item = {
                     name: key,
-                    type: chartType,
+                    type: "bar",
                     smooth:true,
                     itemStyle: {
                         normal: {
