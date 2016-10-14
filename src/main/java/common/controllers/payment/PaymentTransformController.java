@@ -61,6 +61,7 @@ public class PaymentTransformController extends Controller{
 		renderJson(data);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Before(POST.class)
 	@ActionKey("/api/payment/transform/rate")
 	public void queryPaymentRate() {
@@ -89,7 +90,11 @@ public class PaymentTransformController extends Controller{
 			data.put("tableData", wpr.get("tableData"));
 			break;
 		case "mpr":
+			categories = DateUtils.getMonthList(startDate, endDate);
 			header.addAll(Arrays.asList("日期","付费玩家","活跃玩家","月付费率"));
+			Map<String, Object> mpr = paymentTransformService.queryMonthPaidRate(categories, icons, startDate, endDate);
+			seriesMap.put("月付费率", mpr.get("mpr"));
+			data.put("tableData", mpr.get("tableData"));
 			break;
 		}
 		
@@ -101,6 +106,45 @@ public class PaymentTransformController extends Controller{
 		data.put("category", category);
 		data.put("data", seriesMap);
 		renderJson(data);
+	}
 	
+	@Before(POST.class)
+	@ActionKey("/api/payment/transform/detail")
+	public void queryPaymentTransformDetail() {
+		String tag = getPara("tag");
+		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
+		String startDate = getPara("startDate");
+		String endDate = getPara("endDate");
+		
+		Map<String, Object> data = new LinkedHashMap<String, Object>();
+		Map<String, Object> category = new LinkedHashMap<String, Object>();
+		Map<String, Object> seriesMap = new LinkedHashMap<String, Object>();
+		List<String> header = new ArrayList<String>();
+		
+		switch(tag){
+		case "area":
+			header.addAll(Arrays.asList("日期","日均付费率"));
+			Map<String, Object> province = paymentTransformService.queryAreaPaidRate(icons, startDate, endDate, "province");
+			seriesMap.put("日均付费率", province.get("rate"));
+			category.put("地区", province.get("categories"));
+			data.put("tableData", province.get("tableData"));
+			break;
+		case "country":
+			header.addAll(Arrays.asList("日期","日均付费率"));
+			Map<String, Object> country = paymentTransformService.queryAreaPaidRate(icons, startDate, endDate, "country");
+			seriesMap.put("日均付费率", country.get("rate"));
+			category.put("国家", country.get("categories"));
+			data.put("tableData", country.get("tableData"));
+			break;
+		}
+		
+		Set<String> type = seriesMap.keySet();
+		data.put("header", header);
+		data.put("table", "detail");
+		
+		data.put("type", type.toArray());
+		data.put("category", category);
+		data.put("data", seriesMap);
+		renderJson(data);
 	}
 }

@@ -10,4 +10,8 @@ public interface PaymentTransformService {
 	public Map<String, Object> queryDayPaidRate(List<String>categories, String icons, String startDate, String endDate);
 	
 	public Map<String, Object> queryWeekPaidRate(List<String>categories, String icons, String startDate, String endDate);
+	
+	public Map<String, Object> queryMonthPaidRate(List<String>categories, String icons, String startDate, String endDate);
+	
+	public Map<String, Object> queryAreaPaidRate(String icons, String startDate, String endDate, String tag);
 }

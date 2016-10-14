@@ -185,6 +185,7 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		List<Double> rate = new ArrayList<Double>();
 		List<List<String>> tableData = new ArrayList<List<String>>();
 		//load data
+		//付费率
 		for(Map.Entry<String, PaidRate> entry : sort.entrySet()){
 			PaidRate pr = entry.getValue();
 			long paidCount = pr.getPaidPlayers();
@@ -219,10 +220,167 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		String pSql = "select DATE_FORMAT(A.timestamp,'%Y-%m') month, count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m') between ? and ? and C.os in (" + icons + ") group by month";
 		String aSql = "select DATE_FORMAT(A.date,'%Y-%m') month, count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(login_time,'%Y-%m') between ? and ? and B.os in (" + icons + ") group by month";
 		
-		List<String> month = DateUtils.getMonthList(start, end);
+		List<String> month = categories;
+		List<LogCharge> paid = LogCharge.dao.find(pSql, startDate, endDate);
+		List<Login> active = Login.dao.find(aSql, startDate, endDate);
+		
+		//init
+		Map<String, PaidRate> sort = new HashMap<String, PaidRate>();
+		for(String m : month){
+			PaidRate pr = new PaidRate();
+			sort.put(m, pr);
+		}
+		//load data
+		for(LogCharge lc : paid){
+			String m = lc.getStr("month");
+			Long count = lc.getLong("count");
+			PaidRate pr = sort.get(m);
+			pr.setPaidPlayers(count);
+			sort.put(m, pr);
+		}
+		for(Login l : active){
+			String m = l.getStr("month");
+			Long count = l.getLong("count");
+			PaidRate pr = sort.get(m);
+			pr.setActivePlayers(count);
+			sort.put(m, pr);
+		}
+		
+		List<Double> rate = new ArrayList<Double>();
+		List<List<String>> tableData = new ArrayList<List<String>>();
+		//付费率
+		for(Map.Entry<String, PaidRate> entry : sort.entrySet()){
+			PaidRate pr = entry.getValue();
+			long paidCount = pr.getPaidPlayers();
+			long activeCount = pr.getActivePlayers();
+			double paidRate = 0.0;
+			
+			if(activeCount!=0){
+				paidRate = (double)paidCount*100.0/(double)activeCount;
+				BigDecimal bgPr = new BigDecimal(paidRate);
+				paidRate = bgPr.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			}
+			rate.add(paidRate);
+			
+			List<String> subList = new ArrayList<String>();
+			subList.addAll(Arrays.asList(entry.getKey(), String.valueOf(paidCount), String.valueOf(activeCount), paidRate+"%"));
+			tableData.add(subList);
+		}
 		
 		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("mpr", rate);
+		data.put("tableData", tableData);
 		return data;
 	} 
 	
+	//查询 地区/国家 日均付费率
+	public Map<String, Object> queryAreaPaidRate(String icons, String startDate, String endDate, String tag) {
+		String pSql = "select C.province,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by C.province,date;";
+		String aSql = "select B.province,DATE_FORMAT(A.login_time,'%Y-%m-%d')date,count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(login_time,'%Y-%m-%d') between ? and ? and B.os in (" + icons + ") group by B.province,date";
+		
+		if("country".equals(tag)){
+			pSql = "select C.country,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by C.country,date;";
+			aSql = "select B.country,DATE_FORMAT(A.login_time,'%Y-%m-%d')date,count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(login_time,'%Y-%m-%d') between ? and ? and B.os in (" + icons + ") group by B.country,date";
+		}
+		
+		List<LogCharge> paid = LogCharge.dao.find(pSql, startDate, endDate);
+		List<Login> active = Login.dao.find(aSql, startDate, endDate);
+		
+		List<String> dateList = DateUtils.getDateList(startDate, endDate);
+		//Map<area, Map<Date,PaidRate>>
+		Map<String, Map<String, PaidRate>> sort = new LinkedHashMap<String, Map<String, PaidRate>>();
+		
+		//付费玩家 的地区分布 是 活跃玩家 的子集
+		//付费玩家 init
+		for(LogCharge lc : paid){
+			String area = "";
+			if("province".equals(tag)){
+				area = lc.getStr("province");
+			}else if("country".equals(tag)){
+				area = lc.getStr("country");
+			}
+			
+			String date = lc.getStr("date");
+			long count = lc.getLong("count"); 
+
+			Map<String, PaidRate> subMap;
+			if(sort.containsKey(area)){
+				subMap = sort.get(area);
+				PaidRate pr = subMap.get(date);
+				pr.setPaidPlayers(count);
+				subMap.put(date, pr);
+			}else{
+				subMap = new LinkedHashMap<String, PaidRate>();
+				for(String d : dateList){
+					PaidRate pr = new PaidRate();
+					if(d.equals(date)){
+						pr.setPaidPlayers(count);
+					}
+					subMap.put(d, pr);
+				}
+			}
+			sort.put(area, subMap);
+		}
+		
+		//活跃玩家
+		for(Login l : active){
+			String area = "";
+			if("province".equals(tag)){
+				area = l.getStr("province");
+			}else if("country".equals(tag)){
+				area = l.getStr("country");
+			}
+			String date = l.getStr("date");
+			long count = l.getLong("count");
+			if(!sort.containsKey(area)){
+				continue;
+			}
+			Map<String, PaidRate> subMap = sort.get(area);
+			PaidRate pr = subMap.get(date);
+			pr.setActivePlayers(count);
+			subMap.put(date, pr);
+			sort.put(area,subMap);
+		}
+		
+		List<Double> rate = new ArrayList<Double>();
+		//地区/国家 列表
+		List<String> categories = new ArrayList<String>();
+		List<List<String>> tableData = new ArrayList<List<String>>();
+		//付费率
+		for(Map.Entry<String, Map<String,PaidRate>> entry : sort.entrySet()){
+			int num = 0;
+			num = entry.getKey().length();
+			double rateAvg = 0.0;
+			double rateSum = 0.0;
+			for(Map.Entry<String, PaidRate> subEntry : entry.getValue().entrySet()){
+				PaidRate pr = subEntry.getValue();
+				long paidCount = pr.getPaidPlayers();
+				long activeCount = pr.getActivePlayers();
+				double paidRate = 0.0;
+				if(activeCount!=0){
+					paidRate = (double)paidCount*100.0/(double)activeCount;
+					BigDecimal bgPr = new BigDecimal(paidRate);
+					paidRate = bgPr.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				}
+				rateSum += paidRate;
+			}
+			//求日均率
+			if(num!=0){
+				rateAvg = rateSum/num;
+				BigDecimal bgPr = new BigDecimal(rateAvg);
+				rateAvg = bgPr.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			}
+			List<String> subList = new ArrayList<String>();
+			subList.addAll(Arrays.asList(entry.getKey(),rateAvg+"%"));
+			tableData.add(subList);
+			rate.add(rateAvg);
+			categories.add(entry.getKey());
+		}
+		
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("rate", rate);
+		data.put("categories", categories);
+		data.put("tableData", tableData);
+		return data;
+	}
 }
