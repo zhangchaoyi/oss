@@ -2,6 +2,10 @@ var rankChart = echarts.init(document.getElementById('rank-paymentBehavior-chart
 var periodChart = echarts.init(document.getElementById('period-paymentBehavior-chart'));
 var fpDetailsChart = echarts.init(document.getElementById('fp-details-chart'));
 
+var rankTable = '#data-table-rank-paymentBehavior';
+var periodTable = '#data-table-period-paymentBehavior';
+var fpDetailTable = '#data-table-fp-details';
+
 $(function(){
     loadData();
 })
@@ -20,8 +24,8 @@ function loadRankData(tag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
-        configChart(data, rankChart);
-        configRankTable(data);
+        configChart(data, rankChart, "rankChart");
+        configTable(data, rankTable);
     });
 }
 
@@ -33,8 +37,8 @@ function loadPeriodData(tag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
-        configChart(data, periodChart);
-        configPeriodTable(data);
+        configChart(data, periodChart, "periodChart");
+        configTable(data, periodTable);
     });
 }
 
@@ -47,31 +51,8 @@ function loadFdData(tag, subTag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
-        configChart(data, fpDetailsChart);
-        configFpTable(data);
-    });
-}
-
-function configRankTable(data) {
-    appendTableHeader(data);
-    var tableData = dealTableData(data,false);
-    $('#data-table-rank-paymentBehavior').dataTable().fnClearTable();  
-    $('#data-table-rank-paymentBehavior').dataTable({
-        "destroy": true,
-        // retrive:true,
-        "data": tableData,
-        "dom": '<"top"f>rt<"left"lip>',
-        'language': {
-            'emptyTable': '没有数据',
-            'loadingRecords': '加载中...',
-            'processing': '查询中...',
-            'search': '查询:',
-            'lengthMenu': '每页显示 _MENU_ 条记录',
-            'zeroRecords': '没有数据',
-            "sInfo": "(共 _TOTAL_ 条记录)",
-            'infoEmpty': '没有数据',
-            'infoFiltered': '(过滤总件数 _MAX_ 条)'
-        }
+        configChart(data, fpDetailsChart, "fpDetailsChart");
+        configTable(data, fpDetailTable);
     });
 }
 
@@ -180,37 +161,8 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
             }
 });
 
-function configPeriodTable(data) {
-    appendTableHeader(data);
-    var tableData = dealTableData(data,true);
-    $('#data-table-period-paymentBehavior').dataTable().fnClearTable();  
-    $('#data-table-period-paymentBehavior').dataTable({
-        "destroy": true,
-        // retrive:true,
-        "data": tableData,
-        columnDefs: [{
-                type: 'num-html',
-                targets: 0
-        }],
-        "dom": '<"top"f>rt<"left">i',
-        "lengthMenu": [ -1 ],
-        'language': {
-            'emptyTable': '没有数据',
-            'loadingRecords': '加载中...',
-            'processing': '查询中...',
-            'search': '查询:',
-            'lengthMenu': '每页显示 _MENU_ 条记录',
-            'zeroRecords': '没有数据',
-            "sInfo": "(共 _TOTAL_ 条记录)",
-            'infoEmpty': '没有数据',
-            'infoFiltered': '(过滤总件数 _MAX_ 条)'
-        }
-    });
-}
-
-function configChart(data,chart) {
+function configChart(data, chart, chartName) {
     var recData = data.data;
-    var chartType = data.chartType;
     chart.clear();
     chart.setOption({
         tooltip: {
@@ -252,7 +204,7 @@ function configChart(data,chart) {
             end: 50
         }],
         yAxis: function() {
-            if(chartType=='rankChart'){
+            if(chartName=="rankChart"){
                 var item = {
                     type:'value',
                     axisLabel: {
@@ -272,7 +224,7 @@ function configChart(data,chart) {
             return item;
         } (),
         xAxis: function() {
-            if(chartType=='rankChart') {
+            if(chartName=="rankChart") {
                 var item = {
                     type: 'category',
                     data: function() {
@@ -313,11 +265,16 @@ function configChart(data,chart) {
     });
 }
 
-function configFpTable(data) {
+function configTable(data,dataTable) {
     appendTableHeader(data);
-    var tableData = dealTableData(data,true);
-    $('#data-table-fp-details').dataTable().fnClearTable();  
-    $('#data-table-fp-details').dataTable({
+    var tableData;
+    if(dataTable==rankTable){
+        tableData = dealTableData(data,false);
+    } 
+    tableData = dealTableData(data,true);
+
+    $(dataTable).dataTable().fnClearTable();  
+    $(dataTable).dataTable({
         "destroy": true,
         // retrive:true,
         "data": tableData,
@@ -325,8 +282,8 @@ function configFpTable(data) {
                 type: 'num-html',
                 targets: 0
         }],
-        "dom": '<"top"f>rt<"left">i',
-        "lengthMenu": [ -1 ],
+        "dom": '<"top"f>rt<"left"lip>',
+        "lengthMenu": [[14,30,-1 ],[14,30,'全部']],
         'language': {
             'emptyTable': '没有数据',
             'loadingRecords': '加载中...',

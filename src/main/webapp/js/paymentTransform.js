@@ -24,7 +24,7 @@ function loadApaData() {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
-        configChart(data, apaChart);
+        configChart(data, apaChart, "apaChart");
         configTable(data, apaTable);
     });
 }
@@ -37,7 +37,7 @@ function loadRateData(tag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
-        configChart(data, rateChart);
+        configChart(data, rateChart, "rateChart");
         configTable(data, rateTable);
         $("#avg-pt-rate > span > font").text(dealAvg(data));
     });   
@@ -51,7 +51,7 @@ function loadDetailData(tag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
-        configChart(data, detailChart);
+        configChart(data, detailChart, "detailChart");
         configTable(data, detailTable);
         $("#avg-pt-detail > span > font").text(dealAvg(data));
     });
@@ -90,8 +90,9 @@ function appendTableHeader(data){
 }
 
 
-function configChart(data,chart){
+function configChart(data, chart, chartName){
     var recData = data.data;
+    var chartType = data.chartType;
     chart.clear();
     chart.setOption({
         tooltip: {
@@ -137,26 +138,52 @@ function configChart(data,chart){
             start: 10,
             end: 50
         }],
-        yAxis: {
-            type: 'category',
-            data: function() {
-                for (var key in data.category) {
-                    return data.category[key];
-                }
-            } ()
-        },
-        xAxis: {
-            type: 'value',
-            axisLabel: {
-                formatter: '{value} %'
+        yAxis: function() {
+            if(chartName=="detailChart"){
+                var item = {
+                    type: 'category',
+                    data: function() {
+                        for (var key in data.category) {
+                            return data.category[key];
+                        }
+                    } ()
+                };
+                return item;
             }
-        },
+            var item = {
+                type:'value',
+                axisLabel: {
+                    formatter: '{value} '
+                }
+            };
+            return item;
+        } (),
+        xAxis: function() {
+            if(chartName=="detailChart") {
+                var item = {
+                    type:'value',
+                    axisLabel: {
+                        formatter: '{value} '
+                    }
+                };
+                return item;
+            }
+            var item = {
+                type: 'category',
+                data: function() {
+                    for (var key in data.category) {
+                        return data.category[key];
+                    }
+                } ()
+            };
+            return item;
+        } (),
         series: function() {
             var serie = [];
             for (var key in recData) {
                 var item = {
                     name: key,
-                    type: "bar",
+                    type: chartType,
                     smooth:true,
                     data: recData[key]
                 }
@@ -193,11 +220,14 @@ function dealAvg(data){
     var type = data.type;
     var serie = data.data[type];
     var sum = 0.0;
+    var avg = "0.0%";
     var length = serie.length;
     for(var i=0;i<length;i++){
         sum += parseFloat(serie[i]);
     }
-    var avg = (sum/length).toFixed(2) + '%';
+    if(length!=0){
+        avg = (sum/length).toFixed(2) + '%';
+    }
     return avg;
 }
 
