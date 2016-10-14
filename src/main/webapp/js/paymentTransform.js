@@ -2,6 +2,11 @@ var apaChart = echarts.init(document.getElementById('data-paymentTransform-chart
 var rateChart = echarts.init(document.getElementById('rate-paymentTransform-chart'));
 var detailChart = echarts.init(document.getElementById('paymentTransform-details-chart'));
 
+var apaTable = "#data-table-data-paymentTransform";
+var rateTable = "#data-table-rate-paymentTransform";
+var detailTable = "#data-table-paymentTransform-details";
+
+
 $(function(){
     loadData();
 })
@@ -19,8 +24,8 @@ function loadApaData() {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
-        configApaChart(data);
-        configApaTable(data);
+        configChart(data, apaChart);
+        configTable(data, apaTable);
     });
 }
 
@@ -32,8 +37,9 @@ function loadRateData(tag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
-        configRateChart(data);
-        configRateTable(data);
+        configChart(data, rateChart);
+        configTable(data, rateTable);
+        $("#avg-pt-rate > span > font").text(dealAvg(data));
     });   
 }
 
@@ -45,105 +51,13 @@ function loadDetailData(tag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
-        configDetailChart(data);
-        configDetailTable(data);
+        configChart(data, detailChart);
+        configTable(data, detailTable);
+        $("#avg-pt-detail > span > font").text(dealAvg(data));
     });
 }
 
-function configApaChart(data){
-    var recData = data.data;
-    apaChart.clear();
-    apaChart.setOption({
-        tooltip: {
-            trigger: 'axis',
-            formatter:function(params) {  
-               var relVal = params[0].name;
-               for (var i = 0, l = params.length; i < l; i++) { 
-                    relVal += '<br/>' + params[i].seriesName + ' : ' + params[i].value+'%' ;  
-                }  
-               return relVal;  
-            } 
-        },
-        legend: {
-            data: data.type
-        },
-        toolbox: {
-            show: true,
-            feature: {
-                dataZoom: {
-                    yAxisIndex: 'none'
-                },
-                dataView: {
-                    readOnly: false
-                },
-                magicType: {
-                    type: ['line', 'bar']
-                },
-                restore: {},
-                saveAsImage: {}
-            }
-        },
-        dataZoom: [{
-            type: 'slider',
-            start: 0,
-            end: 100
-        },
-        {
-            type: 'inside',
-            start: 10,
-            end: 50
-        }],
-        xAxis: {
-            type: 'category',
-            data: function() {
-                for (var key in data.category) {
-                    return data.category[key];
-                }
-            } ()
-        },
-        yAxis: {
-            type: 'value',
-            axisLabel: {
-                formatter: '{value} %'
-            }
-        },
-        series: function() {
-            var serie = [];
-            for (var key in recData) {
-                var item = {
-                    name: key,
-                    type: "line",
-                    smooth:true,
-                    data: recData[key]
-                }
-                serie.push(item);
-            };
-            return serie;
-        } ()
-    });
-}
 
-function configApaTable(data){
-    appendTableHeader(data);
-    $('#data-table-data-paymentTransform').dataTable().fnClearTable();  
-    $('#data-table-data-paymentTransform').dataTable({
-        "destroy": true,
-        // retrive:true,
-        "data": data.tableData,
-        "dom": '<"top"f>rt<"left"lip>',
-        'language': {
-            'emptyTable': '没有数据',
-            'loadingRecords': '加载中...',
-            'processing': '查询中...',
-            'search': '查询:',
-            'lengthMenu': '每页显示 _MENU_ 条记录',
-            'zeroRecords': '没有数据',
-            "sInfo": "(共 _TOTAL_ 条记录)",
-            'infoEmpty': '没有数据',
-            'infoFiltered': '(过滤总件数 _MAX_ 条)'
-        }
-    });
-}
 
 function appendTableHeader(data){
     var header = data.header;
@@ -175,105 +89,11 @@ function appendTableHeader(data){
     $(tableId).append("<thead><tr>" + txt + "</tr></thead>");
 }
 
-function configRateChart(data){
-    var recData = data.data;
-    rateChart.clear();
-    rateChart.setOption({
-        tooltip: {
-            trigger: 'axis',
-            formatter:function(params) {  
-               var relVal = params[0].name;
-               for (var i = 0, l = params.length; i < l; i++) { 
-                    relVal += '<br/>' + params[i].seriesName + ' : ' + params[i].value+'%' ;  
-                }  
-               return relVal;  
-            } 
-        },
-        legend: {
-            data: data.type
-        },
-        toolbox: {
-            show: true,
-            feature: {
-                dataZoom: {
-                    yAxisIndex: 'none'
-                },
-                dataView: {
-                    readOnly: false
-                },
-                magicType: {
-                    type: ['line', 'bar']
-                },
-                restore: {},
-                saveAsImage: {}
-            }
-        },
-        dataZoom: [{
-            type: 'slider',
-            start: 0,
-            end: 100
-        },
-        {
-            type: 'inside',
-            start: 10,
-            end: 50
-        }],
-        xAxis: {
-            type: 'category',
-            data: function() {
-                for (var key in data.category) {
-                    return data.category[key];
-                }
-            } ()
-        },
-        yAxis: {
-            type: 'value',
-            axisLabel: {
-                formatter: '{value} %'
-            }
-        },
-        series: function() {
-            var serie = [];
-            for (var key in recData) {
-                var item = {
-                    name: key,
-                    type: "line",
-                    smooth:true,
-                    data: recData[key]
-                }
-                serie.push(item);
-            };
-            return serie;
-        } ()
-    });
-}
 
-function configRateTable(data){
-    appendTableHeader(data);
-    $('#data-table-rate-paymentTransform').dataTable().fnClearTable();  
-    $('#data-table-rate-paymentTransform').dataTable({
-        "destroy": true,
-        // retrive:true,
-        "data": data.tableData,
-        "dom": '<"top"f>rt<"left"lip>',
-        'language': {
-            'emptyTable': '没有数据',
-            'loadingRecords': '加载中...',
-            'processing': '查询中...',
-            'search': '查询:',
-            'lengthMenu': '每页显示 _MENU_ 条记录',
-            'zeroRecords': '没有数据',
-            "sInfo": "(共 _TOTAL_ 条记录)",
-            'infoEmpty': '没有数据',
-            'infoFiltered': '(过滤总件数 _MAX_ 条)'
-        }
-    });
-}
-
-function configDetailChart(data){
+function configChart(data,chart){
     var recData = data.data;
-    detailChart.clear();
-    detailChart.setOption({
+    chart.clear();
+    chart.setOption({
         tooltip: {
             trigger: 'axis',
             formatter:function(params) {  
@@ -283,7 +103,7 @@ function configDetailChart(data){
                     if(value==undefined){
                         value=0.0;
                     }  
-                    relVal += '<br/>' + params[i].seriesName + ' : ' + params[i].value+'%' ;  
+                    relVal += '<br/>' + params[i].seriesName + ' : ' + value+'%' ;  
                 }  
                return relVal;  
             } 
@@ -347,10 +167,10 @@ function configDetailChart(data){
     });
 }
 
-function configDetailTable(data){
+function configTable(data,dataTable){
     appendTableHeader(data);
-    $('#data-table-paymentTransform-details').dataTable().fnClearTable();  
-    $('#data-table-paymentTransform-details').dataTable({
+    $(dataTable).dataTable().fnClearTable();  
+    $(dataTable).dataTable({
         "destroy": true,
         // retrive:true,
         "data": data.tableData,
@@ -367,6 +187,18 @@ function configDetailTable(data){
             'infoFiltered': '(过滤总件数 _MAX_ 条)'
         }
     });
+}
+
+function dealAvg(data){
+    var type = data.type;
+    var serie = data.data[type];
+    var sum = 0.0;
+    var length = serie.length;
+    for(var i=0;i<length;i++){
+        sum += parseFloat(serie[i]);
+    }
+    var avg = (sum/length).toFixed(2) + '%';
+    return avg;
 }
 
 

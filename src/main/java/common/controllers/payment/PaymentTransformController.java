@@ -51,6 +51,7 @@ public class PaymentTransformController extends Controller{
 		seriesMap.put("首月付费率", aPA.get("fmPP"));
 		
 		Set<String> type = seriesMap.keySet();
+		data.put("chartType", "line");
 		data.put("header", header);
 		data.put("table", "apa");
 		data.put("tableData", aPA.get("tableData"));
@@ -99,6 +100,7 @@ public class PaymentTransformController extends Controller{
 		}
 		
 		Set<String> type = seriesMap.keySet();
+		data.put("chartType", "line");
 		data.put("header", header);
 		data.put("table", "rate");
 		category.put("日期", categories);
@@ -139,6 +141,7 @@ public class PaymentTransformController extends Controller{
 		}
 		
 		Set<String> type = seriesMap.keySet();
+		data.put("chartType", "bar");
 		data.put("header", header);
 		data.put("table", "detail");
 		
