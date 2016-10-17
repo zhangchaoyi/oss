@@ -1,10 +1,10 @@
 package common.pojo;
 
 public class AddPaymentAnalyze {
-	int addPlayers;
-	int fdPaidPeople;
-	int fwPaidPeople;
-	int fmPaidPeople;
+	private int addPlayers;
+	private int fdPaidPeople;
+	private int fwPaidPeople;
+	private int fmPaidPeople;
 	
 	public AddPaymentAnalyze(){
 		addPlayers=0;
@@ -37,5 +37,4 @@ public class AddPaymentAnalyze {
 	public void setFmPaidPeople(int fmPaidPeople) {
 		this.fmPaidPeople = fmPaidPeople;
 	}
-	
 }

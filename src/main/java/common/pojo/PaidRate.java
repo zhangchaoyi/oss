@@ -1,8 +1,8 @@
 package common.pojo;
 
 public class PaidRate {
-	long paidPlayers;
-	long activePlayers;
+	private long paidPlayers;
+	private long activePlayers;
 
 	public PaidRate(){
 		paidPlayers = 0L;

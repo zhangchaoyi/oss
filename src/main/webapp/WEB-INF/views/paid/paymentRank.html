@@ -279,7 +279,6 @@
       <div class="panel panel-default"> 
        <div class="panel-heading"> 
         <span class="data-first-panel-heading">充值玩家</span>
-        <button class="btn btn-2 btn-2c" id="btn-first-data-panel-switch">关闭</button> 
        </div> 
        <div class="panel-body"> 
         <ul class="nav nav-tabs rank-payment-tab"> 
@@ -309,15 +308,46 @@
                       <th>帐号</th>
                       <th>新增日期</th>
                       <th>首付日期</th>
-                      <th>付费金额</th>
+                      <th>付费金额($)</th>
                       <th>付费次数</th>
                       <th>在线天数</th>
                       <th>总游戏时长</th>
                       <th>总游戏次数</th>
                       <th>等级</th>
+                      <th>详情</th>
                   </tr>
              </thead>   
-           </table> 
+           </table>
+          </div>              
+        </div> 
+       </div> 
+      </div> 
+     </div>
+     <div class="row" id="data-second"> 
+      <div class="panel panel-default"> 
+       <div class="panel-heading">
+        <a id="whaleDetailback">返回</a> 
+        <span class="data-first-panel-heading" id="account-detail">帐号详情</span>
+       </div> 
+       <div class="panel-body"> 
+        <ul class="nav nav-tabs rank-detail-payment-tab"> 
+         <li class="active"> <a data-toggle="tab" data-info="time">每日在线时长及趋势</a></li> 
+         <li class=""> <a data-toggle="tab" data-info="times">每日登录次数及趋势</a></li>
+         <li class=""> <a data-toggle="tab" data-info="payment">每日付费金额及趋势</a></li>
+        </ul> 
+        <div class="tab-content">
+          <div id="rank-detail-payment-chart" style="width:100%;height:400px;display:inline;float:left"></div>
+          <div class="table-zoom-second"> 
+           <table id="data-table-rank-detail-payment" class="hover stripe row-border">
+             <thead>
+                  <tr role="row">
+                      <th>日期</th>
+                      <th>在线时长(min)</th>
+                      <th>登录次数</th>
+                      <th>付费金额($)</th>
+                  </tr>
+             </thead>   
+           </table>
           </div>              
         </div> 
        </div> 

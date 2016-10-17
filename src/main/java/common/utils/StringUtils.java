@@ -1,6 +1,7 @@
 package common.utils;
 
 public class StringUtils {
+	//用于拼接sql   --icon  --account
 	public static String arrayToQueryString(String[] array){
 		String str = "";
 		for(int i=0;i<array.length;i++){
