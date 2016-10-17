@@ -961,3 +961,9 @@ div.btn-group.btn-rank-payment > button {
     background-image: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada));
     border: #c8c8c8 1px solid;
 }
+
+a#whaleDetailback {
+    font-size: 19px;
+    padding-top: 15px;
+    padding-bottom: 15px;
+}

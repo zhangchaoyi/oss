@@ -13,6 +13,7 @@ import common.model.Logout;
 import common.pojo.AccountDetail;
 import common.pojo.PaymentRank;
 import common.service.PaymentRankService;
+import common.utils.DateUtils;
 import common.utils.StringUtils;
 
 /**
@@ -50,8 +51,9 @@ public class PaymentRankServiceImpl implements PaymentRankService {
 		List<Logout> logout = Logout.dao.find(dSql);
 		for(Logout l : logout){
 			String account = l.getStr("account");
+			long oT = l.getBigDecimal("online_time").longValue();
 			PaymentRank pr = sort.get(account);
-			pr.setOnlineTimes(l.getBigDecimal("online_time").longValue());
+			pr.setOnlineTimes(DateUtils.getTimeFromSecond(oT));
 			pr.setGameTimes(l.getLong("times"));
 			pr.setOnlineDays(l.getLong("online_days"));
 			pr.setCreateTime(l.getStr("create_time"));

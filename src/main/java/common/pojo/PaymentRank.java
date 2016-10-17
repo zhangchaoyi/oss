@@ -6,7 +6,7 @@ public class PaymentRank {
 	private double revenue;
 	private long paidTimes;
 	private long onlineDays;
-	private long onlineTime;
+	private String onlineTime;
 	private long gameTimes;
 	private int level;
 	
@@ -50,11 +50,11 @@ public class PaymentRank {
 		this.onlineDays = onlineDays;
 	}
 
-	public long getOnlineTime() {
+	public String getOnlineTime() {
 		return onlineTime;
 	}
 
-	public void setOnlineTimes(long onlineTime) {
+	public void setOnlineTimes(String onlineTime) {
 		this.onlineTime = onlineTime;
 	}
 

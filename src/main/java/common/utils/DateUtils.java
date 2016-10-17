@@ -132,12 +132,36 @@ public class DateUtils {
 		return week;
 	}
 	
+	public static String getTimeFromSecond(long s){
+		final long DAY = 60*60*24;
+		final long HOUR = 60*60;
+		final long MINUTE = 60;
+		long day = s/DAY;
+		long hour = (s%DAY)/HOUR;
+		long minute = ((s%DAY)%HOUR)/MINUTE;
+		long second = ((s%DAY)%HOUR)%MINUTE;
+		String str = "";
+		if(day!=0) {
+			str += String.valueOf(day) + "天";
+		}
+		if(hour!=0) {
+			str += String.valueOf(hour) + "小时";
+		}
+		if(minute!=0) {
+			str += String.valueOf(minute) + "分钟";
+		}
+		if(second!=0) {
+			str += String.valueOf(second) + "秒";
+		}
+		return str;
+	}
 	public static void main(String args[]){
 //		System.out.println(getDateList("2016-08-01", "2016-08-10"));
 //		System.out.println(convertDate("2016-08-23"));
 //		System.out.println(divideDateToWeek("2016-09-13","2016-09-14"));
-		System.out.println(getMonthList("2016-08","2016-11"));
+//		System.out.println(getMonthList("2016-08","2016-11"));
 //		System.out.println(monthToStr(DateUtils.strToDate("2016-09-13")));
+		System.out.println(getTimeFromSecond(200000));
 	}
 	
 }
