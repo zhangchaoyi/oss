@@ -5,12 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import common.model.CreateRole;
 import common.model.DeviceInfo;
 import common.model.LogCharge;
 import common.model.Login;
 import common.model.Logout;
 import common.service.DashboardService;
+import common.utils.DateUtils;
 /**
  * 查询dashboard 页 --数据不分终端
  *  T=Total  Y=Yesterday  N=Nowadays
@@ -20,6 +23,7 @@ import common.service.DashboardService;
  * @author chris
  */
 public class DashboardServiceImpl implements DashboardService{
+	private static Logger logger = Logger.getLogger(DashboardServiceImpl.class);
 	public Map<String, String>queryDashboardData(){
 		//表格一
 		String eTSql = "select count(*)count from device_info";
@@ -55,7 +59,6 @@ public class DashboardServiceImpl implements DashboardService{
 		List<Login> lTY = Login.dao.find(lTYSql);
 		List<Logout> lPT = Logout.dao.find(lPTSql);
 		List<Logout> lPY = Logout.dao.find(lPYSql);
-		
 		long activePlayerTotal = apT.get(0).getLong("count");
 	    long activePlayerYesterday = apY.get(0).getLong("count");
 		double revenueTotal = rT.get(0).getDouble("revenue")==null?0.0:rT.get(0).getDouble("revenue");
@@ -64,7 +67,6 @@ public class DashboardServiceImpl implements DashboardService{
 	    long loginTimesYesterday = lTY.get(0).getLong("count");
 	    double loginPeriodTotal = lPT.get(0).getBigDecimal("online_time")==null?0.0:lPT.get(0).getBigDecimal("online_time").doubleValue();
 	    double loginGamePeriodYesterday = lPY.get(0).getBigDecimal("online_time")==null?0.0:lPY.get(0).getBigDecimal("online_time").doubleValue();
-	    
 	    double arpuTotal=0.0;
 	    double aGTTotal=0.0;
 	    double aGPTotal=0.0;
@@ -177,7 +179,7 @@ public class DashboardServiceImpl implements DashboardService{
 		data.put("gameTimesNSum", String.valueOf(gameTimesNSum));
 		data.put("revenueTSum", String.valueOf(revenueTSum));
 		data.put("revenueNSum", String.valueOf(revenueNSum));
-		
+		logger.debug("queryDashboardData:" + data);
 		return data;
 	}
 }

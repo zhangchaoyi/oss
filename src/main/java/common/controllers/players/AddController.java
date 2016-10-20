@@ -6,6 +6,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.log4j.Logger;
+
 import com.jfinal.aop.Before;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
@@ -20,6 +23,7 @@ import common.utils.StringUtils;
 //@Clear(AuthInterceptor.class)
 @Before(AuthInterceptor.class)
 public class AddController extends Controller{
+	private static Logger logger = Logger.getLogger(AddController.class);
 	private AddPlayersService addPlayersService = new AddPlayersServiceImpl();
 	
 	@Before(GET.class)
@@ -71,6 +75,7 @@ public class AddController extends Controller{
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
+		logger.debug("<AddController> queryAddPlayer:" + data);
 		renderJson(data);
 	}
 
@@ -145,6 +150,7 @@ public class AddController extends Controller{
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
+		logger.debug("<AddController> queryaddPlayerDetails:" + data);
 		renderJson(data);	
 	}
 

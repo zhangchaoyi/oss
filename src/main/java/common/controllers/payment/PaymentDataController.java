@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import com.jfinal.aop.Before;
-import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
@@ -25,6 +26,7 @@ import common.utils.StringUtils;
 //@Clear(AuthInterceptor.class)
 @Before(AuthInterceptor.class)
 public class PaymentDataController extends Controller{
+	private static Logger logger = Logger.getLogger(PaymentDataController.class);
 	private PaymentDataService paymentDataService = new PaymentDataServiceImpl();
 	
 	@Before(GET.class)
@@ -72,6 +74,7 @@ public class PaymentDataController extends Controller{
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
+		logger.debug("<PaymentDataController> queryPaymentData:" + data);
 		renderJson(data);
 	}
 	
@@ -83,6 +86,7 @@ public class PaymentDataController extends Controller{
 		String endDate = getPara("endDate");
 		List<String> categories = DateUtils.getDateList(startDate, endDate);
 		List<List<Object>> paymentDetail = paymentDataService.queryDataPayment(categories, startDate, endDate, icons);
+		logger.debug("<PaymentDataController> queryPaymentDataTable:" + paymentDetail);
 		renderJson(paymentDetail);
 	}
 	
@@ -177,6 +181,7 @@ public class PaymentDataController extends Controller{
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
+		logger.debug("<PaymentDataController> queryAnalyzePayment:" + data);
 		renderJson(data);
 	}
 	@Before(POST.class)
@@ -238,6 +243,7 @@ public class PaymentDataController extends Controller{
 		}
 		data.put("header", header);
 		data.put("data", queryData);
+		logger.debug("<PaymentDataController> queryPaymentAnalyzeTable:" + data);
 		renderJson(data);
 	}
 	
@@ -337,6 +343,7 @@ public class PaymentDataController extends Controller{
 		data.put("header", header);
 		data.put("category", category);
 		data.put("data", seriesMap);
+		logger.debug("<PaymentDataController> queryDetailTable:" + data);
 		renderJson(data);
 	}
 }

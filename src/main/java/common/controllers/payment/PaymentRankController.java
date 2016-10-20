@@ -1,14 +1,14 @@
 package common.controllers.payment;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import com.jfinal.aop.Before;
-import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
@@ -20,9 +20,10 @@ import common.service.impl.PaymentRankServiceImpl;
 import common.utils.DateUtils;
 import common.utils.StringUtils;
 
-@Clear(AuthInterceptor.class)
-//@Before(AuthInterceptor.class)
+//@Clear(AuthInterceptor.class)
+@Before(AuthInterceptor.class)
 public class PaymentRankController extends Controller{
+	private static Logger logger = Logger.getLogger(PaymentRankController.class);
 	private PaymentRankService paymentRankService = new PaymentRankServiceImpl();
 	
 	
@@ -40,11 +41,10 @@ public class PaymentRankController extends Controller{
 		String endDate = getPara("endDate");
 		
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
-		List<String> header = new ArrayList<String>();
-		
 		List<List<String>> queryData = paymentRankService.queryRank(icons, startDate, endDate);
 		
 		data.put("data", queryData);
+		logger.debug("<PaymentRankController> queryPaymentRank:" + data);
 		renderJson(data);
 	}
 	
@@ -74,6 +74,7 @@ public class PaymentRankController extends Controller{
 		data.put("category", category);
 		data.put("data", seriesMap);
 		data.put("tableData", queryData.get("tableData"));
+		logger.debug("<PaymentRankController> queryPaymentAccount:" + data);
 		renderJson(data);
 	}
 }

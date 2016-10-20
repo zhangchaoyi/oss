@@ -6,16 +6,22 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
+import com.jfinal.aop.Before;
+
+import common.interceptor.AuthInterceptor;
 import common.model.LogCharge;
 import common.service.PaymentBehaviorService;
-import common.utils.StringUtils;
 
 /**
  * 付费行为页
  * @author chris
  *
  */
+@Before(AuthInterceptor.class)
 public class PaymentBehaviorServiceImpl implements PaymentBehaviorService{
+	private static Logger logger = Logger.getLogger(PaymentBehaviorServiceImpl.class);
 	//付费等级金额
 	public Map<String,Object> queryRankMoney(String icons, String startDate, String endDate) {
 		String sql = "select A.level, sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") and DATE_FORMAT(timestamp,'%Y-%m-%d') between ? and ? group by A.level";
@@ -31,7 +37,7 @@ public class PaymentBehaviorServiceImpl implements PaymentBehaviorService{
 		}
 		data.put("level", level);
 		data.put("revenue", revenue);
-		
+		logger.debug("queryRankMoney:" + data);
 		return data;
 	}
 	//付费等级次数
@@ -49,7 +55,7 @@ public class PaymentBehaviorServiceImpl implements PaymentBehaviorService{
 		}
 		data.put("level", level);
 		data.put("count", count);
-		
+		logger.debug("queryRankTimes:" + data);
 		return data;
 	}
 	//付费间隔 --首充游戏时间分布
@@ -207,6 +213,7 @@ public class PaymentBehaviorServiceImpl implements PaymentBehaviorService{
 		}
 		data.put("level", levelList);
 		data.put("count", countList);
+		logger.debug("queryFpRank:" + data);
 		return data;
 	}
 	//玩家首付金额

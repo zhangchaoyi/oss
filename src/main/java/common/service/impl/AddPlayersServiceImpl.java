@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.log4j.Logger;
+
 import common.model.CreateRole;
 import common.model.DeviceInfo;
 import common.model.Logout;
@@ -18,6 +20,7 @@ import common.service.AddPlayersService;
  *
  */
 public class AddPlayersServiceImpl implements AddPlayersService {
+	private static Logger logger = Logger.getLogger(AddPlayersServiceImpl.class);
 	// 整理数据 源数据可能存在缺失 如2016-08-01当天的数据可能返回null,则数据列表长度 和 时间列表长度 不能一一对应
 	public List<Long> queryAddPlayersData(List<String> categories, String icons, String startDate, String endDate) {
 		String sql = "select DATE_FORMAT(A.create_time,'%Y-%m-%d') date,count(*) count from create_role A join device_info B on A.openudid = B.openudid where A.create_time >= ? and A.create_time <= ? and B.os in(" + icons + ") group by DATE_FORMAT(A.create_time,'%Y-%m-%d')";
@@ -33,6 +36,7 @@ public class AddPlayersServiceImpl implements AddPlayersService {
 			sort.put(cr.getStr("date"), cr.getLong("count"));
 		}
 		data.addAll(sort.values());
+		logger.debug("queryAddPlayersData:" + data);
 		return data;
 	}
 

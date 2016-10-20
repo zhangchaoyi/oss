@@ -5,6 +5,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import org.apache.log4j.Logger;
+
 import com.jfinal.aop.Before;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
@@ -20,6 +23,7 @@ import common.interceptor.AuthInterceptor;
 //@Clear(AuthInterceptor.class)
 @Before(AuthInterceptor.class)
 public class EffectiveController extends Controller {
+	private static Logger logger = Logger.getLogger(EffectiveController.class);
 	@Before(GET.class)
 	@ActionKey("/players/effective")
 	public void effective() {
@@ -34,7 +38,7 @@ public class EffectiveController extends Controller {
 	
 	@Before(POST.class)
 	@ActionKey("/api/players/effective")
-	public void testData() {
+	public void queryEffectiveData() {
 		String tagDataInfo = getPara("tagDataInfo","add-players");
 		Map<String, Object> data = new LinkedHashMap<String,Object>();
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
@@ -65,12 +69,13 @@ public class EffectiveController extends Controller {
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("serie", seriesMap);
+		logger.debug("<EffectiveController> queryEffectiveData:" + data);
 		renderJson(data);
 	}
 	
 	@Before(POST.class)
 	@ActionKey("/api/players/effective-distributed")
-	public void testDistributedData() {
+	public void queryDistributedData() {
 		String tagDataInfo = getPara("tagDataInfo");
 		String subTagDataInfo = getPara("subTagDataInfo");
 		
@@ -131,6 +136,7 @@ public class EffectiveController extends Controller {
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("serie", seriesMap);
+		logger.debug("<EffectiveController> queryDistributedData:" + data);
 		renderJson(data);
 	}
 }

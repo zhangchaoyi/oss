@@ -7,8 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import com.jfinal.aop.Before;
-import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
@@ -23,6 +24,7 @@ import common.utils.StringUtils;
 //@Clear(AuthInterceptor.class)
 @Before(AuthInterceptor.class)
 public class PaymentTransformController extends Controller{
+	private static Logger logger = Logger.getLogger(PaymentTransformController.class);
 	private PaymentTransformService paymentTransformService = new PaymentTransformServiceImpl();
 	
 	@Before(GET.class)
@@ -59,10 +61,10 @@ public class PaymentTransformController extends Controller{
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
+		logger.debug("<PaymentTransformController> queryPaymentAddPaidAnalyze:" + data);
 		renderJson(data);
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Before(POST.class)
 	@ActionKey("/api/payment/transform/rate")
 	public void queryPaymentRate() {
@@ -107,6 +109,7 @@ public class PaymentTransformController extends Controller{
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
+		logger.debug("<PaymentTransformController> queryPaymentRate:" + data);
 		renderJson(data);
 	}
 	
@@ -148,6 +151,7 @@ public class PaymentTransformController extends Controller{
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
+		logger.debug("<PaymentTransformController> queryPaymentTransformDetail:" + data);
 		renderJson(data);
 	}
 }

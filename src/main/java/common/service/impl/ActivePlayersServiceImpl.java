@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.log4j.Logger;
+
 import common.model.ActiveUser;
 import common.model.CreateRole;
 import common.model.LevelUp;
@@ -21,6 +23,7 @@ import common.service.ActivePlayersService;
  *
  */
 public class ActivePlayersServiceImpl implements ActivePlayersService {
+	private static Logger logger = Logger.getLogger(ActivePlayersServiceImpl.class);
 	//dau
 	public List<Long> queryDau(List<String> categories, String icons, String startDate, String endDate) {
 		List<Long> data = new ArrayList<Long>();
@@ -36,6 +39,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 			sort.put(cr.getStr("date"), cr.getBigDecimal("dau").longValue());
 		}
 		data.addAll(sort.values());
+		logger.debug("queryDau:" + data);
 		return data;
 	}
 	
@@ -81,6 +85,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 
 		data.put("paid", paid);
 		data.put("notpaid", notpaid);
+		logger.debug("queryPaidInActiveUser:" + data);
 		return data;
 	}
 	// dau | wau | mau
@@ -135,7 +140,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		data.put("DAU", dauData);
 		data.put("WAU", wauData);
 		data.put("MAU", mauData);
-
+		logger.debug("queryActivePlayersInfo:" + data);
 		return data;
 	}
 	// dau/mau
@@ -162,7 +167,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		}
 
 		data.addAll(sort.values());
-
+		logger.debug("queryActivePlayersDauMauRate:" + data);
 		return data;
 	}
 	//已玩天数
@@ -215,6 +220,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		for (Integer i : record.values()) {
 			data.add(i.longValue());
 		}
+		logger.debug("queryPlayDays:" + data);
 		return data;
 	}
 	//等级
@@ -233,6 +239,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 				data.put(i, 0L);
 			}
 		}
+		logger.debug("queryRank:" + data);
 		return data;
 	}
 	//地区 --省份
@@ -248,6 +255,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		}
 		data.put("activePlayer", areaData);
 		data.put("area", province);
+		logger.debug("queryArea:" + data);
 		return data;
 	}
 	//国家
@@ -263,6 +271,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		}
 		data.put("activePlayer", countryData);
 		data.put("country", country);
+		logger.debug("queryCountry:" + data);
 		return data;
 	}
 	//账户类型
@@ -278,6 +287,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		}
 		data.put("activePlayer", accountTypeData);
 		data.put("accountType", accountType);
+		logger.debug("queryAccountType:" + data);
 		return data;
 	}
 

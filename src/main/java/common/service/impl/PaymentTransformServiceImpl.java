@@ -10,6 +10,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import common.model.LogCharge;
 import common.model.Login;
 import common.model.PaymentDetail;
@@ -24,6 +26,7 @@ import common.utils.DateUtils;
  *
  */
 public class PaymentTransformServiceImpl implements PaymentTransformService{
+	private static Logger logger = Logger.getLogger(PaymentTransformServiceImpl.class);
 	//新增付费分析
 	public Map<String, Object> queryAddPaymentAnalyze(List<String> categories, String icons, String startDate, String endDate) {
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(add_players)add_players,sum(fd_paid_people)fd_paid_people,sum(fw_paid_people)fw_paid_people,sum(fm_paid_people)fm_paid_people from payment_detail where date between ? and ? and os in (" + icons + ") group by date";
@@ -94,6 +97,7 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		data.put("fdPP", fdPP);
 		data.put("fwPP", fwPP);
 		data.put("fmPP", fmPP);
+		logger.debug("queryAddPaymentAnalyze:" + data);
 		return data;
 	}
 	
@@ -149,6 +153,7 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("dpr", rate);
 		data.put("tableData", tableData);
+		logger.debug("queryDayPaidRate:" + data);
 		return data;
 	}
 	//周付费率
@@ -209,6 +214,7 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		data.put("wpr", rate);
 		data.put("tableData", tableData);
 		data.put("categories", categories);
+		logger.debug("queryWeekPaidRate:" + data);
 		return data;
 	}
 	
@@ -270,6 +276,7 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("mpr", rate);
 		data.put("tableData", tableData);
+		logger.debug("queryMonthPaidRate:" + data);
 		return data;
 	} 
 	
@@ -381,6 +388,7 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		data.put("rate", rate);
 		data.put("categories", categories);
 		data.put("tableData", tableData);
+		logger.debug("queryAreaPaidRate:" + data);
 		return data;
 	}
 }

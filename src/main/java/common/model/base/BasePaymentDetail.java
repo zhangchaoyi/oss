@@ -97,4 +97,28 @@ public abstract class BasePaymentDetail<M extends BasePaymentDetail<M>> extends 
 		return get("fd_paid_num");
 	}
 
+	public void setFwPaidPeople(java.lang.Integer fwPaidPeople) {
+		set("fw_paid_people", fwPaidPeople);
+	}
+
+	public java.lang.Integer getFwPaidPeople() {
+		return get("fw_paid_people");
+	}
+
+	public void setFmPaidPeople(java.lang.Integer fmPaidPeople) {
+		set("fm_paid_people", fmPaidPeople);
+	}
+
+	public java.lang.Integer getFmPaidPeople() {
+		return get("fm_paid_people");
+	}
+
+	public void setAddPlayers(java.lang.Integer addPlayers) {
+		set("add_players", addPlayers);
+	}
+
+	public java.lang.Integer getAddPlayers() {
+		return get("add_players");
+	}
+
 }

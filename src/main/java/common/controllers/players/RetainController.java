@@ -8,8 +8,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import com.jfinal.aop.Before;
-import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
@@ -29,6 +30,7 @@ import common.utils.StringUtils;
 //@Clear(AuthInterceptor.class)
 @Before(AuthInterceptor.class)
 public class RetainController extends Controller{
+	private static Logger logger = Logger.getLogger(RetainController.class);
 	private RetainPlayersService retainPlayersService = new RetainPlayersServiceImpl();
 	
 	@Before(GET.class)
@@ -87,6 +89,7 @@ public class RetainController extends Controller{
 		data.put("nDRRateAvg", queryData.get("nDRRateAvg"));
 		data.put("sDRRateAvg", queryData.get("sDRRateAvg"));
 		data.put("mRRateAvg", queryData.get("mRRateAvg"));
+		logger.debug("<RetainController> queryRetain:" + data);
 		renderJson(data);
 	}
 	
@@ -134,6 +137,7 @@ public class RetainController extends Controller{
 		}
 		data.put("header", tableHeader);
 		data.put("data", sourceData);
+		logger.debug("<RetainController> queryRetainCustomize:" + data);
 		renderJson(data);
 	}
 	
@@ -186,6 +190,7 @@ public class RetainController extends Controller{
 		data.put("data", seriesMap);
 		data.put("tableData", tableData);
 		data.put("header", tableHeader);
+		logger.debug("<RetainController> queryRetainEquipmentRate:" + data);
 		renderJson(data);
 	}
 }

@@ -33,6 +33,22 @@ public abstract class BaseLogCharge<M extends BaseLogCharge<M>> extends Model<M>
 		return get("team_name");
 	}
 
+	public void setLevel(java.lang.Integer level) {
+		set("level", level);
+	}
+
+	public java.lang.Integer getLevel() {
+		return get("level");
+	}
+
+	public void setChargeTimes(java.lang.Integer chargeTimes) {
+		set("charge_times", chargeTimes);
+	}
+
+	public java.lang.Integer getChargeTimes() {
+		return get("charge_times");
+	}
+
 	public void setCurrency(java.lang.String currency) {
 		set("currency", currency);
 	}

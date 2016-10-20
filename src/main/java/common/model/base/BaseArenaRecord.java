@@ -49,6 +49,14 @@ public abstract class BaseArenaRecord<M extends BaseArenaRecord<M>> extends Mode
 		return get("rival_level");
 	}
 
+	public void setClientResult(java.lang.Integer clientResult) {
+		set("client_result", clientResult);
+	}
+
+	public java.lang.Integer getClientResult() {
+		return get("client_result");
+	}
+
 	public void setResult(java.lang.Integer result) {
 		set("result", result);
 	}

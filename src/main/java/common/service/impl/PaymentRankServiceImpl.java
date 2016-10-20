@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import common.model.LogCharge;
 import common.model.Logout;
 import common.pojo.AccountDetail;
@@ -22,6 +24,7 @@ import common.utils.StringUtils;
  *
  */
 public class PaymentRankServiceImpl implements PaymentRankService {
+	private static Logger logger = Logger.getLogger(PaymentRankServiceImpl.class);
 	//排名详情
 	public List<List<String>> queryRank(String icons, String startDate, String endDate) {
 		//得到付费排行等信息
@@ -135,6 +138,7 @@ public class PaymentRankServiceImpl implements PaymentRankService {
 		data.put("lTList", lTList);
 		data.put("pRList", pRList);
 		data.put("tableData", tableData);
+		logger.debug("queryAccountDetail:" +data);
 		return data;
 	}
 }

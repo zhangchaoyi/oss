@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.log4j.Logger;
+
 import common.model.CreateRole;
 import common.model.DeviceInfo;
 import common.model.LogCharge;
@@ -25,6 +27,7 @@ import common.utils.DateUtils;
  *
  */
 public class RealtimeServiceImpl implements RealtimeService{
+	private static Logger logger = Logger.getLogger(RealtimeServiceImpl.class);
 	//实时查询十个数据,用于动态更新
 	public Map<String, String> queryRealtimeData(String icons){
 		String eSql = "select count(*)count from device_info where DATE_FORMAT(create_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and os in (" + icons + ")";
@@ -68,7 +71,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 			avgPerGamePeroid = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		}
 		data.put("aGPT", String.valueOf(avgPerGamePeroid));
-		
+		logger.debug("queryRealtimeData:" + data);
 		return data;
 	}
 	//查询昨日,七日,三十日过往不变数据
@@ -119,6 +122,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 			}
 			data.put("aGP"+d, String.valueOf(avgPerGamePeroid));
 		}
+		logger.debug("queryBeforeData:" + data);
 		return data;
 	} 
 	
@@ -147,6 +151,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 			d = DateUtils.convertDate(d);
 			data.put(d,al);
 		}
+		logger.debug("queryRealtimeDevice:" + data);
 		return data;
 	}
 	
@@ -175,6 +180,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 			d = DateUtils.convertDate(d);
 			data.put(d, al);
 		}
+		logger.debug("queryRealtimeAddPlayers:" + data);
 		return data;
 	}
 	//查询实时收入金额
@@ -202,6 +208,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 			d = DateUtils.convertDate(d);
 			data.put(d, al);
 		}
+		logger.debug("queryRealtimeRevenue:" + data);
 		return data;
 	}
 }

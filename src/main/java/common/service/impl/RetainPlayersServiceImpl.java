@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.apache.log4j.Logger;
+
 import common.model.DeviceInfo;
 import common.model.RetainEquipment;
 import common.model.RetainUser;
@@ -18,6 +20,7 @@ import common.service.RetainPlayersService;
  *
  */
 public class RetainPlayersServiceImpl implements RetainPlayersService{
+	private static Logger logger = Logger.getLogger(RetainPlayersServiceImpl.class);
 	public Map<String, Object> queryRetainUser(List<String> categories, String icons, String startDate, String endDate) {
 		Map<String, Object> data = new HashMap<String, Object>();
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(add_user) add_user,sum(next_day_retain) next_day_retain,sum(seven_day_retain)seven_day_retain,sum(month_retain)month_retain from retain_user where date between ? and ? and os in (" + icons + ") group by date";
@@ -146,6 +149,7 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 		data.put("nDRRateAvg", nDRRateAvg);
 		data.put("sDRRateAvg", sDRRateAvg);
 		data.put("mRRateAvg", mRRateAvg);
+		logger.debug("queryRetainUser:" + data);
 		return data;
 	}
 	
@@ -307,7 +311,7 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 		data.put("sevenD", sevenDData);
 		data.put("ftD", ftDData);
 		data.put("ttD", ttDData);
-		
+		logger.debug("queryRetainEquipment:" + data);
 		return data;
 	}
 

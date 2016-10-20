@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import com.jfinal.aop.Before;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
@@ -21,6 +23,7 @@ import common.utils.StringUtils;
 //@Clear(AuthInterceptor.class)
 @Before(AuthInterceptor.class)
 public class EquipmentController extends Controller {
+	private static Logger logger = Logger.getLogger(EquipmentController.class);
 	private EquipmentAnalyzeService equipmentAnalyzeService = new EquipmentAnalyzeServiceImpl();
 
 	@Before(GET.class)
@@ -93,6 +96,7 @@ public class EquipmentController extends Controller {
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
+		logger.debug("<EquipmentController> queryEquipmentPlayer:" + data);
 		renderJson(data);
 	}
 
@@ -306,6 +310,7 @@ public class EquipmentController extends Controller {
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
+		logger.debug("<EquipmentController> queryEquipmentDetails:" + data);
 		renderJson(data);
 
 	}

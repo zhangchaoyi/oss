@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import common.model.DeviceInfo;
 import common.model.LogCharge;
 import common.model.Login;
@@ -17,6 +19,7 @@ import common.service.AccdetailService;
  *
  */
 public class AccdetailServiceImpl implements AccdetailService{
+	private static Logger logger = Logger.getLogger(AccdetailServiceImpl.class);
 	public Map<String, Object> queryAccdetail(String accountId) {
 		Map<String, Object> data = new HashMap<String, Object>();
 		String deviceSql = "select B.model,B.resolution,B.os,B.os_version,B.country,B.province,B.carrier,B.net from (select distinct account,openudid  from login where account = ?) A join device_info B on A.openudid = B.openudid";
@@ -67,6 +70,7 @@ public class AccdetailServiceImpl implements AccdetailService{
 		data.put("code", 0);
 		data.put("device", deviceTable);
 		data.put("detail", detailTable);
+		logger.debug("queryAccdetailData:" + data);
 		return data;
 	}
 }

@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import com.jfinal.aop.Before;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
@@ -24,6 +26,7 @@ import common.utils.StringUtils;
 //@Clear(AuthInterceptor.class)
 @Before(AuthInterceptor.class)
 public class ActiveController extends Controller{
+	private static Logger logger = Logger.getLogger(ActiveController.class);
 	private AddPlayersService addPlayersService = new AddPlayersServiceImpl();
 	private ActivePlayersService activePlayersService = new ActivePlayersServiceImpl();
 	
@@ -81,6 +84,7 @@ public class ActiveController extends Controller{
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
+		logger.debug("<ActiveController> queryActivePlayer:" + data);
 		renderJson(data);
 	}
 	
@@ -143,6 +147,7 @@ public class ActiveController extends Controller{
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
+		logger.debug("<ActiveController> queryActiveDetail:" + data);
 		renderJson(data);
 		
 	}

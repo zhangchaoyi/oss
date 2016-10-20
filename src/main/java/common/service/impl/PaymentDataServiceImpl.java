@@ -8,6 +8,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.log4j.Logger;
+
 import common.model.LogCharge;
 import common.model.Login;
 import common.model.PaymentDetail;
@@ -20,6 +22,7 @@ import common.service.PaymentDataService;
  *
  */
 public class PaymentDataServiceImpl implements PaymentDataService {
+	private static Logger logger = Logger.getLogger(PaymentDataServiceImpl.class);
 	//计算付费金额
 	public Map<String, Map<String,Object>> queryMoneyPayment(List<String> categories, String startDate, String endDate, String icons){
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(paid_money)paid_money, sum(ft_paid_money)ft_paid_money, sum(fd_paid_money)fd_paid_money from payment_detail where date between ? and ? and os in (" + icons + ") group by date";
@@ -74,6 +77,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		series.put("首日付费玩家($)", fdPaidList);
 		data.put("sum", sum);
 		data.put("series", series);
+		logger.debug("queryMoneyPayment:" + data);
 		return data;
 	}
 	//计算付费人数
@@ -125,6 +129,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		
 		data.put("sum", sum);
 		data.put("series", series);
+		logger.debug("queryPeoplePayment:" + data);
 		return data;
 	}
 	//计算付费次数
@@ -165,6 +170,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		series.put("首日付费玩家", fdPaidList);
 		data.put("sum", sum);
 		data.put("series", series);
+		logger.debug("queryNumPayment:" + data);
 		return data;
 	}
 
@@ -496,6 +502,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		series.addAll(avgArpu.values());
 		data.put("area", area);
 		data.put("data", series);
+		logger.debug("queryAreaARPU:" + data);
 		return data;
 	}
 	
@@ -527,6 +534,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		series.addAll(avgArppu.values());
 		data.put("area", area);
 		data.put("data", series);
+		logger.debug("queryAreaARPPU:" + data);
 		return data;
 	}
 	//处理中间数据
@@ -609,6 +617,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		series.addAll(avgArpu.values());
 		data.put("country", country);
 		data.put("data", series);
+		logger.debug("queryCountryARPU:" + data);
 		return data;
 	}
 	
@@ -640,6 +649,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		series.addAll(avgArppu.values());
 		data.put("country", country);
 		data.put("data", series);
+		logger.debug("queryCountryARPPU:" + data);
 		return data;
 	}
 	

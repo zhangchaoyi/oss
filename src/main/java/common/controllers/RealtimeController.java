@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 import java.util.Set;
+
+import org.apache.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,6 +31,7 @@ import common.utils.StringUtils;
 //@Clear(AuthInterceptor.class)
 @Before(AuthInterceptor.class)
 public class RealtimeController extends Controller {
+	private static Logger logger = Logger.getLogger(RealtimeController.class);
 	private RealtimeService realtimeService = new RealtimeServiceImpl();
 
 	@Before(GET.class)
@@ -41,6 +45,7 @@ public class RealtimeController extends Controller {
 	public void queryBeforeData() {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		Map<String, String> data = realtimeService.queryBeforeData(icons);
+		logger.debug("<RealtimeController> queryBeforeData:" + data);
 		renderJson(data);
 	}
 
@@ -49,6 +54,7 @@ public class RealtimeController extends Controller {
 	public void queryRealtimeData() {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		Map<String, String> data = realtimeService.queryRealtimeData(icons);
+		logger.debug("<RealtimeController> queryRealtimeData:" + data);
 		renderJson(data);
 	}
 
@@ -99,6 +105,7 @@ public class RealtimeController extends Controller {
 		data.put("category", category);
 		data.put("type", type.toArray());
 		data.put("data", seriesMap);
+		logger.debug("<RealtimeController> queryRealtimeInfo:" + data);
 		renderJson(data);
 	}
 }

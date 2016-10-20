@@ -7,8 +7,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import org.apache.log4j.Logger;
+
 import com.jfinal.aop.Before;
-import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
@@ -22,6 +23,7 @@ import common.utils.StringUtils;
 //@Clear(AuthInterceptor.class)
 @Before(AuthInterceptor.class)
 public class PaymentBehaviorController extends Controller {
+	private static Logger logger = Logger.getLogger(PaymentBehaviorController.class);
 	private PaymentBehaviorService paymentBehaviorService = new PaymentBehaviorServiceImpl();
 	
 	@Before(GET.class)
@@ -64,6 +66,7 @@ public class PaymentBehaviorController extends Controller {
 		data.put("header", header);
 		data.put("category", category);
 		data.put("data", seriesMap);
+		logger.debug("<PaymentBehaviorController> queryPaymentBehaviorMoney:" + data);
 		renderJson(data);
 	}
 	
@@ -117,6 +120,7 @@ public class PaymentBehaviorController extends Controller {
 		data.put("header", header);
 		data.put("category", category);
 		data.put("data", seriesMap);
+		logger.debug("<PaymentBehaviorController> queryPaymentBehaviorPeriod:" + data);
 		renderJson(data);
 	}
 	
@@ -188,6 +192,7 @@ public class PaymentBehaviorController extends Controller {
 		data.put("header", header);
 		data.put("category", category);
 		data.put("data", seriesMap);
+		logger.debug("<PaymentBehaviorController> queryPaymentBehaviorDetail:" + data);
 		renderJson(data);
 	}
 	
