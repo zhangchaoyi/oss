@@ -34,7 +34,7 @@ function iconsView() {
 $("#main-menu > li a").click(function(){
     var href = $(this).attr("href");
     if(href=="#")return;
-    $(this).attr("href",href + "?icon=" + getIcons());  
+    $(this).attr("href",href + "?icon=" + getIcons() + "&startDate=" + $("input#startDate").attr("value") + "&endDate=" + $("input#endDate").attr("value"));  
 });
 
 function showIcon(icon){

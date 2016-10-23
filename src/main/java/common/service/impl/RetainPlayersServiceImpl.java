@@ -40,6 +40,7 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 			subMap.put("sevenDayRetain", 0D);
 			subMap.put("monthRetain", 0D);
 			subMap.put("activeDevice", 0L);
+			subMap.put("addDevice", 0L);
 			sort.put(category, subMap);
 		}
 		//载入留存用户数据并计算留存率

@@ -1,3 +1,5 @@
+var startDate = "";
+var endDate = "";
 //get today date for dateselector
 //获取某一天的日期,格式 yyyy-mm-dd,参数用于当前的日期相减的数
 function getFormatDate(day){
@@ -92,13 +94,44 @@ $("#btn-filtersave").click(function(){
     }
 });
 
+//onload initial 跳转页面获取url处理icon,起始结束时间
+$(document).ready(function(){
+    var icon = GetQueryString("icon");
+    startDate = GetQueryString("startDate");
+    endDate = GetQueryString("endDate");
+    icon=(icon==null)?"apple":icon;
+    var iconArray = String(icon).split(",");
+    var htmlStr="";
+    for(var i=0;i<iconArray.length;i++){
+        if(iconArray[i]=="iOS"){
+            iconArray[i]="apple";
+        }
+        htmlStr += "<span class='fa fa-" + iconArray[i] + " icons icons-view' data-info=" + iconArray[i] + " aria-hidden='true'></span>";
+        switch(iconArray[i]){
+            case "apple":
+            $("#ios").find("input").iCheck('check');
+            break;
+            case "windows":
+            $("#wp").find("input").iCheck('check');
+            break;
+            case "android":
+            $("#and").find("input").iCheck('check');
+            break;
+        }
+    }
+
+    $("#btn-dropdownIcon").prepend(htmlStr);
+    //去除url后参数不跳转 
+    window.history.pushState({},0,window.location.pathname );
+});
+
 //onload initial
 //dateSelector
 $(function() {
     var dateRange = new pickerDateRange('date_seletor', {
         isTodayValid: true,
-        startDate: getFormatDate(6),
-        endDate: getFormatDate(0),
+        startDate: (startDate==null||startDate==""||startDate==getFormatDate(0))?getFormatDate(6):startDate,
+        endDate: (endDate==null||endDate=="")?getFormatDate(0):endDate,
         //needCompare : true,
         //isSingleDay : true,
         //shortOpr : true,
@@ -131,7 +164,7 @@ $(function() {
         // increaseArea: '-10%' // optional
     });
 
-    //左侧导航栏
+    //左侧导航栏展开 显示当前的页面
     var hrefs = $("#main-menu").find("a");
     var localPath = window.location.pathname.split("-")[0];
     for(var i=0;i<hrefs.length;i++){
@@ -151,31 +184,3 @@ $(function() {
     }
 });
 
-//onload initial
-$(document).ready(function(){
-    var icon = GetQueryString("icon");
-    icon=(icon==null)?"apple":icon;
-    var iconArray = String(icon).split(",");
-    var htmlStr="";
-    for(var i=0;i<iconArray.length;i++){
-        if(iconArray[i]=="iOS"){
-            iconArray[i]="apple";
-        }
-        htmlStr += "<span class='fa fa-" + iconArray[i] + " icons icons-view' data-info=" + iconArray[i] + " aria-hidden='true'></span>";
-        switch(iconArray[i]){
-            case "apple":
-            $("#ios").find("input").iCheck('check');
-            break;
-            case "windows":
-            $("#wp").find("input").iCheck('check');
-            break;
-            case "android":
-            $("#and").find("input").iCheck('check');
-            break;
-        }
-    }
-
-    $("#btn-dropdownIcon").prepend(htmlStr);
-    //去除url后参数不跳转 
-    window.history.pushState({},0,window.location.pathname );
-});

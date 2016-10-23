@@ -163,8 +163,13 @@ function appendTableHeader(data) {
 }
 //默认选择前七天,在留存统计中 选择前14天
 function initTimeSelector(){
-       var startDate = getFormatDate(13);
-       var endDate = getFormatDate(0);
+       var startDate = $("input#startDate").attr("value");
+       var endDate = $("input#endDate").attr("value"); 
+       if(startDate==getFormatDate(6)&&endDate==getFormatDate(0)){
+         startDate = getFormatDate(13);
+         endDate = getFormatDate(2);
+       }
+       
        $("#startDate").attr('value',startDate);
        $('#date_seletor').text(startDate + ' 至 ' + endDate);
 }
