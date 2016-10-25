@@ -112,7 +112,7 @@ public class DateUtils {
 		}		
 		return d;
 	}
-	//将时间段划分成周
+	//将时间段划分成周 Map<start,end>
 	public static Map<String, String> divideDateToWeek(String startDate, String endDate){
 		Date start = DateUtils.strToDate(startDate);
 		Date end = DateUtils.strToDate(endDate);
@@ -158,10 +158,10 @@ public class DateUtils {
 	public static void main(String args[]){
 //		System.out.println(getDateList("2016-08-01", "2016-08-10"));
 //		System.out.println(convertDate("2016-08-23"));
-//		System.out.println(divideDateToWeek("2016-09-13","2016-09-14"));
+//		System.out.println(divideDateToWeek("2016-09-13","2016-09-13"));
 //		System.out.println(getMonthList("2016-08","2016-11"));
-//		System.out.println(monthToStr(DateUtils.strToDate("2016-09-13")));
-		System.out.println(getTimeFromSecond(200000));
+		System.out.println(monthToStr(DateUtils.strToDate("2016-10-13")));
+//		System.out.println(getTimeFromSecond(200000));
 	}
 	
 }

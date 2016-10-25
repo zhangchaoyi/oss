@@ -2,6 +2,7 @@ package common.controllers.payment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +66,7 @@ public class PaymentTransformController extends Controller{
 		renderJson(data);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@Before(POST.class)
 	@ActionKey("/api/payment/transform/rate")
 	public void queryPaymentRate() {
@@ -88,9 +90,11 @@ public class PaymentTransformController extends Controller{
 			break;
 		case "wpr":
 			header.addAll(Arrays.asList("日期","付费玩家","活跃玩家","周付费率"));
-			Map<String, Object> wpr = paymentTransformService.queryWeekPaidRate(categories, icons, startDate, endDate);
+			Map<String, Object> wpr = paymentTransformService.queryWeekPaidRate(icons, startDate, endDate);
 			seriesMap.put("周付费率", wpr.get("wpr"));
 			data.put("tableData", wpr.get("tableData"));
+			categories.clear();
+			categories.addAll((Collection<? extends String>) wpr.get("categories"));
 			break;
 		case "mpr":
 			categories = DateUtils.getMonthList(startDate, endDate);

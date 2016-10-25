@@ -1,4 +1,4 @@
-package common.service.impl;
+ package common.service.impl;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,7 +11,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import common.model.Login;
-import common.service.OnlineService;
+import common.service.OnlineAnalysisService;
 
 /**
  * 在线分析页
@@ -19,21 +19,24 @@ import common.service.OnlineService;
  * @author chris
  *
  */
-public class OnlineServiceImpl implements OnlineService {
-	private static Logger logger = Logger.getLogger(OnlineServiceImpl.class);
+public class OnlineAnalysisServiceImpl implements OnlineAnalysisService {
+	private static Logger logger = Logger.getLogger(OnlineAnalysisServiceImpl.class);
 
 	// 时段分布
-	public List<Long> queryPeriodDistribution(String icons, String startDate, String endDate) {
+	public List<Long> queryPeriodDistribution(int days, String icons, String startDate, String endDate) {
 		String sql = "select hour(A.login_time)hour,count(*)count from (select openudid,login_time from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("
-				+ icons + ") group by hour;";
+				+ icons + ") group by hour";
 		List<Login> distribution = Login.dao.find(sql, startDate, endDate);
 		// init
 		Map<Integer, Long> sort = new LinkedHashMap<Integer, Long>();
 		for (int i = 0; i < 24; i++) {
 			sort.put(i, 0L);
 		}
+		
 		for (Login l : distribution) {
-			sort.put(l.getInt("hour"), l.getLong("count"));
+			long count = l.getLong("count");
+			count = count/(long)days;
+			sort.put(l.getInt("hour"), count);
 		}
 		List<Long> data = new ArrayList<Long>();
 		data.addAll(sort.values());

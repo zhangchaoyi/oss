@@ -157,7 +157,7 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		return data;
 	}
 	//周付费率
-	public Map<String, Object> queryWeekPaidRate(List<String>categories, String icons, String startDate, String endDate) {
+	public Map<String, Object> queryWeekPaidRate(String icons, String startDate, String endDate) {
 		Map<String, String> week = DateUtils.divideDateToWeek(startDate, endDate);
 		Map<String, PaidRate> sort = new LinkedHashMap<String, PaidRate>();
 		
@@ -208,7 +208,7 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 			subList.addAll(Arrays.asList(entry.getKey(), String.valueOf(paidCount), String.valueOf(activeCount), paidRate+"%"));
 			tableData.add(subList);
 		}
-		categories.clear();
+		List<String> categories = new ArrayList<String>(); 
 		categories.addAll(sort.keySet());
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("wpr", rate);
@@ -227,8 +227,8 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		String aSql = "select DATE_FORMAT(A.date,'%Y-%m') month, count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(login_time,'%Y-%m') between ? and ? and B.os in (" + icons + ") group by month";
 		
 		List<String> month = categories;
-		List<LogCharge> paid = LogCharge.dao.find(pSql, startDate, endDate);
-		List<Login> active = Login.dao.find(aSql, startDate, endDate);
+		List<LogCharge> paid = LogCharge.dao.find(pSql, start, end);
+		List<Login> active = Login.dao.find(aSql, start, end);
 		
 		//init
 		Map<String, PaidRate> sort = new HashMap<String, PaidRate>();
