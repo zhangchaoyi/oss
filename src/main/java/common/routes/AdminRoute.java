@@ -6,6 +6,9 @@ import com.jfinal.config.Routes;
 import common.controllers.DashboardController;
 import common.controllers.LoginController;
 import common.controllers.RealtimeController;
+import common.controllers.loss.LossController;
+import common.controllers.online.AnalysisController;
+import common.controllers.online.HabitsController;
 import common.controllers.payment.PaymentBehaviorController;
 import common.controllers.payment.PaymentDataController;
 import common.controllers.payment.PaymentRankController;
@@ -33,10 +36,13 @@ public class AdminRoute extends Routes {
 		add("/equipment", EquipmentController.class, "/WEB-INF/views/players");
 		add("/accdetail", AccdetailController.class, "/WEB-INF/views/players");
 		add("/realtime", RealtimeController.class, "/WEB-INF/views");
-		add("/paymentdata", PaymentDataController.class, "/WEB-INF/views/paid");
-		add("/paymentbehavior", PaymentBehaviorController.class, "/WEB-INF/views/paid");
-		add("/paymenttransform", PaymentTransformController.class, "/WEB-INF/views/paid");
-		add("/paymentrank", PaymentRankController.class, "/WEB-INF/views/paid");
+		add("/paymentData", PaymentDataController.class, "/WEB-INF/views/paid");
+		add("/paymentBehavior", PaymentBehaviorController.class, "/WEB-INF/views/paid");
+		add("/paymentTransform", PaymentTransformController.class, "/WEB-INF/views/paid");
+		add("/paymentRank", PaymentRankController.class, "/WEB-INF/views/paid");
+		add("/onlineAnalysis", AnalysisController.class, "/WEB-INF/views/online");
+		add("/onlineHabit", HabitsController.class, "/WEB-INF/views/online");
+		add("/loss", LossController.class, "/WEB-INF/views/loss");
 	}
 
 }

@@ -36,7 +36,7 @@
         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">admin <span class="caret"></span></button> 
         <ul class="dropdown-menu user-bars" aria-labelledby="dropdownMenu1"> 
          <li> <a href="#">Action</a></li> 
-         <li> <a href="#">Another action</a></li> 
+         <li> <a href="#">Action1</a></li> 
         </ul> 
        </div> 
        <div class="glyphicon glyphicon-user" aria-hidden="true" id="login-user"></div> 
@@ -109,7 +109,7 @@
         <li> <a href="#"> <i class="fa fa-rocket "></i>关卡分析</a> </li> 
         <li> <a href="#"> <i class="fa fa-flag "></i>等级分析</a> </li> 
         <li> <a href="#"> <i class="fa fa-bitcoin "></i>虚拟币统计</a> </li> 
-       </ul> </li>
+       </ul> </li> 
       <li> <a href="#"> <i class="fa fa-file "></i>版本分析</a> </li> 
       <li> <a href="#"> <i class="fa fa-cog "></i>自定义事件 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
@@ -140,10 +140,10 @@
        </ul> </li> 
      </ul> 
     </div> 
-   </nav> retain-equipment
+   </nav> 
    <!-- /. NAV SIDE --> 
    <div id="page-wrapper" style="overflow-x: hidden;overflow-y:hidden;"> 
-    <div id="page-inner" class="fix-style-v1"> 
+    <div id="page-inner"> 
      <div class="row" id="top-row"> 
       <div class="filter-tool"> 
        <div class="date-bar"> 
@@ -154,10 +154,10 @@
          </div> 
          <div id="datePicker"></div> 
         </div> 
-        <div class="time-title"> 
+        <div class="time-title active"> 
          <a id="aToday" onclick="dateSelected(this)">今日</a> 
          <a id="aYesterday" onclick="dateSelected(this)">昨日</a> 
-         <a id="aRecent7Days" onclick="dateSelected(this)">近7日</a> 
+         <a id="aRecent7Days" onclick="dateSelected(this)" class="selected">近7日</a> 
          <a id="aRecent30Days" onclick="dateSelected(this)">近30日</a> 
          <a id="aRecent90Days" onclick="dateSelected(this)">近90日</a> 
         </div> 
@@ -236,7 +236,7 @@
              </div> 
             </div> 
             <div class="modal-footer"> 
-             <button type="button" class="btn btn-primary" id="btn-filtersave">保存</button> 
+             <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn-filtersave">保存</button> 
              <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button> 
             </div> 
            </div> 
@@ -244,13 +244,7 @@
          </div> 
         </div> 
        </div> 
-       <div class="nav-tab effective">
-         <ul class="nav nav-pills"> 
-           <li class="active"><a href="/oss/players/effective" ><span>有效玩家</span></a></li> 
-           <li class=""><a href="/oss/players/effective-distributed" ><span>有效玩家分布</span></a> </li> 
-         </ul> 
-       </div>
-      </div>   
+      </div> 
      </div> 
      <!-- /. ROW --> 
      <div class="row" id="explain-row"> 
@@ -260,17 +254,17 @@
          <span class="explain-heading">指标说明</span> 
          <button class="btn btn-2 btn-2c" id="btn-explain-switch">关闭</button> 
         </div> 
-        <div class="panel-body fix-explain-box" id="explain-panel"> 
+        <div class="panel-body" id="explain-panel" style="height:inherit"> 
          <div class="explain-content-panel cut"> 
           <div class="explain-content-box"> 
            <div class="explain-content-row"> 
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              日有效玩家：
+              启动次数时段分布:
              </dt> 
              <dd>
-              统计所选时期内，每日进行至少3局的玩家（新增玩家/活跃玩家）数量。
+              统计所选时期内，每个时段内的总启动次数，如果为多天的话，则为这几天当前时段的均值。
              </dd> 
             </dl> 
            </div> 
@@ -278,24 +272,13 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              7日有效玩家：
+              相邻启动间隔分布：
              </dt> 
              <dd>
-              统计所选时期内，累计登陆游戏至少2天，进行至少6局的玩家（新增玩家/活跃玩家）数量。
+              统计所选时期内，有登陆行为的玩家2次间隔时间分布中的玩家数量情况。
              </dd> 
             </dl> 
-           </div>
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              30日有效玩家：
-             </dt> 
-             <dd>
-              统计所选时期内，累计登陆游戏至少5天，进行至少15局的玩家（新增玩家/活跃玩家）数量。
-             </dd> 
-            </dl> 
-           </div> 
+           </div>  
           </div> 
          </div> 
         </div> 
@@ -306,24 +289,36 @@
      <div class="row" id="data-first"> 
       <div class="panel panel-default"> 
        <div class="panel-heading"> 
-        <span class="data-first-panel-heading">有效玩家</span>
+        <span class="data-first-panel-heading">启动次数分析</span>
         <button class="btn btn-2 btn-2c" id="btn-first-data-panel-switch">关闭</button> 
-       </div>
+       </div> 
        <div class="panel-body"> 
-          <ul class="nav nav-tabs effective"> 
-           <li class="active"> <a data-toggle="tab" data-info="add-players">新增玩家</a></li> 
-           <li class=""> <a data-toggle="tab" data-info="active-players">活跃玩家</a></li>
-          </ul>
-          <div class="tab-content"> 
-              <div id="effective-chart" style="width: 100%;height:400px;display:inline;position:relative;float:left"></div> 
-              <div class="table-zoom-first">
-               <table id="effective-table" class="hover stripe row-border"></table>  
-              </div>
-          </div>
-            
+        <ul class="nav nav-tabs start-times-analysis-tab"> 
+         <li class="active"> <a data-toggle="tab" data-info="distributed-period">时段分布</a></li> 
+         <li class=""> <a data-toggle="tab" data-info="start-times">启动次数</a></li>
+        </ul> 
+        <div class="tab-content">
+          <div id="start-time-analysis-chart" style="width:100%;height:400px;display:inline;float:left"></div> 
+        </div> 
        </div> 
       </div> 
-     </div>     
+     </div>
+     <div class="row" id="data-third"> 
+      <div class="panel panel-default"> 
+       <div class="panel-heading"> 
+        <span class="data-first-panel-heading">相邻启动间隔分布</span>
+        <button class="btn btn-2 btn-2c" id="btn-third-data-panel-switch">关闭</button> 
+       </div> 
+       <div class="panel-body"> 
+        <div class="tab-content">
+          <div id="start-period-chart" style="width:100%;height:400px;display:inline;float:left"></div> 
+          <div class="table-zoom-third"> 
+           <table id="data-table-start-period" class="hover stripe row-border"></table> 
+          </div>              
+        </div> 
+       </div> 
+      </div> 
+     </div>
      <div class="row"> 
       <div class="alert alert-warning fade in" data-dismiss="alert" id="platform-selected"> 
        <a href="#" class="close" data-dismiss="alert">&times;</a> 
@@ -360,7 +355,7 @@
   <script src="http://oss.koogame.cn/oss/js/dateselector/dateRange.js?v=0.1"></script> 
   <script src="http://oss.koogame.cn/oss/js/dateselector/monthPicker.js?v=0.1"></script> 
   <script src="http://oss.koogame.cn/oss/js/checkbox/icheck.js?v=0.1"></script>
-  <script src="http://oss.koogame.cn/oss/js/common.js?v=0.1"></script>
-  <script src="http://oss.koogame.cn/oss/js/effective.js?v=0.1"></script>
+  <script src="http://oss.koogame.cn/oss/js/common.js?v=0.1"></script> 
+  <script src="http://oss.koogame.cn/oss/js/analysis.js?v=0.1"></script>
  </body>
 </html>

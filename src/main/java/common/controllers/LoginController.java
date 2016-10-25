@@ -9,7 +9,6 @@ import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 import common.interceptor.*;
-import common.utils.DateUtils;
 
 @Clear(AuthInterceptor.class)
 public class LoginController extends Controller {
