@@ -137,7 +137,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
 });
 
 function configTable(data,dataTable) {
-    appendTableHeader(data);
+    appendTableHeader(data,dataTable);
     var tableData = dealTableData(data);
 
     $(dataTable).dataTable().fnClearTable();  
@@ -186,13 +186,11 @@ function dealTableData(data) {
     return dataArray;
 }
 
-function appendTableHeader(data){
-    console.log(data);
+function appendTableHeader(data,dataTable) {
     var header = data.header;
-    console.log(header);
     var txt = "";
 
-    var tableId = spTable;
+    var tableId = dataTable;
 
     for (var i = 0; i < header.length; i++) {
         txt = txt + "<th><span>" + header[i] + "</span></th>";

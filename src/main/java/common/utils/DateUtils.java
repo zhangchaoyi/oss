@@ -159,9 +159,10 @@ public class DateUtils {
 //		System.out.println(getDateList("2016-08-01", "2016-08-10"));
 //		System.out.println(convertDate("2016-08-23"));
 //		System.out.println(divideDateToWeek("2016-09-13","2016-09-13"));
-//		System.out.println(getMonthList("2016-08","2016-11"));
-		System.out.println(monthToStr(DateUtils.strToDate("2016-10-13")));
+//		System.out.println(getMonthList("2016-08-11","2016-11-10"));
+//		System.out.println(monthToStr(DateUtils.strToDate("2016-10-13")));
 //		System.out.println(getTimeFromSecond(200000));
+		System.out.println(strToMonth("2016-08-12"));
 	}
 	
 }

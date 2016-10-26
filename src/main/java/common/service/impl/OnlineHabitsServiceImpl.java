@@ -60,7 +60,8 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 			// 每玩家平均游戏时长 --分钟
 			for (Logout l : qTime) {
 				String date = l.getStr("date");
-				long onlineTime = l.getBigDecimal("online_time")==null?0L:l.getBigDecimal("online_time").longValue();
+				long onlineTime = l.getBigDecimal("online_time") == null ? 0L
+						: l.getBigDecimal("online_time").longValue();
 				long ap = l.getLong("ap");
 				double avgTime = 0.0;
 				if (ap != 0) {
@@ -179,29 +180,87 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		logger.debug("queryAddpWeekAvgGP:" + data);
 		return data;
 	}
-	
+
 	// 新增玩家月平均时长和次数
-	public Map<String, Object> queryAddpMonthAvgGP(List<String>categories, String icons, String startDate, String endDate) {
+	public Map<String, Object> queryAddpMonthAvgGP(List<String> categories, String icons, String startDate,
+			String endDate) {
 		String start = DateUtils.monthToStr(DateUtils.strToDate(startDate));
 		String end = DateUtils.monthToStr(DateUtils.strToDate(endDate));
-		
-		String timesSql = "select DATE_FORMAT(A.date_time,'%Y-%m')month,count(*)count,count(distinct A.account)ap from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.date_time,'%Y-%m') between ? and ? and B.os in (" + icons + ")) A join login B on A.account = B.account and A.date_time = B.date group by month;";
-		String timeSql = "select DATE_FORMAT(A.date_time,'%Y-%m')month,sum(B.online_time)online_time,count(distinct A.account)ap from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.date_time,'%Y-%m') between ? and ? and B.os in (" + icons + ")) A join logout B on A.account = B.account and A.date_time = B.date group by month;";
-	
+
+		String timesSql = "select DATE_FORMAT(A.date_time,'%Y-%m')month,count(*)count,count(distinct A.account)ap from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.date_time,'%Y-%m') between ? and ? and B.os in ("
+				+ icons + ")) A join login B on A.account = B.account and A.date_time = B.date group by month;";
+		String timeSql = "select DATE_FORMAT(A.date_time,'%Y-%m')month,sum(B.online_time)online_time,count(distinct A.account)ap from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.date_time,'%Y-%m') between ? and ? and B.os in ("
+				+ icons + ")) A join logout B on A.account = B.account and A.date_time = B.date group by month;";
+
+		List<Login> qTimes = Login.dao.find(timesSql, start, end);
+		List<Logout> qTime = Logout.dao.find(timeSql, start, end);
 		List<String> month = categories;
-		
+
+		// Map<month,Map<type,value>>
 		Map<String, Map<String, Double>> sort = new LinkedHashMap<String, Map<String, Double>>();
-		//init
-		for(String m : month) {
-			Map<String, Double> subMap = new HashMap<String, Double>();
-			subMap.put("times", 0.0);
-			subMap.put("time", 0.0);
+		try {
+			// init
+			for (String m : month) {
+				Map<String, Double> subMap = new HashMap<String, Double>();
+				subMap.put("times", 0.0);
+				subMap.put("time", 0.0);
+				sort.put(m, subMap);
+			}
+			// 每玩家平均游戏次数
+			for (Login l : qTimes) {
+				String m = l.getStr("month");
+				long count = l.getLong("count");
+				long ap = l.getLong("ap");
+				double avgTimes = 0.0;
+				if (ap != 0) {
+					avgTimes = (double) count / (double) ap;
+					BigDecimal bg = new BigDecimal(avgTimes);
+					avgTimes = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				}
+				Map<String, Double> subMap = sort.get(m);
+				subMap.put("times", avgTimes);
+				sort.put(m, subMap);
+			}
+			// 每玩家平均游戏时长 --分钟
+			for (Logout l : qTime) {
+				String m = l.getStr("month");
+				long onlineTime = l.getBigDecimal("online_time").longValue();
+				long ap = l.getLong("ap");
+				double avgTime = 0.0;
+				if(ap!=0){
+					avgTime = (double)onlineTime/(double)(60*ap);
+					BigDecimal bg = new BigDecimal(avgTime);
+					avgTime = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				}
+				Map<String, Double> subMap = sort.get(m);
+				subMap.put("time", avgTime);
+				sort.put(m, subMap);
+			}
+		} catch (Exception e) {
+			logger.debug("Error queryAddpMonthAvgGP:", e);
+		}
+		List<Double> times = new ArrayList<Double>();
+		List<Double> time = new ArrayList<Double>();
+		for(Map.Entry<String, Map<String, Double>> entry : sort.entrySet()) {
+			for(Map.Entry<String, Double> subEntry : entry.getValue().entrySet()) {
+				switch(subEntry.getKey()) {
+				case "times":
+					times.add(subEntry.getValue());
+					break;
+				case "time":
+					time.add(subEntry.getValue());
+					break;
+				}
+			}
 		}
 		
 		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("times", times);
+		data.put("time", time);
+		logger.debug("queryAddpMonthAvgGP:" + data);
 		return data;
 	}
-	
+
 	// 活跃玩家日平均时长和次数
 	public Map<String, Object> queryActivepDayAvgGP(List<String> categories, String icons, String startDate,
 			String endDate) {
@@ -240,7 +299,8 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 			// 每玩家平均游戏时长 --分钟
 			for (Logout l : qTime) {
 				String date = l.getStr("date");
-				long onlineTime = l.getBigDecimal("online_time")==null?0L:l.getBigDecimal("online_time").longValue();
+				long onlineTime = l.getBigDecimal("online_time") == null ? 0L
+						: l.getBigDecimal("online_time").longValue();
 				long ap = l.getLong("ap");
 				double avgTime = 0.0;
 				if (ap != 0) {
@@ -281,8 +341,10 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	// 活跃玩家周平均时长和次数
 	public Map<String, Object> queryActivepWeekAvgGP(String icons, String startDate, String endDate) {
 		Map<String, String> week = DateUtils.divideDateToWeek(startDate, endDate);
-		String timesSql = "select count(*)count,count(distinct A.account)ap from (select account,openudid,date from login where date between ? and ? ) A join device_info B on A.openudid = B.openudid where B.os in (" + icons + ")";
-		String timeSql = "select sum(A.online_time)online_time,count(distinct A.account)ap from (select account,online_time,date from logout where date between ? and ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ")";
+		String timesSql = "select count(*)count,count(distinct A.account)ap from (select account,openudid,date from login where date between ? and ? ) A join device_info B on A.openudid = B.openudid where B.os in ("
+				+ icons + ")";
+		String timeSql = "select sum(A.online_time)online_time,count(distinct A.account)ap from (select account,online_time,date from logout where date between ? and ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("
+				+ icons + ")";
 
 		Map<String, Map<String, Double>> sort = new LinkedHashMap<String, Map<String, Double>>();
 
@@ -357,6 +419,83 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		logger.debug("queryActivepWeekAvgGP:" + data);
 		return data;
 	}
+
+	// 活跃玩家月平均时长和次数
+	public Map<String, Object> queryActivepMonthAvgGP(List<String>categories, String icons, String startDate, String endDate) {
+		String start = DateUtils.monthToStr(DateUtils.strToDate(startDate));
+		String end = DateUtils.monthToStr(DateUtils.strToDate(endDate));
+
+		String timesSql = "select A.month,count(*)count,count(distinct A.account)ap from (select account,openudid,DATE_FORMAT(date,'%Y-%m')month from login where DATE_FORMAT(date,'%Y-%m') between ? and ? ) A join device_info B on A.openudid = B.openudid where B.os in (" + icons + ") group by A.month;";
+		String timeSql = "select A.month,sum(A.online_time)online_time,count(distinct A.account)ap from (select account,online_time,DATE_FORMAT(date,'%Y-%m')month from logout where DATE_FORMAT(date,'%Y-%m') between ? and ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") group by A.month;";
+		
+		List<Login> qTimes = Login.dao.find(timesSql, start, end);
+		List<Logout> qTime = Logout.dao.find(timeSql, start, end);
+		List<String> month = categories;
+
+		// Map<month,Map<type,value>>
+		Map<String, Map<String, Double>> sort = new LinkedHashMap<String, Map<String, Double>>();
+		try {
+			// init
+			for (String m : month) {
+				Map<String, Double> subMap = new HashMap<String, Double>();
+				subMap.put("times", 0.0);
+				subMap.put("time", 0.0);
+				sort.put(m, subMap);
+			}
+			// 每玩家平均游戏次数
+			for (Login l : qTimes) {
+				String m = l.getStr("month");
+				long count = l.getLong("count");
+				long ap = l.getLong("ap");
+				double avgTimes = 0.0;
+				if (ap != 0) {
+					avgTimes = (double) count / (double) ap;
+					BigDecimal bg = new BigDecimal(avgTimes);
+					avgTimes = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				}
+				Map<String, Double> subMap = sort.get(m);
+				subMap.put("times", avgTimes);
+				sort.put(m, subMap);
+			}
+			// 每玩家平均游戏时长 --分钟
+			for (Logout l : qTime) {
+				String m = l.getStr("month");
+				long onlineTime = l.getBigDecimal("online_time").longValue();
+				long ap = l.getLong("ap");
+				double avgTime = 0.0;
+				if(ap!=0){
+					avgTime = (double)onlineTime/(double)(60*ap);
+					BigDecimal bg = new BigDecimal(avgTime);
+					avgTime = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				}
+				Map<String, Double> subMap = sort.get(m);
+				subMap.put("time", avgTime);
+				sort.put(m, subMap);
+			}
+		} catch (Exception e) {
+			logger.debug("Error queryActivepMonthAvgGP:", e);
+		}
+		List<Double> times = new ArrayList<Double>();
+		List<Double> time = new ArrayList<Double>();
+		for(Map.Entry<String, Map<String, Double>> entry : sort.entrySet()) {
+			for(Map.Entry<String, Double> subEntry : entry.getValue().entrySet()) {
+				switch(subEntry.getKey()) {
+				case "times":
+					times.add(subEntry.getValue());
+					break;
+				case "time":
+					time.add(subEntry.getValue());
+					break;
+				}
+			}
+		}
+		
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("times", times);
+		data.put("time", time);
+		logger.debug("queryActivepMonthAvgGP:" + data);
+		return data;
+	}
 	
 	// 付费玩家日平均时长和次数
 	public Map<String, Object> queryPpDayAvgGP(List<String> categories, String icons, String startDate,
@@ -396,7 +535,8 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 			// 每玩家平均游戏时长 --分钟
 			for (Logout l : qTime) {
 				String date = l.getStr("date");
-				long onlineTime = l.getBigDecimal("online_time")==null?0L:l.getBigDecimal("online_time").longValue();
+				long onlineTime = l.getBigDecimal("online_time") == null ? 0L
+						: l.getBigDecimal("online_time").longValue();
 				long pp = l.getLong("pp");
 				double avgTime = 0.0;
 				if (pp != 0) {
@@ -433,13 +573,15 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		logger.debug("queryPpDayAvgGP:" + data);
 		return data;
 	}
-	
+
 	// 付费玩家周平均时长和次数
 	public Map<String, Object> queryPpWeekAvgGP(String icons, String startDate, String endDate) {
 		Map<String, String> week = DateUtils.divideDateToWeek(startDate, endDate);
-		String timesSql = "select count(*)count,count(distinct A.account)pp from (select distinct A.account,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ")) A join login B on A.account = B.account and A.date = B.date";
-		String timeSql = "select sum(B.online_time)online_time,count(distinct A.account)pp from (select distinct A.account,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ")) A join logout B on A.account = B.account and A.date = B.date;";
-		
+		String timesSql = "select count(*)count,count(distinct A.account)pp from (select distinct A.account,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in ("
+				+ icons + ")) A join login B on A.account = B.account and A.date = B.date";
+		String timeSql = "select sum(B.online_time)online_time,count(distinct A.account)pp from (select distinct A.account,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in ("
+				+ icons + ")) A join logout B on A.account = B.account and A.date = B.date;";
+
 		Map<String, Map<String, Double>> sort = new LinkedHashMap<String, Map<String, Double>>();
 
 		try {
@@ -511,6 +653,83 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		data.put("time", time);
 		data.put("categories", categories);
 		logger.debug("queryPpWeekAvgGP:" + data);
+		return data;
+	}
+	
+	// 付费玩家月平均时长和次数
+	public Map<String, Object> queryPpMonthAvgGP(List<String>categories, String icons, String startDate, String endDate) {
+		String start = DateUtils.monthToStr(DateUtils.strToDate(startDate));
+		String end = DateUtils.monthToStr(DateUtils.strToDate(endDate));
+
+		String timesSql = "select DATE_FORMAT(A.date,'%Y-%m')month,count(*)count,count(distinct A.account)pp from (select distinct A.account,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m') between ? and ? and C.os in (" + icons + ")) A join login B on A.account = B.account and A.date = B.date group by month";
+		String timeSql = "select DATE_FORMAT(A.date,'%Y-%m')month,sum(B.online_time)online_time,count(distinct A.account)pp from (select distinct A.account,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m') between ? and ? and C.os in (" + icons + ")) A join logout B on A.account = B.account and A.date = B.date group by month;";
+		
+		List<Login> qTimes = Login.dao.find(timesSql, start, end);
+		List<Logout> qTime = Logout.dao.find(timeSql, start, end);
+		List<String> month = categories;
+
+		// Map<month,Map<type,value>>
+		Map<String, Map<String, Double>> sort = new LinkedHashMap<String, Map<String, Double>>();
+		try {
+			// init
+			for (String m : month) {
+				Map<String, Double> subMap = new HashMap<String, Double>();
+				subMap.put("times", 0.0);
+				subMap.put("time", 0.0);
+				sort.put(m, subMap);
+			}
+			// 每玩家平均游戏次数
+			for (Login l : qTimes) {
+				String m = l.getStr("month");
+				long count = l.getLong("count");
+				long pp = l.getLong("pp");
+				double avgTimes = 0.0;
+				if (pp != 0) {
+					avgTimes = (double) count / (double) pp;
+					BigDecimal bg = new BigDecimal(avgTimes);
+					avgTimes = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				}
+				Map<String, Double> subMap = sort.get(m);
+				subMap.put("times", avgTimes);
+				sort.put(m, subMap);
+			}
+			// 每玩家平均游戏时长 --分钟
+			for (Logout l : qTime) {
+				String m = l.getStr("month");
+				long onlineTime = l.getBigDecimal("online_time").longValue();
+				long pp = l.getLong("pp");
+				double avgTime = 0.0;
+				if(pp!=0){
+					avgTime = (double)onlineTime/(double)(60*pp);
+					BigDecimal bg = new BigDecimal(avgTime);
+					avgTime = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				}
+				Map<String, Double> subMap = sort.get(m);
+				subMap.put("time", avgTime);
+				sort.put(m, subMap);
+			}
+		} catch (Exception e) {
+			logger.debug("Error queryPpMonthAvgGP:", e);
+		}
+		List<Double> times = new ArrayList<Double>();
+		List<Double> time = new ArrayList<Double>();
+		for(Map.Entry<String, Map<String, Double>> entry : sort.entrySet()) {
+			for(Map.Entry<String, Double> subEntry : entry.getValue().entrySet()) {
+				switch(subEntry.getKey()) {
+				case "times":
+					times.add(subEntry.getValue());
+					break;
+				case "time":
+					time.add(subEntry.getValue());
+					break;
+				}
+			}
+		}
+		
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("times", times);
+		data.put("time", time);
+		logger.debug("queryPpMonthAvgGP:" + data);
 		return data;
 	}
 }

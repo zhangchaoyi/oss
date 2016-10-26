@@ -1,5 +1,7 @@
 package common.controllers.online;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -47,6 +49,8 @@ public class HabitsController extends Controller{
 		//保存chart中数据
 		Map<String, Object> seriesMap = new LinkedHashMap<String, Object>();
 		List<String> categories = DateUtils.getDateList(startDate, endDate);
+		List<String> header = new ArrayList<String>();
+		header.addAll(Arrays.asList("日期", "每玩家游戏次数", "每玩家游戏时长(分钟)"));
 		
 		switch(playerTag) {
 		case "add-players":
@@ -64,6 +68,10 @@ public class HabitsController extends Controller{
 				categories.addAll((Collection<? extends String>) addpAvgW.get("categories"));
 				break;
 			case "month":
+				categories = DateUtils.getMonthList(startDate, endDate);
+				Map<String, Object> addAvgM = ohs.queryAddpMonthAvgGP(categories, icons, startDate, endDate);
+				seriesMap.put("每玩家游戏次数", addAvgM.get("times"));
+				seriesMap.put("每玩家游戏时长(分钟)", addAvgM.get("time"));
 				break;
 			}
 			break;
@@ -82,6 +90,10 @@ public class HabitsController extends Controller{
 				categories.addAll((Collection<? extends String>) activepAvgW.get("categories"));
 				break;
 			case "month":
+				categories = DateUtils.getMonthList(startDate, endDate);
+				Map<String, Object> activeAvgM = ohs.queryActivepMonthAvgGP(categories, icons, startDate, endDate);
+				seriesMap.put("每玩家游戏次数", activeAvgM.get("times"));
+				seriesMap.put("每玩家游戏时长(分钟)", activeAvgM.get("time"));
 				break;
 			}
 			break;
@@ -100,6 +112,10 @@ public class HabitsController extends Controller{
 				categories.addAll((Collection<? extends String>) ppAvgW.get("categories"));
 				break;
 			case "month":
+				categories = DateUtils.getMonthList(startDate, endDate);
+				Map<String, Object> ppAvgM = ohs.queryPpMonthAvgGP(categories, icons, startDate, endDate);
+				seriesMap.put("每玩家游戏次数", ppAvgM.get("times"));
+				seriesMap.put("每玩家游戏时长(分钟)", ppAvgM.get("time"));
 				break;
 			}
 			break;
@@ -110,6 +126,7 @@ public class HabitsController extends Controller{
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
+		data.put("header", header);
 		logger.debug("<HabitsController> queryAvgGP:" + data);
 		renderJson(data);
 	}
