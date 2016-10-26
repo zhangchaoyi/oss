@@ -115,7 +115,6 @@ public class PaymentBehaviorController extends Controller {
 		}
 		
 		Set<String> type = seriesMap.keySet();
-		data.put("table", "period");
 		data.put("type", type.toArray());
 		data.put("header", header);
 		data.put("category", category);
@@ -187,7 +186,6 @@ public class PaymentBehaviorController extends Controller {
 		}
 		
 		Set<String> type = seriesMap.keySet();
-		data.put("table", "detail");
 		data.put("type", type.toArray());
 		data.put("header", header);
 		data.put("category", category);

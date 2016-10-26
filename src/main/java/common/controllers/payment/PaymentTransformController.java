@@ -56,7 +56,6 @@ public class PaymentTransformController extends Controller{
 		Set<String> type = seriesMap.keySet();
 		data.put("chartType", "line");
 		data.put("header", header);
-		data.put("table", "apa");
 		data.put("tableData", aPA.get("tableData"));
 		category.put("日期", categories);
 		data.put("type", type.toArray());
@@ -108,7 +107,6 @@ public class PaymentTransformController extends Controller{
 		Set<String> type = seriesMap.keySet();
 		data.put("chartType", "line");
 		data.put("header", header);
-		data.put("table", "rate");
 		category.put("日期", categories);
 		data.put("type", type.toArray());
 		data.put("category", category);
@@ -150,7 +148,6 @@ public class PaymentTransformController extends Controller{
 		Set<String> type = seriesMap.keySet();
 		data.put("chartType", "bar");
 		data.put("header", header);
-		data.put("table", "detail");
 		
 		data.put("type", type.toArray());
 		data.put("category", category);

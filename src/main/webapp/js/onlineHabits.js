@@ -21,6 +21,7 @@ function loadAvgGamePeriodData(playerTag,tag) {
     function(data, status) {
         configChart(data, aptChart, "aptChart");
         configTable(data, aptTable);
+        dealAvgNote(tag, data);
     });
 }
 
@@ -190,6 +191,50 @@ function appendTableHeader(data,dataTable) {
         return;
     }
     $(tableId).append("<thead><tr>" + txt + "</tr></thead>");
+}
+
+function dealAvgNote(tag,data) {
+	var type = data.type;
+	var categories;
+	var timesSum = 0.0;
+	var timeSum = 0.0;
+	var timesAvg = 0.0;
+	var timeAvg = 0.0;
+
+    for (var key in data.category) {
+        categories = data.category[key];
+    }
+    var length = categories.length;
+    var serie = data.data;
+    for (var i = 0; i < length; i++) {
+        for (var j = 0; j < type.length; j++) {   
+            if(type[j]=="每玩家游戏次数"){
+            	timesSum += parseFloat(serie[type[j]][i]);
+            }else{
+            	timeSum += parseFloat(serie[type[j]][i]);
+            }
+        }
+    }
+    if(length!=0){
+    	timesAvg = (timesSum/length).toFixed(2);
+    	timeAvg = (timeSum/length).toFixed(2);
+    }
+    $("#avg-times").text(timesAvg);
+    $("#avg-time").text(timeAvg);
+
+	var dateTxt = "";
+	switch(tag){
+		case "day":
+		dateTxt = "日";
+		break;
+		case "week":
+		dateTxt = "周";
+		break
+		case "month":
+		dateTxt = "月";
+		break;
+	}
+	$("div#avg-note > span > span.per-date").text(dateTxt);
 }
 
 $("#btn-explain-up").click(function(){

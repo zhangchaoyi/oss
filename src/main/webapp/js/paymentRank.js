@@ -94,7 +94,6 @@ function configTable(data) {
 
 function configDetailChart(data, info) {
     var recData = data.data;
-    console.log(recData);
     var type = "";
     switch(info){
         case "time":

@@ -56,23 +56,12 @@ function loadFdData(tag, subTag) {
     });
 }
 
-function appendTableHeader(data){
+function appendTableHeader(data,dataTable){
     var header = data.header;
     var tableType = data.table;
     var txt = "";
 
-    var tableId = "";
-    switch(tableType){
-        case "rank":
-        tableId = "#data-table-rank-paymentBehavior";
-        break;
-        case "period":
-        tableId = "#data-table-period-paymentBehavior";
-        break;
-        case "detail":
-        tableId = "#data-table-fp-details";
-        break;
-    }
+    var tableId = dataTable;
 
     for (var i = 0; i < header.length; i++) {
         txt = txt + "<th><span>" + header[i] + "</span></th>";
@@ -266,7 +255,7 @@ function configChart(data, chart, chartName) {
 }
 
 function configTable(data,dataTable) {
-    appendTableHeader(data);
+    appendTableHeader(data,dataTable);
     var tableData;
     if(dataTable==rankTable){
         tableData = dealTableData(data,false);

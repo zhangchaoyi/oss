@@ -59,23 +59,12 @@ function loadDetailData(tag) {
 
 
 
-function appendTableHeader(data){
+function appendTableHeader(data,dataTable){
     var header = data.header;
     var tableType = data.table;
     var txt = "";
 
-    var tableId = "";
-    switch(tableType){
-        case "apa":
-        tableId = "#data-table-data-paymentTransform";
-        break;
-        case "rate":
-        tableId = "#data-table-rate-paymentTransform";
-        break;
-        case "detail":
-        tableId = "#data-table-paymentTransform-details";
-        break;
-    }
+    var tableId = dataTable;
 
     for (var i = 0; i < header.length; i++) {
         txt = txt + "<th><span>" + header[i] + "</span></th>";
@@ -195,7 +184,7 @@ function configChart(data, chart, chartName){
 }
 
 function configTable(data,dataTable){
-    appendTableHeader(data);
+    appendTableHeader(data,dataTable);
     $(dataTable).dataTable().fnClearTable();  
     $(dataTable).dataTable({
         "destroy": true,
