@@ -7,7 +7,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.apache.log4j.Logger;
 
 import com.jfinal.aop.Before;
@@ -123,6 +122,86 @@ public class HabitsController extends Controller{
 		
 		Set<String> type = seriesMap.keySet();
 		category.put("日期", categories);	
+		data.put("type", type.toArray());
+		data.put("category", category);
+		data.put("data", seriesMap);
+		data.put("header", header);
+		logger.debug("<HabitsController> queryAvgGP:" + data);
+		renderJson(data);
+	}
+	
+	@Before(POST.class)
+	@ActionKey("/api/online/habits/detail")
+	public void queryPeriodDetail() {
+		String playerTag = getPara("playerTag", "add-players");
+		String tag = getPara("tag", "day-times");
+		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
+		String startDate = getPara("startDate");
+		String endDate = getPara("endDate");
+		
+		Map<String, Object> data = new LinkedHashMap<String,Object>();	
+		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();	
+		//保存chart中数据
+		Map<String, Object> seriesMap = new LinkedHashMap<String, Object>();
+		List<String> categories = new ArrayList<String>();
+		List<String> header = new ArrayList<String>();
+		List<Integer> players = new ArrayList<Integer>();
+		
+		switch(playerTag){
+		case "add-players":
+			switch(tag){
+			case "day-times":
+				categories.addAll(Arrays.asList("1","2~3","4~5","6~10","11~20","21~50","50+"));
+				category.put("日游戏次数", categories);	
+				header.addAll(Arrays.asList("日游戏次数", "玩家数量", "百分比"));
+				players = ohs.queryAddDayGameTimes(categories, icons, startDate, endDate);
+				break;
+			case "day-time":
+				break;
+			case "single-time":
+				break;
+			case "period":
+				break;
+			}
+			seriesMap.put("新增玩家", players);
+			break;
+		case "active-players":
+			switch(tag){
+			case "day-times":
+				categories.addAll(Arrays.asList("1","2~3","4~5","6~10","11~20","21~50","50+"));
+				category.put("日游戏次数", categories);	
+				header.addAll(Arrays.asList("日游戏次数", "玩家数量", "百分比"));
+				players = ohs.queryActiveDayGameTimes(categories, icons, startDate, endDate);
+				break;
+			case "week-times":
+				categories.addAll(Arrays.asList("1","2~3","4~5","6~10","11~20","21~50","50+"));
+				category.put("周游戏次数", categories);	
+				header.addAll(Arrays.asList("周游戏次数", "玩家数量", "百分比"));
+				players = ohs.queryActiveWeekGameTimes(categories, icons, startDate, endDate);
+				break;
+			case "week-days":
+				categories.addAll(Arrays.asList("1","2","3","4","5","6","7"));
+				category.put("周游戏天数", categories);
+				header.addAll(Arrays.asList("周游戏天数","玩家数量","百分比"));
+				players = ohs.queryActiveWeekGameDays(categories, icons, startDate, endDate);
+				break;
+			case "month-days":
+				break;
+			case "day-time":
+				break;
+			case "week-time":
+				break;
+			case "single-time":
+				break;
+			case "period":
+				break;
+			}
+			seriesMap.put("活跃玩家", players);
+			break;
+		}
+		
+		Set<String> type = seriesMap.keySet();
+		
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);

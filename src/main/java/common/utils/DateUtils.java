@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
 
@@ -112,25 +112,45 @@ public class DateUtils {
 		}		
 		return d;
 	}
-	//将时间段划分成周 Map<start,end>
-	public static Map<String, String> divideDateToWeek(String startDate, String endDate){
+	//将时间段划分成周 Map<start,end>  --以左边时间起始划分,右边时间不足补足七天
+//	public static Map<String, String> divideDateToWeek(String startDate, String endDate){
+//		Date start = DateUtils.strToDate(startDate);
+//		Date end = DateUtils.strToDate(endDate);
+//		Map<String, String> week = new LinkedHashMap<String, String>();
+//		Calendar cal = Calendar.getInstance();
+//		for(Date date=start;date.before(end)||date.equals(end);){
+//			String startString = DateUtils.dateToStr(date);
+//			cal.setTime(date);
+//			cal.add(Calendar.DATE, 6);
+//			date=cal.getTime();
+//			String endString = DateUtils.dateToStr(date);
+//			week.put(startString, endString);
+//			cal.setTime(date);
+//			cal.add(Calendar.DATE, 1);
+//			date=cal.getTime();
+//		}
+//		return week;
+//	}
+	//将时间段划分成周 Map<start,end>  --以右边时间起始划分,左边时间不足补足七天
+	public static Map<String, String> divideDateToWeek(String startDate, String endDate) {
 		Date start = DateUtils.strToDate(startDate);
 		Date end = DateUtils.strToDate(endDate);
-		Map<String, String> week = new LinkedHashMap<String, String>();
+		Map<String, String> week = new TreeMap<String, String>();
 		Calendar cal = Calendar.getInstance();
-		for(Date date=start;date.before(end)||date.equals(end);){
-			String startString = DateUtils.dateToStr(date);
-			cal.setTime(date);
-			cal.add(Calendar.DATE, 6);
-			date=cal.getTime();
+		for(Date date=end;date.after(start)||date.equals(start);) {
 			String endString = DateUtils.dateToStr(date);
+			cal.setTime(date);
+			cal.add(Calendar.DATE, -6);
+			date = cal.getTime();
+			String startString = DateUtils.dateToStr(date);
 			week.put(startString, endString);
 			cal.setTime(date);
-			cal.add(Calendar.DATE, 1);
-			date=cal.getTime();
+			cal.add(Calendar.DATE, -1);
+			date = cal.getTime();
 		}
 		return week;
 	}
+	
 	
 	public static String getTimeFromSecond(long s){
 		final long DAY = 60*60*24;
@@ -158,11 +178,11 @@ public class DateUtils {
 	public static void main(String args[]){
 //		System.out.println(getDateList("2016-08-01", "2016-08-10"));
 //		System.out.println(convertDate("2016-08-23"));
-//		System.out.println(divideDateToWeek("2016-09-13","2016-09-13"));
+		System.out.println(divideDateToWeek("2016-12-31","2017-01-13"));
 //		System.out.println(getMonthList("2016-08-11","2016-11-10"));
 //		System.out.println(monthToStr(DateUtils.strToDate("2016-10-13")));
 //		System.out.println(getTimeFromSecond(200000));
-		System.out.println(strToMonth("2016-08-12"));
+//		System.out.println(strToMonth("2016-08-12"));
 	}
 	
 }
