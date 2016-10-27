@@ -173,9 +173,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 			}
 		}
 
-		List<String> categories = new ArrayList<String>();
-		categories.addAll(sort.keySet());
-
+		List<String> categories = new ArrayList<String>(sort.keySet());
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("times", times);
 		data.put("time", time);
@@ -412,9 +410,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 			}
 		}
 
-		List<String> categories = new ArrayList<String>();
-		categories.addAll(sort.keySet());
-
+		List<String> categories = new ArrayList<String>(sort.keySet());
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("times", times);
 		data.put("time", time);
@@ -651,9 +647,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 			}
 		}
 
-		List<String> categories = new ArrayList<String>();
-		categories.addAll(sort.keySet());
-
+		List<String> categories = new ArrayList<String>(sort.keySet());
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("times", times);
 		data.put("time", time);
@@ -743,7 +737,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	}
 
 	// detail
-	// 新增玩家日游戏次数
+	// 新增玩家日游戏次数 --新增玩家新增当天日游戏次数
 	public List<Integer> queryAddDayGameTimes(List<String> categories, String icons, String startDate, String endDate) {
 		String sql = "select count(*)count from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("
 				+ icons + ")) A join login B on A.account = B.account and A.date_time = B.date group by A.account";
@@ -772,29 +766,162 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 			}
 		}
 
-		List<Integer> data = new ArrayList<Integer>();
-		data.addAll(sort.values());
-		logger.debug("queryAddDayGameTimes:" + data); 
+		List<Integer> data = new ArrayList<Integer>(sort.values());
+		logger.debug("queryAddDayGameTimes:" + data);
 		return data;
 	}
 
+	// 新增玩家日游戏时长 --新增玩家新增当天日游戏时长
+	public List<Integer> queryAddDayGameTime(List<String> categories, String icons, String startDate, String endDate) {
+		String sql = "select sum(B.online_time)online_time from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("
+				+ icons + ")) A join logout B on A.account = B.account and A.date_time = B.date group by A.account";
+		List<Logout> dGT = Logout.dao.find(sql, startDate, endDate);
+		// init
+		Map<String, Integer> sort = new LinkedHashMap<String, Integer>();
+		for (String c : categories) {
+			sort.put(c, 0);
+		}
+		try {
+			for (Logout l : dGT) {
+				int s = l.getBigDecimal("online_time") == null ? 0 : l.getBigDecimal("online_time").intValue();
+				if (s < 10) {
+					increaseValue("<10 s", sort);
+				} else if (s >= 10 && s <= 60) {
+					increaseValue("10~60 s", sort);
+				} else if (s > 60 && s <= 60 * 3) {
+					increaseValue("1~3 min", sort);
+				} else if (s > 60 * 3 && s <= 60 * 10) {
+					increaseValue("3~10 min", sort);
+				} else if (s > 60 * 10 && s <= 60 * 30) {
+					increaseValue("10~30 min", sort);
+				} else if (s > 60 * 30 && s <= 60 * 60) {
+					increaseValue("30~60 min", sort);
+				} else if (s > 60 * 60 && s <= 60 * 60 * 2) {
+					increaseValue("1~2 h", sort);
+				} else if (s > 60 * 60 * 2 && s <= 60 * 60 * 4) {
+					increaseValue("2~4 h", sort);
+				} else if (s > 60 * 60 * 4) {
+					increaseValue(">4 h", sort);
+				}
+			}
+		} catch (Exception e) {
+			logger.debug("Error queryAddDayGameTime:", e);
+		}
+
+		List<Integer> data = new ArrayList<Integer>(sort.values());
+		logger.debug("queryAddDayGameTime:" + data);
+		return data;
+	}
+
+	// 新增玩家单次游戏时长 --新增玩家新增当天 日游戏时长 / 日游戏次数
+	public Map<String, List<Integer>> queryAddDaySinglePeriod(List<String> categories, String icons, String startDate,
+			String endDate) {
+		String sql = "select sum(B.online_time)online_time,count(*)count from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("
+				+ icons + ")) A join logout B on A.account = B.account and A.date_time = B.date group by A.account";
+		List<Logout> dSP = Logout.dao.find(sql, startDate, endDate);
+		// init
+		Map<String, Integer> sort = new LinkedHashMap<String, Integer>();
+		Map<String, Integer> timesSort = new LinkedHashMap<String, Integer>();
+		for (String c : categories) {
+			sort.put(c, 0);
+			timesSort.put(c, 0);
+		}
+		try {
+			for (Logout l : dSP) {
+				int s = l.getBigDecimal("online_time") == null ? 0 : l.getBigDecimal("online_time").intValue();
+				int count = l.getLong("count").intValue();
+				String key = "";
+				if (count != 0) {
+					s = s / count;
+				}
+				if (s >= 1 && s <= 4) {
+					key = "1~4 s";
+					increaseValue(key, sort);
+				} else if (s >= 5 && s <= 10) {
+					key = "5~10 s";
+					increaseValue(key, sort);
+				} else if (s >= 11 && s <= 30) {
+					key = "11~30 s";
+					increaseValue(key, sort);
+				} else if (s >= 31 && s <= 60) {
+					key = "31~60 s";
+					increaseValue(key, sort);
+				} else if (s > 60 && s <= 60 * 3) {
+					key = "1~3 min";
+					increaseValue(key, sort);
+				} else if (s > 60 * 3 && s <= 60 * 10) {
+					key = "3~10 min";
+					increaseValue(key, sort);
+				} else if (s > 60 * 10 && s <= 60 * 30) {
+					key = "10~30 min";
+					increaseValue(key, sort);
+				} else if (s > 60 * 30 && s <= 60 * 60) {
+					key = "30~60 min";
+					increaseValue(key, sort);
+				} else if (s > 60 * 60) {
+					key = ">60 min";
+					increaseValue(key, sort);
+				}
+				// 不满足时间区间的key
+				if ("".equals(key)) {
+					continue;
+				}
+				int value = timesSort.get(key);
+				value += count;
+				timesSort.put(key, value);
+			}
+		} catch (Exception e) {
+			logger.debug("Error queryAddDaySinglePeriod:", e);
+		}
+		List<Integer> players = new ArrayList<Integer>(sort.values());
+		List<Integer> times = new ArrayList<Integer>(timesSort.values());
+		Map<String, List<Integer>> data = new HashMap<String, List<Integer>>();
+		data.put("players", players);
+		data.put("times", times);
+		logger.debug("queryAddDaySinglePeriod:" + data);
+		return data;
+	}
+
+	//新增玩家游戏时段
+	public List<Integer> queryAddDayPeriod(String icons, String startDate,
+			String endDate){
+		String sql = "select hour(B.login_time)hour,count(*)count from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in (" + icons + ")) A join login B on A.account = B.account and A.date_time = B.date group by hour";
+		List<Login> aDP = Login.dao.find(sql, startDate, endDate);
+		//init
+		Map<Integer, Integer> sort = new LinkedHashMap<Integer, Integer>();
+		for(int i=0;i<24;i++){
+			sort.put(i, 0);
+		}
+		//load
+		for(Login l : aDP){
+			int h = l.getInt("hour");
+			int count = l.getLong("count").intValue();
+			sort.put(h, count);
+		}
+		List<Integer> data = new ArrayList<Integer>(sort.values());
+		logger.debug("queryAddDayPeriod:");
+		return data;
+	}
+	
 	// 活跃玩家日游戏次数 ---每天形成一个次数分布, 再将多天的次数分布取平均值
 	public List<Integer> queryActiveDayGameTimes(List<String> categories, String icons, String startDate,
 			String endDate) {
-		String sql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,count(*)count from (select account,openudid,date from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in (" + icons + ") group by A.account,A.date;";
+		String sql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,count(*)count from (select account,openudid,date from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("
+				+ icons + ") group by A.account,A.date;";
 		List<Login> dGT = Login.dao.find(sql, startDate, endDate);
-		//Map<date,Map<categories, Integer>>
+		// Map<date,Map<categories, Integer>>
 		Map<String, Map<String, Integer>> sort = new LinkedHashMap<String, Map<String, Integer>>();
-		//init
+		// init
 		List<String> dateList = DateUtils.getDateList(startDate, endDate);
-		for(String date : dateList){
+		for (String date : dateList) {
 			Map<String, Integer> subMap = new LinkedHashMap<String, Integer>();
-			for(String c : categories){
+			for (String c : categories) {
 				subMap.put(c, 0);
 			}
 			sort.put(date, subMap);
 		}
-		for(Login l : dGT){
+		// load data
+		for (Login l : dGT) {
 			String date = l.getStr("date");
 			long count = l.getLong("count");
 			Map<String, Integer> subMap = sort.get(date);
@@ -822,10 +949,10 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		int sum5 = 0;
 		int sum6 = 0;
 		int sum7 = 0;
-		
-		for(Map.Entry<String, Map<String, Integer>> entry : sort.entrySet()){
-			for(Map.Entry<String, Integer> subEntry : entry.getValue().entrySet()){
-				switch(subEntry.getKey()){
+
+		for (Map.Entry<String, Map<String, Integer>> entry : sort.entrySet()) {
+			for (Map.Entry<String, Integer> subEntry : entry.getValue().entrySet()) {
+				switch (subEntry.getKey()) {
 				case "1":
 					sum1 += subEntry.getValue();
 					break;
@@ -851,12 +978,11 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 			}
 		}
 		List<Integer> data = new ArrayList<Integer>();
-		List<Integer> sum = new ArrayList<Integer>();
-		sum.addAll(Arrays.asList(sum1,sum2,sum3,sum4,sum5,sum6,sum7));
-		int length=dateList.size();
-		if(length!=0){
-			for(int i : sum){
-				int avg = i/length;
+		List<Integer> sum = new ArrayList<Integer>(Arrays.asList(sum1, sum2, sum3, sum4, sum5, sum6, sum7));
+		int length = dateList.size();
+		if (length != 0) {
+			for (int i : sum) {
+				int avg = i / length;
 				data.add(avg);
 			}
 		}
@@ -864,23 +990,25 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		return data;
 	}
 
-	//活跃玩家周游戏次数  ---每周形成一个次数分布, 再将多周的次数分布取平均值 
-	public List<Integer> queryActiveWeekGameTimes(List<String> categories, String icons, String startDate, String endDate) {
+	// 活跃玩家周游戏次数 ---每周形成一个次数分布, 再将多周的次数分布取平均值
+	public List<Integer> queryActiveWeekGameTimes(List<String> categories, String icons, String startDate,
+			String endDate) {
 		Map<String, String> week = DateUtils.divideDateToWeek(startDate, endDate);
-		String sql = "select count(*)count from (select account,openudid,date from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in (" + icons + ") group by A.account;";
-		
-		//init & load
+		String sql = "select count(*)count from (select account,openudid,date from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("
+				+ icons + ") group by A.account;";
+
+		// init & load
 		Map<String, Map<String, Integer>> sort = new LinkedHashMap<String, Map<String, Integer>>();
-		for(Map.Entry<String, String> entry : week.entrySet()){
+		for (Map.Entry<String, String> entry : week.entrySet()) {
 			String start = entry.getKey();
 			String end = entry.getValue();
 			String period = start + "~" + end;
 			Map<String, Integer> subMap = new LinkedHashMap<String, Integer>();
-			for(String c : categories){
+			for (String c : categories) {
 				subMap.put(c, 0);
 			}
 			List<Login> wGT = Login.dao.find(sql, start, end);
-			for(Login l : wGT){
+			for (Login l : wGT) {
 				long count = l.getLong("count");
 				if (count == 1) {
 					increaseValue("1", subMap);
@@ -907,10 +1035,10 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		int sum5 = 0;
 		int sum6 = 0;
 		int sum7 = 0;
-		
-		for(Map.Entry<String, Map<String, Integer>> entry : sort.entrySet()){
-			for(Map.Entry<String, Integer> subEntry : entry.getValue().entrySet()){
-				switch(subEntry.getKey()){
+
+		for (Map.Entry<String, Map<String, Integer>> entry : sort.entrySet()) {
+			for (Map.Entry<String, Integer> subEntry : entry.getValue().entrySet()) {
+				switch (subEntry.getKey()) {
 				case "1":
 					sum1 += subEntry.getValue();
 					break;
@@ -936,38 +1064,41 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 			}
 		}
 		List<Integer> data = new ArrayList<Integer>();
-		List<Integer> sum = new ArrayList<Integer>();
-		sum.addAll(Arrays.asList(sum1,sum2,sum3,sum4,sum5,sum6,sum7));
-		int length=week.size();
-		if(length!=0){
-			for(int i : sum){
-				int avg = i/length;
+		List<Integer> sum = new ArrayList<Integer>(Arrays.asList(sum1, sum2, sum3, sum4, sum5, sum6, sum7));
+		int length = week.size();
+		if (length != 0) {
+			for (int i : sum) {
+				int avg = i / length;
 				data.add(avg);
 			}
 		}
 		logger.debug("queryActiveWeekGameTimes:" + data);
 		return data;
 	}
-	
-	//活跃玩家周游戏天数  ---每周形成一个次数分布, 再将多周的次数分布取平均值
-	public List<Integer> queryActiveWeekGameDays(List<String> categories, String icons, String startDate, String endDate) {
+
+	// 活跃玩家周游戏天数 ---每周形成一个次数分布, 再将多周的次数分布取平均值
+	public List<Integer> queryActiveWeekGameDays(List<String> categories, String icons, String startDate,
+			String endDate) {
 		Map<String, String> week = DateUtils.divideDateToWeek(startDate, endDate);
-		String sql = "select count(distinct A.date)count from (select account,openudid,date from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in (" + icons + ") group by A.account;";
-		
-		//init & load
+		String sql = "select count(distinct A.date)count from (select account,openudid,date from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("
+				+ icons + ") group by A.account;";
+
+		// init & load
+		// Map<week,Map<type,Integer>>
 		Map<String, Map<String, Integer>> sort = new LinkedHashMap<String, Map<String, Integer>>();
-		for(Map.Entry<String, String> entry : week.entrySet()){
+		for (Map.Entry<String, String> entry : week.entrySet()) {
 			String start = entry.getKey();
 			String end = entry.getValue();
 			String period = start + "~" + end;
 			Map<String, Integer> subMap = new LinkedHashMap<String, Integer>();
-			for(String c : categories){
+			// init
+			for (String c : categories) {
 				subMap.put(c, 0);
 			}
 			List<Login> wGT = Login.dao.find(sql, start, end);
-			for(Login l : wGT){
+			for (Login l : wGT) {
 				int count = l.getLong("count").intValue();
-				switch(count){
+				switch (count) {
 				case 1:
 					increaseValue("1", subMap);
 					break;
@@ -993,7 +1124,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 			}
 			sort.put(period, subMap);
 		}
-		
+
 		int sum1 = 0;
 		int sum2 = 0;
 		int sum3 = 0;
@@ -1001,10 +1132,10 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		int sum5 = 0;
 		int sum6 = 0;
 		int sum7 = 0;
-		
-		for(Map.Entry<String, Map<String, Integer>> entry : sort.entrySet()){
-			for(Map.Entry<String, Integer> subEntry : entry.getValue().entrySet()){
-				switch(subEntry.getKey()){
+
+		for (Map.Entry<String, Map<String, Integer>> entry : sort.entrySet()) {
+			for (Map.Entry<String, Integer> subEntry : entry.getValue().entrySet()) {
+				switch (subEntry.getKey()) {
 				case "1":
 					sum1 += subEntry.getValue();
 					break;
@@ -1030,16 +1161,438 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 			}
 		}
 		List<Integer> data = new ArrayList<Integer>();
-		List<Integer> sum = new ArrayList<Integer>();
-		sum.addAll(Arrays.asList(sum1,sum2,sum3,sum4,sum5,sum6,sum7));
-		int length=week.size();
-		if(length!=0){
-			for(int i : sum){
-				int avg = i/length;
+		List<Integer> sum = new ArrayList<Integer>(Arrays.asList(sum1, sum2, sum3, sum4, sum5, sum6, sum7));
+		int length = week.size();
+		if (length != 0) {
+			for (int i : sum) {
+				int avg = i / length;
 				data.add(avg);
 			}
 		}
 		logger.debug("queryActiveWeekGameDays:" + data);
+		return data;
+	}
+
+	// 活跃玩家月游戏天数 ---每月形成一个次数分布, 再将多月的次数分布取平均值
+	public List<Integer> queryActiveMonthGameDays(List<String> categories, String icons, String startDate,
+			String endDate) {
+		List<String> monthList = DateUtils.getMonthList(startDate, endDate);
+		String start = DateUtils.monthToStr(DateUtils.strToDate(startDate));
+		String end = DateUtils.monthToStr(DateUtils.strToDate(endDate));
+		String sql = "select DATE_FORMAT(A.date,'%Y-%m')month,count(distinct A.date)count from (select account,openudid,date from login where DATE_FORMAT(date,'%Y-%m') between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("
+				+ icons + ") group by A.account,month";
+
+		// init
+		// Map<month, Map<type,Integer>>
+		Map<String, Map<String, Integer>> sort = new LinkedHashMap<String, Map<String, Integer>>();
+		for (String m : monthList) {
+			Map<String, Integer> subMap = new LinkedHashMap<String, Integer>();
+			for (String c : categories) {
+				subMap.put(c, 0);
+			}
+			sort.put(m, subMap);
+		}
+		// load data
+		List<Login> mGT = Login.dao.find(sql, start, end);
+		for (Login l : mGT) {
+			String month = l.getStr("month");
+			int count = l.getLong("count").intValue();
+			Map<String, Integer> subMap = sort.get(month);
+			switch (count) {
+			case 1:
+				increaseValue("1", subMap);
+				break;
+			case 2:
+				increaseValue("2", subMap);
+				break;
+			case 3:
+				increaseValue("3", subMap);
+				break;
+			case 4:
+				increaseValue("4", subMap);
+				break;
+			case 5:
+				increaseValue("5", subMap);
+				break;
+			case 6:
+				increaseValue("6", subMap);
+				break;
+			case 7:
+				increaseValue("7", subMap);
+				break;
+			default:
+				if (count >= 8 && count <= 14) {
+					increaseValue("8~14", subMap);
+				} else if (count >= 15 && count <= 21) {
+					increaseValue("15~21", subMap);
+				} else if (count >= 22 && count <= 31) {
+					increaseValue("22~31", subMap);
+				}
+				break;
+			}
+		}
+
+		int sum1 = 0;
+		int sum2 = 0;
+		int sum3 = 0;
+		int sum4 = 0;
+		int sum5 = 0;
+		int sum6 = 0;
+		int sum7 = 0;
+		int sum8 = 0;
+		int sum9 = 0;
+		int sum10 = 0;
+		for (Map.Entry<String, Map<String, Integer>> entry : sort.entrySet()) {
+			for (Map.Entry<String, Integer> subEntry : entry.getValue().entrySet()) {
+				switch (subEntry.getKey()) {
+				case "1":
+					sum1 += subEntry.getValue();
+					break;
+				case "2":
+					sum2 += subEntry.getValue();
+					break;
+				case "3":
+					sum3 += subEntry.getValue();
+					break;
+				case "4":
+					sum4 += subEntry.getValue();
+					break;
+				case "5":
+					sum5 += subEntry.getValue();
+					break;
+				case "6":
+					sum6 += subEntry.getValue();
+					break;
+				case "7":
+					sum7 += subEntry.getValue();
+					break;
+				case "8~14":
+					sum8 += subEntry.getValue();
+					break;
+				case "15~21":
+					sum9 += subEntry.getValue();
+					break;
+				case "22~31":
+					sum10 += subEntry.getValue();
+					break;
+				}
+			}
+		}
+
+		List<Integer> data = new ArrayList<Integer>();
+		List<Integer> sum = new ArrayList<Integer>(
+				Arrays.asList(sum1, sum2, sum3, sum4, sum5, sum6, sum7, sum8, sum9, sum10));
+		int length = monthList.size();
+		if (length != 0) {
+			for (int i : sum) {
+				int avg = i / length;
+				data.add(avg);
+			}
+		}
+		logger.debug("queryActiveMonthGameDays:" + data);
+		return data;
+	}
+
+	// 活跃玩家日游戏时长 --每天形成一个次数分布, 再将多天的次数分布取平均值
+	public List<Integer> queryActiveDayGameTime(List<String> categories, String icons, String startDate,
+			String endDate) {
+		String sql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,sum(A.online_time)online_time from (select account,online_time,date from logout where date between ? and ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("
+				+ icons + ") group by A.account,A.date";
+		List<Logout> dGT = Logout.dao.find(sql, startDate, endDate);
+		// init
+		// Map<date, Map<type,Integer>>
+		Map<String, Map<String, Integer>> sort = new LinkedHashMap<String, Map<String, Integer>>();
+		List<String> dateList = DateUtils.getDateList(startDate, endDate);
+		for (String d : dateList) {
+			Map<String, Integer> subMap = new LinkedHashMap<String, Integer>();
+			for (String c : categories) {
+				subMap.put(c, 0);
+			}
+			sort.put(d, subMap);
+		}
+		// load data
+		for (Logout l : dGT) {
+			String date = l.getStr("date");
+			int s = l.getBigDecimal("online_time") == null ? 0 : l.getBigDecimal("online_time").intValue();
+			Map<String, Integer> subMap = sort.get(date);
+			if (s < 10) {
+				increaseValue("<10 s", subMap);
+			} else if (s >= 10 && s <= 60) {
+				increaseValue("10~60 s", subMap);
+			} else if (s > 60 && s <= 60 * 3) {
+				increaseValue("1~3 min", subMap);
+			} else if (s > 60 * 3 && s <= 60 * 10) {
+				increaseValue("3~10 min", subMap);
+			} else if (s > 60 * 10 && s <= 60 * 30) {
+				increaseValue("10~30 min", subMap);
+			} else if (s > 60 * 30 && s <= 60 * 60) {
+				increaseValue("30~60 min", subMap);
+			} else if (s > 60 * 60 && s <= 60 * 60 * 2) {
+				increaseValue("1~2 h", subMap);
+			} else if (s > 60 * 60 * 2 && s <= 60 * 60 * 4) {
+				increaseValue("2~4 h", subMap);
+			} else if (s > 60 * 60 * 4) {
+				increaseValue(">4 h", subMap);
+			}
+			sort.put(date, subMap);
+		}
+
+		int sum1 = 0;
+		int sum2 = 0;
+		int sum3 = 0;
+		int sum4 = 0;
+		int sum5 = 0;
+		int sum6 = 0;
+		int sum7 = 0;
+		int sum8 = 0;
+		int sum9 = 0;
+		for (Map.Entry<String, Map<String, Integer>> entry : sort.entrySet()) {
+			for (Map.Entry<String, Integer> subEntry : entry.getValue().entrySet()) {
+				switch (subEntry.getKey()) {
+				case "<10 s":
+					sum1 += subEntry.getValue();
+					break;
+				case "10~60 s":
+					sum2 += subEntry.getValue();
+					break;
+				case "1~3 min":
+					sum3 += subEntry.getValue();
+					break;
+				case "3~10 min":
+					sum4 += subEntry.getValue();
+					break;
+				case "10~30 min":
+					sum5 += subEntry.getValue();
+					break;
+				case "30~60 min":
+					sum6 += subEntry.getValue();
+					break;
+				case "1~2 h":
+					sum7 += subEntry.getValue();
+					break;
+				case "2~4 h":
+					sum8 += subEntry.getValue();
+					break;
+				case ">4 h":
+					sum9 += subEntry.getValue();
+					break;
+				}
+			}
+		}
+
+		List<Integer> data = new ArrayList<Integer>();
+		List<Integer> sum = new ArrayList<Integer>(Arrays.asList(sum1, sum2, sum3, sum4, sum5, sum6, sum7, sum8, sum9));
+		int length = dateList.size();
+		if (length != 0) {
+			for (int i : sum) {
+				int avg = i / length;
+				data.add(avg);
+			}
+		}
+		logger.debug("queryActiveDayGameTime:" + data);
+		return data;
+	}
+
+	// 活跃玩家周游戏时长 ---每周形成一个次数分布, 再将多周的次数分布取平均值
+	public List<Integer> queryActiveWeekGameTime(List<String> categories, String icons, String startDate,
+			String endDate) {
+		Map<String, String> week = DateUtils.divideDateToWeek(startDate, endDate);
+		String sql = "select sum(A.online_time)online_time from (select account,online_time,date from logout where date between ? and ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("
+				+ icons + ") group by A.account";
+		// init & load
+		// Map<date, Map<week,Integer>>
+		Map<String, Map<String, Integer>> sort = new LinkedHashMap<String, Map<String, Integer>>();
+		for (Map.Entry<String, String> entry : week.entrySet()) {
+			String start = entry.getKey();
+			String end = entry.getValue();
+			String period = start + "~" + end;
+			Map<String, Integer> subMap = new LinkedHashMap<String, Integer>();
+			for (String c : categories) {
+				subMap.put(c, 0);
+			}
+			List<Logout> wGT = Logout.dao.find(sql, startDate, endDate);
+			for (Logout l : wGT) {
+				int s = l.getBigDecimal("online_time") == null ? 0 : l.getBigDecimal("online_time").intValue();
+				if (s >= 0 && s <= 60) {
+					increaseValue("0~60 s", subMap);
+				} else if (s > 60 && s <= 60 * 3) {
+					increaseValue("1~3 min", subMap);
+				} else if (s > 60 * 3 && s <= 60 * 10) {
+					increaseValue("3~10 min", subMap);
+				} else if (s > 60 * 10 && s <= 60 * 60) {
+					increaseValue("10~60 min", subMap);
+				} else if (s > 60 * 60 && s <= 60 * 60 * 2) {
+					increaseValue("1~2 h", subMap);
+				} else if (s > 60 * 60 * 2 && s <= 60 * 60 * 4) {
+					increaseValue("2~4 h", subMap);
+				} else if (s > 60 * 60 * 4 && s <= 60 * 60 * 6) {
+					increaseValue("4~6 h", subMap);
+				} else if (s > 60 * 60 * 6 && s <= 60 * 60 * 10) {
+					increaseValue("6~10 h", subMap);
+				} else if (s > 60 * 60 * 10 && s <= 60 * 60 * 15) {
+					increaseValue("10~15 h", subMap);
+				} else if (s > 60 * 60 * 15 && s <= 60 * 60 * 20) {
+					increaseValue("15~20 h", subMap);
+				} else if (s > 60 * 60 * 20) {
+					increaseValue(">20 h", subMap);
+				}
+			}
+			sort.put(period, subMap);
+		}
+
+		int sum1 = 0;
+		int sum2 = 0;
+		int sum3 = 0;
+		int sum4 = 0;
+		int sum5 = 0;
+		int sum6 = 0;
+		int sum7 = 0;
+		int sum8 = 0;
+		int sum9 = 0;
+		int sum10 = 0;
+		int sum11 = 0;
+
+		for (Map.Entry<String, Map<String, Integer>> entry : sort.entrySet()) {
+			for (Map.Entry<String, Integer> subEntry : entry.getValue().entrySet()) {
+				switch (subEntry.getKey()) {
+				case "0~60 s":
+					sum1 += subEntry.getValue();
+					break;
+				case "1~3 min":
+					sum2 += subEntry.getValue();
+					break;
+				case "3~10 min":
+					sum3 += subEntry.getValue();
+					break;
+				case "10~60 min":
+					sum4 += subEntry.getValue();
+					break;
+				case "1~2 h":
+					sum5 += subEntry.getValue();
+					break;
+				case "2~4 h":
+					sum6 += subEntry.getValue();
+					break;
+				case "4~6 h":
+					sum7 += subEntry.getValue();
+					break;
+				case "6~10 h":
+					sum8 += subEntry.getValue();
+					break;
+				case "10~15 h":
+					sum9 += subEntry.getValue();
+					break;
+				case "15~20 h":
+					sum10 += subEntry.getValue();
+					break;
+				case ">20 h":
+					sum11 += subEntry.getValue();
+					break;
+				}
+			}
+		}
+
+		List<Integer> data = new ArrayList<Integer>();
+		List<Integer> sum = new ArrayList<Integer>(
+				Arrays.asList(sum1, sum2, sum3, sum4, sum5, sum6, sum7, sum8, sum9, sum10, sum11));
+		int length = week.size();
+		if (length != 0) {
+			for (int i : sum) {
+				int avg = i / length;
+				data.add(avg);
+			}
+		}
+		logger.debug("queryActiveWeekGameTime:" + data);
+		return data;
+	}
+
+	// 活跃玩家单次游戏时长 --活跃玩家 日游戏时长 / 日游戏次数
+	public Map<String, List<Integer>> queryActiveDaySinglePeriod(List<String> categories, String icons,
+			String startDate, String endDate) {
+		String sql = "select sum(A.online_time)online_time,count(*)count from (select account,online_time from logout where date between ? and ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("
+				+ icons + ") group by A.account;";
+		List<Logout> dSP = Logout.dao.find(sql, startDate, endDate);
+		// init
+		Map<String, Integer> sort = new LinkedHashMap<String, Integer>();
+		Map<String, Integer> timesSort = new LinkedHashMap<String, Integer>();
+		for (String c : categories) {
+			sort.put(c, 0);
+			timesSort.put(c, 0);
+		}
+		// load data
+		try {
+			for (Logout l : dSP) {
+				int s = l.getBigDecimal("online_time") == null ? 0 : l.getBigDecimal("online_time").intValue();
+				int count = l.getLong("count").intValue();
+				if (count != 0) {
+					s = s / count;
+				}
+				String key = "";
+				if (s >= 1 && s <= 4) {
+					key = "1~4 s";
+					increaseValue(key, sort);
+				} else if (s >= 5 && s <= 10) {
+					key = "5~10 s";
+					increaseValue(key, sort);
+				} else if (s >= 11 && s <= 30) {
+					key = "11~30 s";
+					increaseValue(key, sort);
+				} else if (s >= 31 && s <= 60) {
+					key = "31~60 s";
+					increaseValue(key, sort);
+				} else if (s > 60 && s <= 60 * 3) {
+					key = "1~3 min";
+					increaseValue(key, sort);
+				} else if (s > 60 * 3 && s <= 60 * 10) {
+					key = "3~10 min";
+					increaseValue(key, sort);
+				} else if (s > 60 * 10 && s <= 60 * 30) {
+					key = "10~30 min";
+					increaseValue(key, sort);
+				} else if (s > 60 * 30 && s <= 60 * 60) {
+					key = "30~60 min";
+					increaseValue(key, sort);
+				} else if (s > 60 * 60) {
+					key = ">60 min";
+					increaseValue(key, sort);
+				}
+				// 不满足时间区间的key
+				if ("".equals(key)) {
+					continue;
+				}
+				int value = timesSort.get(key);
+				value += count;
+				timesSort.put(key, value);
+			}
+		} catch (Exception e) {
+			logger.debug("Error queryActiveDaySinglePeriod:", e);
+		}
+		List<Integer> players = new ArrayList<Integer>(sort.values());
+		List<Integer> times = new ArrayList<Integer>(timesSort.values());
+		Map<String, List<Integer>> data = new HashMap<String, List<Integer>>();
+		data.put("players", players);
+		data.put("times", times);
+		logger.debug("queryActiveDaySinglePeriod:" + data);
+		return data;
+	}
+
+	//活跃玩家游戏时段
+	public List<Integer> queryActiveDayPeriod(String icons, String startDate, String endDate) {
+		String sql = "select hour(A.login_time)hour,count(*)count from (select account,openudid,login_time from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in (" + icons + ") group by hour";
+		List<Login> aDP = Login.dao.find(sql, startDate, endDate);
+		//init
+		Map<Integer, Integer> sort = new LinkedHashMap<Integer, Integer>();
+		for(int i=0;i<24;i++){
+			sort.put(i, 0);
+		}
+		//load
+		for(Login l : aDP){
+			int h = l.getInt("hour");
+			int count = l.getLong("count").intValue();
+			sort.put(h, count);
+		}
+		List<Integer> data = new ArrayList<Integer>(sort.values());
+		logger.debug("queryActiveDayPeriod:");
 		return data;
 	}
 	

@@ -29,10 +29,27 @@ public interface OnlineHabitsService {
 
 	public List<Integer> queryAddDayGameTimes(List<String> categories, String icons, String startDate, String endDate);
 	
+	public List<Integer> queryAddDayGameTime(List<String> categories, String icons, String startDate, String endDate);
+	
+	public Map<String, List<Integer>> queryAddDaySinglePeriod(List<String> categories, String icons, String startDate, String endDate);
+	
+	public List<Integer> queryAddDayPeriod(String icons, String startDate, String endDate);
+	
 	public List<Integer> queryActiveDayGameTimes(List<String> categories, String icons, String startDate,
 			String endDate);
 	
 	public List<Integer> queryActiveWeekGameTimes(List<String> categories, String icons, String startDate, String endDate);
 	
 	public List<Integer> queryActiveWeekGameDays(List<String> categories, String icons, String startDate, String endDate);
+	
+	public List<Integer> queryActiveMonthGameDays(List<String> categories, String icons, String startDate, String endDate);
+	
+	public List<Integer> queryActiveDayGameTime(List<String> categories, String icons, String startDate, String endDate);
+	
+	public List<Integer> queryActiveWeekGameTime(List<String> categories, String icons, String startDate,
+			String endDate);
+	
+	public Map<String, List<Integer>> queryActiveDaySinglePeriod(List<String> categories, String icons, String startDate, String endDate);
+	
+	public List<Integer> queryActiveDayPeriod(String icons, String startDate, String endDate);
 }
