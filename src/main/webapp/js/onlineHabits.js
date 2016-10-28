@@ -1,18 +1,24 @@
 var aptChart = echarts.init(document.getElementById('avg-period-times-chart'));
+var fDchart = echarts.init(document.getElementById('fp-details-chart'));
 
 var aptTable = '#data-table-avg-period-times';
+var fDTable = '#data-table-fp-details';
 
 $(function(){
     loadData();
 })
 
 function loadData() {
-	loadAvgGamePeriodData($("div.nav-tab.habits > ul > li.active > a").attr("data-info"),$("ul.nav.nav-tabs.avg-period-times-tab > li.active > a").attr("data-info"));
+    loadAvgGamePeriodData($("div.nav-tab.habits > ul > li.active > a").attr("data-info"), $("ul.nav.nav-tabs.avg-period-times-tab > li.active > a").attr("data-info"));
+    loadGameDetailData($("div.nav-tab.habits > ul > li.active > a").attr("data-info"), function(){
+            var info = $("div.nav-tab.paid-detail-subtab > ul > li.active > a > span").attr("data-info");
+            return info===undefined?"period":info;
+        });
 }
 
 function loadAvgGamePeriodData(playerTag,tag) {
     $.post("/oss/api/online/habits/avgGP", {
-    	playerTag:playerTag,
+        playerTag:playerTag,
         tag:tag,
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
@@ -20,13 +26,36 @@ function loadAvgGamePeriodData(playerTag,tag) {
     },
     function(data, status) {
         configChart(data, aptChart, "aptChart");
-        configTable(data, aptTable);
+        configTable(data, aptTable, false);
         dealAvgNote(tag, data);
+    });
+}
+
+function loadGameDetailData(playerTag,tag) {
+    if(playerTag=='paid-players'){
+        fDchart.clear();
+        $(fDTable).dataTable().fnClearTable(); 
+        return;
+    }
+    $.post("/oss/api/online/habits/detail", {
+        playerTag:playerTag,
+        tag:tag,
+        icon:getIcons(),
+        startDate:$("input#startDate").attr("value"),
+        endDate:$("input#endDate").attr("value")
+    },
+    function(data, status) {
+        configChart(data, fDchart, "fDchart");
+        configTable(data, fDTable, true);
     });
 }
 
 function configChart(data, chart, chartName) {
     var recData = data.data;
+    var categoryName = "";
+    for(var key in data.category){
+        categoryName = key;
+    }
     chart.clear();
     chart.setOption({
         tooltip: {
@@ -61,30 +90,58 @@ function configChart(data, chart, chartName) {
             start: 0,
             end: 50
         }],
-        yAxis: {
-            type: 'value',
-            axisLabel: {
-                formatter: '{value} '
+        yAxis: function() {
+            if(chartName=="fDchart" && categoryName!="游戏时段"){
+                var item = {
+                    type: 'category',
+                    data: function() {
+                        for (var key in data.category) {
+                            return data.category[key];
+                        }
+                    } ()
+                };
+                return item;
             }
-        },
-        xAxis: {
-            type: 'category',
-            data: function() {
-                for (var key in data.category) {
-                    return data.category[key];
+            var item = {
+                type:'value',
+                axisLabel: {
+                    formatter: '{value} '
                 }
-            } ()
-        },
+            };
+            return item;
+        } (),
+
+        xAxis: function() {
+            if(chartName=="fDchart" && categoryName!="游戏时段") {
+                var item = {
+                    type:'value',
+                    axisLabel: {
+                        formatter: '{value} '
+                    }
+                };
+                return item;
+            }
+            var item = {
+                type: 'category',
+                data: function() {
+                    for (var key in data.category) {
+                        return data.category[key];
+                    }
+                } ()
+            };
+            return item;
+        } (), 
+
         series: function() {
             var serie = [];
             for (var key in recData) {
                 var item = {
                     name: key,
                     type: function(){
-                        if(chartName=='aptChart' && key=='每玩家游戏次数'){
-                            return "bar";
+                        if(key=='每玩家游戏时长(分钟)' || categoryName=="游戏时段"){
+                            return "line";
                         }
-                        return "line";
+                        return "bar";
                     }(),
                     smooth:true,
                     itemStyle: {
@@ -102,17 +159,30 @@ function configChart(data, chart, chartName) {
     });
 }
 
-//自定义dataTable列排序
+//自定义dataTable列排序   s/min/h
 jQuery.extend(jQuery.fn.dataTableExt.oSort, {
             "num-html-pre": function(a) {
                 var time = String(a).split(" ")[1];
                 var num = String(a).split(" ")[0].split("~")[0];
-                if(time=='D'){
-                    num *= 24;
+                if(num=='<10'){
+                    num = 9;
+                }
+                if(num==">4"){
+                    num=5;
+                }
+                if(num==">20"){
+                    num = 21;
+                }
+                if(num==">60"){
+                    num = 59;
                 }
                 if(time=='min'){
-                    num = num/60;
+                    num *= 60;
                 }
+                if(time=='h'){
+                    num *= 60*60;
+                }
+                   
                 return parseFloat(num);
             },
 
@@ -125,9 +195,9 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
             }
 });
 
-function configTable(data,dataTable) {
+function configTable(data, dataTable, percent) {
     appendTableHeader(data,dataTable);
-    var tableData = dealTableData(data);
+    var tableData = dealTableData(data, percent);
 
     $(dataTable).dataTable().fnClearTable();  
     $(dataTable).dataTable({
@@ -153,23 +223,59 @@ function configTable(data,dataTable) {
     });
 }
 
-function dealTableData(data) {
+//percent参数控制 表格是否需要百分比列  其中该页'单次游戏时长'需要五列
+function dealTableData(data, percent) {
     var type = data.type;
     var categories;
+    var sum = 0;
+    var times;
+    var singleSum = 0; 
+    var categoryName = "";
 
     for (var key in data.category) {
+        categoryName = key;
         categories = data.category[key];
     }
-
     var serie = data.data;
     var dataArray = [];
 
+    if(percent===true){
+        for(var t in serie){
+            for(var k in serie[t]){
+                sum = sum + serie[t][k];
+            }
+        }
+    }
+
+    if(categoryName == "单次游戏时长"){
+        times = data.times;
+        for(var t in times){
+            singleSum += times[t];
+        }
+    }
     for (var i = 0; i < categories.length; i++) {
         var item = [];
         item.push(categories[i]);
         for (var j = 0; j < type.length; j++) {   
-            item.push(serie[type[j]][i]);     
+            item.push(serie[type[j]][i]);
+            if(percent===true){
+                if(sum==0){
+                    item.push('0.00%');
+                    continue;
+                }else{
+                    item.push(((serie[type[j]][i]/sum*100)).toFixed(2) + '%');
+                }
+            }
         }
+        if(categoryName=="单次游戏时长"){
+            item.push(times[i]);
+            if(singleSum==0){
+                item.push('0.00%');
+            }else{
+                item.push(((times[i]/singleSum*100)).toFixed(2) + '%');
+            }
+        }
+        
         dataArray.push(item);
     }
     return dataArray;
@@ -193,13 +299,14 @@ function appendTableHeader(data,dataTable) {
     $(tableId).append("<thead><tr>" + txt + "</tr></thead>");
 }
 
+//控制平均 的标签
 function dealAvgNote(tag,data) {
-	var type = data.type;
-	var categories;
-	var timesSum = 0.0;
-	var timeSum = 0.0;
-	var timesAvg = 0.0;
-	var timeAvg = 0.0;
+    var type = data.type;
+    var categories;
+    var timesSum = 0.0;
+    var timeSum = 0.0;
+    var timesAvg = 0.0;
+    var timeAvg = 0.0;
 
     for (var key in data.category) {
         categories = data.category[key];
@@ -209,32 +316,32 @@ function dealAvgNote(tag,data) {
     for (var i = 0; i < length; i++) {
         for (var j = 0; j < type.length; j++) {   
             if(type[j]=="每玩家游戏次数"){
-            	timesSum += parseFloat(serie[type[j]][i]);
+                timesSum += parseFloat(serie[type[j]][i]);
             }else{
-            	timeSum += parseFloat(serie[type[j]][i]);
+                timeSum += parseFloat(serie[type[j]][i]);
             }
         }
     }
     if(length!=0){
-    	timesAvg = (timesSum/length).toFixed(2);
-    	timeAvg = (timeSum/length).toFixed(2);
+        timesAvg = (timesSum/length).toFixed(2);
+        timeAvg = (timeSum/length).toFixed(2);
     }
     $("#avg-times").text(timesAvg);
     $("#avg-time").text(timeAvg);
 
-	var dateTxt = "";
-	switch(tag){
-		case "day":
-		dateTxt = "日";
-		break;
-		case "week":
-		dateTxt = "周";
-		break
-		case "month":
-		dateTxt = "月";
-		break;
-	}
-	$("div#avg-note > span > span.per-date").text(dateTxt);
+    var dateTxt = "";
+    switch(tag){
+        case "day":
+        dateTxt = "日";
+        break;
+        case "week":
+        dateTxt = "周";
+        break
+        case "month":
+        dateTxt = "月";
+        break;
+    }
+    $("div#avg-note > span > span.per-date").text(dateTxt);
 }
 
 $("#btn-explain-up").click(function(){
@@ -264,45 +371,95 @@ $("#btn-explain-down").click(function(){
 });
 
 //player-tag
-$("div.nav-tab.habits > ul.nav.nav-pills > li").click(function(){
-	$(this).siblings("li.active").toggleClass("active");
-    $(this).addClass("active");
-    loadAvgGamePeriodData($(this).children("a").attr("data-info"),$("ul.nav.nav-tabs.avg-period-times-tab > li.active > a").attr("data-info"));
-});
+// $("div.nav-tab.habits > ul.nav.nav-pills > li").click(function(){
+//  $(this).siblings("li.active").toggleClass("active");
+//     $(this).addClass("active");
+//     loadAvgGamePeriodData($(this).children("a").attr("data-info"),$("ul.nav.nav-tabs.avg-period-times-tab > li.active > a").attr("data-info"));
+// });
 
 //time select
 $("ul.nav.nav-tabs.avg-period-times-tab > li").click(function(){
-	loadAvgGamePeriodData($("div.nav-tab.habits > ul > li.active > a").attr("data-info"),$(this).children("a").attr("data-info"));
+    loadAvgGamePeriodData($("div.nav-tab.habits > ul > li.active > a").attr("data-info"),$(this).children("a").attr("data-info"));
 });
 
 //detail-tag
-$("div.nav-tab.paid-detail-subtab > ul.nav.nav-pills > li").click(function(){
-	$(this).siblings("li.active").toggleClass("active");
+$(document).on("click","div.nav-tab.paid-detail-subtab > ul.nav.nav-pills > li",function(){
+    $(this).siblings("li.active").toggleClass("active");
     $(this).addClass("active");
+    loadGameDetailData($("div.nav-tab.habits > ul > li.active > a").attr("data-info"), $(this).children("a").children("span").attr("data-info"));
 });
-$("ul.nav.nav-tabs.game-details > li").click(function(){
-	var info = $(this).children("a").attr("data-info");
-	switch(info){
-		case "frequency":
-		$("div.nav-tab.paid-detail-subtab > ul.nav.nav-pills").text("");
-		var str = "<li class='active'><a><span data-info='day-times'>日游戏次数</span></a></li>";
-		str += "<li><a><span data-info='week-times'>周游戏次数</span></a></li>";
-		str += "<li><a><span data-info='week-days'>周游戏天数</span></a></li>";
-		str += "<li><a><span data-info='month-days'>月游戏天数</span></a></li>";
-		$("div.nav-tab.paid-detail-subtab > ul.nav.nav-pills").append(str);
-		$("div.nav-tab.paid-detail-subtab > ul.nav.nav-pills").show();
-		break;
-		case "time":
-		$("div.nav-tab.paid-detail-subtab > ul.nav.nav-pills").text("");
-		var str = "<li class='active'><a><span data-info='day-time'>日游戏时长</span></a></li>";
-		str += "<li><a><span data-info='week-time'>周游戏时长</span></a></li>";
-		str += "<li><a><span data-info='single-time'>单次游戏时长</span></a></li>";
-		$("div.nav-tab.paid-detail-subtab > ul.nav.nav-pills").append(str);
-		$("div.nav-tab.paid-detail-subtab > ul.nav.nav-pills").css("width","123px");
-		$("div.nav-tab.paid-detail-subtab > ul.nav.nav-pills").show();
-		break;
-		case "period":
-		$("div.nav-tab.paid-detail-subtab > ul.nav.nav-pills").hide();
-		break;
-	}
+
+//玩家Tag  detailTag 的选择  改变dom树
+$("ul.nav.nav-tabs.game-details > li, div.nav-tab.habits > ul > li").click(function(){
+    var playerTag = "";
+    var detailTag = "";
+    var str = "";
+    tagType = $(this).children("a").attr("tagType");
+    switch(tagType){
+        case "player":
+        playerTag = $(this).children("a").attr("data-info");
+        detailTag = $("ul.nav.nav-tabs.game-details > li.active > a").attr("data-info");
+        $(this).siblings("li.active").toggleClass("active");
+        $(this).addClass("active");
+        break;
+        case "detail":
+        detailTag = $(this).children("a").attr("data-info");
+        playerTag = $("div.nav-tab.habits > ul > li.active > a").attr("data-info");
+        break;
+    }
+    
+    $("div.nav-tab.paid-detail-subtab > ul.nav.nav-pills").text("");
+    switch(detailTag){
+        case "frequency":
+        switch(playerTag){
+            case "add-players":
+            str = "<li class='active'><a><span data-info='day-times'>日游戏次数</span></a></li>";
+            break;
+            case "active-players":
+            str = "<li class='active'><a><span data-info='day-times'>日游戏次数</span></a></li>";
+            str += "<li><a><span data-info='week-times'>周游戏次数</span></a></li>";
+            str += "<li><a><span data-info='week-days'>周游戏天数</span></a></li>";
+            str += "<li><a><span data-info='month-days'>月游戏天数</span></a></li>";
+            break;
+        }
+        $("div.nav-tab.paid-detail-subtab > ul.nav.nav-pills").append(str);
+        $("div.nav-tab.paid-detail-subtab > ul.nav.nav-pills").show();
+        break;
+        
+        case "time":
+        switch(playerTag){
+            case "add-players":
+            str = "<li class='active'><a><span data-info='day-time'>日游戏时长</span></a></li>";
+            str += "<li><a><span data-info='single-time'>单次游戏时长</span></a></li>";
+            break;
+            case "active-players":
+            str = "<li class='active'><a><span data-info='day-time'>日游戏时长</span></a></li>";
+            str += "<li><a><span data-info='week-time'>周游戏时长</span></a></li>";
+            str += "<li><a><span data-info='single-time'>单次游戏时长</span></a></li>";
+            break;
+        }
+        $("div.nav-tab.paid-detail-subtab > ul.nav.nav-pills").append(str);
+        $("div.nav-tab.paid-detail-subtab > ul.nav.nav-pills").css("width","123px");
+        $("div.nav-tab.paid-detail-subtab > ul.nav.nav-pills").show();
+        break;
+        
+        case "period":
+        $("div.nav-tab.paid-detail-subtab > ul.nav.nav-pills").hide();
+        break;
+    }
+
+    switch(tagType){
+        case "player":
+        loadAvgGamePeriodData(playerTag,$("ul.nav.nav-tabs.avg-period-times-tab > li.active > a").attr("data-info"));
+        break;
+        case "detail":
+        break;
+    }
+    if(detailTag=='period'){
+        loadGameDetailData(playerTag, "period");
+        return;
+    }
+    loadGameDetailData(playerTag, $("div.nav-tab.paid-detail-subtab > ul.nav.nav-pills > li.active > a > span").attr("data-info"));
 });
+
+

@@ -246,9 +246,9 @@
        </div>
        <div class="nav-tab habits"> 
         <ul class="nav nav-pills"> 
-         <li class="active"><a href="#" data-info="add-players"><span>新增玩家</span></a></li> 
-         <li class=""><a href="#" data-info="active-players"><span>活跃玩家</span></a> </li> 
-         <li class=""><a href="#" data-info="paid-players"><span>付费玩家</span></a> </li> 
+         <li class="active"><a href="#" tagType="player" data-info="add-players"><span>新增玩家</span></a></li> 
+         <li class=""><a href="#" tagType="player" data-info="active-players"><span>活跃玩家</span></a> </li> 
+         <li class=""><a href="#" tagType="player" data-info="paid-players"><span>付费玩家</span></a> </li> 
         </ul> 
        </div>
       </div> 
@@ -425,17 +425,14 @@
      </div>
      <div class="row" id="data-second">
         <ul class="nav nav-tabs game-details"> 
-         <li class="active"> <a data-toggle="tab" data-info="frequency">游戏频次</a></li> 
-         <li class=""> <a data-toggle="tab" data-info="time">游戏时长</a></li>
-         <li class=""> <a data-toggle="tab" data-info="period">游戏时段</a></li>
+         <li class="active"> <a data-toggle="tab" tagType="detail" data-info="frequency">游戏频次</a></li> 
+         <li class=""> <a data-toggle="tab" tagType="detail" data-info="time">游戏时长</a></li>
+         <li class=""> <a data-toggle="tab" tagType="detail" data-info="period">游戏时段</a></li>
          <button class="btn btn-2 btn-2c" id="btn-gamedetail-switch">关闭</button>  
         </ul>
         <div class="nav-tab paid-detail-subtab">
           <ul class="nav nav-pills"> 
             <li class="active"><a><span data-info="day-times">日游戏次数</span></a></li> 
-            <li class=""><a><span data-info="week-times">周游戏次数</span></a> </li>
-            <li class=""><a><span data-info="week-days">周游戏天数</span></a> </li>
-            <li class=""><a><span data-info="month-days">月游戏天数</span></a> </li> 
           </ul> 
         </div>
         <div class="tab-content">          
