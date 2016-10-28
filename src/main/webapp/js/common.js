@@ -139,11 +139,12 @@ $(function() {
         inputTrigger: 'input_trigger',
         theme: 'ta',
         success : function(obj) { 
-        //设置回调句柄 
+            //设置回调句柄 
             loadData();
+            validateSelectedDate();
         } 
     });
-
+    validateSelectedDate();
     //filter
     jQuery(document).ready(function(){
             jQuery("#filter").jcOnPageFilter({
@@ -184,3 +185,35 @@ $(function() {
     }
 });
 
+function validateSelectedDate(){
+    var id = $("div.time-title.active > a.selected").attr("id");
+    var sD = $("input#startDate").attr("value");
+    var eD = $("input#endDate").attr("value");
+    switch(id){
+        case "aToday":
+            if(sD!=getFormatDate(0) || eD!=getFormatDate(0)){
+                $("div.time-title.active > a.selected").removeClass("selected");
+            }
+        break;
+        case "aYesterday":
+            if(sD!=getFormatDate(1) || eD!=getFormatDate(1)){
+               $("div.time-title.active > a.selected").removeClass("selected");
+            }
+        break;
+        case "aRecent7Days":
+            if(sD!=getFormatDate(6) || eD!=getFormatDate(0)){
+               $("div.time-title.active > a.selected").removeClass("selected");
+            }
+        break;
+        case "aRecent30Days":
+            if(sD!=getFormatDate(29) || eD!=getFormatDate(0)){
+               $("div.time-title.active > a.selected").removeClass("selected");
+            }
+        break;
+        case "aRecent90Days":
+            if(sD!=getFormatDate(89) || eD!=getFormatDate(0)){
+               $("div.time-title.active > a.selected").removeClass("selected");
+            }
+        break;
+    }
+}

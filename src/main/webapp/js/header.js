@@ -30,7 +30,7 @@ function iconsView() {
     $(".dropdown.open").toggleClass("open");
 }
 
-//点击tab跳转时添加icon参数
+//点击菜单tab 页面跳转时添加icon参数 添加时间参数
 $("#main-menu > li a").click(function(){
     var href = $(this).attr("href");
     if(href=="#")return;
