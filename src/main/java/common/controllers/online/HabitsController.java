@@ -10,7 +10,6 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import com.jfinal.aop.Before;
-import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
@@ -22,7 +21,8 @@ import common.service.impl.OnlineHabitsServiceImpl;
 import common.utils.DateUtils;
 import common.utils.StringUtils;
 
-@Clear(AuthInterceptor.class)
+//@Clear(AuthInterceptor.class)
+@Before(AuthInterceptor.class)
 public class HabitsController extends Controller {
 	private static Logger logger = Logger.getLogger(HabitsController.class);
 	private OnlineHabitsService ohs = new OnlineHabitsServiceImpl();
