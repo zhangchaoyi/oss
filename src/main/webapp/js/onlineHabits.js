@@ -1,5 +1,5 @@
 var aptChart = echarts.init(document.getElementById('avg-period-times-chart'));
-var fDchart = echarts.init(document.getElementById('fp-details-chart'));
+var fDChart = echarts.init(document.getElementById('fp-details-chart'));
 
 var aptTable = '#data-table-avg-period-times';
 var fDTable = '#data-table-fp-details';
@@ -33,7 +33,7 @@ function loadAvgGamePeriodData(playerTag,tag) {
 
 function loadGameDetailData(playerTag,tag) {
     if(playerTag=='paid-players'){
-        fDchart.clear();
+        fDChart.clear();
         $(fDTable).dataTable().fnClearTable(); 
         return;
     }
@@ -45,7 +45,7 @@ function loadGameDetailData(playerTag,tag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
-        configChart(data, fDchart, "fDchart");
+        configChart(data, fDChart, "fDChart");
         configTable(data, fDTable, true);
     });
 }
@@ -91,7 +91,7 @@ function configChart(data, chart, chartName) {
             end: 50
         }],
         yAxis: function() {
-            if(chartName=="fDchart" && categoryName!="游戏时段"){
+            if(chartName=="fDChart" && categoryName!="游戏时段"){
                 var item = {
                     type: 'category',
                     data: function() {
@@ -112,7 +112,7 @@ function configChart(data, chart, chartName) {
         } (),
 
         xAxis: function() {
-            if(chartName=="fDchart" && categoryName!="游戏时段") {
+            if(chartName=="fDChart" && categoryName!="游戏时段") {
                 var item = {
                     type:'value',
                     axisLabel: {
