@@ -144,11 +144,6 @@ function configChart(data, chart, chartName) {
                         return "bar";
                     }(),
                     smooth:true,
-                    itemStyle: {
-                        normal: {
-                            color: 'rgb(87, 139, 187)'
-                        }
-                    },
                     data: recData[key]
                 }
                 serie.push(item);

@@ -239,11 +239,6 @@ function configChart(data, chart, chartName) {
                     name: key,
                     type: "bar",
                     smooth:true,
-                    itemStyle: {
-                        normal: {
-                            color: 'rgb(87, 139, 187)'
-                        }
-                    },
                     data: recData[key]
                 }
                 serie.push(item);

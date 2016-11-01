@@ -131,11 +131,6 @@ function configChart(data) {
                     var item = {
                         name: key,
                         type: "bar",
-                        itemStyle: {
-                            normal: {
-                                color: 'rgb(87, 139, 187)'
-                            }
-                        },
                         data: recData[key]
                     }
                     serie.push(item);

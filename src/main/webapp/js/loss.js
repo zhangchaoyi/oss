@@ -1,4 +1,6 @@
-var lcchart = echarts.init(document.getElementById('loss-count-chart'));
+var lcChart = echarts.init(document.getElementById('loss-count-chart'));
+
+var lcTable = '#data-table-loss-count';
 
 $(function(){
     loadData();
@@ -17,7 +19,8 @@ function loadLossData(playerTag,tag){
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
-        configChart(data, lcchart, "lcchart");
+        configChart(data, lcChart, "lcChart");
+        configTable(data, lcTable);
     });
 }
 
@@ -85,11 +88,6 @@ function configChart(data, chart, chartName) {
                     name: key,
                     type: "line",
                     smooth:true,
-                    itemStyle: {
-                        normal: {
-                            color: 'rgb(87, 139, 187)'
-                        }
-                    },
                     data: recData[key]
                 }
                 serie.push(item);
@@ -97,6 +95,48 @@ function configChart(data, chart, chartName) {
             return serie;
         } ()
     });
+}
+
+function configTable(data,dataTable) {
+    appendTableHeader(data,dataTable);
+    var tableData = data.tableData;
+
+    $(dataTable).dataTable().fnClearTable();  
+    $(dataTable).dataTable({
+        "destroy": true,
+        // retrive:true,
+        "data": tableData,
+        "dom": '<"top"f>rt<"left"lip>',
+        'language': {
+            'emptyTable': '没有数据',
+            'loadingRecords': '加载中...',
+            'processing': '查询中...',
+            'search': '查询:',
+            'lengthMenu': '每页显示 _MENU_ 条记录',
+            'zeroRecords': '没有数据',
+            "sInfo": "(共 _TOTAL_ 条记录)",
+            'infoEmpty': '没有数据',
+            'infoFiltered': '(过滤总件数 _MAX_ 条)'
+        }
+    });
+}
+
+function appendTableHeader(data,dataTable) {
+    var header = data.header;
+    var txt = "";
+
+    var tableId = dataTable;
+
+    for (var i = 0; i < header.length; i++) {
+        txt = txt + "<th><span>" + header[i] + "</span></th>";
+    }
+
+    if ($(tableId).children("thead").length != 0) {
+        $(tableId).children("thead").empty();
+        $(tableId).prepend("<thead><tr>" + txt + "</tr></thead>");
+        return;
+    }
+    $(tableId).append("<thead><tr>" + txt + "</tr></thead>");
 }
 
 $("div.nav-tab.loss > ul.nav.nav-pills > li").click(function(){

@@ -98,11 +98,6 @@ function configEquipmentChart(data) {
                     name: key,
                     type: "bar",
                     barWidth:"30%",
-                    itemStyle: {
-                        normal: {
-                            color: 'rgb(87, 139, 187)'
-                        }
-                    },
                     data: recData[key]
                 }
                 serie.push(item);

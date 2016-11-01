@@ -98,11 +98,6 @@ function configChart(data, chart, chartName) {
                         return "line";
                     }(),
                     smooth:true,
-                    itemStyle: {
-                        normal: {
-                            color: 'rgb(87, 139, 187)'
-                        }
-                    },
                     data: recData[key]
                 }
                 serie.push(item);
