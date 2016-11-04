@@ -1,7 +1,11 @@
 package common.controllers;
 
-import org.apache.log4j.Logger;
+import java.util.HashMap;
+import java.util.Map;
 
+import javax.servlet.http.Cookie;
+
+import org.apache.log4j.Logger;
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
@@ -48,6 +52,24 @@ public class LoginController extends Controller {
 	public void logout() {
 		logger.debug("logout succefully");
 		removeCookie("login");
+		renderJson("{\"message\":\"success\"}");
+	}
+	
+	@Before(POST.class)
+	@ActionKey("/api/cookie/info")
+	public void getCookieInfo(){
+		Cookie cookie = getCookieObject("login");
+		String username = "";
+		String message = "false";
+		if(cookie!=null){
+			username = cookie.getValue();
+			message = "true";
+		}
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("username", username);
+		data.put("message", message);
+		logger.debug("cookie info" + data);
+		renderJson(data);
 	}
 
 }

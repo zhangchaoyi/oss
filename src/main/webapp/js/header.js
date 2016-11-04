@@ -51,6 +51,13 @@ function showIcon(icon){
 	}
 }
 
+$("button.btn.btn-default.btn-off").click(function(){
+    $.post("/oss/api/logout", {},
+    function(data, status) {
+        location.href = location.protocol + "//" + location.host + "/oss/login";
+    });
+});
+
 //获取当前所有显示的图标
 function getIcons(){
     var list = [];
@@ -80,3 +87,17 @@ $('.dropdown-menu.iconBar').click(function(e) {
 $("button.btn.btn-default.btn-circle").click(function(){
     location.reload();
 })
+
+//用户显示栏
+$(function(){
+    $.post("/oss/api/cookie/info", {
+
+    },
+    function(data, status) {
+         if(data.message=="true"){
+            $("#dropdownMenu1").text("");
+            $("#dropdownMenu1").append(data.username + "<span class='caret'></span>");
+         }
+    }); 
+   
+});
