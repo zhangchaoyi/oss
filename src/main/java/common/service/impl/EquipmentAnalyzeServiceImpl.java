@@ -1,9 +1,6 @@
 package common.service.impl;
 
 import java.util.List;
-
-import org.apache.log4j.Logger;
-
 import common.model.DeviceInfo;
 import common.service.EquipmentAnalyzeService;
 
@@ -13,7 +10,6 @@ import common.service.EquipmentAnalyzeService;
  *
  */
 public class EquipmentAnalyzeServiceImpl implements EquipmentAnalyzeService{
-	private static Logger logger = Logger.getLogger(EquipmentAnalyzeServiceImpl.class);
 	//新增
 	public List<DeviceInfo> queryAddPlayersEquipment(String icons, String startDate, String endDate){
 		String sql = "select B.model model, count(B.model) count from (select openudid from create_role where create_time >= ? and create_time <= ?) A join device_info B on A.openudid = B.openudid where B.os in (" + icons + ") group by B.model";

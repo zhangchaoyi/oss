@@ -7,28 +7,25 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.apache.log4j.Logger;
-
 import com.jfinal.aop.Before;
+import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
-
-import common.interceptor.AuthInterceptor;
+import common.interceptor.DataGuestInterceptor;
 import common.service.LossAnalysisService;
 import common.service.impl.LossAnalysisServiceImpl;
 import common.utils.DateUtils;
 import common.utils.StringUtils;
 
-//@Clear(AuthInterceptor.class)
-@Before(AuthInterceptor.class)
+@Clear
 public class LossController extends Controller {
 	private static Logger logger = Logger.getLogger(LossController.class);
 	private LossAnalysisService las = new LossAnalysisServiceImpl();
 
-	@Before(GET.class)
+	@Before({GET.class, DataGuestInterceptor.class})
 	@ActionKey("/loss")
 	public void analyse() {
 		render("loss.html");

@@ -5,12 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.log4j.Logger;
-
-import com.jfinal.aop.Before;
-
-import common.interceptor.AuthInterceptor;
 import common.model.LogCharge;
 import common.service.PaymentBehaviorService;
 
@@ -19,7 +14,6 @@ import common.service.PaymentBehaviorService;
  * @author chris
  *
  */
-@Before(AuthInterceptor.class)
 public class PaymentBehaviorServiceImpl implements PaymentBehaviorService{
 	private static Logger logger = Logger.getLogger(PaymentBehaviorServiceImpl.class);
 	//付费等级金额

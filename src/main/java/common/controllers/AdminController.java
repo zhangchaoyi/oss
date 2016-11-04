@@ -8,46 +8,36 @@ import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
-import common.model.SecUser;
 import common.service.AdminService;
 import common.service.impl.AdminServiceImpl;
 
 @Clear
-public class LoginController extends Controller {
-	private static Logger logger = Logger.getLogger(LoginController.class);
+public class AdminController extends Controller {
+	private static Logger logger = Logger.getLogger(AdminController.class);
 	private AdminService as = new AdminServiceImpl();
 	
 	@Before(GET.class)
-	public void index() {
-		setAttr("from", getPara("from"));
-
-		render("login.html");
+	@ActionKey("/admin/authority/error")
+	public void authorityError() {
+		render("authorityError.html");
 	}
-
+	
 	@Before(POST.class)
-	@ActionKey("/api/login")
+	@ActionKey("/api/admin/signup")
 	public void loginValidate() {
 		String username = getPara("username");
 		String password = getPara("password");
-
+		String role = getPara("role", "data_guest");
+		
 		logger.debug("username:" + username + "password:" + password);
-		SecUser secUser = as.getUser(username);
-		if(secUser!=null && secUser.getStr("password").equals(password)){
-			setCookie("login",username, -1, "/", true);
-			logger.debug("login successfully");
-			renderJson("{\"message\":\"success\"}");
+		boolean succeed = as.signupUser(username, password, role);
+		
+		if(succeed==true){
+			logger.debug("signup successfully");
+			renderJson("{\"message\":\"successfully\"}");
 			return;
 		}
-		
-		logger.debug("login failed");
+		logger.debug("signup failed");
 		renderJson("{\"message\":\"fail\"}");
 	}
-
-	@Before(POST.class)
-	@ActionKey("/api/logout")
-	public void logout() {
-		logger.debug("logout succefully");
-		removeCookie("login");
-	}
-
 }

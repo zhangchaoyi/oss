@@ -5,9 +5,7 @@ import com.jfinal.aop.Clear;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 
-import common.interceptor.AuthInterceptor;
-
-@Clear(AuthInterceptor.class)
+@Clear
 public class IndexController extends Controller{
 	@Before(GET.class)
 	public void index() {

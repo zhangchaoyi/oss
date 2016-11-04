@@ -9,20 +9,20 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseSecUser<M extends BaseSecUser<M>> extends Model<M> implements IBean {
 
-	public void setId(java.lang.Long id) {
-		set("id", id);
+	public void setUserId(java.lang.Long userId) {
+		set("user_id", userId);
 	}
 
-	public java.lang.Long getId() {
-		return get("id");
+	public java.lang.Long getUserId() {
+		return get("user_id");
 	}
 
-	public void setUsername(java.lang.String username) {
-		set("username", username);
+	public void setUserName(java.lang.String userName) {
+		set("user_name", userName);
 	}
 
-	public java.lang.String getUsername() {
-		return get("username");
+	public java.lang.String getUserName() {
+		return get("user_name");
 	}
 
 	public void setPassword(java.lang.String password) {
@@ -41,28 +41,20 @@ public abstract class BaseSecUser<M extends BaseSecUser<M>> extends Model<M> imp
 		return get("salt");
 	}
 
-	public void setCreatedAt(java.util.Date createdAt) {
-		set("created_at", createdAt);
+	public void setCreatedTime(java.util.Date createdTime) {
+		set("created_time", createdTime);
 	}
 
-	public java.util.Date getCreatedAt() {
-		return get("created_at");
+	public java.util.Date getCreatedTime() {
+		return get("created_time");
 	}
 
-	public void setUpdatedAt(java.util.Date updatedAt) {
-		set("updated_at", updatedAt);
+	public void setUpdateTime(java.util.Date updateTime) {
+		set("update_time", updateTime);
 	}
 
-	public java.util.Date getUpdatedAt() {
-		return get("updated_at");
-	}
-
-	public void setDeletedAt(java.util.Date deletedAt) {
-		set("deleted_at", deletedAt);
-	}
-
-	public java.util.Date getDeletedAt() {
-		return get("deleted_at");
+	public java.util.Date getUpdateTime() {
+		return get("update_time");
 	}
 
 }

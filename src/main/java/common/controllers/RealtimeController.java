@@ -12,28 +12,27 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import com.jfinal.aop.Before;
+import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
-import common.interceptor.AuthInterceptor;
 import common.service.RealtimeService;
 import common.service.impl.RealtimeServiceImpl;
 import common.utils.StringUtils;
-
+import common.interceptor.DataGuestInterceptor;
 /**
  * 实时数据页 --逻辑控制层
  * 目前实时在线为假数据
  * @author chris
  *
  */
-//@Clear(AuthInterceptor.class)
-@Before(AuthInterceptor.class)
+@Clear
 public class RealtimeController extends Controller {
 	private static Logger logger = Logger.getLogger(RealtimeController.class);
 	private RealtimeService realtimeService = new RealtimeServiceImpl();
 
-	@Before(GET.class)
+	@Before({GET.class, DataGuestInterceptor.class})
 	@ActionKey("/realtime/info")
 	public void activePlayer() {
 		render("info.html");

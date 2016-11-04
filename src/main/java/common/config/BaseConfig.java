@@ -11,7 +11,8 @@ import com.jfinal.plugin.activerecord.ActiveRecordPlugin;
 import com.jfinal.plugin.c3p0.C3p0Plugin;
 
 import common.controllers.IndexController;
-import common.interceptor.AuthInterceptor;
+import common.interceptor.AdminInterceptor;
+import common.interceptor.DataGuestInterceptor;
 import common.model.ActiveUser;
 import common.model.CreateRole;
 import common.model.DeviceInfo;
@@ -24,6 +25,9 @@ import common.model.PaymentDetail;
 import common.model.RetainEquipment;
 import common.model.RetainUser;
 import common.model.ReturnUser;
+import common.model.SecRole;
+import common.model.SecUser;
+import common.model.SecUserRole;
 import common.routes.AdminRoute;
 
 public class BaseConfig extends JFinalConfig {
@@ -57,11 +61,15 @@ public class BaseConfig extends JFinalConfig {
 		arp.addMapping("payment_detail", PaymentDetail.class);
 		arp.addMapping("loss_user", LossUser.class);
 		arp.addMapping("return_user", ReturnUser.class);
+		arp.addMapping("sec_role", "role_id", SecRole.class);
+		arp.addMapping("sec_user", "user_id", SecUser.class);
+		arp.addMapping("sec_user_role", SecUserRole.class);
 	}
 
 	@Override
 	public void configInterceptor(Interceptors me) {
-		me.addGlobalActionInterceptor(new AuthInterceptor());
+		me.addGlobalActionInterceptor(new AdminInterceptor());
+		me.addGlobalActionInterceptor(new DataGuestInterceptor());
 	}
 
 	@Override

@@ -28,7 +28,11 @@ public class JFinalGenerator {
 		Generator gernerator = new Generator(getDataSource(), baseModelPackageName, baseModelOutputDir,
 				modelPackageName, modelOutputDir);
 		// 添加不需要生成的表名
+		gernerator.addExcludedTable("arena_record");
 		gernerator.addExcludedTable("arena_score");
+		gernerator.addExcludedTable("guide_step");
+		gernerator.addExcludedTable("hero_module_change");
+		gernerator.addExcludedTable("ladder_record");
 		gernerator.addExcludedTable("ladder_score");
 		gernerator.addExcludedTable("log_RMB");
 		gernerator.addExcludedTable("log_battle");

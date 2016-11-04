@@ -7,29 +7,26 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.apache.log4j.Logger;
-
 import com.jfinal.aop.Before;
+import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
-
-import common.interceptor.AuthInterceptor;
 import common.model.LogCharge;
 import common.service.PaymentDataService;
 import common.service.impl.PaymentDataServiceImpl;
 import common.utils.DateUtils;
 import common.utils.StringUtils;
+import common.interceptor.AdminInterceptor;
 
-//@Clear(AuthInterceptor.class)
-@Before(AuthInterceptor.class)
+@Clear
 public class PaymentDataController extends Controller{
 	private static Logger logger = Logger.getLogger(PaymentDataController.class);
 	private PaymentDataService paymentDataService = new PaymentDataServiceImpl();
 	
-	@Before(GET.class)
+	@Before({GET.class, AdminInterceptor.class})
 	@ActionKey("/payment/data")
 	public void paymentIndex() {
 		render("payment.html");

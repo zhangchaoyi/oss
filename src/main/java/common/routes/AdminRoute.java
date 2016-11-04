@@ -1,8 +1,8 @@
 package common.routes;
 
-import com.jfinal.aop.Before;
 import com.jfinal.config.Routes;
 
+import common.controllers.AdminController;
 import common.controllers.DashboardController;
 import common.controllers.LoginController;
 import common.controllers.RealtimeController;
@@ -19,10 +19,7 @@ import common.controllers.players.AddController;
 import common.controllers.players.EffectiveController;
 import common.controllers.players.EquipmentController;
 import common.controllers.players.RetainController;
-import common.interceptor.AuthInterceptor;
 
-//@Clear(AuthInterceptor.class)
-@Before(AuthInterceptor.class)
 public class AdminRoute extends Routes {
 
 	@Override
@@ -43,6 +40,7 @@ public class AdminRoute extends Routes {
 		add("/onlineAnalysis", AnalysisController.class, "/WEB-INF/views/online");
 		add("/onlineHabit", HabitsController.class, "/WEB-INF/views/online");
 		add("/loss", LossController.class, "/WEB-INF/views/loss");
+		add("/admin", AdminController.class, "/WEB-INF/views/admin");
 	}
 
 }

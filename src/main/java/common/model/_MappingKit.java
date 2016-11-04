@@ -17,12 +17,9 @@ public class _MappingKit {
 
 	public static void mapping(ActiveRecordPlugin arp) {
 		arp.addMapping("active_user", "id", ActiveUser.class);
-		arp.addMapping("arena_record", "id", ArenaRecord.class);
 		arp.addMapping("create_role", "account", CreateRole.class);
 		// Composite Primary Key order: openudid,os
 		arp.addMapping("device_info", "openudid,os", DeviceInfo.class);
-		arp.addMapping("guide_step", "id", GuideStep.class);
-		arp.addMapping("ladder_record", "id", LadderRecord.class);
 		arp.addMapping("level_up", "id", LevelUp.class);
 		arp.addMapping("log_charge", "id", LogCharge.class);
 		arp.addMapping("login", "id", Login.class);
@@ -32,6 +29,9 @@ public class _MappingKit {
 		arp.addMapping("retain_equipment", "id", RetainEquipment.class);
 		arp.addMapping("retain_user", "id", RetainUser.class);
 		arp.addMapping("return_user", "id", ReturnUser.class);
+		arp.addMapping("sec_role", "role_id", SecRole.class);
+		arp.addMapping("sec_user", "user_id", SecUser.class);
+		arp.addMapping("sec_user_role", "id", SecUserRole.class);
 	}
 }
 

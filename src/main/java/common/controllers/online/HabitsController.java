@@ -8,26 +8,25 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.apache.log4j.Logger;
-
 import com.jfinal.aop.Before;
+import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 
-import common.interceptor.AuthInterceptor;
+import common.interceptor.DataGuestInterceptor;
 import common.service.OnlineHabitsService;
 import common.service.impl.OnlineHabitsServiceImpl;
 import common.utils.DateUtils;
 import common.utils.StringUtils;
 
-//@Clear(AuthInterceptor.class)
-@Before(AuthInterceptor.class)
+@Clear
 public class HabitsController extends Controller {
 	private static Logger logger = Logger.getLogger(HabitsController.class);
 	private OnlineHabitsService ohs = new OnlineHabitsServiceImpl();
 
-	@Before(GET.class)
+	@Before({GET.class, DataGuestInterceptor.class})
 	@ActionKey("/online/habits")
 	public void analyse() {
 		render("habits.html");

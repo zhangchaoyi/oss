@@ -7,16 +7,14 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.apache.log4j.Logger;
-
 import com.jfinal.aop.Before;
+import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
-
-import common.interceptor.AuthInterceptor;
+import common.interceptor.DataGuestInterceptor;
 import common.service.RetainPlayersService;
 import common.service.impl.RetainPlayersServiceImpl;
 import common.utils.DateUtils;
@@ -27,13 +25,12 @@ import common.utils.StringUtils;
  * 自定义留存使用假数据
  * @author chris
  */
-//@Clear(AuthInterceptor.class)
-@Before(AuthInterceptor.class)
+@Clear
 public class RetainController extends Controller{
 	private static Logger logger = Logger.getLogger(RetainController.class);
 	private RetainPlayersService retainPlayersService = new RetainPlayersServiceImpl();
 	
-	@Before(GET.class)
+	@Before({GET.class, DataGuestInterceptor.class})
 	@ActionKey("/players/retain")
 	public void retain() {
 		render("retain.html");

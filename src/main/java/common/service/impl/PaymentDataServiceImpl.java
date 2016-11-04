@@ -347,7 +347,6 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		for(Login l : aP){
 			aPMap.put(l.getStr("date"),l.getLong("count"));
 		}
-		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		List<Double> arpu = new ArrayList<Double>();
 		for(String date : categories){
 			double revenue = lcMap.get(date);
