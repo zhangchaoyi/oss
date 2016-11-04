@@ -29,7 +29,8 @@ public class LoginController extends Controller {
 
 		logger.debug("username:" + userName + "password:" + passWord);
 		if ("admin".equals(userName) && "admin".equals(passWord)) {
-			getSession().setAttribute("login_flag", true);
+			setCookie("login",userName, 86400, "/", true);
+//			getSession().setAttribute("login_flag", true);
 			logger.debug("login successfully");
 			renderJson("{\"message\":\"success\"}");
 			return;
@@ -42,7 +43,8 @@ public class LoginController extends Controller {
 	@ActionKey("/api/logout")
 	public void logout() {
 		logger.debug("logout succefully");
-		getSession().setAttribute("login_flag", false);
+//		getSession().setAttribute("login_flag", false);
+		removeCookie("login");
 	}
 
 }
