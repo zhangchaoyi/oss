@@ -34,7 +34,7 @@ public class ActiveController extends Controller{
 		render("active.html");
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/active")
 	public void queryActivePlayer() {
 		String playerTag = getPara("playerTag", "dau");
@@ -87,7 +87,7 @@ public class ActiveController extends Controller{
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/active/details")
 	public void queryActiveDetail() {
 		String detailTagInfo = getPara("detailTagInfo", "played-days");

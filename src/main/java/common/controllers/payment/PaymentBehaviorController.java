@@ -13,7 +13,7 @@ import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
-import common.interceptor.AdminInterceptor;
+import common.interceptor.VipInterceptor;
 import common.service.PaymentBehaviorService;
 import common.service.impl.PaymentBehaviorServiceImpl;
 import common.utils.StringUtils;
@@ -23,13 +23,13 @@ public class PaymentBehaviorController extends Controller {
 	private static Logger logger = Logger.getLogger(PaymentBehaviorController.class);
 	private PaymentBehaviorService paymentBehaviorService = new PaymentBehaviorServiceImpl();
 	
-	@Before({GET.class, AdminInterceptor.class})
+	@Before({GET.class, VipInterceptor.class})
 	@ActionKey("/payment/behavior")
 	public void paymentIndex() {
 		render("paymentBehavior.html");
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/behavior/rank")
 	public void queryPaymentBehaviorMoney() {
 		String tag = getPara("tag", "rank-paymentBehavior-money");
@@ -67,7 +67,7 @@ public class PaymentBehaviorController extends Controller {
 		renderJson(data);
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/behavior/period")
 	public void queryPaymentBehaviorPeriod() {
 		String tag = getPara("tag", "fp-period");
@@ -120,7 +120,7 @@ public class PaymentBehaviorController extends Controller {
 		renderJson(data);
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/behavior/fp/detail")
 	public void queryPaymentBehaviorDetail() {
 		String tag = getPara("tag", "fp-cycle");

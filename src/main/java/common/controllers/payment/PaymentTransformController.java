@@ -14,7 +14,7 @@ import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
-import common.interceptor.AdminInterceptor;
+import common.interceptor.VipInterceptor;
 import common.service.PaymentTransformService;
 import common.service.impl.PaymentTransformServiceImpl;
 import common.utils.DateUtils;
@@ -25,13 +25,13 @@ public class PaymentTransformController extends Controller{
 	private static Logger logger = Logger.getLogger(PaymentTransformController.class);
 	private PaymentTransformService paymentTransformService = new PaymentTransformServiceImpl();
 	
-	@Before({GET.class, AdminInterceptor.class})
+	@Before({GET.class, VipInterceptor.class})
 	@ActionKey("/payment/transform")
 	public void paymentIndex() {
 		render("paymentTransform.html");
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/transform/paidAnalyze")
 	public void queryPaymentAddPaidAnalyze() {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
@@ -63,7 +63,7 @@ public class PaymentTransformController extends Controller{
 	}
 	
 	@SuppressWarnings("unchecked")
-	@Before(POST.class)
+	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/transform/rate")
 	public void queryPaymentRate() {
 		String tag = getPara("tag");
@@ -112,7 +112,7 @@ public class PaymentTransformController extends Controller{
 		renderJson(data);
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/transform/detail")
 	public void queryPaymentTransformDetail() {
 		String tag = getPara("tag");

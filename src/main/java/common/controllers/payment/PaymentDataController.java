@@ -19,20 +19,20 @@ import common.service.PaymentDataService;
 import common.service.impl.PaymentDataServiceImpl;
 import common.utils.DateUtils;
 import common.utils.StringUtils;
-import common.interceptor.AdminInterceptor;
+import common.interceptor.VipInterceptor;
 
 @Clear
 public class PaymentDataController extends Controller{
 	private static Logger logger = Logger.getLogger(PaymentDataController.class);
 	private PaymentDataService paymentDataService = new PaymentDataServiceImpl();
 	
-	@Before({GET.class, AdminInterceptor.class})
+	@Before({GET.class, VipInterceptor.class})
 	@ActionKey("/payment/data")
 	public void paymentIndex() {
 		render("payment.html");
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/data")
 	public void queryPaymentData() {
 		String tag = getPara("tag", "data-payment-money");
@@ -75,7 +75,7 @@ public class PaymentDataController extends Controller{
 		renderJson(data);
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/data/table")
 	public void queryPaymentDataTable() {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
@@ -87,7 +87,7 @@ public class PaymentDataController extends Controller{
 		renderJson(paymentDetail);
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/analyze")
 	public void queryAnalyzePayment() {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
@@ -181,7 +181,7 @@ public class PaymentDataController extends Controller{
 		logger.debug("<PaymentDataController> queryAnalyzePayment:" + data);
 		renderJson(data);
 	}
-	@Before(POST.class)
+	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/analyze/table")
 	public void queryPaymentAnalyzeTable() {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
@@ -244,7 +244,7 @@ public class PaymentDataController extends Controller{
 		renderJson(data);
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/detail")
 	public void queryDetailTable(){
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));

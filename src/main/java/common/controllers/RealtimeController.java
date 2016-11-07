@@ -38,7 +38,7 @@ public class RealtimeController extends Controller {
 		render("info.html");
 	}
 
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/realtime/beforedata")
 	public void queryBeforeData() {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
@@ -47,7 +47,7 @@ public class RealtimeController extends Controller {
 		renderJson(data);
 	}
 
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/realtime/realtimedata")
 	public void queryRealtimeData() {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
@@ -56,7 +56,7 @@ public class RealtimeController extends Controller {
 		renderJson(data);
 	}
 
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/realtime/info")
 	public void queryRealtimeInfo() {
 		String detailTag = getPara("detailTag", "rto");

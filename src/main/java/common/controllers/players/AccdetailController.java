@@ -25,7 +25,7 @@ public class AccdetailController extends Controller{
 		render("accdetail.html");
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/accdetail")
 	public void queryActivePlayer() {
 		String accountId = getPara("accountId","");

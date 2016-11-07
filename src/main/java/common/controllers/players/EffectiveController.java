@@ -28,13 +28,13 @@ public class EffectiveController extends Controller {
 		render("effective.html");
 	}
 	
-	@Before(GET.class)
+	@Before({GET.class, DataGuestInterceptor.class})
 	@ActionKey("/players/effective-distributed")
 	public void effectiveDistributed() {
 		render("effective-distributed.html");
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/effective")
 	public void queryEffectiveData() {
 		String tagDataInfo = getPara("tagDataInfo","add-players");
@@ -71,7 +71,7 @@ public class EffectiveController extends Controller {
 		renderJson(data);
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/effective-distributed")
 	public void queryDistributedData() {
 		String tagDataInfo = getPara("tagDataInfo");

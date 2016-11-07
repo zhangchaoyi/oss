@@ -13,6 +13,7 @@ import com.jfinal.plugin.c3p0.C3p0Plugin;
 import common.controllers.IndexController;
 import common.interceptor.AdminInterceptor;
 import common.interceptor.DataGuestInterceptor;
+import common.interceptor.VipInterceptor;
 import common.model.ActiveUser;
 import common.model.CreateRole;
 import common.model.DeviceInfo;
@@ -69,6 +70,7 @@ public class BaseConfig extends JFinalConfig {
 	@Override
 	public void configInterceptor(Interceptors me) {
 		me.addGlobalActionInterceptor(new AdminInterceptor());
+		me.addGlobalActionInterceptor(new VipInterceptor());
 		me.addGlobalActionInterceptor(new DataGuestInterceptor());
 	}
 

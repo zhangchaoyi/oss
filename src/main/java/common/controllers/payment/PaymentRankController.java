@@ -12,7 +12,7 @@ import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
-import common.interceptor.AdminInterceptor;
+import common.interceptor.VipInterceptor;
 import common.service.PaymentRankService;
 import common.service.impl.PaymentRankServiceImpl;
 import common.utils.DateUtils;
@@ -24,13 +24,13 @@ public class PaymentRankController extends Controller{
 	private PaymentRankService paymentRankService = new PaymentRankServiceImpl();
 	
 	
-	@Before({GET.class, AdminInterceptor.class})
+	@Before({GET.class, VipInterceptor.class})
 	@ActionKey("/payment/rank")
 	public void paymentIndex() {
 		render("paymentRank.html");
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/rank/players")
 	public void queryPaymentRank() {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
@@ -45,7 +45,7 @@ public class PaymentRankController extends Controller{
 		renderJson(data);
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/rank/account/detail")
 	public void queryPaymentAccount() {
 		String account = getPara("account");

@@ -36,19 +36,19 @@ public class RetainController extends Controller{
 		render("retain.html");
 	}
 	
-	@Before(GET.class)
+	@Before({GET.class, DataGuestInterceptor.class})
 	@ActionKey("/players/retain-customize")
 	public void retainCustomize() {
 		render("retain-customize.html");
 	}
 	
-	@Before(GET.class)
+	@Before({GET.class, DataGuestInterceptor.class})
 	@ActionKey("/players/retain-equipment")
 	public void retainEquipment() {
 		render("retain-equipment.html");
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/retain")
 	public void queryRetain() {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
@@ -90,7 +90,7 @@ public class RetainController extends Controller{
 		renderJson(data);
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/retain-customize")
 	public void queryRetainCustomize() {
 		String period = getPara("period","queryDay");
@@ -138,7 +138,7 @@ public class RetainController extends Controller{
 		renderJson(data);
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/retain-equipment/rate")
 	public void queryRetainEquipmentRate() {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));

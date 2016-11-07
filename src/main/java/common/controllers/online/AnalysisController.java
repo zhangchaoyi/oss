@@ -30,7 +30,7 @@ public class AnalysisController extends Controller{
 		render("analysis.html");
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/online/analysis/startTimes")
 	public void queryStartTimes() {
 		String tag = getPara("tag", "distributed-period");
@@ -72,7 +72,7 @@ public class AnalysisController extends Controller{
 		renderJson(data);
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/online/analysis/neightbor")
 	public void queryNeightborPeriod() {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));

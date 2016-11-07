@@ -33,7 +33,7 @@ public class HabitsController extends Controller {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/online/habits/avgGP")
 	public void queryAvgGP() {
 		String playerTag = getPara("playerTag", "add-players");
@@ -129,7 +129,7 @@ public class HabitsController extends Controller {
 		renderJson(data);
 	}
 
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/online/habits/detail")
 	public void queryPeriodDetail() {
 		String playerTag = getPara("playerTag", "add-players");

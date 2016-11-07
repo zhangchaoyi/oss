@@ -31,7 +31,7 @@ public class LossController extends Controller {
 		render("loss.html");
 	}
 
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/loss")
 	public void queryLoss() {
 		String playerTag = getPara("playerTag", "active-players");

@@ -12,6 +12,8 @@ import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
+
+import common.interceptor.DataGuestInterceptor;
 import common.model.SecUser;
 import common.service.AdminService;
 import common.service.impl.AdminServiceImpl;
@@ -55,7 +57,7 @@ public class LoginController extends Controller {
 		renderJson("{\"message\":\"success\"}");
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/cookie/info")
 	public void getCookieInfo(){
 		Cookie cookie = getCookieObject("login");

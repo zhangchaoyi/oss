@@ -26,7 +26,7 @@ public class DashboardController extends Controller {
 		render("dashboard.html");
 	}
 
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/dashboard")
 	public void queryDashboard() {
 		Map<String, String> data = ds.queryDashboardData();

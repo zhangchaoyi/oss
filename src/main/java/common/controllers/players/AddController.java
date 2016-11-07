@@ -30,7 +30,7 @@ public class AddController extends Controller{
 		render("add.html");
 	}
 	
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/add")
 	public void queryAddPlayer() {
 		String addTagInfo = getPara("addTagInfo", "new-activate");
@@ -77,7 +77,7 @@ public class AddController extends Controller{
 		renderJson(data);
 	}
 
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/add/detail")
 	public void queryaddPlayerDetails() {
 		String addDetailTagInfo = getPara("addDetailTagInfo", "first-game-period");	

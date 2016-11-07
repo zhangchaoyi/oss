@@ -29,7 +29,7 @@ public class EquipmentController extends Controller {
 		render("equipment.html");
 	}
 
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/equipment")
 	public void queryEquipmentPlayer() {
 		String playerTagInfo = getPara("playerTagInfo", "add-players");
@@ -97,7 +97,7 @@ public class EquipmentController extends Controller {
 		renderJson(data);
 	}
 
-	@Before(POST.class)
+	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/equipment/details")
 	public void queryEquipmentDetails() {
 		String playerTagInfo = getPara("playerTagInfo", "add-players");

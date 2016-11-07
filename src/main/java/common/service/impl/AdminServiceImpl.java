@@ -30,7 +30,8 @@ public class AdminServiceImpl implements AdminService {
 		}
 		return roles;
 	}
-	//判断角色是否具有该角色权限
+	//判断角色是否具有该角色权限,如果该用户的role列表中存在一个role比当前Interceptor权重大则为true
+	//例如Interceptor为DataGuest,而用户的具有admin的role权限,则为true
 	public boolean validateRolePermission(List<String> roles, String queryRole) {
 		boolean permission = false;
 		int queryRoleWeight = getRoleWeight(queryRole);
