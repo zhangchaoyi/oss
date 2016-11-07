@@ -8,6 +8,8 @@ import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
+
+import common.interceptor.AdminInterceptor;
 import common.service.AdminService;
 import common.service.impl.AdminServiceImpl;
 
@@ -22,7 +24,13 @@ public class AdminController extends Controller {
 		render("authorityError.html");
 	}
 	
-	@Before(POST.class)
+	@Before(GET.class)
+	@ActionKey("/admin/createUser")
+	public void createUser() {
+		render("createUser.html");
+	}
+	
+	@Before({POST.class, AdminInterceptor.class})
 	@ActionKey("/api/admin/signup")
 	public void loginValidate() {
 		String username = getPara("username");
