@@ -1,5 +1,8 @@
 package common.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 
 import com.jfinal.aop.Before;
@@ -12,6 +15,7 @@ import com.jfinal.ext.interceptor.POST;
 import common.interceptor.AdminInterceptor;
 import common.service.AdminService;
 import common.service.impl.AdminServiceImpl;
+import common.utils.EncryptUtils;
 
 @Clear
 public class AdminController extends Controller {
@@ -24,28 +28,50 @@ public class AdminController extends Controller {
 		render("authorityError.html");
 	}
 	
-	@Before(GET.class)
+	@Before({GET.class, AdminInterceptor.class})
 	@ActionKey("/admin/createUser")
 	public void createUser() {
 		render("createUser.html");
 	}
 	
 	@Before({POST.class, AdminInterceptor.class})
-	@ActionKey("/api/admin/signup")
+	@ActionKey("/api/admin/createUser")
 	public void loginValidate() {
 		String username = getPara("username");
 		String password = getPara("password");
 		String role = getPara("role", "data_guest");
+		String key = getPara("key");
 		
-		logger.debug("username:" + username + "password:" + password);
+		Map<String, String> data = new HashMap<String, String>();
+		
+		try {
+			username = EncryptUtils.aesDecrypt(username,key);
+			password = EncryptUtils.aesDecrypt(password,key);
+			role = EncryptUtils.aesDecrypt(role,key);
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.debug("<AdminInterceptor> Exception:", e);
+		}
+		
+		//username 是否已经存在
+		boolean exist = as.existUser(username);
+		if(exist==true) {
+			data.put("message", "exist");
+			renderJson(data);
+			return;
+		}
+		
+		logger.debug("username:" + username + "password:" + password + "role:" + role);
 		boolean succeed = as.signupUser(username, password, role);
 		
 		if(succeed==true){
 			logger.debug("signup successfully");
-			renderJson("{\"message\":\"successfully\"}");
+			data.put("message", "successfully");
+			renderJson(data);
 			return;
 		}
-		logger.debug("signup failed");
-		renderJson("{\"message\":\"fail\"}");
+		logger.debug("createUser failed");
+		data.put("message", "failed");
+		renderJson(data);
 	}
 }

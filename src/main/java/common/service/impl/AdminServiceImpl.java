@@ -1,5 +1,7 @@
 package common.service.impl;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,9 +10,12 @@ import common.model.SecRole;
 import common.model.SecUser;
 import common.model.SecUserRole;
 import common.service.AdminService;
+import common.utils.EncryptUtils;
 import common.utils.RandomUtil;
+import org.apache.log4j.Logger;
 
 public class AdminServiceImpl implements AdminService {
+	private static Logger logger = Logger.getLogger(AdminServiceImpl.class);
 	//查看user是否存在
 	public SecUser getUser(String username) {
 		String sql = "select password from sec_user where user_name = ?";
@@ -46,12 +51,32 @@ public class AdminServiceImpl implements AdminService {
 	//注册新账户
 	public boolean signupUser(String username, String password, String role) {
 		boolean succeed = false;
-		String salt = RandomUtil.getRandomString(8);
+		String salt = RandomUtil.getRandomString(6);
+		//密码原文 + salt
+		password += salt;
+		//md5处理密码后存数据库 password 字段
+		try {
+			password = EncryptUtils.EncoderByMd5(password);
+		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+			logger.debug("<AdminServiceImpl> Exception:", e);
+		}
 		SecUser secUser = new SecUser().set("user_name", username).set("password", password).set("salt", salt).set("created_time", new Date());
 		succeed = secUser.save();
 		int roleId = getRoleIdByRoleName(role);
 		succeed = new SecUserRole().set("user_id", secUser.get("user_id")).set("role_id", roleId).save();
 		return succeed;
+	}
+	
+	//用户名是否已经存在
+	public boolean existUser(String username) {
+		boolean exist = false;
+		String sql = "select * from sec_user where user_name = ?";
+		SecUser secUser = SecUser.dao.findFirst(sql, username);
+		if(secUser!=null){
+			exist=true;
+		}
+		return exist;
 	}
 	
 	private int getRoleWeight(String role){

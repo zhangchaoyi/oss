@@ -12,4 +12,6 @@ public interface AdminService {
 	public SecUser getUser(String username);
 
 	public boolean signupUser(String username, String password, String role);
+	
+	public boolean existUser(String username);
 }

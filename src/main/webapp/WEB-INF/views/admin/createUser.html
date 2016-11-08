@@ -177,11 +177,11 @@
                 <br />
                 <div class="form-group input-group">
                   <span class="input-group-addon"><i class="fa fa-tag" style="font-size:18px" ></i></span>
-                  <input type="text" class="form-control" placeholder="Username " />
+                  <input type="text" class="form-control" id="username" placeholder="Username " />
                 </div>
                 <div class="form-group input-group">
                   <span class="input-group-addon"><i class="fa fa-lock" style="font-size:22px" ></i></span>
-                  <input type="password" class="form-control"  placeholder="Password" />
+                  <input type="password" class="form-control" id="password" placeholder="Password" />
                 </div>
                 <div class="btn-group">
                   <button type="button" class="btn btn-danger" id="role-show" data-info="none">选择角色</button>
@@ -190,7 +190,7 @@
                     <span class="sr-only">Toggle Dropdown</span>
                   </button>
                   <ul class="dropdown-menu" role="menu" id="role-select">
-                    <li><a data-info="data-guest">数据用户</a></li>
+                    <li><a data-info="data_guest">数据用户</a></li>
                     <li><a data-info="gm">游戏管理员</a></li>
                     <li><a data-info="vip">超级用户</a></li>
                     <li><a data-info="admin">平台管理员</a></li>
@@ -198,7 +198,7 @@
                     <li><a data-info="root">系统管理员</a></li>
                   </ul> 
                 </div>
-                <a class="btn btn-primary ">Create User</a>
+                <a class="btn btn-primary" id="create-user">Create User</a>
                 <hr />
               </form>
           </div>
@@ -230,5 +230,7 @@
   <script src="http://oss.koogame.cn/oss/js/checkbox/icheck.js?v=0.1"></script>
   <script src="http://oss.koogame.cn/oss/js/common.js?v=0.1"></script>
   <script src="http://oss.koogame.cn/oss/js/createUser.js?v=0.1"></script>
+  <script src="http://oss.koogame.cn/oss/js/aes.js?v=0.1"></script>
+  <script src="http://oss.koogame.cn/oss/js/mode-ecb.js?v=0.1"></script>
  </body>
 </html>

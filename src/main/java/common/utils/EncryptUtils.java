@@ -16,9 +16,9 @@ import sun.misc.BASE64Encoder;
 public class EncryptUtils {
 
 	/**
-	 * 密钥 16位
+	 * aes密钥 16位
 	 */
-	private static String KEY = "abcdefgabcdefg12";
+	private static String KEY = "m3UMIN7IyRbtznT5";
 
 	/**
 	 * 算法
@@ -26,17 +26,16 @@ public class EncryptUtils {
 	private static final String ALGORITHMSTR = "AES/ECB/PKCS5Padding";
 
 	public static void main(String[] args) throws Exception {
-//		String content = "asfsadfasdf51561";
+//		String content = "asdf75003";
 //		System.out.println("加密前：" + content);
 //
 //		System.out.println("加密密钥和解密密钥：" + KEY);
 //
 //		String encrypt = aesEncrypt(content, KEY);
 //		System.out.println("加密后：" + encrypt);
-//
-		String decrypt = aesDecrypt("W3vmHrecl+c3BAhPmA8PBw==", "asdfghjklm125478");
-		System.out.println("解密后：" + decrypt);
-
+//		String decrypt = aesDecrypt(encrypt, KEY);
+//		System.out.println("解密后：" + decrypt);
+		System.out.println(EncoderByMd5("sssss"));
 	}
 
 	/**
@@ -70,7 +69,6 @@ public class EncryptUtils {
 	public static String binary(byte[] bytes, int radix) {
 		return new BigInteger(1, bytes).toString(radix);// 这里的1代表正数
 	}
-
 	/**
 	 * base 64 encode
 	 * @param bytes 待编码的byte[]
