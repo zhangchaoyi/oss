@@ -96,7 +96,7 @@ $(function(){
     function(data, status) {
          if(data.message=="true"){
             $("#dropdownMenu1").text("");
-            $("#dropdownMenu1").append(data.username + "<span class='caret'></span>");
+            $("#dropdownMenu1").append("<span class='glyphicon glyphicon-user btn-user'></span>" + data.username + "<span class='caret'></span>");
          }
     }); 
    

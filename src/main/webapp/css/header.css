@@ -39,7 +39,11 @@
 	margin-top:10px;
 	display: inline;
 	top: -2px;
-	right:15px;
+	right:45px;
+}
+
+span.glyphicon.glyphicon-user.btn-user {
+    margin-right: 3px;
 }
 
 .logout-btn {
@@ -73,17 +77,6 @@ span.glyphicon.glyphicon-off::before{
 
 .top {
 	z-index: -32;140px
-}
-
-#login-user {
-	position:relative;
-	top: 15px;
-	font-size:1pt;
-	margin-right:20px;
-	color: white;
-	z-index: 100;
-	right: 120px;
-	font-size: 18px;
 }
 
 #menu {
@@ -273,4 +266,3 @@ div#platform-selected {
 	display:none;
 	z-index: 1000;
 }
-

@@ -4,14 +4,21 @@ import java.util.List;
 
 import javax.servlet.http.Cookie;
 
+import org.apache.log4j.Logger;
+
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
 import com.jfinal.core.Controller;
 
 import common.service.AdminService;
 import common.service.impl.AdminServiceImpl;
-
+/**
+ * 要求用户的角色至少为data_guest
+ * @author chris
+ *
+ */
 public class DataGuestInterceptor implements Interceptor {
+	private static Logger logger = Logger.getLogger(DataGuestInterceptor.class);
 	private AdminService as = new AdminServiceImpl();
 	@Override
 	public void intercept(Invocation invocation) {
@@ -37,6 +44,7 @@ public class DataGuestInterceptor implements Interceptor {
 		if (actionKey.startsWith("/api")) {
 			if (cookie == null) {
 				controller.redirect("/login");
+				logger.debug("<DataGuestInterceptor>: cookie is null,permission denied");
 				return;
 			}
 			controller.redirect("/admin/authority/error");
@@ -47,8 +55,10 @@ public class DataGuestInterceptor implements Interceptor {
 		String from = "/oss" + actionKey + (queryString == null ? "" : "?" + queryString);
 		if(cookie==null){
 			controller.redirect("/login?from="+from);
+			logger.debug("<DataGuestInterceptor>: cookie is null,permission denied");
 			return;
-		}	
+		}
+		logger.debug("<DataGuestInterceptor>: cookie is not null,permission denied");
 		controller.redirect("/admin/authority/error?from=" + from);
 	}
 

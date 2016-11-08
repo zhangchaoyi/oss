@@ -1,5 +1,7 @@
 package common.controllers;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,6 +19,7 @@ import common.interceptor.DataGuestInterceptor;
 import common.model.SecUser;
 import common.service.AdminService;
 import common.service.impl.AdminServiceImpl;
+import common.utils.EncryptUtils;
 
 @Clear
 public class LoginController extends Controller {
@@ -35,18 +38,39 @@ public class LoginController extends Controller {
 	public void loginValidate() {
 		String username = getPara("username");
 		String password = getPara("password");
+		String key = getPara("key");
 
-		logger.debug("username:" + username + "password:" + password);
+		try {
+			username = EncryptUtils.aesDecrypt(username,key);
+			password = EncryptUtils.aesDecrypt(password,key);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		logger.debug("username:" + username + " password:" + password + " key:" + key);
+		
 		SecUser secUser = as.getUser(username);
-		if(secUser!=null && secUser.getStr("password").equals(password)){
-			setCookie("login",username, -1, "/", true);
-			logger.debug("login successfully");
-			renderJson("{\"message\":\"success\"}");
-			return;
+		if(secUser==null){
+			renderJson("{\"message\":\"failed\"}");
+		}
+		String queryPasswd = secUser.getStr("password");
+		String salt = secUser.getStr("salt");
+		password += salt;
+		try {
+			if(EncryptUtils.checkpassword(password, queryPasswd)){
+				setCookie("login",username, -1, "/", true);
+				logger.debug("login successfully");
+				renderJson("{\"message\":\"success\"}");
+				return;
+			}
+		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+			logger.debug("<LoginController> Exception:", e);
+			e.printStackTrace();
 		}
 		
 		logger.debug("login failed");
-		renderJson("{\"message\":\"fail\"}");
+		renderJson("{\"message\":\"failed\"}");
 	}
 
 	@Before(POST.class)

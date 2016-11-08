@@ -18,7 +18,7 @@ public class AdminServiceImpl implements AdminService {
 	private static Logger logger = Logger.getLogger(AdminServiceImpl.class);
 	//查看user是否存在
 	public SecUser getUser(String username) {
-		String sql = "select password from sec_user where user_name = ?";
+		String sql = "select password, salt from sec_user where user_name = ?";
 		SecUser secUser = SecUser.dao.findFirst(sql, username);
 		return secUser;
 	}
