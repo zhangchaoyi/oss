@@ -1,6 +1,7 @@
 package common.controllers;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -30,13 +31,19 @@ public class AdminController extends Controller {
 	
 	@Before({GET.class, RootInterceptor.class})
 	@ActionKey("/admin/createUser")
-	public void createUser() {
+	public void createUserIndex() {
 		render("createUser.html");
+	}
+	
+	@Before({GET.class, RootInterceptor.class})
+	@ActionKey("/admin/manageUsers")
+	public void manageUsersIndex() {
+		render("userManagement.html");
 	}
 	
 	@Before({POST.class, RootInterceptor.class})
 	@ActionKey("/api/admin/createUser")
-	public void loginValidate() {
+	public void createUser() {
 		String username = getPara("username");
 		String password = getPara("password");
 		String role = getPara("role", "data_guest");
@@ -74,4 +81,14 @@ public class AdminController extends Controller {
 		data.put("message", "failed");
 		renderJson(data);
 	}
+	
+	@Before(POST.class)
+	@ActionKey("/api/admin/manageUsers")
+	public void manageUsers() {
+		List<List<String>> data = as.queryAllUsers();
+		logger.debug("<AdminController> manageUsers:" + data);
+		renderJson(data);
+	}
+	
+	
 }

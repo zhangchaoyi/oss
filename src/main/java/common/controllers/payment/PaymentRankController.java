@@ -1,5 +1,7 @@
 package common.controllers.payment;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -39,6 +41,9 @@ public class PaymentRankController extends Controller{
 		
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		List<List<String>> queryData = paymentRankService.queryRank(icons, startDate, endDate);
+//		List<List<String>> queryData = new ArrayList<List<String>>();
+//		List<String> subList = new ArrayList<String>(Arrays.asList("1","20091204","2016-09-01","2016-09-01","1","1","1","1","1","10","20091204"));
+//		queryData.add(subList);
 		
 		data.put("data", queryData);
 		logger.debug("<PaymentRankController> queryPaymentRank:" + data);

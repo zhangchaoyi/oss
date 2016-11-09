@@ -4,7 +4,10 @@ import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import common.model.SecRole;
 import common.model.SecUser;
@@ -77,6 +80,52 @@ public class AdminServiceImpl implements AdminService {
 			exist=true;
 		}
 		return exist;
+	}
+	
+	//查询所有用户的权限
+	public List<List<String>> queryAllUsers() {
+		String sql = "select A.user_name,A.created_time,C.role_name from sec_user A join sec_user_role B on A.user_id = B.user_id join sec_role C on B.role_id = C.role_id;";
+		List<SecUser> secUsers = SecUser.dao.find(sql);
+		//Map<username,Map<role/createTime,String>>
+		Map<String, Map<String, String>> sort = new HashMap<String, Map<String, String>>();
+		for(SecUser su : secUsers){
+			String username = su.getStr("user_name");
+			String rolename = su.getStr("role_name");
+			Date createTime = su.getDate("created_time");
+			String roleStr = "";
+			Map<String, String> subMap = null;
+			if(sort.containsKey(username)){
+				subMap = sort.get(username);
+				roleStr = subMap.get("roleName");
+				roleStr += ","+rolename;
+				subMap.put("roleName", roleStr);
+			}else{
+				subMap = new LinkedHashMap<String, String>();
+				subMap.put("roleName", rolename);
+				subMap.put("createTime", createTime.toString());
+			}
+			sort.put(username, subMap);
+		}
+		System.out.println(sort);
+		List<List<String>> data = new ArrayList<List<String>>();
+		for(Map.Entry<String, Map<String, String>> entry : sort.entrySet()){
+			List<String> subList = new ArrayList<String>();
+			subList.add(entry.getKey());
+			for(Map.Entry<String, String> subEntry : entry.getValue().entrySet()){
+				switch(subEntry.getKey()){
+				case "roleName":
+					subList.add(1, subEntry.getValue());
+					break;
+				case "createTime":
+					subList.add(2, subEntry.getValue());
+					break;
+				}
+			}
+			data.add(subList);
+		}
+		System.out.println(data);
+		logger.debug("<AdminServiceImpl> queryAllUsers:" + data);
+		return data;
 	}
 	
 	private int getRoleWeight(String role){

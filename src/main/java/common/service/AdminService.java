@@ -14,4 +14,6 @@ public interface AdminService {
 	public boolean signupUser(String username, String password, String role);
 	
 	public boolean existUser(String username);
+	
+	public List<List<String>> queryAllUsers();
 }

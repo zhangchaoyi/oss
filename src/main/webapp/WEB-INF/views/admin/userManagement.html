@@ -17,6 +17,26 @@
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/animation.css?v=0.1" /> 
   <link href="http://oss.koogame.cn/oss/css/polaris/polaris.css?v=0.1" rel="stylesheet" /> 
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/jquery.dataTables.css?v=0.1" /> 
+  <style type="text/css">
+  .signup-logo {
+    width: 194px;
+    height: 69px;
+    background: url("../../images/logobackup.gif");
+    position: relative;
+    bottom: 19px;
+    border-radius: 8px 8px 8px 8px;
+    text-align: center;
+    opacity: 0.9;
+    left: 27%;
+  }
+
+  hr {
+    width:inherit;
+    right: inherit;
+    bottom:inherit;
+    margin-bottom: inherit;
+  }
+  </style>
   <title>KooGame</title> 
  </head> 
  <body> 
@@ -31,15 +51,14 @@
       <div class="topnav"> 
        <div class="envelope"> 
         <button type="button" class="btn btn-default btn-envelope"> <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> </button> 
-       </div> 
+       </div>
        <div class="btn-group" id="admin-btn"> 
-        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">admin <span class="caret"></span></button> 
+        <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-user btn-user"></span>admin<span class="caret"></span></button> 
         <ul class="dropdown-menu user-bars" aria-labelledby="dropdownMenu1"> 
          <li> <a href="#">Action</a></li> 
          <li> <a href="#">Action1</a></li> 
         </ul> 
        </div> 
-       <div class="glyphicon glyphicon-user" aria-hidden="true" id="login-user"></div> 
        <div class="logout-btn"> 
         <button type="button" class="btn btn-default btn-off"> <span class="glyphicon glyphicon-off" aria-hidden="true"></span> </button> 
        </div> 
@@ -73,7 +92,7 @@
    <nav class="navbar-default navbar-side" role="navigation"> 
     <div class="sidebar-collapse"> 
      <ul class="nav" id="main-menu"> 
-      <li> <a href="/oss/realtime/info"> <i class="fa fa-clock-o "></i>实时概况</a> </li>
+      <li> <a href="#"> <i class="fa fa-clock-o "></i>实时概况</a> </li> 
       <li> <a href="#"> <i class="fa fa-line-chart "></i>报表</a> </li> 
       <li> <a href="#"> <i class="fa fa-user"></i>玩家分析 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
@@ -83,7 +102,7 @@
         <li> <a href="/oss/players/effective"> <i class="fa fa-user-secret "></i>有效玩家</a> </li>  
         <li> <a href="/oss/players/equipment"> <i class="fa fa-tablet "></i>设备分析</a> </li> 
         <li> <a href="/oss/players/accdetail"> <i class="fa fa-circle-o-notch "></i>生命轨迹</a> </li> 
-       </ul> </li> 
+       </ul>  </li> 
       <li> <a href="#"> <i class="fa fa-money "></i>付费分析 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
         <li> <a href="/oss/payment/data"> <i class="fa fa-bar-chart"></i>付费数据</a> </li> 
@@ -94,8 +113,8 @@
       <li> <a href="/oss/loss"> <i class="fa fa-spinner "></i>流失分析</a> </li> 
       <li> <a href="#"> <i class="fa fa-check-square-o "></i>在线分析 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
-        <li> <a href="#"> <i class="fa fa-check-square-o"></i>在线分析</a> </li> 
-        <li> <a href="#"> <i class="fa fa-arrows "></i>在线习惯</a> </li> 
+        <li> <a href="/oss/online/analysis"> <i class="fa fa-check-square-o"></i>在线分析</a> </li> 
+        <li> <a href="/oss/online/habits"> <i class="fa fa-arrows "></i>在线习惯</a> </li> 
        </ul> </li> 
       <li> <a href="#"> <i class="fa fa-shopping-cart "></i>渠道分析 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
@@ -135,195 +154,32 @@
        </ul> </li> 
       <li> <a href="#"> <i class="fa fa-suitcase "></i>管理中心 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
-        <li> <a href="#"> <i class="fa fa-gears"></i>设置</a> </li> 
+        <li> <a href="#"> <i class="fa fa-gears"></i>设置 <span class="fa arrow"></span></a> 
+         <ul class="nav nav-third-level">
+           <li> <a href="/oss/admin/createUser"><i class="fa fa-plus "></i>新增用户角色</a></li>
+           <li> <a href="/oss/admin/manageUsers"><i class="fa fa-comments-o "></i>用户角色管理</a></li>
+         </ul></li> 
         <li> <a href="#"> <i class="fa fa-cloud-download "></i>下载中心</a> </li> 
        </ul> </li> 
      </ul> 
     </div> 
    </nav> 
    <!-- /. NAV SIDE --> 
-   <div id="page-wrapper" style="overflow-x: hidden;overflow-y:hidden;"> 
+   <div id="page-wrapper" style="overflow-x: hidden;overflow-y:hidden;min-height:825px"> 
     <div id="page-inner"> 
-     <div class="row" id="top-row"> 
-      <div class="filter-tool"> 
-       <div class="date-bar"> 
-        <div class="calender-bar"> 
-         <div class="ta_date"> 
-          <span class="date_title" id="date_seletor"></span> 
-          <a class="opt_sel" id="input_trigger" hre2f="#"> <i class="fa fa-calendar" aria-hidden="true"></i> </a> 
-         </div> 
-         <div id="datePicker"></div> 
-        </div> 
-        <div class="time-title active"> 
-         <a id="aToday" onclick="dateSelected(this)">今日</a> 
-         <a id="aYesterday" onclick="dateSelected(this)">昨日</a> 
-         <a id="aRecent7Days" onclick="dateSelected(this)" class="selected">近7日</a> 
-         <a id="aRecent30Days" onclick="dateSelected(this)">近30日</a> 
-         <a id="aRecent90Days" onclick="dateSelected(this)">近90日</a> 
-        </div> 
-       </div> 
-       <div class="filter-bar"> 
-        <div class="row" id="notification"> 
-         <button class="btn btn-primary btn-lg btn-notify" data-toggle="modal" data-target="#myModal"> <span class="glyphicon glyphicon-filter" aria-hidden="true"></span> <i>筛选</i> </button> 
-         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
-          <div class="modal-dialog"> 
-           <div class="modal-content"> 
-            <div class="modal-header"> 
-             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
-             <h4 class="modal-title" id="myModalLabel"><i>筛选</i></h4> 
-            </div> 
-            <div class="modal-body"> 
-             <div class="panel panel-default">
-              <div class="panel-body"> 
-               <div class="filter-header"> 
-                <ul class="nav nav-pills"> 
-                 <li class="active"><a href="#version-pills" data-toggle="tab">版本</a></li> 
-                 <li class=""><a href="#approach-pills" data-toggle="tab">渠道</a> </li> 
-                 <li class=""><a href="#servers-pills" data-toggle="tab">区服</a> </li> 
-                </ul> 
-                <span class="input-group input-filter"> <input name="filter" id="filter" type="text" class="form-control" placeholder="Search for..." /> <span class="glyphicon glyphicon-search"> </span> </span> 
-               </div> 
-               <div class="choose option"> 
-                <i>常用选择</i> 
-                <button type="button" class="btn btn-primary" id="btn-selall">全选</button> 
-                <button type="button" class="btn btn-primary" id="btn-selreverse">反选</button> 
-               </div> 
-               <div class="tab-content"> 
-                <table class="tab-pane fade active in" id="version-pills"> 
-                 <tbody> 
-                  <tr> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> v1.0 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> v2.0 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> v3.0 </span> </td> 
-                  </tr> 
-                  <tr> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> v4.0 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> v5.0 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> v6.0 </span> </td> 
-                  </tr> 
-                 </tbody> 
-                </table> 
-                <table class="tab-pane fade" id="approach-pills"> 
-                 <tbody> 
-                  <tr> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 渠道1 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 渠道2 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 渠道3 </span> </td> 
-                  </tr> 
-                  <tr> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 渠道4 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 渠道5 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 渠道6 </span> </td> 
-                  </tr> 
-                 </tbody> 
-                </table> 
-                <table class="tab-pane fade" id="servers-pills"> 
-                 <tbody> 
-                  <tr> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 区服1 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 区服2 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 区服3 </span> </td> 
-                  </tr> 
-                  <tr> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 区服4 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 区服5 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 区服6 </span> </td> 
-                  </tr> 
-                 </tbody> 
-                </table> 
-               </div> 
-              </div> 
-             </div> 
-            </div> 
-            <div class="modal-footer"> 
-             <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn-filtersave">保存</button> 
-             <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button> 
-            </div> 
-           </div> 
-          </div> 
-         </div> 
-        </div> 
-       </div>
-       <div class="nav-tab loss"> 
-        <ul class="nav nav-pills"> 
-         <li class="active"><a href="#" data-info="active-players"><span>活跃玩家</span></a></li> 
-         <li class=""><a href="#" data-info="paid-players"><span>付费玩家</span></a> </li> 
-         <li class=""><a href="#" data-info="no-paid-players"><span>非付费玩家</span></a> </li> 
-        </ul> 
-       </div>
-      </div> 
-     </div> 
      <!-- /. ROW --> 
-     <div class="row" id="explain-row"> 
-      <div class="explain-content"> 
-       <div class="panel panel-default"> 
-        <div class="panel-heading"> 
-         <span class="explain-heading">指标说明</span> 
-         <button class="btn btn-2 btn-2c" id="btn-explain-switch">关闭</button> 
-        </div> 
-        <div class="panel-body" id="explain-panel" style="height:inherit"> 
-         <div class="explain-content-panel cut"> 
-          <div class="explain-content-box"> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              每日流失:
-             </dt> 
-             <dd>
-              统计所选时期内，当日往后推连续7日/14日/30日（当日不计入天数）未登录游戏的活跃/付费玩家数量。
-             </dd> 
-            </dl> 
-           </div>
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              每日回流:
-             </dt> 
-             <dd>
-              统计所选时期内，当日往后推连续7日/14日/30日（当日计入天数）未登录游戏的活跃/付费玩家，在第8日/第15日/第31日又登录游戏的活跃/付费玩家数量。
-             </dd> 
-            </dl> 
-           </div> 
-          </div> 
-         </div> 
-        </div> 
-       </div> 
-      </div> 
-     </div> 
-     <!-- /. explain-row --> 
-     <div class="row" id="data-first"> 
+     <div class="row" id="data-first" style="top:55px"> 
       <div class="panel panel-default"> 
        <div class="panel-heading"> 
-        <span class="data-first-panel-heading">流失统计</span>
-        <button class="btn btn-2 btn-2c" id="btn-first-data-panel-switch">关闭</button> 
+        <span class="data-first-panel-heading">所有用户权限列表</span>
        </div> 
        <div class="panel-body"> 
-        <ul class="nav nav-tabs loss-count-tab"> 
-         <li class="active"> <a data-toggle="tab" data-info="day-loss">每日流失</a></li> 
-         <li class=""> <a data-toggle="tab" data-info="week-back">每日回流</a></li>
-        </ul> 
         <div class="tab-content">
-          <div id="loss-count-chart" style="width:100%;height:400px;display:inline;float:left"></div> 
-          <div class="table-zoom-first"> 
-           <table id="data-table-loss-count" class="hover stripe row-border"></table> 
-          </div>              
+          <table id="data-table-user-management" class="hover stripe row-border"></table> 
         </div> 
        </div> 
       </div> 
      </div>
-     <div class="row"> 
-      <div class="alert alert-warning fade in" data-dismiss="alert" id="platform-selected"> 
-       <a href="#" class="close" data-dismiss="alert">&times;</a> 
-       <strong>请选择平台</strong> 
-      </div> 
-     </div>
-     <div class="row">  
-       <a href="#" class="back-top">
-        <span class="fa fa-angle-up" aria-hidden="true"></span>
-       </a> 
-     </div> 
     </div> 
     <!-- /. PAGE INNER --> 
    </div> 
@@ -333,7 +189,7 @@
   </div> 
   <div id="footer-sec">
     Copyright &copy; 2016.koogame All rights reserved. 
-   <a target="_blank" href="#/"></a> 
+   <a target="_blank" href="#"></a> 
   </div> 
   <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME--> 
   <script src="http://oss.koogame.cn/oss/js/jquery.min.js?v=0.1"></script> 
@@ -349,7 +205,7 @@
   <script src="http://oss.koogame.cn/oss/js/dateselector/dateRange.js?v=0.1"></script> 
   <script src="http://oss.koogame.cn/oss/js/dateselector/monthPicker.js?v=0.1"></script> 
   <script src="http://oss.koogame.cn/oss/js/checkbox/icheck.js?v=0.1"></script>
-  <script src="http://oss.koogame.cn/oss/js/common.js?v=0.1"></script> 
-  <script src="../../js/loss.js?v=0.1"></script>
+  <script src="http://oss.koogame.cn/oss/js/common.js?v=0.1"></script>
+  <script src="../../js/userManagement.js?v=0.1"></script>
  </body>
 </html>
