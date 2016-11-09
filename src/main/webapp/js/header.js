@@ -61,7 +61,6 @@ $("button.btn.btn-default.btn-off").click(function(){
 //获取当前所有显示的图标
 function getIcons(){
     var list = [];
-    var str = "";
     var icon = $('button#btn-dropdownIcon > span.fa');
     for(var i=0;i<icon.length;i++){
         if($(icon[i]).attr("data-info")=='apple'){

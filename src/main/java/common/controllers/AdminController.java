@@ -17,6 +17,7 @@ import common.interceptor.RootInterceptor;
 import common.service.AdminService;
 import common.service.impl.AdminServiceImpl;
 import common.utils.EncryptUtils;
+import common.utils.StringUtils;
 
 @Clear
 public class AdminController extends Controller {
@@ -89,6 +90,30 @@ public class AdminController extends Controller {
 		logger.debug("<AdminController> manageUsers:" + data);
 		renderJson(data);
 	}
+	
+	@Before(POST.class)
+	@ActionKey("/api/admin/deleteUsers")
+	public void deleteUsers() {
+		String users = StringUtils.arrayToQueryString(getParaValues("users[]"));
+		int deleted = as.deleteByUserName(users);
+		Map<String, String> data = new HashMap<String, String>();
+		data.put("message", String.valueOf(deleted));
+		logger.debug("<AdminController> deleteUsers:" + deleted);
+		renderJson(data);
+	}
+	
+	@Before(POST.class)
+	@ActionKey("/api/admin/changeRole")
+	public void changeRole(){
+		String username = getPara("username");
+		String[] queryRole = getParaValues("roles[]");
+		Map<String, String> data = new HashMap<String, String>();
+		as.changeRoles(username, queryRole);
+		data.put("message", "successfully");
+		logger.debug("<AdminController> changeRole:" + data);
+		renderJson(data);
+	}
+	
 	
 	
 }

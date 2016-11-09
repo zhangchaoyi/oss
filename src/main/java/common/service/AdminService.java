@@ -16,4 +16,8 @@ public interface AdminService {
 	public boolean existUser(String username);
 	
 	public List<List<String>> queryAllUsers();
+	
+	public int deleteByUserName(String users);
+	
+	public void changeRoles(String username, String[] queryRole);
 }

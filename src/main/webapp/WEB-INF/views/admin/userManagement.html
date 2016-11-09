@@ -36,6 +36,10 @@
     bottom:inherit;
     margin-bottom: inherit;
   }
+
+  th {
+    text-align: center;
+  }
   </style>
   <title>KooGame</title> 
  </head> 
@@ -175,7 +179,81 @@
        </div> 
        <div class="panel-body"> 
         <div class="tab-content">
-          <table id="data-table-user-management" class="hover stripe row-border"></table> 
+          <table id="data-table-user-management" class="hover stripe row-border">
+            <thead>
+              <tr role="row">
+                <th><a id="delete-user">删除</a><input type="checkbox" /></th>
+                <th>用户名</th>
+                <th>角色</th>
+                <th>创建时间</th>
+                <th>修改权限</th>
+              </tr>
+             </thead>
+          </table> 
+        </div> 
+       </div> 
+      </div> 
+     </div>
+     <div class="row" id="data-second"> 
+      <div class="panel panel-default"> 
+       <div class="panel-heading">
+         <a id="whaleDetailback">
+          <i class="fa fa-caret-left" aria-hidden="true"></i>
+          <span>返回</span>
+         </a> 
+        <span class="data-first-panel-heading" id="user-role-manage">用户权限详情</span>
+       </div> 
+       <div class="panel-body"> 
+        <div class="tab-content">
+          <table class="table" text-align:center>
+            <thead>
+              <tr>
+                <th>用户名</th>
+                <th>角色权限管理</th>
+                <th>修改按钮</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="list-group-item-success">
+                <td><a id="username"></a></td>
+                <td>
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-success" id="role-add" data-info="none">增加角色</button>
+                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                      <span class="caret"></span>
+                      <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" id="role-add-menu">
+                      <li><a data-info="data_guest">数据用户</a></li>
+                      <li><a data-info="gm">游戏管理员</a></li>
+                      <li><a data-info="vip">超级用户</a></li>
+                      <li><a data-info="admin">平台管理员</a></li>
+                      <li class="divider"></li>
+                      <li><a data-info="root">系统管理员</a></li>
+                    </ul> 
+                  </div>
+                  <input type="text" id="role-manage" placeholder="role" readonly="readonly">
+                  <div class="btn-group">
+                    <button type="button" class="btn btn-danger" id="role-delete" data-info="none">删除角色</button>
+                    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
+                      <span class="caret"></span>
+                      <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu" id="role-delete-menu">
+                      <li><a data-info="data_guest">数据用户</a></li>
+                      <li><a data-info="gm">游戏管理员</a></li>
+                      <li><a data-info="vip">超级用户</a></li>
+                      <li><a data-info="admin">平台管理员</a></li>
+                      <li class="divider"></li>
+                      <li><a data-info="root">系统管理员</a></li>
+                    </ul> 
+                  </div>
+                </td>
+                <td><a class="btn btn-primary ">修改权限</a></td>
+              </tr>
+            </tbody>
+          </table>
+          
         </div> 
        </div> 
       </div> 
@@ -206,6 +284,6 @@
   <script src="http://oss.koogame.cn/oss/js/dateselector/monthPicker.js?v=0.1"></script> 
   <script src="http://oss.koogame.cn/oss/js/checkbox/icheck.js?v=0.1"></script>
   <script src="http://oss.koogame.cn/oss/js/common.js?v=0.1"></script>
-  <script src="../../js/userManagement.js?v=0.1"></script>
+  <script src="http://oss.koogame.cn/oss/js/userManagement.js?v=0.1"></script>
  </body>
 </html>

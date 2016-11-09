@@ -15,7 +15,11 @@ import common.model.SecUserRole;
 import common.service.AdminService;
 import common.utils.EncryptUtils;
 import common.utils.RandomUtil;
+import common.utils.StringUtils;
+
 import org.apache.log4j.Logger;
+
+import com.jfinal.plugin.activerecord.Db;
 
 public class AdminServiceImpl implements AdminService {
 	private static Logger logger = Logger.getLogger(AdminServiceImpl.class);
@@ -106,26 +110,94 @@ public class AdminServiceImpl implements AdminService {
 			}
 			sort.put(username, subMap);
 		}
-		System.out.println(sort);
 		List<List<String>> data = new ArrayList<List<String>>();
 		for(Map.Entry<String, Map<String, String>> entry : sort.entrySet()){
 			List<String> subList = new ArrayList<String>();
 			subList.add(entry.getKey());
+			subList.add(entry.getKey());
 			for(Map.Entry<String, String> subEntry : entry.getValue().entrySet()){
 				switch(subEntry.getKey()){
 				case "roleName":
-					subList.add(1, subEntry.getValue());
+					subList.add(2, subEntry.getValue());
 					break;
 				case "createTime":
-					subList.add(2, subEntry.getValue());
+					subList.add(3, subEntry.getValue());
 					break;
 				}
 			}
+			subList.add(entry.getKey());
 			data.add(subList);
 		}
-		System.out.println(data);
 		logger.debug("<AdminServiceImpl> queryAllUsers:" + data);
 		return data;
+	}
+	
+	//根据用户名删除用户 返回值大于0为删除成功
+	public int deleteByUserName(String users) {
+		int deleted = 0;
+		String qSql = "select user_id from sec_user where user_name in (" + users + ") ";
+		List<SecUser> secUser = SecUser.dao.find(qSql);
+		List<String> userIds = new ArrayList<String>();
+		for(SecUser su : secUser){
+			userIds.add(String.valueOf(su.getLong("user_id")));
+		}
+		String queryUserIds = StringUtils.arrayToQueryString(userIds.toArray(new String[userIds.size()]));
+		String duSql = "delete from sec_user where user_id in (" + queryUserIds + ")";
+		String duRSql = "delete from sec_user_role where user_id in (" + queryUserIds + ")";
+		
+		deleted = Db.update(duSql);
+		deleted = Db.update(duRSql);
+		logger.debug("<AdminServiceImpl> deleted:" + deleted);
+		return deleted;
+	}
+	
+	//先根据用户名查询现有的角色,比对 新要求角色 得到需要删除的角色列表,需要新增的角色列表,不变的角色列表,更改用户的角色
+	public void changeRoles(String username, String[] queryRole) {
+		List<Integer> roles = new ArrayList<Integer>();
+		for(String s : queryRole){
+			roles.add(getRoleIdByRoleName(s));
+		}
+		System.out.println(roles);
+		String rSql = "select B.user_id,B.role_id from sec_user A join sec_user_role B on A.user_id = B.user_id where A.user_name = ?";
+		List<SecUser> secUser = SecUser.dao.find(rSql, username);
+		//Map<RoleId,value>   value 为0则需要删除,为1不变,为2新增
+		Map<Integer,Integer> sort = new HashMap<Integer, Integer>();
+		int userId = 0;
+		//初始化保存数据库中的角色列表
+		for(SecUser su : secUser){
+			int role = su.getLong("role_id").intValue();
+			userId = su.getLong("user_id").intValue();
+			sort.put(role, 0);
+		}
+		//根据新的roleId整理
+		for(int r : roles){
+			if(sort.containsKey(r)){
+				sort.put(r, 1);
+			}else{
+				sort.put(r, 2);
+			}
+		}
+		List<String> deleteRole = new ArrayList<String>();
+		List<Integer> addRole = new ArrayList<Integer>();
+		for(Map.Entry<Integer, Integer> entry : sort.entrySet()){
+			switch(entry.getValue()){
+			case 0:
+				deleteRole.add(String.valueOf(entry.getKey()));
+				break;
+			case 2:
+				addRole.add(entry.getKey());
+				break;
+			}
+		}
+		//删除不需要的role
+		String deleteStr = StringUtils.arrayToQueryString(deleteRole.toArray(new String[deleteRole.size()]));
+		String dSql = "delete from sec_user_role where user_id = ? and role_id in (" + deleteStr + ")";
+		Db.update(dSql, userId);
+		
+		//添加新增的role
+		for(int a : addRole){
+			new SecUserRole().set("user_id", userId).set("role_id", a).save();
+		}
 	}
 	
 	private int getRoleWeight(String role){
