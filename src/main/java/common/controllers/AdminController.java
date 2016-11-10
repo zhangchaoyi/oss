@@ -24,24 +24,42 @@ public class AdminController extends Controller {
 	private static Logger logger = Logger.getLogger(AdminController.class);
 	private AdminService as = new AdminServiceImpl();
 	
+	/**
+	 * 没有权限页
+	 * @author chris 
+	 */
 	@Before(GET.class)
 	@ActionKey("/admin/authority/error")
 	public void authorityError() {
 		render("authorityError.html");
 	}
-	
+	/**
+	 *  新增用户页
+	 *  @author chris
+	 */
 	@Before({GET.class, RootInterceptor.class})
 	@ActionKey("/admin/createUser")
 	public void createUserIndex() {
 		render("createUser.html");
 	}
-	
+	/** 
+	 * 管理用户页 
+	 *@author chris
+	 */
 	@Before({GET.class, RootInterceptor.class})
 	@ActionKey("/admin/manageUsers")
 	public void manageUsersIndex() {
 		render("userManagement.html");
 	}
-	
+	/**
+	 *  新增用户接口 
+	 * @author chris
+	 * @getParam username 用户名(加密后)
+	 * @getParam password 密码(加密后)
+	 * @getParam role 角色(加密后)
+	 * @getParam key 加密密钥
+	 * @return 返回成功/失败信息
+	 */
 	@Before({POST.class, RootInterceptor.class})
 	@ActionKey("/api/admin/createUser")
 	public void createUser() {
@@ -82,16 +100,24 @@ public class AdminController extends Controller {
 		data.put("message", "failed");
 		renderJson(data);
 	}
-	
-	@Before(POST.class)
+	/**
+	 * 用户管理接口
+	 * @author chris
+	 * @return 返回所有用户列表
+	 */
+	@Before({POST.class, RootInterceptor.class})
 	@ActionKey("/api/admin/manageUsers")
 	public void manageUsers() {
 		List<List<String>> data = as.queryAllUsers();
 		logger.debug("<AdminController> manageUsers:" + data);
 		renderJson(data);
 	}
-	
-	@Before(POST.class)
+	/**
+	 * 删除用户接口
+	 * @author chris
+	 * @getParam users[] 所选删除用户
+	 */
+	@Before({POST.class, RootInterceptor.class})
 	@ActionKey("/api/admin/deleteUsers")
 	public void deleteUsers() {
 		String users = StringUtils.arrayToQueryString(getParaValues("users[]"));
@@ -101,8 +127,13 @@ public class AdminController extends Controller {
 		logger.debug("<AdminController> deleteUsers:" + deleted);
 		renderJson(data);
 	}
-	
-	@Before(POST.class)
+	/**
+	 * 修改用户角色接口
+	 * @author chris
+	 * @getParam username 用户名
+	 * @getParam roles[] 所需修改角色
+	 */
+	@Before({POST.class, RootInterceptor.class})
 	@ActionKey("/api/admin/changeRole")
 	public void changeRole(){
 		String username = getPara("username");
@@ -113,7 +144,4 @@ public class AdminController extends Controller {
 		logger.debug("<AdminController> changeRole:" + data);
 		renderJson(data);
 	}
-	
-	
-	
 }
