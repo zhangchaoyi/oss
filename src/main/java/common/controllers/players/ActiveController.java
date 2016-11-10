@@ -28,12 +28,26 @@ public class ActiveController extends Controller{
 	private AddPlayersService addPlayersService = new AddPlayersServiceImpl();
 	private ActivePlayersService activePlayersService = new ActivePlayersServiceImpl();
 	
+	/**
+	 * 活跃玩家页
+	 * @author chris
+	 * role data_guest
+	 */
 	@Before({GET.class,DataGuestInterceptor.class})
 	@ActionKey("/players/active")
 	public void activePlayer() {
 		render("active.html");
 	}
 	
+	/**
+	 * 获取活跃玩家的 DAU/WAU/MAU
+	 * @author chris
+	 * @getPara  playerTag 页面所选中的 tag   ----dau/duawaumau/daumau
+	 * @getPara icon[]  当前的icon   ---apple/android/windows
+	 * @getPara  startDate  所选起始时间
+	 * @getPara  endDate  所选结束时间
+	 * @role  data_guest
+	 */
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/active")
 	public void queryActivePlayer() {
@@ -86,6 +100,15 @@ public class ActiveController extends Controller{
 		renderJson(data);
 	}
 	
+	/**
+	 * 活跃玩家详细页  页面所选中的 tag  ---played-days/rank/area/country/account
+	 * @author chris
+	 * @getParam detailTagInfo
+	 * @getPara icon[]  当前的icon   ---apple/android/windows
+	 * @getPara  startDate  所选起始时间
+	 * @getPara  endDate  所选结束时间
+	 * @role  data_guest
+	 */
 	@SuppressWarnings("unchecked")
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/active/details")

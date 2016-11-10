@@ -23,13 +23,24 @@ import common.utils.StringUtils;
 public class AnalysisController extends Controller{
 	private static Logger logger = Logger.getLogger(AnalysisController.class);
 	private OnlineAnalysisService onlineService = new OnlineAnalysisServiceImpl();
-	
+	/**
+	 * 在线分析页
+	 * @author chris
+	 * @role data_guest
+	 */
 	@Before({GET.class, DataGuestInterceptor.class})
 	@ActionKey("/online/analysis")
 	public void analyse() {
 		render("analysis.html");
 	}
-	
+	/**
+	 * 启动次数分析接口
+	 * @author chris
+	 * @getPara tag 时段分布/启动次数 tag
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间 
+	 */
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/online/analysis/startTimes")
 	public void queryStartTimes() {
@@ -71,7 +82,14 @@ public class AnalysisController extends Controller{
 		logger.debug("<AnalysisController> queryStartTimes:" + data);
 		renderJson(data);
 	}
-	
+	/**
+	 * 相邻启动间隔分布
+	 * @author chris
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 * @role data_guest 
+	 */
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/online/analysis/neightbor")
 	public void queryNeightborPeriod() {

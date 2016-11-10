@@ -21,6 +21,13 @@ import common.service.RetainPlayersService;
  */
 public class RetainPlayersServiceImpl implements RetainPlayersService{
 	private static Logger logger = Logger.getLogger(RetainPlayersServiceImpl.class);
+	/**
+	 * 留存用户
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间 
+	 */
 	public Map<String, Object> queryRetainUser(List<String> categories, String icons, String startDate, String endDate) {
 		Map<String, Object> data = new HashMap<String, Object>();
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(add_user) add_user,sum(next_day_retain) next_day_retain,sum(seven_day_retain)seven_day_retain,sum(month_retain)month_retain from retain_user where date between ? and ? and os in (" + icons + ") group by date";
@@ -153,7 +160,13 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 		logger.debug("queryRetainUser:" + data);
 		return data;
 	}
-	
+	/**
+	 * 留存设备
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间 
+	 */
 	public Map<String, Object> queryRetainEquipment(List<String> categories, String icons, String startDate, String endDate){
 		Map<String, Object> data = new HashMap<String, Object>();
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(add_equipment)add_equipment,sum(first_day)first_day,sum(second_day)second_day,sum(third_day)third_day,sum(forth_day)forth_day,sum(fifth_day)fifth_day,sum(sixth_day)sixth_day,sum(seven_day)seven_day,sum(fourteen_day)fourteen_day,sum(thirty_day)thirty_day from retain_equipment where date between ? and ? and os in (" + icons + ") group by date";

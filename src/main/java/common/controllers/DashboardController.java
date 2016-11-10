@@ -19,13 +19,22 @@ import common.service.impl.DashboardServiceImpl;
 public class DashboardController extends Controller {
 	private static Logger logger = Logger.getLogger(DashboardController.class);
 	private DashboardService ds = new DashboardServiceImpl();
-
+	
+	/**
+	 * dashboard 页
+	 * @author chris
+	 * @role data_guest
+	 */
 	@Before({GET.class, DataGuestInterceptor.class})
 	@ActionKey("/dashboard")
 	public void dashboard() {
 		render("dashboard.html");
 	}
-
+	/**
+	 * dashboard 接口
+	 * @author chris
+	 * @role data_guest
+	 */
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/dashboard")
 	public void queryDashboard() {

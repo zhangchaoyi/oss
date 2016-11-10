@@ -25,13 +25,26 @@ import common.utils.StringUtils;
 public class HabitsController extends Controller {
 	private static Logger logger = Logger.getLogger(HabitsController.class);
 	private OnlineHabitsService ohs = new OnlineHabitsServiceImpl();
-
+	/**
+	 * 在线习惯页
+	 * @author chris
+	 * @role data_guest
+	 */
 	@Before({GET.class, DataGuestInterceptor.class})
 	@ActionKey("/online/habits")
 	public void analyse() {
 		render("habits.html");
 	}
-
+	/**
+	 * 在线习惯平均游戏时长和次数接口
+	 * @author chris
+	 * @getPara playerTag 玩家类型 tag
+	 * @getPara tag 每日/周/月 tag
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 * @role data_guest  
+	 */
 	@SuppressWarnings("unchecked")
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/online/habits/avgGP")
@@ -128,7 +141,16 @@ public class HabitsController extends Controller {
 		logger.debug("<HabitsController> queryAvgGP:" + data);
 		renderJson(data);
 	}
-
+	/**
+	 * 在线习惯详细栏接口
+	 * @author chris
+	 * @getPara playerTag 玩家类型 tag
+	 * @getPara tag 子选项栏 
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 * @role data_guest 
+	 */
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/online/habits/detail")
 	public void queryPeriodDetail() {
@@ -257,6 +279,4 @@ public class HabitsController extends Controller {
 		logger.debug("<HabitsController> queryAvgGP:" + data);
 		renderJson(data);
 	}
-
-	// 活跃玩家 游戏时段
 }

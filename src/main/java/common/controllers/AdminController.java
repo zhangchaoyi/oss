@@ -26,7 +26,8 @@ public class AdminController extends Controller {
 	
 	/**
 	 * 没有权限页
-	 * @author chris 
+	 * @author chris
+	 * @role  所有 
 	 */
 	@Before(GET.class)
 	@ActionKey("/admin/authority/error")
@@ -36,6 +37,7 @@ public class AdminController extends Controller {
 	/**
 	 *  新增用户页
 	 *  @author chris
+	 *  @role  root
 	 */
 	@Before({GET.class, RootInterceptor.class})
 	@ActionKey("/admin/createUser")
@@ -44,7 +46,8 @@ public class AdminController extends Controller {
 	}
 	/** 
 	 * 管理用户页 
-	 *@author chris
+	 * @author chris
+	 * @role  root
 	 */
 	@Before({GET.class, RootInterceptor.class})
 	@ActionKey("/admin/manageUsers")
@@ -59,6 +62,7 @@ public class AdminController extends Controller {
 	 * @getParam role 角色(加密后)
 	 * @getParam key 加密密钥
 	 * @return 返回成功/失败信息
+	 * @role  root
 	 */
 	@Before({POST.class, RootInterceptor.class})
 	@ActionKey("/api/admin/createUser")
@@ -104,6 +108,7 @@ public class AdminController extends Controller {
 	 * 用户管理接口
 	 * @author chris
 	 * @return 返回所有用户列表
+	 * @role  root 
 	 */
 	@Before({POST.class, RootInterceptor.class})
 	@ActionKey("/api/admin/manageUsers")
@@ -116,6 +121,7 @@ public class AdminController extends Controller {
 	 * 删除用户接口
 	 * @author chris
 	 * @getParam users[] 所选删除用户
+	 * @role  root 
 	 */
 	@Before({POST.class, RootInterceptor.class})
 	@ActionKey("/api/admin/deleteUsers")
@@ -132,6 +138,7 @@ public class AdminController extends Controller {
 	 * @author chris
 	 * @getParam username 用户名
 	 * @getParam roles[] 所需修改角色
+	 * @role  root 
 	 */
 	@Before({POST.class, RootInterceptor.class})
 	@ActionKey("/api/admin/changeRole")

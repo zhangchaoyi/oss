@@ -26,13 +26,26 @@ public class LoginController extends Controller {
 	private static Logger logger = Logger.getLogger(LoginController.class);
 	private AdminService as = new AdminServiceImpl();
 	
+	/**
+	 * 登录页
+	 * @author chris
+	 * @getPara from  跳转登录页前的 页面url
+	 * @role  所有角色
+	 */
 	@Before(GET.class)
 	public void index() {
-		setAttr("from", getPara("from"));
+//		setAttr("from", getPara("from"));
 
 		render("login.html");
 	}
-
+    /**
+     * 登录校验接口,先根据username查询mysql的salt,将(传来的password经解密后 + salt) md5 得到摘要 比对 数据库的password摘要  
+     * @author chris
+     * @param username 用户名(加密后)
+     * @param password 密码(加密后)
+     * @param key 加密密钥
+     * @role 所有角色
+     */
 	@Before(POST.class)
 	@ActionKey("/api/login")
 	public void loginValidate() {
@@ -72,7 +85,11 @@ public class LoginController extends Controller {
 		logger.debug("login failed");
 		renderJson("{\"message\":\"failed\"}");
 	}
-
+	/**
+	 * 登出接口,清理cookie
+	 * @author chris
+	 * @role 所有角色
+	 */
 	@Before(POST.class)
 	@ActionKey("/api/logout")
 	public void logout() {
@@ -80,7 +97,11 @@ public class LoginController extends Controller {
 		removeCookie("login");
 		renderJson("{\"message\":\"success\"}");
 	}
-	
+	/**
+	 * 得到cookie信息 --用户名
+	 * @author chris
+	 * @role  data_guest
+	 */
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/cookie/info")
 	public void getCookieInfo(){

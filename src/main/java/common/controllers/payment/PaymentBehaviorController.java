@@ -22,13 +22,25 @@ import common.utils.StringUtils;
 public class PaymentBehaviorController extends Controller {
 	private static Logger logger = Logger.getLogger(PaymentBehaviorController.class);
 	private PaymentBehaviorService paymentBehaviorService = new PaymentBehaviorServiceImpl();
-	
+	/**
+	 * 付费行为页
+	 * @author chris
+	 * @role vip
+	 */
 	@Before({GET.class, VipInterceptor.class})
 	@ActionKey("/payment/behavior")
 	public void paymentIndex() {
 		render("paymentBehavior.html");
 	}
-	
+	/**
+	 * 付费等级接口
+	 * @author chris
+	 * @getPara 付费金额/次数
+	 * @getPara icon[]  当前的icon   ---apple/android/windows
+	 * @getPara startDate  所选起始时间
+	 * @getPara endDate  所选结束时间 
+	 * @role vip
+	 */
 	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/behavior/rank")
 	public void queryPaymentBehaviorMoney() {
@@ -66,7 +78,15 @@ public class PaymentBehaviorController extends Controller {
 		logger.debug("<PaymentBehaviorController> queryPaymentBehaviorMoney:" + data);
 		renderJson(data);
 	}
-	
+	/**
+	 * 付费间隔接口
+	 * @author chris
+	 * @getPara tag 首充时间分布/二充到首充时间分布/三充到二充时间分布
+	 * @getPara icon[]  当前的icon   ---apple/android/windows
+	 * @getPara startDate  所选起始时间
+	 * @getPara endDate  所选结束时间  
+	 * @role vip
+	 */
 	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/behavior/period")
 	public void queryPaymentBehaviorPeriod() {
@@ -119,7 +139,16 @@ public class PaymentBehaviorController extends Controller {
 		logger.debug("<PaymentBehaviorController> queryPaymentBehaviorPeriod:" + data);
 		renderJson(data);
 	}
-	
+	/**
+	 * 详细栏接口
+	 * @author chris
+	 * @getPara tag 详细栏tag
+	 * @getPara subTag 子选项栏tag
+	 * @getPara icon[]  当前的icon   ---apple/android/windows
+	 * @getPara startDate  所选起始时间
+	 * @getPara endDate  所选结束时间 
+	 * @role vip
+	 */
 	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/behavior/fp/detail")
 	public void queryPaymentBehaviorDetail() {

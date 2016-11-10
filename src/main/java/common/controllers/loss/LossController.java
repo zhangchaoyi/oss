@@ -24,13 +24,26 @@ import common.utils.StringUtils;
 public class LossController extends Controller {
 	private static Logger logger = Logger.getLogger(LossController.class);
 	private LossAnalysisService las = new LossAnalysisServiceImpl();
-
+	/**
+	 * 流失页
+	 * @author chris
+	 * @role data_guest
+	 */
 	@Before({GET.class, DataGuestInterceptor.class})
 	@ActionKey("/loss")
 	public void analyse() {
 		render("loss.html");
 	}
-
+	/**
+	 * 流失接口
+	 * @author chris
+	 * @getPara playerTag 玩家tag
+	 * @getPara tag 流失/回流 tag
+	 * @getPara icon[]  当前的icon   ---apple/android/windows
+	 * @getPara startDate  所选起始时间
+	 * @getPara endDate  所选结束时间
+	 * @role data_guest
+	 */
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/loss")
 	public void queryLoss() {

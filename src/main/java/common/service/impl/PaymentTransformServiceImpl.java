@@ -25,7 +25,13 @@ import common.utils.DateUtils;
  */
 public class PaymentTransformServiceImpl implements PaymentTransformService{
 	private static Logger logger = Logger.getLogger(PaymentTransformServiceImpl.class);
-	//新增付费分析
+	/**
+	 * 新增付费分析
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public Map<String, Object> queryAddPaymentAnalyze(List<String> categories, String icons, String startDate, String endDate) {
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(add_players)add_players,sum(fd_paid_people)fd_paid_people,sum(fw_paid_people)fw_paid_people,sum(fm_paid_people)fm_paid_people from payment_detail where date between ? and ? and os in (" + icons + ") group by date";
 		List<PaymentDetail> apAnalyze = PaymentDetail.dao.find(sql,startDate,endDate);
@@ -99,7 +105,13 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		return data;
 	}
 	
-	//日付费率
+	/**
+	 * 日付费率
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public Map<String, Object> queryDayPaidRate(List<String>categories, String icons, String startDate, String endDate) {
 		String pSql = "select DATE_FORMAT(A.timestamp,'%Y-%m-%d') date, count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by date";
 		String aSql = "select DATE_FORMAT(A.date,'%Y-%m-%d') date, count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(login_time,'%Y-%m-%d') between ? and ? and B.os in (" + icons + ") group by date";
@@ -154,7 +166,12 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		logger.debug("queryDayPaidRate:" + data);
 		return data;
 	}
-	//周付费率
+	/**
+	 * 周付费率
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public Map<String, Object> queryWeekPaidRate(String icons, String startDate, String endDate) {
 		Map<String, String> week = DateUtils.divideDateToWeek(startDate, endDate);
 		Map<String, PaidRate> sort = new LinkedHashMap<String, PaidRate>();
@@ -216,7 +233,13 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		return data;
 	}
 	
-	//月付费率
+	/**
+	 * 月付费率
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public Map<String, Object> queryMonthPaidRate(List<String>categories, String icons, String startDate, String endDate) {
 		String start = DateUtils.monthToStr(DateUtils.strToDate(startDate));
 		String end = DateUtils.monthToStr(DateUtils.strToDate(endDate));
@@ -278,7 +301,13 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		return data;
 	} 
 	
-	//查询 地区/国家 日均付费率
+	/**
+	 * 查询 地区/国家 日均付费率
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 * @param tag 选项栏
+	 */
 	public Map<String, Object> queryAreaPaidRate(String icons, String startDate, String endDate, String tag) {
 		String pSql = "select C.province,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by C.province,date;";
 		String aSql = "select B.province,DATE_FORMAT(A.login_time,'%Y-%m-%d')date,count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(login_time,'%Y-%m-%d') between ? and ? and B.os in (" + icons + ") group by B.province,date";

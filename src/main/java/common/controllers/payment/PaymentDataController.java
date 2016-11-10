@@ -25,13 +25,25 @@ import common.interceptor.VipInterceptor;
 public class PaymentDataController extends Controller{
 	private static Logger logger = Logger.getLogger(PaymentDataController.class);
 	private PaymentDataService paymentDataService = new PaymentDataServiceImpl();
-	
+	/**
+	 * 付费数据页
+	 * @author chris
+	 * @role vip
+	 */
 	@Before({GET.class, VipInterceptor.class})
 	@ActionKey("/payment/data")
 	public void paymentIndex() {
 		render("payment.html");
 	}
-	
+	/**
+	 * 付费数据栏接口
+	 * @author chris
+	 * @getPara tag 付费金额/人数/次数
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间  
+	 * @role vip
+	 */
 	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/data")
 	public void queryPaymentData() {
@@ -74,7 +86,12 @@ public class PaymentDataController extends Controller{
 		logger.debug("<PaymentDataController> queryPaymentData:" + data);
 		renderJson(data);
 	}
-	
+	/**
+	 * 付费数据表格
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间  
+	 */
 	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/data/table")
 	public void queryPaymentDataTable() {
@@ -86,7 +103,14 @@ public class PaymentDataController extends Controller{
 		logger.debug("<PaymentDataController> queryPaymentDataTable:" + paymentDetail);
 		renderJson(paymentDetail);
 	}
-	
+	/**
+	 * 付费分析接口
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间 
+	 * @param tag 付费金额/次数/ARPUARPPU
+	 * @param subTag 日/周/月 
+	 */
 	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/analyze")
 	public void queryAnalyzePayment() {
@@ -181,6 +205,14 @@ public class PaymentDataController extends Controller{
 		logger.debug("<PaymentDataController> queryAnalyzePayment:" + data);
 		renderJson(data);
 	}
+	/**
+	 * 付费分析表格
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间 
+	 * @param tag 付费金额/次数/ARPUARPPU
+	 * @param subTag 日/周/月  
+	 */
 	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/analyze/table")
 	public void queryPaymentAnalyzeTable() {
@@ -243,7 +275,14 @@ public class PaymentDataController extends Controller{
 		logger.debug("<PaymentDataController> queryPaymentAnalyzeTable:" + data);
 		renderJson(data);
 	}
-	
+	/**
+	 * 详细栏接口
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间 
+	 * @param tag 地区/国家/.....
+	 * @param subTag 子选项栏 
+	 */
 	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/detail")
 	public void queryDetailTable(){

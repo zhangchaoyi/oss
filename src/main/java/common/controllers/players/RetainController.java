@@ -29,25 +29,40 @@ import common.utils.StringUtils;
 public class RetainController extends Controller{
 	private static Logger logger = Logger.getLogger(RetainController.class);
 	private RetainPlayersService retainPlayersService = new RetainPlayersServiceImpl();
-	
+	/**
+	 * 留存页
+	 * @role data_guest
+	 */
 	@Before({GET.class, DataGuestInterceptor.class})
 	@ActionKey("/players/retain")
 	public void retain() {
 		render("retain.html");
 	}
-	
+	/**
+	 * 自定义留存页
+	 * @role data_guest
+	 */
 	@Before({GET.class, DataGuestInterceptor.class})
 	@ActionKey("/players/retain-customize")
 	public void retainCustomize() {
 		render("retain-customize.html");
 	}
-	
+	/**
+	 * 设备留存页
+	 * @role data_guest
+	 */
 	@Before({GET.class, DataGuestInterceptor.class})
 	@ActionKey("/players/retain-equipment")
 	public void retainEquipment() {
 		render("retain-equipment.html");
 	}
-	
+	/**
+	 * 留存接口
+	 * @getPara icon[]  当前的icon   ---apple/android/windows
+	 * @getPara  startDate  所选起始时间
+	 * @getPara  endDate  所选结束时间
+	 * @role data_guest
+	 */
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/retain")
 	public void queryRetain() {
@@ -89,7 +104,11 @@ public class RetainController extends Controller{
 		logger.debug("<RetainController> queryRetain:" + data);
 		renderJson(data);
 	}
-	
+	/**
+	 * 自定义留存接口
+	 * 假数据 
+	 * @role data_guest
+	 */
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/retain-customize")
 	public void queryRetainCustomize() {
@@ -137,7 +156,13 @@ public class RetainController extends Controller{
 		logger.debug("<RetainController> queryRetainCustomize:" + data);
 		renderJson(data);
 	}
-	
+	/**
+	 * 设备留存率接口
+	 * @getPara icon[]  当前的icon   ---apple/android/windows
+	 * @getPara  startDate  所选起始时间
+	 * @getPara  endDate  所选结束时间 
+	 * @role data_guest
+	 */
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/retain-equipment/rate")
 	public void queryRetainEquipmentRate() {

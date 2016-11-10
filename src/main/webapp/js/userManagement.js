@@ -44,7 +44,14 @@ function configTable(data) {
      {
            "targets": 0,
            "render": function ( data, type, full, meta ) {
-            return '<input type="checkbox" value='+data+'></input>';
+            return function(){
+                if(data=="systemroot"){
+                    return  ""; 
+                }else{
+                    return '<input type="checkbox" value='+data+'></input>';
+                }
+            }()
+
            }
          }  
      ],
@@ -63,7 +70,7 @@ function initSelectAll(){
     });
 }
 
-//选择删除按钮
+//删除按钮
 $("#data-table-user-management thead tr th a").click(function(){
     var checkboxs = $("#data-table-user-management tbody tr td input");
     var list = [];
@@ -115,7 +122,12 @@ $("#role-add-menu > li").click(function(){
         alert("角色已存在");
         return;
     }
-    inputTxt += ','+ selectedRole;
+    if(inputTxt==""){
+        inputTxt += selectedRole;    
+    }else{
+        inputTxt += ','+ selectedRole;    
+    }
+    
     $("#role-manage").attr("value",inputTxt);
 });
 
@@ -142,9 +154,9 @@ $("#role-delete-menu > li").click(function(){
 //修改角色按钮
 $("#change-role").click(function(){
     var inputTxt = $("#role-manage").val();
-    if(currentRole==inputTxt){
+    if(!isRoleChange(currentRole, inputTxt)){
         alert("无角色修改变动");
-    return;
+        return;
     }
     var list = [];
     var array = inputTxt.split(",");
@@ -167,6 +179,38 @@ $("#change-role").click(function(){
         }
     });
 });
+
+//判断是否发生角色修改
+//包括 角色顺序修改但是 角色不变认为未修改
+function isRoleChange(cr,inputTxt){
+    var changed = false;
+    var crArrays = cr.split(",");
+    var itArrays = inputTxt.split(",");
+    if(crArrays.length != itArrays.length){
+    changed = true;        
+    return changed;
+    }
+    var map = {};
+    //初始化
+    for(var i=0;i<crArrays.length;i++){
+        map[crArrays[i]]=0;
+    }
+    for(var i=0;i<itArrays.length;i++){
+        if(map.hasOwnProperty(itArrays[i])){
+            map[itArrays[i]]=1;
+        }else{
+            map[itArrays[i]]=0;
+        }
+    }
+    for(var prop in map) {
+        if(map[prop]==0) {
+            changed=true;
+        break;
+        }
+    }
+    return changed;
+
+}
 
 //锁死图标选择下拉菜单 清除按钮
 $("button.btn.btn-default.btn-circle").attr('disabled',"true");

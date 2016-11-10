@@ -25,7 +25,12 @@ import common.utils.StringUtils;
  */
 public class PaymentRankServiceImpl implements PaymentRankService {
 	private static Logger logger = Logger.getLogger(PaymentRankServiceImpl.class);
-	//排名详情
+	/**
+	 * 排名详情
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<List<String>> queryRank(String icons, String startDate, String endDate) {
 		//得到付费排行等信息
 		String pSql = "select A.*,DATE_FORMAT(B.timestamp,'%Y-%m-%d')fpt from (select A.account, sum(A.count)revenue, count(*)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by A.account) A join log_charge B on A.account = B.account where B.charge_times=1 order by revenue desc";
@@ -83,7 +88,14 @@ public class PaymentRankServiceImpl implements PaymentRankService {
 		}
 		return data;
 	}
-	//帐号详情
+	/**
+	 * 帐号详情
+	 * @param accountArray 帐号列表
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public Map<String, Object> queryAccountDetail(String[] accountArray, List<String> categories, String icons, String startDate, String endDate) {
 		String account = StringUtils.arrayToQueryString(accountArray);
 		String lSql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,sum(A.online_time)online_time,count(*)count from logout A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.account=" + account + " and A.date between ? and ? and C.os in (" + icons + ") group by A.date";

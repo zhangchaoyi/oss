@@ -20,16 +20,23 @@ import common.service.AccdetailService;
  */
 public class AccdetailServiceImpl implements AccdetailService{
 	private static Logger logger = Logger.getLogger(AccdetailServiceImpl.class);
+	/**
+	 * 根据帐号id获得 帐号的所有信息
+	 * @param accountId 帐号id
+	 * 表头字段顺序在 html 已定义好
+	 * 分多次sql 查询
+	 * @return Map<String, Object>
+	 */
 	public Map<String, Object> queryAccdetail(String accountId) {
 		Map<String, Object> data = new HashMap<String, Object>();
 		String deviceSql = "select B.model,B.resolution,B.os,B.os_version,B.country,B.province,B.carrier,B.net from (select distinct account,openudid  from login where account = ?) A join device_info B on A.openudid = B.openudid";
 		String loginSql = "select DATE_FORMAT(min(login_time),'%Y-%m-%d')firstLogin,DATE_FORMAT(max(login_time),'%Y-%m-%d')lastLogin,count(distinct date)loginDay,count(*)loginTimes  from login where account = ?";
-		String onlineSql = "select sum(online_time)onlineSum from logout where account = ?";
+		String onlineSql = "select A.onlineSum,B.max_level from (select account,sum(online_time)onlineSum from logout where account = ?) A join (select account,max(level)max_level from level_up where account = ?) B on A.account = B.account";
 		String paidSql = "select DATE_FORMAT(min(timestamp),'%Y-%m-%d')firstPaid,DATE_FORMAT(max(timestamp),'%Y-%m-%d')lastPaid,sum(count)paidSum from log_charge where account = ?";
 		
 		List<DeviceInfo> device = DeviceInfo.dao.find(deviceSql, accountId);
 		List<Login> login = Login.dao.find(loginSql, accountId);
-		List<Logout> logout = Logout.dao.find(onlineSql, accountId);
+		List<Logout> logout = Logout.dao.find(onlineSql, accountId, accountId);
 		List<LogCharge> logCharge = LogCharge.dao.find(paidSql, accountId);
 		if(device.size()==0){
 			data.put("code", 1);
@@ -39,7 +46,7 @@ public class AccdetailServiceImpl implements AccdetailService{
 		List<List<String>> deviceTable = new ArrayList<List<String>>();
 		List<List<String>> detailTable = new ArrayList<List<String>>();
 		List<String> detailList = new ArrayList<String>();
-		
+		//查询帐号的设备信息,一个帐号可能存在多个设备
 		for(DeviceInfo di : device){
 			List<String> list = new ArrayList<String>();
 			list.add(di.getStr("model")==null? "-" : di.getStr("model"));
@@ -52,15 +59,19 @@ public class AccdetailServiceImpl implements AccdetailService{
 			list.add(di.getStr("net")==null? "-" : di.getStr("net"));
 			deviceTable.add(list);
 		}
+		//登录信息
 		for(Login l : login){
 			detailList.add(l.getStr("firstLogin")==null? "-" : l.getStr("firstLogin"));
 			detailList.add(l.getStr("lastLogin")==null? "-" : l.getStr("lastLogin"));
 			detailList.add(l.getLong("loginDay")==0? "-" : l.getLong("loginDay").toString() + "天");
 			detailList.add(l.getLong("loginTimes")==0? "-" : l.getLong("loginTimes").toString() + "次");			
 		}
+		//总在线时长
 		for(Logout l : logout){
 			detailList.add(l.getBigDecimal("onlineSum")==null? "-" : l.getBigDecimal("onlineSum").toString());
+			detailList.add(l.getInt("max_level")==null? "-" : l.getInt("max_level").toString());
 		}
+		//付费信息
 		for(LogCharge lc : logCharge){
 			detailList.add(lc.getStr("firstPaid")==null? "-" : lc.getStr("firstPaid"));
 			detailList.add(lc.getStr("lastPaid")==null? "-" : lc.getStr("lastPaid"));

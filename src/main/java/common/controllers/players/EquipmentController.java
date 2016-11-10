@@ -22,13 +22,25 @@ import common.utils.StringUtils;
 public class EquipmentController extends Controller {
 	private static Logger logger = Logger.getLogger(EquipmentController.class);
 	private EquipmentAnalyzeService equipmentAnalyzeService = new EquipmentAnalyzeServiceImpl();
-
+	/**
+	 * 设备分析页
+	 * @author chris
+	 * @role data_guest
+	 */
 	@Before({GET.class, DataGuestInterceptor.class})
 	@ActionKey("/players/equipment")
-	public void activePlayer() {
+	public void equipmentIndex() {
 		render("equipment.html");
 	}
-
+	/**
+	 * 设备分析接口
+	 * @author chris
+	 * @getPara playerTagInfo 玩家tag
+	 * @getPara icon[]  当前的icon   ---apple/android/windows
+	 * @getPara startDate  所选起始时间
+	 * @getPara endDate  所选结束时间 
+	 * @role data_guest
+	 */
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/equipment")
 	public void queryEquipmentPlayer() {
@@ -96,7 +108,11 @@ public class EquipmentController extends Controller {
 		logger.debug("<EquipmentController> queryEquipmentPlayer:" + data);
 		renderJson(data);
 	}
-
+	/**
+	 * 详细栏接口
+	 * @author chris
+	 * @role data_guest
+	 */
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/equipment/details")
 	public void queryEquipmentDetails() {

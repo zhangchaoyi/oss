@@ -19,12 +19,23 @@ public class AccdetailController extends Controller{
 	private static Logger logger = Logger.getLogger(AccdetailController.class);
 	private AccdetailService accdetailService = new AccdetailServiceImpl();
 	
+	/**
+	 * 生命轨迹页
+	 * @author chris
+	 * @role data_guest
+	 */
 	@Before({GET.class, DataGuestInterceptor.class})
 	@ActionKey("/players/accdetail")
 	public void activePlayer() {
 		render("accdetail.html");
 	}
 	
+	/**
+	 * 生命轨迹接口
+	 * @author chris
+	 * @getPara accountId
+	 * @role data_guest
+	 */
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/accdetail")
 	public void queryActivePlayer() {

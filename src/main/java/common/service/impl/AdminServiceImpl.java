@@ -239,7 +239,7 @@ public class AdminServiceImpl implements AdminService {
 			}
 		}
 	}
-
+    //根据角色名获取权重
 	private int getRoleWeight(String role) {
 		int weight = 0;
 		switch (role) {
@@ -261,7 +261,7 @@ public class AdminServiceImpl implements AdminService {
 		}
 		return weight;
 	}
-
+    //根据角色名获取角色编号
 	private int getRoleIdByRoleName(String role) {
 		int roleId = 0;
 		switch (role) {

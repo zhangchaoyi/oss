@@ -24,13 +24,24 @@ import common.utils.StringUtils;
 public class PaymentTransformController extends Controller{
 	private static Logger logger = Logger.getLogger(PaymentTransformController.class);
 	private PaymentTransformService paymentTransformService = new PaymentTransformServiceImpl();
-	
+	/**
+	 * 付費转化页
+	 * @author chris
+	 * @role vip
+	 */
 	@Before({GET.class, VipInterceptor.class})
 	@ActionKey("/payment/transform")
 	public void paymentIndex() {
 		render("paymentTransform.html");
 	}
-	
+	/**
+	 * 付费分析接口
+	 * @author chris
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间   
+	 * @role vip
+	 */
 	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/transform/paidAnalyze")
 	public void queryPaymentAddPaidAnalyze() {
@@ -61,7 +72,15 @@ public class PaymentTransformController extends Controller{
 		logger.debug("<PaymentTransformController> queryPaymentAddPaidAnalyze:" + data);
 		renderJson(data);
 	}
-	
+	/**
+	 * 付费率接口
+	 * @author chris
+	 * @para tag 日/周/月付费率 
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间  
+	 * @role vip
+	 */
 	@SuppressWarnings("unchecked")
 	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/transform/rate")
@@ -111,7 +130,15 @@ public class PaymentTransformController extends Controller{
 		logger.debug("<PaymentTransformController> queryPaymentRate:" + data);
 		renderJson(data);
 	}
-	
+	/**
+	 * 详细栏接口
+	 * @author chris
+	 * @param tag 详细栏tag
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间   
+	 * @role vip
+	 */
 	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/payment/transform/detail")
 	public void queryPaymentTransformDetail() {

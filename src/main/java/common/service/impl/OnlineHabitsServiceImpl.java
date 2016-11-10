@@ -24,7 +24,13 @@ import common.utils.DateUtils;
 public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	private static Logger logger = Logger.getLogger(OnlineHabitsServiceImpl.class);
 
-	// 新增玩家日平均时长和次数
+	/** 
+	 * 新增玩家日平均时长和次数
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间 
+	 */
 	public Map<String, Object> queryAddpDayAvgGP(List<String> categories, String icons, String startDate,
 			String endDate) {
 		String timesSql = "select DATE_FORMAT(A.date_time,'%Y-%m-%d')date,count(*)count,count(distinct A.account)ap from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("
@@ -102,7 +108,12 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		return data;
 	}
 
-	// 新增玩家周平均时长和次数
+	/**
+	 *  新增玩家周平均时长和次数
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间  
+	 */
 	public Map<String, Object> queryAddpWeekAvgGP(String icons, String startDate, String endDate) {
 		Map<String, String> week = DateUtils.divideDateToWeek(startDate, endDate);
 		String timesSql = "select count(*)count,count(distinct A.account)ap from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("
@@ -182,7 +193,13 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		return data;
 	}
 
-	// 新增玩家月平均时长和次数
+	/**
+	 *  新增玩家月平均时长和次数
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间  
+	 */
 	public Map<String, Object> queryAddpMonthAvgGP(List<String> categories, String icons, String startDate,
 			String endDate) {
 		String start = DateUtils.monthToStr(DateUtils.strToDate(startDate));
@@ -262,7 +279,13 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		return data;
 	}
 
-	// 活跃玩家日平均时长和次数
+	/** 
+	 * 活跃玩家日平均时长和次数
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间 
+	 */
 	public Map<String, Object> queryActivepDayAvgGP(List<String> categories, String icons, String startDate,
 			String endDate) {
 		String timesSql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,count(*)count,count(distinct A.account)ap from (select account,openudid,date from login where date between ? and ? ) A join device_info B on A.openudid = B.openudid where B.os in ("
@@ -339,7 +362,12 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		return data;
 	}
 
-	// 活跃玩家周平均时长和次数
+	/** 
+	 * 活跃玩家周平均时长和次数
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public Map<String, Object> queryActivepWeekAvgGP(String icons, String startDate, String endDate) {
 		Map<String, String> week = DateUtils.divideDateToWeek(startDate, endDate);
 		String timesSql = "select count(*)count,count(distinct A.account)ap from (select account,openudid,date from login where date between ? and ? ) A join device_info B on A.openudid = B.openudid where B.os in ("
@@ -419,7 +447,13 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		return data;
 	}
 
-	// 活跃玩家月平均时长和次数
+	/**
+	 * 活跃玩家月平均时长和次数
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间 
+	 */
 	public Map<String, Object> queryActivepMonthAvgGP(List<String> categories, String icons, String startDate,
 			String endDate) {
 		String start = DateUtils.monthToStr(DateUtils.strToDate(startDate));
@@ -499,7 +533,13 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		return data;
 	}
 
-	// 付费玩家日平均时长和次数
+	/**
+	 *  付费玩家日平均时长和次数
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public Map<String, Object> queryPpDayAvgGP(List<String> categories, String icons, String startDate,
 			String endDate) {
 		String timesSql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,count(*)count,count(distinct A.account)pp from (select distinct A.account,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in ("
@@ -576,7 +616,12 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		return data;
 	}
 
-	// 付费玩家周平均时长和次数
+	/**
+	 *  付费玩家周平均时长和次数
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public Map<String, Object> queryPpWeekAvgGP(String icons, String startDate, String endDate) {
 		Map<String, String> week = DateUtils.divideDateToWeek(startDate, endDate);
 		String timesSql = "select count(*)count,count(distinct A.account)pp from (select distinct A.account,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in ("
@@ -656,7 +701,13 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		return data;
 	}
 
-	// 付费玩家月平均时长和次数
+	/**
+	 *  付费玩家月平均时长和次数
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public Map<String, Object> queryPpMonthAvgGP(List<String> categories, String icons, String startDate,
 			String endDate) {
 		String start = DateUtils.monthToStr(DateUtils.strToDate(startDate));
@@ -737,7 +788,13 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	}
 
 	// detail
-	// 新增玩家日游戏次数 --新增玩家新增当天日游戏次数
+	/**
+	 *  新增玩家日游戏次数 --新增玩家新增当天日游戏次数
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<Integer> queryAddDayGameTimes(List<String> categories, String icons, String startDate, String endDate) {
 		String sql = "select count(*)count from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("
 				+ icons + ")) A join login B on A.account = B.account and A.date_time = B.date group by A.account";
@@ -771,7 +828,13 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		return data;
 	}
 
-	// 新增玩家日游戏时长 --新增玩家新增当天日游戏时长
+	/**
+	 *  新增玩家日游戏时长 --新增玩家新增当天日游戏时长
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<Integer> queryAddDayGameTime(List<String> categories, String icons, String startDate, String endDate) {
 		String sql = "select sum(B.online_time)online_time from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("
 				+ icons + ")) A join logout B on A.account = B.account and A.date_time = B.date group by A.account";
@@ -813,7 +876,13 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		return data;
 	}
 
-	// 新增玩家单次游戏时长 --新增玩家新增当天 日游戏时长 / 日游戏次数
+	/**
+	 *  新增玩家单次游戏时长 --新增玩家新增当天 日游戏时长 / 日游戏次数
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public Map<String, List<Integer>> queryAddDaySinglePeriod(List<String> categories, String icons, String startDate,
 			String endDate) {
 		String sql = "select sum(B.online_time)online_time,count(*)count from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("
@@ -903,7 +972,13 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		return data;
 	}
 	
-	// 活跃玩家日游戏次数 ---每天形成一个次数分布, 再将多天的次数分布取平均值
+	/**
+	 *  活跃玩家日游戏次数 ---每天形成一个次数分布, 再将多天的次数分布取平均值
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<Integer> queryActiveDayGameTimes(List<String> categories, String icons, String startDate,
 			String endDate) {
 		String sql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,count(*)count from (select account,openudid,date from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("
@@ -990,7 +1065,13 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		return data;
 	}
 
-	// 活跃玩家周游戏次数 ---每周形成一个次数分布, 再将多周的次数分布取平均值
+	/**
+	 *  活跃玩家周游戏次数 ---每周形成一个次数分布, 再将多周的次数分布取平均值
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<Integer> queryActiveWeekGameTimes(List<String> categories, String icons, String startDate,
 			String endDate) {
 		Map<String, String> week = DateUtils.divideDateToWeek(startDate, endDate);
@@ -1076,7 +1157,13 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		return data;
 	}
 
-	// 活跃玩家周游戏天数 ---每周形成一个次数分布, 再将多周的次数分布取平均值
+	/**
+	 *  活跃玩家周游戏天数 ---每周形成一个次数分布, 再将多周的次数分布取平均值
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<Integer> queryActiveWeekGameDays(List<String> categories, String icons, String startDate,
 			String endDate) {
 		Map<String, String> week = DateUtils.divideDateToWeek(startDate, endDate);
@@ -1173,7 +1260,13 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		return data;
 	}
 
-	// 活跃玩家月游戏天数 ---每月形成一个次数分布, 再将多月的次数分布取平均值
+	/**
+	 *  活跃玩家月游戏天数 ---每月形成一个次数分布, 再将多月的次数分布取平均值
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<Integer> queryActiveMonthGameDays(List<String> categories, String icons, String startDate,
 			String endDate) {
 		List<String> monthList = DateUtils.getMonthList(startDate, endDate);
@@ -1293,7 +1386,13 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		return data;
 	}
 
-	// 活跃玩家日游戏时长 --每天形成一个次数分布, 再将多天的次数分布取平均值
+	/**
+	 *  活跃玩家日游戏时长 --每天形成一个次数分布, 再将多天的次数分布取平均值
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<Integer> queryActiveDayGameTime(List<String> categories, String icons, String startDate,
 			String endDate) {
 		String sql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,sum(A.online_time)online_time from (select account,online_time,date from logout where date between ? and ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("
@@ -1393,7 +1492,13 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		return data;
 	}
 
-	// 活跃玩家周游戏时长 ---每周形成一个次数分布, 再将多周的次数分布取平均值
+	/**
+	 *  活跃玩家周游戏时长 ---每周形成一个次数分布, 再将多周的次数分布取平均值
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<Integer> queryActiveWeekGameTime(List<String> categories, String icons, String startDate,
 			String endDate) {
 		Map<String, String> week = DateUtils.divideDateToWeek(startDate, endDate);
@@ -1506,7 +1611,13 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		return data;
 	}
 
-	// 活跃玩家单次游戏时长 --活跃玩家 日游戏时长 / 日游戏次数
+	/**
+	 *  活跃玩家单次游戏时长 --活跃玩家 日游戏时长 / 日游戏次数
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public Map<String, List<Integer>> queryActiveDaySinglePeriod(List<String> categories, String icons,
 			String startDate, String endDate) {
 		String sql = "select sum(A.online_time)online_time,count(*)count from (select account,online_time from logout where date between ? and ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("
@@ -1576,7 +1687,12 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		return data;
 	}
 
-	//活跃玩家游戏时段
+	/**
+	 * 活跃玩家游戏时段
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<Integer> queryActiveDayPeriod(String icons, String startDate, String endDate) {
 		String sql = "select hour(A.login_time)hour,count(*)count from (select account,openudid,login_time from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in (" + icons + ") group by hour";
 		List<Login> aDP = Login.dao.find(sql, startDate, endDate);

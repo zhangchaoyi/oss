@@ -24,12 +24,25 @@ public class AddController extends Controller{
 	private static Logger logger = Logger.getLogger(AddController.class);
 	private AddPlayersService addPlayersService = new AddPlayersServiceImpl();
 	
+	/**
+	 * 新增用户页
+	 * @author chris
+	 * @role data_guest
+	 */
 	@Before({GET.class, DataGuestInterceptor.class})
 	@ActionKey("/players/add")
 	public void addIndex() {
 		render("add.html");
 	}
-	
+	/**
+	 * 新增玩家栏
+	 * @author chris
+	 * @getPara addTagInfo  新增玩家选择tag
+	 * @getPara icon[]  当前的icon   ---apple/android/windows
+	 * @getPara  startDate  所选起始时间
+	 * @getPara  endDate  所选结束时间 
+	 * @role  data_guest
+	 */
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/add")
 	public void queryAddPlayer() {
@@ -76,7 +89,14 @@ public class AddController extends Controller{
 		logger.debug("<AddController> queryAddPlayer:" + data);
 		renderJson(data);
 	}
-
+    /**
+     * 新增玩家详细栏
+     * @getPara adddetailTagInfo  页面tag
+     * @getPara icon[]  当前的icon   ---apple/android/windows
+	 * @getPara  startDate  所选起始时间
+	 * @getPara  endDate  所选结束时间  
+	 * @role  data_guest
+     */
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/add/detail")
 	public void queryaddPlayerDetails() {
@@ -151,7 +171,4 @@ public class AddController extends Controller{
 		logger.debug("<AddController> queryaddPlayerDetails:" + data);
 		renderJson(data);	
 	}
-
-	
-	
 }

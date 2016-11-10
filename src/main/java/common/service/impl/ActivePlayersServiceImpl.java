@@ -22,7 +22,14 @@ import common.service.ActivePlayersService;
  */
 public class ActivePlayersServiceImpl implements ActivePlayersService {
 	private static Logger logger = Logger.getLogger(ActivePlayersServiceImpl.class);
-	//dau
+	/**
+	 * 查询dau
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间 
+	 */
+	
 	public List<Long> queryDau(List<String> categories, String icons, String startDate, String endDate) {
 		List<Long> data = new ArrayList<Long>();
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d') date, sum(dau)dau from active_user where date between ? and ? and os in ("
@@ -41,7 +48,13 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		return data;
 	}
 	
-	// 付费 / 非付费
+	/** 
+	 * 查询 付费 / 非付费
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间 
+	 */
 	public Map<String, List<Long>> queryPaidInActiveUser(List<String> categories, String icons, String startDate, String endDate){
 		Map<String, List<Long>> data = new HashMap<String, List<Long>>();
 		String sql = "select DATE_FORMAT(E.date,'%Y-%m-%d') date,sum(case when F.account is not null then 1 else 0 end)paid,sum(case when F.account is null then 1 else 0 end)notpaid from(select A.date,A.account from (select distinct account,date from login where login_time >= ? and login_time <= ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in("+ icons +")) E left join (select distinct account from log_charge) F on E.account=F.account group by DATE_FORMAT(E.date,'%Y-%m-%d')";
@@ -86,7 +99,13 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		logger.debug("queryPaidInActiveUser:" + data);
 		return data;
 	}
-	// dau | wau | mau
+	/** 
+	 * 查询 dau | wau | mau
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间 
+	 */
 	public Map<String, Object> queryActivePlayersInfo(List<String> categories, String icons, String startDate, String endDate) {
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d') date, sum(dau) dau, sum(wau) wau, sum(mau) mau from active_user where date between ? and ? and os in (" + icons + ") group by  DATE_FORMAT(date,'%Y-%m-%d')";
 		List<ActiveUser> activeUser = ActiveUser.dao.find(sql, startDate, endDate);
@@ -141,7 +160,13 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		logger.debug("queryActivePlayersInfo:" + data);
 		return data;
 	}
-	// dau/mau
+	/**
+	 * 查询 dau/mau
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间 
+	 */
 	public List<Double> queryActivePlayersDauMauRate(List<String> categories, String icons, String startDate, String endDate) {
 		List<Double> data = new ArrayList<Double>();
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d') date, sum(dau) dau, sum(mau) mau from active_user where date between ? and ? and os in (" + icons + ") group by  DATE_FORMAT(date,'%Y-%m-%d')";
@@ -168,7 +193,13 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		logger.debug("queryActivePlayersDauMauRate:" + data);
 		return data;
 	}
-	//已玩天数
+	/**
+	 * 查询 已玩天数
+	 * @param playDaysPeriod 时间区间分布
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间 
+	 */
 	public List<Long> queryPlayDays(List<String> playDaysPeriod, String icons, String startDate, String endDate) {
 		List<Long> data = new ArrayList<Long>();
 		String sql = "select count(distinct E.date) count from login E join (select A.account from(select distinct account from login where login_time >= ? and login_time <= ? ) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in(" + icons + ")) F on E.account = F.account where E.login_time <= ? group by E.account";
@@ -221,7 +252,12 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		logger.debug("queryPlayDays:" + data);
 		return data;
 	}
-	//等级
+	/**
+	 * 查询 等级
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public Map<Integer, Long> queryRank(String icons, String startDate, String endDate) {
 		String sql = "select F.level,count(F.level) count from (select D.account,max(D.level)level from level_up D join(select A.account from (select distinct account from login where login_time >= ? and login_time <= ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ")) E on D.account = E.account group by D.account) F group by F.level";
 		List<LevelUp> rank = LevelUp.dao.find(sql, startDate, endDate);
@@ -240,7 +276,12 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		logger.debug("queryRank:" + data);
 		return data;
 	}
-	//地区 --省份
+	/**
+	 * 查询 地区 --省份
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间 
+	 */
 	public Map<String, Object> queryArea(String icons, String startDate, String endDate) {
 		Map<String, Object> data = new HashMap<String, Object>();
 		String sql = "select C.province province,count(C.province) count from create_role A join (select distinct account from login where login_time >= ? and login_time <= ?) B on A.account=B.account join device_info C on A.openudid=C.openudid where C.os in (" + icons + ") group by C.province";
@@ -256,7 +297,12 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		logger.debug("queryArea:" + data);
 		return data;
 	}
-	//国家
+	/**
+	 * 查询 国家
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间 
+	 */
 	public Map<String, Object> queryCountry(String icons, String startDate, String endDate) {
 		Map<String, Object> data = new HashMap<String, Object>();
 		String sql = "select C.country country,count(C.country) count from create_role A join (select distinct account from login where login_time >= ? and login_time <= ?) B on A.account=B.account join device_info C on A.openudid=C.openudid where C.os in (" + icons + ") group by C.country";
@@ -272,7 +318,12 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		logger.debug("queryCountry:" + data);
 		return data;
 	}
-	//账户类型
+	/**
+	 * 查询 账户类型
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间 
+	 */
 	public Map<String, Object> queryAccountType(String icons, String startDate, String endDate) {
 		Map<String, Object> data = new HashMap<String, Object>();
 		String sql = "select A.account_type account_type,count(A.account_type)count from create_role A join (select distinct account from login where login_time >= ? and login_time <= ?) B on A.account=B.account join device_info C on A.openudid = C.openudid where C.os in (" + icons + ") group by A.account_type";
@@ -288,13 +339,13 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		logger.debug("queryAccountType:" + data);
 		return data;
 	}
-
+	//map计数器
 	private void increaseValue(String key, Map<String, Integer> map) {
 		int value = map.get(key);
 		value++;
 		map.put(key, value);
 	}
-
+    //获取list的 max值下标
 	private int max(List<Integer> list) {
 		if (list == null || list.size() == 0) {
 			return 0;

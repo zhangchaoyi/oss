@@ -31,13 +31,21 @@ import common.interceptor.DataGuestInterceptor;
 public class RealtimeController extends Controller {
 	private static Logger logger = Logger.getLogger(RealtimeController.class);
 	private RealtimeService realtimeService = new RealtimeServiceImpl();
-
+	
+	/**
+	 * 实时概况页
+	 * @role data_guest
+	 */
 	@Before({GET.class, DataGuestInterceptor.class})
 	@ActionKey("/realtime/info")
 	public void activePlayer() {
 		render("info.html");
 	}
-
+    /**
+     * 实时概况 昨日/七日/三十日 接口 
+     * @getPara icon[]  当前的icon   ---apple/android/windows
+     * @role data_guest
+     */
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/realtime/beforedata")
 	public void queryBeforeData() {
@@ -46,7 +54,11 @@ public class RealtimeController extends Controller {
 		logger.debug("<RealtimeController> queryBeforeData:" + data);
 		renderJson(data);
 	}
-
+    /**
+     * 实时接口
+     * @getPara icon[]  当前的icon   ---apple/android/windows
+     * @role data_guest
+     */
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/realtime/realtimedata")
 	public void queryRealtimeData() {
@@ -55,7 +67,13 @@ public class RealtimeController extends Controller {
 		logger.debug("<RealtimeController> queryRealtimeData:" + data);
 		renderJson(data);
 	}
-
+	/**
+	 * 详细栏接口
+	 * @getPara detailTag  tag选择器
+	 * @getPara startDate[] 对比时段
+	 * @getPara icon[]  当前的icon   ---apple/android/windows
+     * @role data_guest
+	 */
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/realtime/info")
 	public void queryRealtimeInfo() {

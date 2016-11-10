@@ -23,7 +23,13 @@ import common.service.PaymentDataService;
  */
 public class PaymentDataServiceImpl implements PaymentDataService {
 	private static Logger logger = Logger.getLogger(PaymentDataServiceImpl.class);
-	//计算付费金额
+	/**
+	 * 计算付费金额
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public Map<String, Map<String,Object>> queryMoneyPayment(List<String> categories, String startDate, String endDate, String icons){
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(paid_money)paid_money, sum(ft_paid_money)ft_paid_money, sum(fd_paid_money)fd_paid_money from payment_detail where date between ? and ? and os in (" + icons + ") group by date";
 		List<PaymentDetail> paymentDetail = PaymentDetail.dao.find(sql, startDate, endDate);
@@ -80,7 +86,13 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		logger.debug("queryMoneyPayment:" + data);
 		return data;
 	}
-	//计算付费人数
+	/**
+	 * 计算付费人数
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public Map<String, Map<String,Object>> queryPeoplePayment(List<String> categories, String startDate, String endDate, String icons) {
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(paid_people)paid_people, sum(ft_paid_people)ft_paid_people, sum(fd_paid_people)fd_paid_people from payment_detail where date between ? and ? and os in (" + icons + ") group by date";
 		List<PaymentDetail> paymentDetail = PaymentDetail.dao.find(sql, startDate, endDate);
@@ -132,7 +144,13 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		logger.debug("queryPeoplePayment:" + data);
 		return data;
 	}
-	//计算付费次数
+	/**
+	 * 计算付费次数
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public Map<String, Map<String,Object>> queryNumPayment(List<String> categories, String startDate, String endDate, String icons) {
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date, sum(paid_num)paid_num, sum(fd_paid_num)fd_paid_num from payment_detail where date between ? and ? and os in (" + icons + ") group by date";
 		List<PaymentDetail> paymentDetail = PaymentDetail.dao.find(sql, startDate, endDate);
@@ -174,7 +192,13 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		return data;
 	}
 
-	//查询所有付费数据的table数据
+	/**
+	 * 查询所有付费数据的table数据
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<List<Object>> queryDataPayment(List<String> categories, String startDate, String endDate, String icons){
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(paid_money)paid_money,sum(paid_people)paid_people,sum(paid_num)paid_num,sum(ft_paid_money)ft_paid_money,sum(ft_paid_people)ft_paid_people,sum(fd_paid_money)fd_paid_money,sum(fd_paid_people)fd_paid_people,sum(fd_paid_num)fd_paid_num from payment_detail where date between ? and ? and os in (" + icons + ") group by date";
 		List<PaymentDetail> paymentDetail = PaymentDetail.dao.find(sql, startDate, endDate);
@@ -216,7 +240,13 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		}
 		return data;
 	}
-	//计算日 付费金额
+	/**
+	 * 计算日 付费金额
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<Integer> queryDayPaymentMoney(List<String> categories, String icons, String startDate, String endDate){
 		String sql = "select A.count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ?";
 		List<LogCharge> logCharge = LogCharge.dao.find(sql, startDate, endDate);
@@ -261,7 +291,13 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		return data;
 	}
 	
-	//计算日付费次数
+	/**
+	 * 计算日付费次数
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<Integer> queryDayPaymentTimes(List<String> categories, String icons, String startDate, String endDate){
 		String sql = "select count(A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? group by A.account";
 		List<LogCharge> logCharge = LogCharge.dao.find(sql, startDate, endDate);
@@ -326,7 +362,13 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		return data;
 	}
 	
-	//计算日ARPU   每天的收入/每天活跃玩家
+	/**
+	 * 计算日ARPU   每天的收入/每天活跃玩家
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<Double> queryDayARPU(List<String> categories, String icons, String startDate, String endDate){
 		String arpuSql = "select DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,sum(count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? group by date;";
 		String aPSql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where date between ? and ? and B.os in (" + icons + ") group by date;";
@@ -363,7 +405,13 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		return arpu;
 	}
 	
-	//查询日 ARPPU
+	/**
+	 * 查询日 ARPPU
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<Double> queryDayARPPU(List<String> categories, String icons, String startDate, String endDate){
 		String sql = "select DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,sum(count)revenue,count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("+ icons + ") and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? group by date";
 		List<LogCharge> logCharge = LogCharge.dao.find(sql, startDate, endDate);
@@ -391,7 +439,13 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		return arppu;
 	}
 	
-	//查询所有付费金额 --表格
+	/**
+	 * 查询所有付费金额 --表格
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<List<Object>> queryAllPaymentMoney(List<String> categories, String icons, String startDate, String endDate){
 		List<Integer> day = queryDayPaymentMoney(categories,icons,startDate,endDate);
 		List<Integer> week = Arrays.asList(0,0,0,0,0,0,0,0,0,0,0,0);
@@ -408,7 +462,13 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		return data;
 	}
 	
-	//查询所有付费次数 --表格
+	/**
+	 * 查询所有付费次数 --表格
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<List<Object>> queryAllPaymentTimes(List<String> categories, String icons, String startDate, String endDate){
 		List<Integer> day = queryDayPaymentTimes(categories,icons,startDate,endDate);
 		List<Integer> week = Arrays.asList(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
@@ -424,7 +484,13 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		}
 		return data;
 	}
-	//查询ARPU --表格
+	/**
+	 * 查询ARPU --表格
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<List<Object>> queryArpu(List<String> categories, String icons, String startDate, String endDate){
 		List<Double> queryData = queryDayARPU(categories,icons,startDate,endDate);
 		List<List<Object>> data = new ArrayList<List<Object>>();
@@ -436,7 +502,13 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		}
 		return data;
 	}
-	//查询ARPPU --表格
+	/**
+	 * 查询ARPPU --表格
+	 * @param categories 日期列表
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<List<Object>> queryArppu(List<String> categories, String icons, String startDate, String endDate){
 		List<Double> queryData = queryDayARPU(categories,icons,startDate,endDate);
 		List<List<Object>> data = new ArrayList<List<Object>>();
@@ -449,13 +521,23 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		return data;
 	}
 	
-	//查询地区收入
+	/**
+	 * 查询地区收入
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<LogCharge> queryAreaRevenue(String icons, String startDate, String endDate) {
 		String sql = "select province,sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by province";
 		List<LogCharge> logCharge = LogCharge.dao.find(sql,startDate,endDate);
 		return logCharge;
 	}
-	//查询地区日均ARPU  --先load付费情况,再load 活跃人数   日ARPU = 当日充值总额度/当日活跃玩家数量
+	/**
+	 * 查询地区日均ARPU  --先load付费情况,再load 活跃人数   日ARPU = 当日充值总额度/当日活跃玩家数量
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public Map<String, Object> queryAreaARPU(String icons, String startDate, String endDate) {
 		String rSql = "select C.province,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by date,C.province";
 		String aSql = "select B.province,DATE_FORMAT(A.login_time,'%Y-%m-%d')date,count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d') between ? and ? and B.os in (" + icons +") group by B.province,date;";
@@ -505,7 +587,12 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		return data;
 	}
 	
-	//查询地区日均ARPPU   日ARPPU = 当日充值总额度/当日付费玩家数量
+	/**
+	 * 查询地区日均ARPPU   日ARPPU = 当日充值总额度/当日付费玩家数量
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public Map<String,Object> queryAreaARPPU(String icons, String startDate, String endDate) {
 		String sql = "select C.province,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,sum(A.count)revenue,count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by C.province,date";
 		List<LogCharge> logCharge = LogCharge.dao.find(sql, startDate, endDate);
@@ -562,13 +649,23 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		return data;
 	}
 	
-	//查询国家收入
+	/**
+	 * 查询国家收入
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<LogCharge> queryCountryRevenue(String icons, String startDate, String endDate) {
 		String sql = "select country,sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by country;";
 		List<LogCharge> logCharge = LogCharge.dao.find(sql,startDate,endDate);
 		return logCharge;
 	}
-	//查询国家 ARPU
+	/**
+	 * 查询国家 ARPU
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public Map<String, Object> queryCountryARPU(String icons, String startDate, String endDate) {
 		String rSql = "select C.country,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by date,C.country";
 		String aSql = "select B.country,DATE_FORMAT(A.login_time,'%Y-%m-%d')date,count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d') between ? and ? and B.os in (" + icons + ") group by B.country,date;";
@@ -620,7 +717,12 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		return data;
 	}
 	
-	//查询国家日均ARPPU   日ARPPU = 当日充值总额度/当日付费玩家数量
+	/**
+	 * 查询国家日均ARPPU   日ARPPU = 当日充值总额度/当日付费玩家数量
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public Map<String,Object> queryCountryARPPU(String icons, String startDate, String endDate) {
 		String sql = "select C.country,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,sum(A.count)revenue,count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by C.country,date";
 		List<LogCharge> logCharge = LogCharge.dao.find(sql, startDate, endDate);
@@ -652,7 +754,12 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		return data;
 	}
 	
-	//查询移动运营商
+	/**
+	 * 查询移动运营商
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 */
 	public List<LogCharge> queryMobile(String icons, String startDate, String endDate) {
 		String sql = "select C.carrier,sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by C.carrier";
 		List<LogCharge> logCharge = LogCharge.dao.find(sql, startDate, endDate);

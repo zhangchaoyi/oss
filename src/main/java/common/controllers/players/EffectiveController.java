@@ -22,18 +22,29 @@ import common.interceptor.DataGuestInterceptor;
 @Clear
 public class EffectiveController extends Controller {
 	private static Logger logger = Logger.getLogger(EffectiveController.class);
+	/**
+	 * 有效玩家页
+	 * @role data_guest
+	 */
 	@Before({GET.class, DataGuestInterceptor.class})
 	@ActionKey("/players/effective")
 	public void effective() {
 		render("effective.html");
 	}
-	
+	/**
+	 * 有效玩家分布页
+	 * @role data_guest
+	 */
 	@Before({GET.class, DataGuestInterceptor.class})
 	@ActionKey("/players/effective-distributed")
 	public void effectiveDistributed() {
 		render("effective-distributed.html");
 	}
-	
+	/**
+	 * 有效玩家接口
+	 * @getPara tagDataInfo tag选项
+	 * @role data_guest
+	 */
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/effective")
 	public void queryEffectiveData() {
@@ -70,7 +81,12 @@ public class EffectiveController extends Controller {
 		logger.debug("<EffectiveController> queryEffectiveData:" + data);
 		renderJson(data);
 	}
-	
+	/**
+	 * 有效分布页接口
+	 * @getPara tagDataInfo 详细tag选项
+	 * @getPara subTagDataInfo 玩家tag选项
+	 * @role data_guest
+	 */
 	@Before({POST.class, DataGuestInterceptor.class})
 	@ActionKey("/api/players/effective-distributed")
 	public void queryDistributedData() {
