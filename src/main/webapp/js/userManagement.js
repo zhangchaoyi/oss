@@ -99,8 +99,12 @@ $("#data-table-user-management thead tr th a").click(function(){
 //点击某个用户的修改权限按钮 进入个人角色管理页
 $(document).on("click","#data-table-user-management tbody tr td a",function() {
     var accountParam = $(this).attr("data-info");
+    if(accountParam=="systemroot"){
+        alert("无法修改最高用户权限");
+        return;
+    }
     var role = $(this).attr("data-role");
-    //保存当前用户角色 全局变量
+    //保存当前用户角色 全局变量 用于判断是否发生修改
     currentRole = role;
     $("#username").text(accountParam);
     $("#role-manage").attr("value",role);
@@ -167,8 +171,12 @@ $("#change-role").click(function(){
         alert("角色列表不能为空");
         return;
     }
+    var username = $("#username").text();
+    if(username=="systemroot"){
+        alert("无法修改最高用户权限");
+    }
     $.post("/oss/api/admin/changeRole", {
-        username:$("#username").text(),
+        username:username,
         roles:list
     },
     function(data, status) {

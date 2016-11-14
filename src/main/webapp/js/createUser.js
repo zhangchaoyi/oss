@@ -8,8 +8,9 @@ $("#role-select > li").click(function(){
 $("#create-user").click(function(){
 	var username = $("#username").val();
 	var password = $("#password").val();
+	var confirm = $("#confirm-password").val();
 
-	if(username == "" || password == ""){
+	if(username == "" || password == "" || confirm == ""){
 		alert("请输入用户名或密码！");
 		return;
 	}
@@ -22,7 +23,10 @@ $("#create-user").click(function(){
 		alert("请选择角色");
 		return;
 	}
-
+	if(password != confirm){
+		alert("确认密码不一致");
+		return;
+	}
 	var key = randomWord(false,16,16);
 	$.post("/oss/api/admin/createUser", {
 		username:Encrypt(username, key),
