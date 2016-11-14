@@ -17,26 +17,6 @@
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/animation.css?v=0.1" /> 
   <link href="http://oss.koogame.cn/oss/css/polaris/polaris.css?v=0.1" rel="stylesheet" /> 
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/jquery.dataTables.css?v=0.1" /> 
-  <style type="text/css">
-  .signup-logo {
-    width: 194px;
-    height: 69px;
-    background: url("../../images/logobackup.gif");
-    position: relative;
-    bottom: 19px;
-    border-radius: 8px 8px 8px 8px;
-    text-align: center;
-    opacity: 0.9;
-    left: 27%;
-  }
-
-  hr {
-    width:inherit;
-    right: inherit;
-    bottom:inherit;
-    margin-bottom: inherit;
-  }
-  </style>
   <title>KooGame</title> 
  </head> 
  <body> 
@@ -137,7 +117,7 @@
        </ul> </li> 
       <li> <a href="#"> <i class="fa fa-send "></i>运营支持 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level">
-        <li> <a href="#"> <i class="fa fa-commenting-o"></i>用户反馈</a> </li> 
+        <li> <a href="/oss/operation/feedback"> <i class="fa fa-commenting-o"></i>用户反馈</a> </li> 
         <li> <a href="#"> <i class="fa fa-bell"></i>数据报警</a> </li> 
        </ul> </li> 
       <li> <a href="#"> <i class="fa fa-anchor "></i>数据挖掘 <span class="fa arrow"></span></a> 
@@ -158,7 +138,7 @@
         <li> <a href="#"> <i class="fa fa-gears"></i>设置 <span class="fa arrow"></span></a> 
          <ul class="nav nav-third-level">
            <li> <a href="/oss/admin/createUser"><i class="fa fa-plus "></i>新增用户角色</a></li>
-           <li> <a href="#"><i class="fa fa-comments-o "></i>用户角色管理</a></li>
+           <li> <a href="/oss/admin/manageUsers"><i class="fa fa-comments-o "></i>用户角色管理</a></li>
          </ul></li> 
         <li> <a href="#"> <i class="fa fa-cloud-download "></i>下载中心</a> </li> 
        </ul> </li> 
@@ -167,7 +147,20 @@
    </nav> 
    <!-- /. NAV SIDE --> 
    <div id="page-wrapper" style="overflow-x: hidden;overflow-y:hidden;min-height:825px"> 
-    <div id="page-inner"> 
+    <div id="page-inner">
+     <div class="row" id="top-row"> 
+      <div class="filter-tool" style="height:110px">
+       <div class="date-bar"> 
+        <div class="calender-bar"> 
+         <div class="ta_date"> 
+          <span class="date_title" id="date_seletor"></span> 
+          <a class="opt_sel" id="input_trigger" hre2f="#"> <i class="fa fa-calendar" aria-hidden="true"></i> </a> 
+         </div> 
+         <div id="datePicker"></div> 
+        </div> 
+       </div>
+      </div>
+     </div> 
      <!-- /. ROW --> 
      <div class="row" id="data-first" style="top:55px"> 
       <div class="panel panel-default"> 
@@ -176,7 +169,44 @@
        </div> 
        <div class="panel-body"> 
         <div class="tab-content">
-          <table id="data-table-feedback" class="hover stripe row-border"></table> 
+          <table id="data-table-feedback" class="hover stripe row-border">
+            <thead>
+              <tr role="row">
+                <th>帐号名</th>
+                <th>服务器</th>
+                <th>查看用户</th>
+              </tr>
+             </thead> 
+          </table>
+        </div> 
+       </div> 
+      </div> 
+     </div>
+     <div class="row" id="data-second" style="display:none"> 
+      <div class="panel panel-default"> 
+       <div class="panel-heading">
+         <a id="whaleDetailback">
+          <i class="fa fa-caret-left" aria-hidden="true"></i>
+          <span>返回</span>
+         </a> 
+        <span class="data-first-panel-heading" id="user-role-manage">用户反馈详情</span>
+       </div> 
+       <div class="panel-body"> 
+        <div class="tab-content">
+          <table id="table-feedback-detail" class="hover stripe row-border">
+            <thead>
+              <tr>
+                <th>帐号名</th>
+                <th>标题</th>
+                <th>内容</th>
+                <th>服务器</th>
+                <th>端口</th>
+                <th>创建时间</th>
+                <th>回复</th>
+              </tr>
+            </thead>
+          </table>
+          
         </div> 
        </div> 
       </div> 

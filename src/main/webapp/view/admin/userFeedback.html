@@ -17,30 +17,6 @@
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/animation.css?v=0.1" /> 
   <link href="http://oss.koogame.cn/oss/css/polaris/polaris.css?v=0.1" rel="stylesheet" /> 
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/jquery.dataTables.css?v=0.1" /> 
-  <style type="text/css">
-  .signup-logo {
-    width: 194px;
-    height: 69px;
-    background: url("../../images/logobackup.gif");
-    position: relative;
-    bottom: 19px;
-    border-radius: 8px 8px 8px 8px;
-    text-align: center;
-    opacity: 0.9;
-    left: 27%;
-  }
-
-  hr {
-    width:inherit;
-    right: inherit;
-    bottom:inherit;
-    margin-bottom: inherit;
-  }
-
-  th {
-    text-align: center;
-  }
-  </style>
   <title>KooGame</title> 
  </head> 
  <body> 
@@ -140,8 +116,8 @@
         <li> <a href="#"> <i class="fa fa-filter "></i>漏斗管理</a> </li> 
        </ul> </li> 
       <li> <a href="#"> <i class="fa fa-send "></i>运营支持 <span class="fa arrow"></span></a> 
-       <ul class="nav nav-second-level"> 
-        <li> <a href="/oss/operation/feedback"> <i class="fa fa-commenting-o"></i>用户反馈</a> </li>
+       <ul class="nav nav-second-level">
+        <li> <a href="#"> <i class="fa fa-commenting-o"></i>用户反馈</a> </li> 
         <li> <a href="#"> <i class="fa fa-bell"></i>数据报警</a> </li> 
        </ul> </li> 
       <li> <a href="#"> <i class="fa fa-anchor "></i>数据挖掘 <span class="fa arrow"></span></a> 
@@ -162,7 +138,7 @@
         <li> <a href="#"> <i class="fa fa-gears"></i>设置 <span class="fa arrow"></span></a> 
          <ul class="nav nav-third-level">
            <li> <a href="/oss/admin/createUser"><i class="fa fa-plus "></i>新增用户角色</a></li>
-           <li> <a href="/oss/admin/manageUsers"><i class="fa fa-comments-o "></i>用户角色管理</a></li>
+           <li> <a href="#"><i class="fa fa-comments-o "></i>用户角色管理</a></li>
          </ul></li> 
         <li> <a href="#"> <i class="fa fa-cloud-download "></i>下载中心</a> </li> 
        </ul> </li> 
@@ -171,90 +147,29 @@
    </nav> 
    <!-- /. NAV SIDE --> 
    <div id="page-wrapper" style="overflow-x: hidden;overflow-y:hidden;min-height:825px"> 
-    <div id="page-inner"> 
+    <div id="page-inner">
+     <div class="row" id="top-row"> 
+      <div class="filter-tool" style="height:130px">
+       <div class="date-bar"> 
+        <div class="calender-bar"> 
+         <div class="ta_date"> 
+          <span class="date_title" id="date_seletor"></span> 
+          <a class="opt_sel" id="input_trigger" hre2f="#"> <i class="fa fa-calendar" aria-hidden="true"></i> </a> 
+         </div> 
+         <div id="datePicker"></div> 
+        </div> 
+       </div>
+      </div>
+     </div>   
      <!-- /. ROW --> 
-     <div class="row" id="data-first" style="top:55px"> 
+     <div class="row" id="data-first" style="top:50px"> 
       <div class="panel panel-default"> 
        <div class="panel-heading"> 
-        <span class="data-first-panel-heading">所有用户权限列表</span>
+        <span class="data-first-panel-heading">用户反馈</span>
        </div> 
        <div class="panel-body"> 
         <div class="tab-content">
-          <table id="data-table-user-management" class="hover stripe row-border">
-            <thead>
-              <tr role="row">
-                <th><a id="delete-user">删除</a><input type="checkbox" /></th>
-                <th>用户名</th>
-                <th>角色</th>
-                <th>创建时间</th>
-                <th>修改权限</th>
-              </tr>
-             </thead>
-          </table> 
-        </div> 
-       </div> 
-      </div> 
-     </div>
-     <div class="row" id="data-second"> 
-      <div class="panel panel-default"> 
-       <div class="panel-heading">
-         <a id="whaleDetailback">
-          <i class="fa fa-caret-left" aria-hidden="true"></i>
-          <span>返回</span>
-         </a> 
-        <span class="data-first-panel-heading" id="user-role-manage">用户权限详情</span>
-       </div> 
-       <div class="panel-body"> 
-        <div class="tab-content">
-          <table class="table" text-align:center>
-            <thead>
-              <tr>
-                <th>用户名</th>
-                <th>角色权限管理</th>
-                <th>修改按钮</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="list-group-item-success">
-                <td><a id="username"></a></td>
-                <td>
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-success" id="role-add" data-info="none">增加角色</button>
-                    <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                      <span class="caret"></span>
-                      <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu" id="role-add-menu">
-                      <li><a data-info="data_guest">数据用户 data_guest</a></li>
-                      <li><a data-info="gm">游戏管理员 gm</a></li>
-                      <li><a data-info="vip">超级用户 vip</a></li>
-                      <li><a data-info="admin">平台管理员 admin</a></li>
-                      <li class="divider"></li>
-                      <li><a data-info="root">系统管理员 root</a></li>
-                    </ul> 
-                  </div>
-                  <input type="text" id="role-manage" placeholder="请选择角色" readonly="readonly" style="width:256px">
-                  <div class="btn-group">
-                    <button type="button" class="btn btn-danger" id="role-delete" data-info="none">删除角色</button>
-                    <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown">
-                      <span class="caret"></span>
-                      <span class="sr-only">Toggle Dropdown</span>
-                    </button>
-                    <ul class="dropdown-menu" role="menu" id="role-delete-menu">
-                      <li><a data-info="data_guest">数据用户 data_guest</a></li>
-                      <li><a data-info="gm">游戏管理员 gm</a></li>
-                      <li><a data-info="vip">超级用户 vip</a></li>
-                      <li><a data-info="admin">平台管理员 admin</a></li>
-                      <li class="divider"></li>
-                      <li><a data-info="root">系统管理员 root</a></li>
-                    </ul> 
-                  </div>
-                </td>
-                <td><a class="btn btn-primary " id="change-role">修改角色</a></td>
-              </tr>
-            </tbody>
-          </table>
-          
+          <table id="data-table-feedback" class="hover stripe row-border"></table> 
         </div> 
        </div> 
       </div> 
@@ -285,6 +200,6 @@
   <script src="http://oss.koogame.cn/oss/js/dateselector/monthPicker.js?v=0.1"></script> 
   <script src="http://oss.koogame.cn/oss/js/checkbox/icheck.js?v=0.1"></script>
   <script src="http://oss.koogame.cn/oss/js/common.js?v=0.1"></script>
-  <script src="http://oss.koogame.cn/oss/js/userManagement.js?v=0.1"></script>
+  <script src="../../js/userFeedback.js?v=0.1"></script>
  </body>
 </html>
