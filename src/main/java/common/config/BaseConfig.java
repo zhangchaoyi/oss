@@ -30,6 +30,7 @@ import common.model.ReturnUser;
 import common.model.SecRole;
 import common.model.SecUser;
 import common.model.SecUserRole;
+import common.model.UserFeedback;
 import common.routes.AdminRoute;
 
 public class BaseConfig extends JFinalConfig {
@@ -66,6 +67,7 @@ public class BaseConfig extends JFinalConfig {
 		arp.addMapping("sec_role", "role_id", SecRole.class);
 		arp.addMapping("sec_user", "user_id", SecUser.class);
 		arp.addMapping("sec_user_role", SecUserRole.class);
+		arp.addMapping("user_feedback", UserFeedback.class);
 	}
 
 	@Override

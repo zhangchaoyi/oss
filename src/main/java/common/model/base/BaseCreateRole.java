@@ -33,6 +33,14 @@ public abstract class BaseCreateRole<M extends BaseCreateRole<M>> extends Model<
 		return get("account_type");
 	}
 
+	public void setTeamName(java.lang.String teamName) {
+		set("team_name", teamName);
+	}
+
+	public java.lang.String getTeamName() {
+		return get("team_name");
+	}
+
 	public void setDateTime(java.util.Date dateTime) {
 		set("date_time", dateTime);
 	}
