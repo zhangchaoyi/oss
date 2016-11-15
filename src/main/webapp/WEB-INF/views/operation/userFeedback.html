@@ -17,7 +17,15 @@
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/animation.css?v=0.1" /> 
   <link href="http://oss.koogame.cn/oss/css/polaris/polaris.css?v=0.1" rel="stylesheet" /> 
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/jquery.dataTables.css?v=0.1" /> 
-  <title>KooGame</title> 
+  <title>KooGame</title>
+  <style type="text/css">
+    .nav-tab.feedback {
+    margin-top: 1%;
+    position: relative;
+    left: 2px;
+    z-index: 1;
+  } 
+  </style> 
  </head> 
  <body> 
   <div id="wrapper"> 
@@ -162,47 +170,28 @@
       </div>
      </div> 
      <!-- /. ROW --> 
-     <div class="row" id="data-first" style="top:55px"> 
-      <div class="panel panel-default"> 
-       <div class="panel-heading"> 
-        <span class="data-first-panel-heading">用户反馈</span>
-       </div> 
-       <div class="panel-body"> 
-        <div class="tab-content">
-          <table id="data-table-feedback" class="hover stripe row-border">
-            <thead>
-              <tr role="row">
-                <th>帐号名</th>
-                <th>服务器</th>
-                <th>查看用户</th>
-              </tr>
-             </thead> 
-          </table>
-        </div> 
-       </div> 
-      </div> 
-     </div>
-     <div class="row" id="data-second" style="display:none"> 
+     <div class="row" id="data-first"> 
       <div class="panel panel-default"> 
        <div class="panel-heading">
-         <a id="whaleDetailback">
-          <i class="fa fa-caret-left" aria-hidden="true"></i>
-          <span>返回</span>
-         </a> 
         <span class="data-first-panel-heading" id="user-role-manage">用户反馈详情</span>
        </div> 
-       <div class="panel-body"> 
-        <div class="tab-content">
+       <div class="panel-body">
+        <div class="nav-tab feedback"> 
+          <ul class="nav nav-pills">
+            <li class="active"><a data-info="eggactest.koogame.cn"><span>测试服</span></a> </li> 
+            <li class=""><a data-info="egguccn2.koogame.cn"><span>UC服</span></a></li> 
+            <li class=""><a data-info="egghk.koogame.cn"><span>马来服</span></a> </li>
+          </ul> 
+        </div> 
+        <div class="tab-content" style="top:-13px">
           <table id="table-feedback-detail" class="hover stripe row-border">
             <thead>
               <tr>
-                <th><a class="btn btn-danger" data-toggle="modal" data-target="#delete-confirm"><i class="fa fa-times" aria-hidden="true" style="font-size:large"></i>删除</a><input type="checkbox" /></th>
+                <th style="width:100px"><a class="btn btn-danger" data-toggle="modal" data-target="#delete-confirm"><i class="fa fa-times" aria-hidden="true" style="font-size:large"></i>删除</a><input type="checkbox" /></th>
                 <th>帐号名</th>
-                <th>标题</th>
-                <th>内容</th>
-                <th>服务器</th>
-                <th>端口</th>
+                <th>反馈内容</th>
                 <th>创建时间</th>
+                <th>详情</th>
                 <th>是否回复</th>
                 <th>回复</th>
               </tr>
@@ -212,7 +201,7 @@
             <div class="modal-dialog"> 
              <div class="modal-content"> 
                <div class="modal-body"> 
-                 <div class="panel-body">
+                 <div class="panel-body" style="text-align:center">
                   <div class="alert alert-danger">确认删除?</div>
                   <button type="button" class="btn btn-primary" data-dismiss="modal" id="delete-feedback">确认</button> 
                   <button type="button" class="btn btn-primary" data-dismiss="modal" id="delete-cancel">取消</button> 
@@ -221,6 +210,38 @@
              </div> 
             </div> 
           </div>
+          <div class="modal fade" id="fb-detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+           <div class="modal-dialog"> 
+            <div class="modal-content"> 
+             <div class="modal-header"> 
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
+               <h4 class="modal-title" id="myModalLabel"><i>用户反馈</i></h4> 
+             </div> 
+             <div class="modal-body"> 
+               <div class="panel panel-default">
+                <div class="panel-body"> 
+                 <div class="filter-header">
+                   <div class="input-group">
+                    <span class="input-group-addon">帐号</span>
+                    <input type="text" class="form-control" id="feedback-account" readonly="readonly">
+                   </div> 
+                 </div> 
+                 <div class="tab-content"> 
+                  <div class="form-group">
+                    <textarea class="form-control" rows="3" id="feedback-content" readonly="readonly"></textarea>
+                  </div>
+                 </div> 
+                </div> 
+               </div> 
+              </div> 
+              <div class="modal-footer"> 
+               <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#feedback" id="btn-reply">回复</button> 
+               <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn-detail-close">关闭</button> 
+              </div> 
+            </div> 
+           </div> 
+          </div>
+
           <div class="modal fade" id="feedback" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
            <div class="modal-dialog"> 
             <div class="modal-content"> 

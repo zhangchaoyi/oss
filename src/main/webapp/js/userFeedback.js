@@ -1,58 +1,26 @@
-var currentAccount = "";
-var currentServer = "";
 $(function(){
     loadData();
     initSelectAll();
 })
 
 function loadData() {
-    var first = $("#data-first").css("display");
-    if(first=="block"){
-        loadFeedbackData();    
-    }else{
-        loadUserData(currentAccount, currentServer);
-    }
-    
+    loadFeedbackData($(".nav-tab.feedback > ul > li.active > a").attr("data-info"));      
 }
 //访问用户列表接口
-function loadFeedbackData(){
+function loadFeedbackData(server){
     $.post("/oss/api/operation/feedback/list", {
         startDate:$("input#startDate").attr("value"),
-        endDate:$("input#endDate").attr("value")
+        endDate:$("input#endDate").attr("value"),
+        server:server
     },
     function(data, status) {
         configTable(data);
     });
 } 
 
-function configTable(data) {
-    $('#data-table-feedback').dataTable().fnClearTable();
-    var _table = $('#data-table-feedback').dataTable({
-        "destroy": true,
-        "data": data==null?null:data,
-        "dom": '',
-        'language': {
-            'emptyTable': '没有数据',
-            'loadingRecords': '加载中...',
-            'processing': '查询中...',
-            'search': '查询:',
-            'lengthMenu': '每页显示 _MENU_ 条记录',
-            'zeroRecords': '没有数据',
-            "sInfo": "(共 _TOTAL_ 条记录)",
-            'infoEmpty': '没有数据',
-            'infoFiltered': '(过滤总件数 _MAX_ 条)'
-        },
-        "columnDefs": [ {
-           "targets": -1,
-           "render": function ( data, type, full, meta ) {
-            return '<a user-info='+ full[0] +' server-info='+ full[1] +'>查看用户</a>';
-           }
-         },
-     ],
-    });
-}
 
-function configDetailTable(data) {
+
+function configTable(data) {
     $('#table-feedback-detail').dataTable().fnClearTable();
     var _table = $('#table-feedback-detail').dataTable({
         "destroy": true,
@@ -87,6 +55,12 @@ function configDetailTable(data) {
            }
          },
          {
+           "targets": -3,
+           "render": function ( data, type, full, meta ) {
+            return '<button type="button" class="btn btn-info" data-toggle="modal" data-target="#fb-detail" id-info='+ data +'>详情</button>';
+           }
+         },
+         {
            "targets": 0,
            "render": function ( data, type, full, meta ) {
             return function(){
@@ -94,43 +68,26 @@ function configDetailTable(data) {
             }()
 
            }
+         },
+         {
+           "targets": 2,
+           "render": function ( data, type, full, meta ) {
+                return data.substr(0,15) + '......';
+           }
          } 
      ],
 
     });
 }
 
-//点击某个用户的修改权限按钮 进入个人角色管理页
-$(document).on("click","#data-table-feedback tbody tr td a",function() {
-    currentAccount = $(this).attr("user-info");
-    currentServer = $(this).attr("server-info");
-    loadUserData(currentAccount, currentServer);
-    $("#data-first").slideToggle();
-    $("#data-second").slideToggle();
+//选择区服
+$(".nav-tab.feedback > ul > li").click(function(){
+    var server = $(this).children("a").attr("data-info");
+    loadFeedbackData(server);
 });
-//访问用户信息接口
-function loadUserData(account, server) {
-    $.post("/oss/api/operation/feedback/user", {
-        account:account,
-        server:server,
-        startDate:$("input#startDate").attr("value"),
-        endDate:$("input#endDate").attr("value")
-    },
-    function(data, status) {
-        configDetailTable(data);
-    });
-}
-
-//返回用户列表
-$("#whaleDetailback").click(function(){
-    loadFeedbackData();
-    $("#data-first").slideToggle();
-    $("#data-second").slideToggle();
-});
-
 
 //点击回复反馈按钮
-$(document).on("click","#table-feedback-detail tbody tr td button",function() {
+$(document).on("click","#table-feedback-detail tbody tr td button.btn.btn-danger",function() {
     var account = $(this).attr("account-info");
     $("#reply-account").attr("value", account);
     var id = $(this).attr("id-info");
@@ -142,7 +99,6 @@ $("#btn-send").click(function(){
     var id = $("#reply-account").attr("id-info");
     var title = $("#reply-title").val();
     var area = $("#area").val();
-    
 
     var text = [];
     text.push(account);
@@ -170,7 +126,7 @@ $("#btn-send").click(function(){
                     id:id
                 },
                 function(data, status) {
-                    loadUserData(currentAccount, currentServer);
+                    loadFeedbackData();
                 });
             }
         },
@@ -183,6 +139,27 @@ $("#btn-send").click(function(){
 $("#btn-reply-close").click(function(){
     $("#reply-title").val("");
     $("#area").val("");
+});
+
+//点击详情后的回复按钮
+$("#btn-reply").click(function(){
+    var account = $("#feedback-account").val();
+    var id = $("#btn-reply").attr("id-info");
+    $("#reply-account").attr("value", account);
+    $("#reply-account").attr("id-info", id);
+});
+
+//点击详情按钮
+$(document).on("click","#table-feedback-detail tbody tr td button.btn.btn-info",function() {
+    var id = $(this).attr("id-info");
+    $.post("/oss/api/operation/feedback/user/detail", {
+        id:id
+    },
+    function(data, status) {
+        $("#feedback-account").attr("value", data.account);
+        $("#feedback-content").val(data.content);
+        $("#btn-reply").attr("id-info",id);
+    });
 });
 
 //删除按钮
@@ -207,7 +184,7 @@ $("#delete-feedback").click(function(){
         }else{
             alert("删除成功");
         }
-        loadUserData(currentAccount, currentServer);
+        loadFeedbackData();
     });
 });
 
@@ -222,6 +199,7 @@ function initSelectAll(){
         }
     });
 }
+
 
 //锁死图标选择下拉菜单 清除按钮
 $("button.btn.btn-default.btn-circle").attr('disabled',"true");

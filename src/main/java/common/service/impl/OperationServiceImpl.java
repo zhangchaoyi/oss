@@ -3,7 +3,9 @@ package common.service.impl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 
@@ -38,43 +40,20 @@ public class OperationServiceImpl implements OperationService {
 	 * 查询用户反馈列表
 	 * @return List<List<String>> 直接填充datatable
 	 */
-	public List<List<String>> queryFeedback(String startDate, String endDate) {
-		String sql = "select account,server from user_feedback where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? group by account,server";
-		List<UserFeedback> userFeedback = UserFeedback.dao.find(sql, startDate, endDate);
+	public List<List<String>> queryFeedback(String startDate, String endDate, String server) {
+		String sql = "select * from user_feedback where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and server = ?";
+		List<UserFeedback> userFeedback = UserFeedback.dao.find(sql, startDate, endDate, server);
 		List<List<String>> data = new ArrayList<List<String>>();
 		for(UserFeedback uf : userFeedback){
 			String account = uf.getStr("account");
-			String server = uf.getStr("server");
-			List<String> subList = new ArrayList<String>(Arrays.asList(account, server, ""));
-			data.add(subList);
-		}
-		logger.debug("<OperationServiceImpl> queryFeedback:" + data);
-		return data;
-	}
-	
-	/**
-	 * 查询某个用户的所有反馈
-	 * @param queryAccount 帐号id
-	 * @param queryServer 服务器
-	 * @return List<List<String>> 直接填充datatable
-	 */
-	public List<List<String>> queryFeedbackDetail(String queryAccount, String queryServer, String startDate, String endDate) {
-		String sql = "select * from user_feedback where account = ? and server = ? and DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ?";
-		List<UserFeedback> userFeedback = UserFeedback.dao.find(sql, queryAccount, queryServer, startDate, endDate);
-		List<List<String>> data = new ArrayList<List<String>>();
-		for(UserFeedback uf : userFeedback){
-			String account = uf.getStr("account");
-			String title = uf.getStr("title");
 			String content = uf.getStr("content")==null ? "": uf.getStr("content");
-			String server = uf.getStr("server");
-			String port = uf.getStr("port");
 			String createTime = uf.getDate("create_time").toString();
 			String reply = uf.getInt("reply").toString();
 			String id = uf.getInt("id").toString();
-			List<String> subList = new ArrayList<String>(Arrays.asList(id,account,title,content,server,port,createTime,reply,id));
+			List<String> subList = new ArrayList<String>(Arrays.asList(id,account,content,createTime,id,reply,id));
 			data.add(subList);
 		}
-		logger.debug("<OperationServiceImpl> queryFeedbackDetail:" + data);
+		logger.debug("<OperationServiceImpl> queryFeedback:" + data);
 		return data;
 	}
 	
@@ -100,5 +79,26 @@ public class OperationServiceImpl implements OperationService {
 		int deleted = Db.update(sql);
 		logger.debug("<OperationServiceImpl> deleteFeedback:" + deleted);
 		return deleted;
+	}
+	
+	/**
+	 * 根据某个row id 查询反馈信息
+	 * @param id --row id
+	 */
+	public Map<String, String> queryFeedbackById(String id) {
+		String sql = "select * from user_feedback where id = ?";
+		UserFeedback uf = UserFeedback.dao.findFirst(sql, id);
+		Map<String, String> data = new HashMap<String, String>();
+		if(uf==null){
+			data.put("message", "failed");
+			logger.debug("<OperationServiceImpl> queryFeedbackById: null" );
+			return data;
+		}
+		String account = uf.getStr("account");
+		String content = uf.getStr("content")==null ? "": uf.getStr("content");
+		data.put("account",account);
+		data.put("content", content);
+		logger.debug("<OperationServiceImpl> queryFeedbackById:" + data);
+		return data;
 	}
 }

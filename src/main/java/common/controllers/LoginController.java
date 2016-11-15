@@ -59,13 +59,12 @@ public class LoginController extends Controller {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
-		
 		logger.debug("username:" + username + " password:" + password + " key:" + key);
 		
 		SecUser secUser = as.getUser(username);
 		if(secUser==null){
 			renderJson("{\"message\":\"failed\"}");
+			return;
 		}
 		String queryPasswd = secUser.getStr("password");
 		String salt = secUser.getStr("salt");

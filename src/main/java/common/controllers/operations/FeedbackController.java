@@ -1,6 +1,7 @@
 package common.controllers.operations;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.log4j.Logger;
 import com.jfinal.aop.Before;
@@ -68,25 +69,9 @@ public class FeedbackController extends Controller{
 	public void queryFeedback() {
 		String startDate = getPara("startDate", "");
 		String endDate = getPara("endDate", "");
-		List<List<String>> data = os.queryFeedback(startDate, endDate);
-		renderJson(data);
-	}
-	
-	/**
-	 * 查询某个用户所有的反馈
-	 * @author chris
-	 * @getPara account 帐号 
-	 * @getPara server 服务器
-	 * @role vip
-	 */
-	@Before({POST.class, VipInterceptor.class})
-	@ActionKey("/api/operation/feedback/user")
-	public void queryFeedbackUser() {
-		String account = getPara("account", "");
 		String server = getPara("server", "");
-		String startDate = getPara("startDate","");
-		String endDate = getPara("endDate", "");
-		List<List<String>> data = os.queryFeedbackDetail(account, server, startDate, endDate);
+		List<List<String>> data = os.queryFeedback(startDate, endDate, server);
+		logger.debug("<FeedbackController> queryFeedback:" + data);
 		renderJson(data);
 	}
 	
@@ -119,5 +104,18 @@ public class FeedbackController extends Controller{
 		int deleted = os.deleteFeedback(ids);
 		logger.debug("<FeedbackController> deleteFeedbackUserReply:" + deleted);
 		renderText(String.valueOf(deleted));
+	}
+	
+	/**
+	 * 根据某个row id 查询反馈信息
+	 * @author chris
+	 * @getPara id 获取row id
+	 */
+	@Before(POST.class)
+	@ActionKey("/api/operation/feedback/user/detail")
+	public void deleteFeedbackUser() {
+		String id = getPara("id");
+		Map<String, String> data = os.queryFeedbackById(id);
+		renderJson(data);
 	}
 }
