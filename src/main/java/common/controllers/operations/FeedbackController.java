@@ -65,7 +65,9 @@ public class FeedbackController extends Controller{
 	@Before({POST.class, VipInterceptor.class})
 	@ActionKey("/api/operation/feedback/list")
 	public void queryFeedback() {
-		List<List<String>> data = os.queryFeedback();
+		String startDate = getPara("startDate", "");
+		String endDate = getPara("endDate", "");
+		List<List<String>> data = os.queryFeedback(startDate, endDate);
 		renderJson(data);
 	}
 	
@@ -81,7 +83,28 @@ public class FeedbackController extends Controller{
 	public void queryFeedbackUser() {
 		String account = getPara("account", "");
 		String server = getPara("server", "");
-		List<List<String>> data = os.queryFeedbackDetail(account, server);
+		String startDate = getPara("startDate","");
+		String endDate = getPara("endDate", "");
+		List<List<String>> data = os.queryFeedbackDetail(account, server, startDate, endDate);
 		renderJson(data);
+	}
+	
+	/**
+	 * 回复反馈成功修改 reply 为 1 
+	 * @author chris
+	 * @getPara id  -- mysql row id
+	 * @role vip 
+	 */
+	@Before({POST.class, VipInterceptor.class})
+	@ActionKey("/api/operation/feedback/user/reply")
+	public void modifyFeedbackUserReply() {
+		String id = getPara("id");
+		try{
+			int succeed = os.completeReply(Integer.parseInt(id));
+			renderText(String.valueOf(succeed));
+		}catch(Exception e){
+			logger.debug("<FeedbackController> modifyFeedbackUserReply:", e);
+		}
+		
 	}
 }

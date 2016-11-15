@@ -37,12 +37,14 @@ function configTable(data) {
         },
         "columnDefs": [ {
            "targets": -1,
+           "orderable":false,
            "render": function ( data, type, full, meta ) {
             return '<a class="manage-role" data-info='+data+' data-role='+ full[2] +'>修改权限</a>';
            }
          },
      {
            "targets": 0,
+           "orderable":false,
            "render": function ( data, type, full, meta ) {
             return function(){
                 if(data=="systemroot"){

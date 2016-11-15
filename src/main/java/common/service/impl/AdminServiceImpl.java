@@ -170,6 +170,7 @@ public class AdminServiceImpl implements AdminService {
 	/**
 	 *  根据用户名删除用户 返回值大于0为删除成功
 	 *  @param users 删除用户名
+	 *  @return row id /0 表示失败
 	 */
 	public int deleteByUserName(String users) {
 		int deleted = 0;

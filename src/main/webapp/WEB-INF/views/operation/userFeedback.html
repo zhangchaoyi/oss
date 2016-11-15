@@ -202,11 +202,46 @@
                 <th>服务器</th>
                 <th>端口</th>
                 <th>创建时间</th>
+                <th>是否回复</th>
                 <th>回复</th>
               </tr>
             </thead>
           </table>
-          
+          <div class="modal fade" id="feedback" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+          <div class="modal-dialog"> 
+           <div class="modal-content"> 
+            <div class="modal-header"> 
+             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
+             <h4 class="modal-title" id="myModalLabel"><i>回复反馈</i></h4> 
+            </div> 
+            <div class="modal-body"> 
+             <div class="panel panel-default">
+              <div class="panel-body"> 
+               <div class="filter-header">
+                 <div class="input-group">
+                  <span class="input-group-addon">帐号</span>
+                  <input type="text" class="form-control" id="reply-account" readonly="readonly">
+                 </div> 
+                 <div class="input-group">
+                  <span class="input-group-addon">标题</span>
+                  <input type="text" class="form-control" id="reply-title" placeholder="标题">
+                 </div>
+               </div> 
+               <div class="tab-content"> 
+                <div class="form-group">
+                  <textarea class="form-control" rows="3" placeholder="正文" id="area"></textarea>
+                </div>
+               </div> 
+              </div> 
+             </div> 
+            </div> 
+            <div class="modal-footer"> 
+             <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn-send">发送</button> 
+             <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn-reply-close">关闭</button> 
+            </div> 
+           </div> 
+          </div> 
+         </div>
         </div> 
        </div> 
       </div> 

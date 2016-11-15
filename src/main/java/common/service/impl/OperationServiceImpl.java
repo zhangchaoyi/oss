@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import com.jfinal.plugin.activerecord.Db;
+
 import common.model.UserFeedback;
 import common.service.OperationService;
 
@@ -24,7 +26,7 @@ public class OperationServiceImpl implements OperationService {
 	 */
 	public boolean addFeedback(String account, String title, String content, String server, String port) {
 		boolean succeed = false;
-		succeed  = new UserFeedback().set("account", account).set("title", title).set("content", content).set("server", server).set("port", port).set("create_time", new Date()).save();
+		succeed  = new UserFeedback().set("account", account).set("title", title).set("content", content).set("server", server).set("port", port).set("create_time", new Date()).set("reply",0).save();
 		return succeed;
 	}
 	
@@ -33,9 +35,9 @@ public class OperationServiceImpl implements OperationService {
 	 * @return List<List<String>> 直接填充datatable
 	 */
 
-	public List<List<String>> queryFeedback() {
-		String sql = "select account,server from user_feedback group by account,server";
-		List<UserFeedback> userFeedback = UserFeedback.dao.find(sql);
+	public List<List<String>> queryFeedback(String startDate, String endDate) {
+		String sql = "select account,server from user_feedback where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? group by account,server";
+		List<UserFeedback> userFeedback = UserFeedback.dao.find(sql, startDate, endDate);
 		List<List<String>> data = new ArrayList<List<String>>();
 		for(UserFeedback uf : userFeedback){
 			String account = uf.getStr("account");
@@ -52,9 +54,9 @@ public class OperationServiceImpl implements OperationService {
 	 * @param queryServer 服务器
 	 * @return List<List<String>> 直接填充datatable
 	 */
-	public List<List<String>> queryFeedbackDetail(String queryAccount, String queryServer) {
-		String sql = "select * from user_feedback where account = ? and server = ?";
-		List<UserFeedback> userFeedback = UserFeedback.dao.find(sql, queryAccount, queryServer);
+	public List<List<String>> queryFeedbackDetail(String queryAccount, String queryServer, String startDate, String endDate) {
+		String sql = "select * from user_feedback where account = ? and server = ? and DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ?";
+		List<UserFeedback> userFeedback = UserFeedback.dao.find(sql, queryAccount, queryServer, startDate, endDate);
 		List<List<String>> data = new ArrayList<List<String>>();
 		for(UserFeedback uf : userFeedback){
 			String account = uf.getStr("account");
@@ -63,9 +65,22 @@ public class OperationServiceImpl implements OperationService {
 			String server = uf.getStr("server");
 			String port = uf.getStr("port");
 			String createTime = uf.getDate("create_time").toString();
-			List<String> subList = new ArrayList<String>(Arrays.asList(account,title,content,server,port,createTime,""));
+			String reply = uf.getInt("reply").toString();
+			String id = uf.getInt("id").toString();
+			List<String> subList = new ArrayList<String>(Arrays.asList(account,title,content,server,port,createTime,reply,id));
 			data.add(subList);
 		}
 		return data;
+	}
+	
+	/**
+	 * 回复反馈成功后根据mysql id 将reply字段修改为1 表示已回复
+	 * @param id --mysql row id
+	 * @return row id   /0表示失败
+	 */
+	public int completeReply(int id) {
+		String sql = "update user_feedback set reply = 1 where id = ?";
+		int succeed = Db.update(sql, id);
+		return succeed;
 	}
 }
