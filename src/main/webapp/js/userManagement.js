@@ -73,7 +73,7 @@ function initSelectAll(){
 }
 
 //删除按钮
-$("#data-table-user-management thead tr th a").click(function(){
+$("#delete-feedback").click(function(){
     var checkboxs = $("#data-table-user-management tbody tr td input");
     var list = [];
     for(var i=0;i<checkboxs.length;i++){

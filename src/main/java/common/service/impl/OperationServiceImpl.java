@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import com.jfinal.plugin.activerecord.Db;
 
 import common.model.UserFeedback;
@@ -15,6 +17,7 @@ import common.service.OperationService;
  * @author chris
  */
 public class OperationServiceImpl implements OperationService {
+	private static Logger logger = Logger.getLogger(OperationServiceImpl.class);
 	/**
 	 * 接收玩家反馈,并将其插入到mysql中
 	 * @param account 帐号id
@@ -27,6 +30,7 @@ public class OperationServiceImpl implements OperationService {
 	public boolean addFeedback(String account, String title, String content, String server, String port) {
 		boolean succeed = false;
 		succeed  = new UserFeedback().set("account", account).set("title", title).set("content", content).set("server", server).set("port", port).set("create_time", new Date()).set("reply",0).save();
+		logger.debug("<OperationServiceImpl> addFeedback:" + succeed);
 		return succeed;
 	}
 	
@@ -34,7 +38,6 @@ public class OperationServiceImpl implements OperationService {
 	 * 查询用户反馈列表
 	 * @return List<List<String>> 直接填充datatable
 	 */
-
 	public List<List<String>> queryFeedback(String startDate, String endDate) {
 		String sql = "select account,server from user_feedback where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? group by account,server";
 		List<UserFeedback> userFeedback = UserFeedback.dao.find(sql, startDate, endDate);
@@ -45,6 +48,7 @@ public class OperationServiceImpl implements OperationService {
 			List<String> subList = new ArrayList<String>(Arrays.asList(account, server, ""));
 			data.add(subList);
 		}
+		logger.debug("<OperationServiceImpl> queryFeedback:" + data);
 		return data;
 	}
 	
@@ -67,9 +71,10 @@ public class OperationServiceImpl implements OperationService {
 			String createTime = uf.getDate("create_time").toString();
 			String reply = uf.getInt("reply").toString();
 			String id = uf.getInt("id").toString();
-			List<String> subList = new ArrayList<String>(Arrays.asList(account,title,content,server,port,createTime,reply,id));
+			List<String> subList = new ArrayList<String>(Arrays.asList(id,account,title,content,server,port,createTime,reply,id));
 			data.add(subList);
 		}
+		logger.debug("<OperationServiceImpl> queryFeedbackDetail:" + data);
 		return data;
 	}
 	
@@ -81,6 +86,19 @@ public class OperationServiceImpl implements OperationService {
 	public int completeReply(int id) {
 		String sql = "update user_feedback set reply = 1 where id = ?";
 		int succeed = Db.update(sql, id);
+		logger.debug("<OperationServiceImpl> completeReply:" + succeed);
 		return succeed;
+	}
+	
+	/**
+	 * 删除所选的feedback记录
+	 * @para ids  所选的id
+	 * @return int  row id  / 0表示失败
+	 */
+	public int deleteFeedback(String ids) {
+		String sql = "delete from user_feedback where id in (" + ids +")";
+		int deleted = Db.update(sql);
+		logger.debug("<OperationServiceImpl> deleteFeedback:" + deleted);
+		return deleted;
 	}
 }

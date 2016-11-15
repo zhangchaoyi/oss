@@ -2,6 +2,7 @@ var currentAccount = "";
 var currentServer = "";
 $(function(){
     loadData();
+    initSelectAll();
 })
 
 function loadData() {
@@ -72,7 +73,7 @@ function configDetailTable(data) {
         "columnDefs": [ {
            "targets": -1,
            "render": function ( data, type, full, meta ) {
-            return '<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#feedback" account-info='+ full[0] +' id-info='+ data +'>回复</button>';
+            return '<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#feedback" account-info='+ full[1] +' id-info='+ data +'>回复</button>';
            }
          },
          {
@@ -84,7 +85,16 @@ function configDetailTable(data) {
                 return '<span class="label label-default">已回复</span>';
             }
            }
-         }
+         },
+         {
+           "targets": 0,
+           "render": function ( data, type, full, meta ) {
+            return function(){
+                return '<input type="checkbox" value='+data+'></input>';
+            }()
+
+           }
+         } 
      ],
 
     });
@@ -174,6 +184,44 @@ $("#btn-reply-close").click(function(){
     $("#reply-title").val("");
     $("#area").val("");
 });
+
+//删除按钮
+$("#delete-feedback").click(function(){
+    var checkboxs = $("#table-feedback-detail tbody tr td input");
+    var list = [];
+    for(var i=0;i<checkboxs.length;i++){
+        if($(checkboxs[i]).prop("checked")){
+            list.push($(checkboxs[i]).attr("value"));
+        }
+    }
+    if(list.length==0){
+        alert("请选择删除用户");
+        return;
+    }
+    $.post("/oss/api/operation/feedback/user/delete", {
+        ids:list
+    },
+    function(data, status) {
+        if(data=="0"){
+            alert("删除失败");
+        }else{
+            alert("删除成功");
+        }
+        loadUserData(currentAccount, currentServer);
+    });
+});
+
+//初始化 全选 点击事件
+function initSelectAll(){
+    $("#table-feedback-detail thead tr th div ins").click(function(){
+        var checked = $(this).parent().hasClass("checked");
+        if(checked==true) {
+            $("#table-feedback-detail tbody tr td input").prop("checked","checked");
+        }else{
+            $("#table-feedback-detail tbody tr td input").prop("checked","");
+        }
+    });
+}
 
 //锁死图标选择下拉菜单 清除按钮
 $("button.btn.btn-default.btn-circle").attr('disabled',"true");

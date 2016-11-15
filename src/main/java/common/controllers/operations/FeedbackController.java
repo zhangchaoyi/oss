@@ -12,6 +12,7 @@ import com.jfinal.ext.interceptor.POST;
 import common.interceptor.VipInterceptor;
 import common.service.OperationService;
 import common.service.impl.OperationServiceImpl;
+import common.utils.StringUtils;
 
 @Clear
 public class FeedbackController extends Controller{
@@ -105,6 +106,18 @@ public class FeedbackController extends Controller{
 		}catch(Exception e){
 			logger.debug("<FeedbackController> modifyFeedbackUserReply:", e);
 		}
-		
+	}
+	/**
+	 * 删除所选的feedback
+	 * @author chris
+	 * @getPara id[]  获取row id列表
+	 */
+	@Before({POST.class, VipInterceptor.class})
+	@ActionKey("/api/operation/feedback/user/delete")
+	public void deleteFeedbackUserReply() {
+		String ids = StringUtils.arrayToQueryString(getParaValues("ids[]"));
+		int deleted = os.deleteFeedback(ids);
+		logger.debug("<FeedbackController> deleteFeedbackUserReply:" + deleted);
+		renderText(String.valueOf(deleted));
 	}
 }

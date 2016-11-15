@@ -10,4 +10,6 @@ public interface OperationService {
 	public List<List<String>> queryFeedbackDetail(String queryAccount, String queryServer, String startDate, String endDate);
 
 	public int completeReply(int id);
+	
+	public int deleteFeedback(String ids);
 }
