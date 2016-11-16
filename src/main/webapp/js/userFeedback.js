@@ -1,3 +1,5 @@
+var emailAddress = "http://120.25.209.140:8002/gm";
+
 $(function(){
     loadData();
     initSelectAll();
@@ -82,7 +84,19 @@ function configTable(data) {
 
 //选择区服
 $(".nav-tab.feedback > ul > li").click(function(){
+    $(this).siblings("li.active").toggleClass("active");
+    $(this).addClass("active");
+    
     var server = $(this).children("a").attr("data-info");
+    if(server=="eggactest.koogame.cn"){
+        emailAddress = "http://120.25.209.140:8002/gm";    
+    }
+    if(server=="egghk.koogame.cn"){
+        emailAddress = "http://47.89.47.176:8002/gm";    
+    }
+    if(server=="egguccn2.koogame.cn"){
+        emailAddress = "http://118.178.17.105:8002/gm";
+    }
     loadFeedbackData(server);
 });
 
@@ -108,13 +122,13 @@ $("#btn-send").click(function(){
     var data = {
     "cmd":"send_custom_mail",
     "parms":text,
-    "account":"cheyingda",
-    "password":"7c4a8d09ca3762af61e59520943dc26494f8941b"
+    "account":"admin",
+    "password":"af03f87cca0a5e8838c3c8454f58605de41f77f5"
     };
 
     $.ajax({
         type: "POST",
-        url: "http://120.25.209.140:8002/gm",
+        url: emailAddress,
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(data),
         crossDomain: true,
@@ -126,7 +140,7 @@ $("#btn-send").click(function(){
                     id:id
                 },
                 function(data, status) {
-                    loadFeedbackData();
+                    loadFeedbackData($(".nav-tab.feedback > ul > li.active > a").attr("data-info"));
                 });
             }
         },
@@ -184,7 +198,7 @@ $("#delete-feedback").click(function(){
         }else{
             alert("删除成功");
         }
-        loadFeedbackData();
+        loadFeedbackData($(".nav-tab.feedback > ul > li.active > a").attr("data-info"));
     });
 });
 

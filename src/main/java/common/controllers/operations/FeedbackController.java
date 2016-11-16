@@ -31,6 +31,17 @@ public class FeedbackController extends Controller{
 	}
 	
 	/**
+	 * 玩家填写反馈页
+	 * @author kola
+	 * @role all
+	 */
+	 @Before(GET.class)
+	 @ActionKey("/operation/feedback/players")
+	 public void feedbackPlayers() {
+	 	render("feedBack.html");
+ 	 }
+	
+	/**
 	 * 用户反馈接口
 	 * @author chris
 	 * @getPara account 帐号id

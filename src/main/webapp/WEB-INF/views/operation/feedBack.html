@@ -1,0 +1,91 @@
+<html>
+    <head>
+    <meta charset="utf-8" />
+    <style type="text/css">
+      .page {
+        position:relative;
+        left:2.5%;
+        top:0%;
+      }
+      .row {
+        position: relative;
+        margin-bottom: 10px;
+
+      }
+      span{
+        position: relative;
+        left:60px;
+      }
+      select {
+        position: relative;
+        height:20px;
+        width:100px;
+        left:120px;
+      }
+      form {
+        position: relative;
+        left:0%;
+      }
+    </style>
+    <script type="text/javascript">
+        function submit(){
+            var form = document.getElementById("form");
+            form.submit();
+        }
+
+        function btn_canel(){
+            var content = document.getElementById("content");
+            var content_value = content.value
+            var mystringlength = content_value.length
+            if(mystringlength > 30){
+                var se=confirm("确定要退出，这将清空你已写的内容？");
+                if (se==true)
+                {
+                    window.location.href="lua://Close"
+                }
+                else
+                {
+
+                }
+            }else{
+                window.location.href="lua://Close"
+            }
+        }
+
+        function GetQueryString(name)
+        {
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)
+                return  unescape(r[2]);
+            return null;
+        }
+
+        
+    </script>
+    </head>
+
+    <body style="width:95%; height:100%; background-color:#3E3A5F" onload="load()">
+      <div class="page">
+        <form id = "form" action="http://oss.koogame.cn/oss/api/operation/feedback" method="post">
+            <input name = "account" id = "account" type="hidden" value="" placeholder = "帐号" />
+            <input name = "server" id = "server" type="hidden" value = "" placeholder = "服务器" />
+            <input name = "port" id = "port" type="hidden" value="" placeholder = "端口" />
+             <select name = "title" style="display:none;"> <option value ="意见反馈">意见反馈</option> <option value ="bug">BUG提交</option></select>
+            <textarea name = "content" id = "content" placeholder="请将意见填入此区域" style="font-size:18px;width:98%;height:90%;color:#FFFFFF;background-color:#262343"></textarea>
+        </form>
+      </div>
+    </body>
+    <script type="text/javascript">
+        function load(){
+            var _account = document.getElementById("account");
+            var _server = document.getElementById("server");
+            var _port = document.getElementById("port");
+
+            _account.value = GetQueryString("account");
+            _server.value = GetQueryString("server");
+            _port.value = GetQueryString("port");
+
+        }
+    </script>
+</html>
