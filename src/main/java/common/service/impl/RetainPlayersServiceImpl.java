@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import common.model.DeviceInfo;
 import common.model.RetainEquipment;
 import common.model.RetainUser;
+import common.mysql.DbSelector;
 import common.service.RetainPlayersService;
 
 /**
@@ -21,6 +22,7 @@ import common.service.RetainPlayersService;
  */
 public class RetainPlayersServiceImpl implements RetainPlayersService{
 	private static Logger logger = Logger.getLogger(RetainPlayersServiceImpl.class);
+	private String db = DbSelector.getDbName();
 	/**
 	 * 留存用户
 	 * @param categories 日期列表
@@ -33,9 +35,9 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(add_user) add_user,sum(next_day_retain) next_day_retain,sum(seven_day_retain)seven_day_retain,sum(month_retain)month_retain from retain_user where date between ? and ? and os in (" + icons + ") group by date";
 		String eSql = "select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(*) count from device_info where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and os in (" + icons + ") group by date";
 		String aSql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(add_equipment)add_equipment from retain_equipment where date between ? and ? and os in (" + icons + ") group by date";
-		List<RetainUser> retainUser = RetainUser.dao.find(sql, startDate, endDate);
-		List<DeviceInfo> activeDevice = DeviceInfo.dao.find(eSql, startDate, endDate);
-		List<RetainEquipment> addDevice = RetainEquipment.dao.find(aSql, startDate, endDate);
+		List<RetainUser> retainUser = RetainUser.dao.use(db).find(sql, startDate, endDate);
+		List<DeviceInfo> activeDevice = DeviceInfo.dao.use(db).find(eSql, startDate, endDate);
+		List<RetainEquipment> addDevice = RetainEquipment.dao.use(db).find(aSql, startDate, endDate);
 		
 		//Map<Date,Map<type,value>>
 		Map<String, Map<String, Object>> sort = new TreeMap<String, Map<String, Object>>();
@@ -171,8 +173,8 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 		Map<String, Object> data = new HashMap<String, Object>();
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(add_equipment)add_equipment,sum(first_day)first_day,sum(second_day)second_day,sum(third_day)third_day,sum(forth_day)forth_day,sum(fifth_day)fifth_day,sum(sixth_day)sixth_day,sum(seven_day)seven_day,sum(fourteen_day)fourteen_day,sum(thirty_day)thirty_day from retain_equipment where date between ? and ? and os in (" + icons + ") group by date";
 		String eSql = "select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(*) count from device_info where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and os in (" + icons + ") group by date";
-		List<RetainEquipment> retainEquipment = RetainEquipment.dao.find(sql,startDate,endDate);
-		List<DeviceInfo> activeDevice = DeviceInfo.dao.find(eSql, startDate, endDate);
+		List<RetainEquipment> retainEquipment = RetainEquipment.dao.use(db).find(sql,startDate,endDate);
+		List<DeviceInfo> activeDevice = DeviceInfo.dao.use(db).find(eSql, startDate, endDate);
 		
 		//Map<Date, Map<type,value>>
 		Map<String, Map<String, Object>> sort = new TreeMap<String, Map<String, Object>>();

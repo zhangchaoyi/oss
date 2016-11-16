@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
-
 import common.model.DeviceInfo;
 import common.model.LogCharge;
 import common.model.Login;
 import common.model.Logout;
+import common.mysql.DbSelector;
 import common.service.AccdetailService;
 
 /**
@@ -20,6 +20,7 @@ import common.service.AccdetailService;
  */
 public class AccdetailServiceImpl implements AccdetailService{
 	private static Logger logger = Logger.getLogger(AccdetailServiceImpl.class);
+	private String db = DbSelector.getDbName();
 	/**
 	 * 根据帐号id获得 帐号的所有信息
 	 * @param accountId 帐号id
@@ -35,10 +36,10 @@ public class AccdetailServiceImpl implements AccdetailService{
 		String onlineSql = "select A.onlineSum,B.max_level from (select account,sum(online_time)onlineSum from logout where account = ?) A join (select account,max(level)max_level from level_up where account = ?) B on A.account = B.account";
 		String paidSql = "select DATE_FORMAT(min(timestamp),'%Y-%m-%d')firstPaid,DATE_FORMAT(max(timestamp),'%Y-%m-%d')lastPaid,sum(count)paidSum from log_charge where account = ?";
 		
-		List<DeviceInfo> device = DeviceInfo.dao.find(deviceSql, accountId);
-		List<Login> login = Login.dao.find(loginSql, accountId);
-		List<Logout> logout = Logout.dao.find(onlineSql, accountId, accountId);
-		List<LogCharge> logCharge = LogCharge.dao.find(paidSql, accountId);
+		List<DeviceInfo> device = DeviceInfo.dao.use(db).find(deviceSql, accountId);
+		List<Login> login = Login.dao.use(db).find(loginSql, accountId);
+		List<Logout> logout = Logout.dao.use(db).find(onlineSql, accountId, accountId);
+		List<LogCharge> logCharge = LogCharge.dao.use(db).find(paidSql, accountId);
 		if(device.size()==0){
 			data.put("code", 1);
 			return data;

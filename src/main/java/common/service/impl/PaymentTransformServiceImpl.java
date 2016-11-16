@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import common.model.LogCharge;
 import common.model.Login;
 import common.model.PaymentDetail;
+import common.mysql.DbSelector;
 import common.pojo.AddPaymentAnalyze;
 import common.pojo.PaidRate;
 import common.service.PaymentTransformService;
@@ -25,6 +26,7 @@ import common.utils.DateUtils;
  */
 public class PaymentTransformServiceImpl implements PaymentTransformService{
 	private static Logger logger = Logger.getLogger(PaymentTransformServiceImpl.class);
+	private String db = DbSelector.getDbName();
 	/**
 	 * 新增付费分析
 	 * @param categories 日期列表
@@ -34,7 +36,7 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 	 */
 	public Map<String, Object> queryAddPaymentAnalyze(List<String> categories, String icons, String startDate, String endDate) {
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(add_players)add_players,sum(fd_paid_people)fd_paid_people,sum(fw_paid_people)fw_paid_people,sum(fm_paid_people)fm_paid_people from payment_detail where date between ? and ? and os in (" + icons + ") group by date";
-		List<PaymentDetail> apAnalyze = PaymentDetail.dao.find(sql,startDate,endDate);
+		List<PaymentDetail> apAnalyze = PaymentDetail.dao.use(db).find(sql,startDate,endDate);
 		
 		//initial
 		Map<String, AddPaymentAnalyze> sort = new LinkedHashMap<String, AddPaymentAnalyze>();
@@ -116,8 +118,8 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		String pSql = "select DATE_FORMAT(A.timestamp,'%Y-%m-%d') date, count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by date";
 		String aSql = "select DATE_FORMAT(A.date,'%Y-%m-%d') date, count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(login_time,'%Y-%m-%d') between ? and ? and B.os in (" + icons + ") group by date";
 		
-		List<LogCharge> paid = LogCharge.dao.find(pSql, startDate, endDate);
-		List<Login> active = Login.dao.find(aSql, startDate, endDate);
+		List<LogCharge> paid = LogCharge.dao.use(db).find(pSql, startDate, endDate);
+		List<Login> active = Login.dao.use(db).find(aSql, startDate, endDate);
 		
 		//init 
 		Map<String, PaidRate> sort = new HashMap<String, PaidRate>();
@@ -184,8 +186,8 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 			String end = entry.getValue();
 			String period = start + "~" + end;
 			
-			List<LogCharge> paid = LogCharge.dao.find(pSql, start, end);
-			List<Login> active = Login.dao.find(aSql, start, end);
+			List<LogCharge> paid = LogCharge.dao.use(db).find(pSql, start, end);
+			List<Login> active = Login.dao.use(db).find(aSql, start, end);
 			
 			Long paidCount = 0L;
 			Long activeCount = 0L;
@@ -248,8 +250,8 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		String aSql = "select DATE_FORMAT(A.date,'%Y-%m') month, count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(login_time,'%Y-%m') between ? and ? and B.os in (" + icons + ") group by month";
 		
 		List<String> month = categories;
-		List<LogCharge> paid = LogCharge.dao.find(pSql, start, end);
-		List<Login> active = Login.dao.find(aSql, start, end);
+		List<LogCharge> paid = LogCharge.dao.use(db).find(pSql, start, end);
+		List<Login> active = Login.dao.use(db).find(aSql, start, end);
 		
 		//init
 		Map<String, PaidRate> sort = new HashMap<String, PaidRate>();
@@ -317,8 +319,8 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 			aSql = "select B.country,DATE_FORMAT(A.login_time,'%Y-%m-%d')date,count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(login_time,'%Y-%m-%d') between ? and ? and B.os in (" + icons + ") group by B.country,date";
 		}
 		
-		List<LogCharge> paid = LogCharge.dao.find(pSql, startDate, endDate);
-		List<Login> active = Login.dao.find(aSql, startDate, endDate);
+		List<LogCharge> paid = LogCharge.dao.use(db).find(pSql, startDate, endDate);
+		List<Login> active = Login.dao.use(db).find(aSql, startDate, endDate);
 		
 		List<String> dateList = DateUtils.getDateList(startDate, endDate);
 		//Map<area, Map<Date,PaidRate>>

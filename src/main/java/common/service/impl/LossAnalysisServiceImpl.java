@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import common.model.LossUser;
 import common.model.ReturnUser;
+import common.mysql.DbSelector;
 import common.pojo.DayUser;
 import common.service.LossAnalysisService;
 import common.utils.StringUtils;
@@ -23,7 +24,7 @@ import common.utils.StringUtils;
  */
 public class LossAnalysisServiceImpl implements LossAnalysisService{
 	private Logger logger = Logger.getLogger(LossAnalysisServiceImpl.class);
-	
+	private String db = DbSelector.getDbName();
 	/**
 	 * 每日流失接口
 	 * @param categories 日期列表 
@@ -37,7 +38,7 @@ public class LossAnalysisServiceImpl implements LossAnalysisService{
 		String[] typeArray = {type};
 		type = StringUtils.arrayToQueryString(typeArray);
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(num)num,sum(seven_day)sd,sum(forteen_day)fd,sum(thirty_day)td from loss_user where date between ? and ? and os in (" + icons + ") and type = " + type + " group by date;";
-		List<LossUser> lossUser = LossUser.dao.find(sql, startDate, endDate);
+		List<LossUser> lossUser = LossUser.dao.use(db).find(sql, startDate, endDate);
 		
 		//init
 		Map<String, DayUser> sort = new LinkedHashMap<String, DayUser>();
@@ -116,7 +117,7 @@ public class LossAnalysisServiceImpl implements LossAnalysisService{
 		String[] typeArray = {type};
 		type = StringUtils.arrayToQueryString(typeArray);
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(num)num,sum(seven_day)sd,sum(forteen_day)fd,sum(thirty_day)td from return_user where date between ? and ? and os in (" + icons + ") and type = " + type + " group by date";
-		List<ReturnUser> returnUser = ReturnUser.dao.find(sql, startDate, endDate);
+		List<ReturnUser> returnUser = ReturnUser.dao.use(db).find(sql, startDate, endDate);
 		//init
 		Map<String, DayUser> sort = new LinkedHashMap<String, DayUser>(); 
 		for(String d : categories){

@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 
 import common.model.LogCharge;
 import common.model.Logout;
+import common.mysql.DbSelector;
 import common.pojo.AccountDetail;
 import common.pojo.PaymentRank;
 import common.service.PaymentRankService;
@@ -25,6 +26,7 @@ import common.utils.StringUtils;
  */
 public class PaymentRankServiceImpl implements PaymentRankService {
 	private static Logger logger = Logger.getLogger(PaymentRankServiceImpl.class);
+	private String db = DbSelector.getDbName();
 	/**
 	 * 排名详情
 	 * @param icons  当前的icon   ---apple/android/windows
@@ -36,7 +38,7 @@ public class PaymentRankServiceImpl implements PaymentRankService {
 		String pSql = "select A.*,DATE_FORMAT(B.timestamp,'%Y-%m-%d')fpt from (select A.account, sum(A.count)revenue, count(*)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by A.account) A join log_charge B on A.account = B.account where B.charge_times=1 order by revenue desc";
 		//Map<account, PaymentRank>
 		Map<String, PaymentRank> sort = new LinkedHashMap<String, PaymentRank>();
-		List<LogCharge> logCharge = LogCharge.dao.find(pSql, startDate, endDate);
+		List<LogCharge> logCharge = LogCharge.dao.use(db).find(pSql, startDate, endDate);
 		List<String> accounts = new ArrayList<String>();
 		
 		for(LogCharge lc : logCharge){
@@ -56,7 +58,7 @@ public class PaymentRankServiceImpl implements PaymentRankService {
 		String queryAccounts = StringUtils.arrayToQueryString(accounts.toArray(new String[accounts.size()]));
 		String dSql = "select A.*,B.level,DATE_FORMAT(C.create_time,'%Y-%m-%d')create_time from (select account,sum(online_time)online_time,count(*)times,count(distinct date)online_days from logout group by account) A join (select account,max(level)level from level_up group by account) B on A.account = B.account join create_role C on A.account = C.account where A.account in ("+ queryAccounts +")";
 		
-		List<Logout> logout = Logout.dao.find(dSql);
+		List<Logout> logout = Logout.dao.use(db).find(dSql);
 		for(Logout l : logout){
 			String account = l.getStr("account");
 			long oT = l.getBigDecimal("online_time").longValue();
@@ -109,7 +111,7 @@ public class PaymentRankServiceImpl implements PaymentRankService {
 			sort.put(date, ad);
 		}
 		
-		List<Logout> logout = Logout.dao.find(lSql, startDate, endDate);
+		List<Logout> logout = Logout.dao.use(db).find(lSql, startDate, endDate);
 		for(Logout l : logout){
 			String date = l.getStr("date");
 			AccountDetail ad = sort.get(date);
@@ -117,7 +119,7 @@ public class PaymentRankServiceImpl implements PaymentRankService {
 			ad.setLoginTimes(l.getLong("count"));
 			sort.put(date, ad);
 		}
-		List<LogCharge> logCharge = LogCharge.dao.find(pSql, startDate, endDate);
+		List<LogCharge> logCharge = LogCharge.dao.use(db).find(pSql, startDate, endDate);
 		for(LogCharge lc : logCharge){
 			String date = lc.getStr("date");
 			AccountDetail ad = sort.get(date);

@@ -12,6 +12,7 @@ import java.util.Map;
 import common.model.SecRole;
 import common.model.SecUser;
 import common.model.SecUserRole;
+import common.mysql.DbSelector;
 import common.service.AdminService;
 import common.utils.EncryptUtils;
 import common.utils.RandomUtil;
@@ -28,7 +29,7 @@ import com.jfinal.plugin.activerecord.Db;
  */
 public class AdminServiceImpl implements AdminService {
 	private static Logger logger = Logger.getLogger(AdminServiceImpl.class);
-
+	private String db = DbSelector.getDbName();
 	/**
 	 * 查看user是否存在
 	 * @param username 用户名
@@ -37,7 +38,7 @@ public class AdminServiceImpl implements AdminService {
 	public SecUser getUser(String username) {
 		logger.info("params:{"+"username:"+username+"username");
 		String sql = "select password, salt from sec_user where user_name = ?";
-		SecUser secUser = SecUser.dao.findFirst(sql, username);
+		SecUser secUser = SecUser.dao.use(db).findFirst(sql, username);
 		return secUser;
 	}
 
@@ -48,7 +49,7 @@ public class AdminServiceImpl implements AdminService {
 	 */
 	public List<String> queryRoleByUsername(String username) {
 		String sql = "select role_name from sec_role A join sec_user_role B on A.role_id = B.role_id join sec_user C on B.user_id = C.user_id where C.user_name = ?";
-		List<SecRole> secRole = SecRole.dao.find(sql, username);
+		List<SecRole> secRole = SecRole.dao.use(db).find(sql, username);
 
 		List<String> roles = new ArrayList<String>();
 		for (SecRole sr : secRole) {
@@ -96,11 +97,11 @@ public class AdminServiceImpl implements AdminService {
 			e.printStackTrace();
 			logger.info("Exception:", e);
 		}
-		SecUser secUser = new SecUser().set("user_name", username).set("password", password).set("salt", salt)
+		SecUser secUser = new SecUser().use(db).set("user_name", username).set("password", password).set("salt", salt)
 				.set("created_time", new Date());
 		succeed = secUser.save();
 		int roleId = getRoleIdByRoleName(role);
-		succeed = new SecUserRole().set("user_id", secUser.get("user_id")).set("role_id", roleId).save();
+		succeed = new SecUserRole().use(db).set("user_id", secUser.get("user_id")).set("role_id", roleId).save();
 		return succeed;
 	}
 
@@ -112,7 +113,7 @@ public class AdminServiceImpl implements AdminService {
 	public boolean existUser(String username) {
 		boolean exist = false;
 		String sql = "select * from sec_user where user_name = ?";
-		SecUser secUser = SecUser.dao.findFirst(sql, username);
+		SecUser secUser = SecUser.dao.use(db).findFirst(sql, username);
 		if (secUser != null) {
 			exist = true;
 		}
@@ -125,7 +126,7 @@ public class AdminServiceImpl implements AdminService {
 	 */
 	public List<List<String>> queryAllUsers() {
 		String sql = "select A.user_name,A.created_time,C.role_name from sec_user A join sec_user_role B on A.user_id = B.user_id join sec_role C on B.role_id = C.role_id;";
-		List<SecUser> secUsers = SecUser.dao.find(sql);
+		List<SecUser> secUsers = SecUser.dao.use(db).find(sql);
 		// Map<username,Map<role/createTime,String>>
 		Map<String, Map<String, String>> sort = new HashMap<String, Map<String, String>>();
 		for (SecUser su : secUsers) {
@@ -176,7 +177,7 @@ public class AdminServiceImpl implements AdminService {
 	public int deleteByUserName(String users) {
 		int deleted = 0;
 		String qSql = "select user_id from sec_user where user_name in (" + users + ") ";
-		List<SecUser> secUser = SecUser.dao.find(qSql);
+		List<SecUser> secUser = SecUser.dao.use(db).find(qSql);
 		List<String> userIds = new ArrayList<String>();
 		for (SecUser su : secUser) {
 			userIds.add(String.valueOf(su.getLong("user_id")));
@@ -185,8 +186,8 @@ public class AdminServiceImpl implements AdminService {
 		String duSql = "delete from sec_user where user_id in (" + queryUserIds + ")";
 		String duRSql = "delete from sec_user_role where user_id in (" + queryUserIds + ")";
 
-		deleted = Db.update(duSql);
-		deleted = Db.update(duRSql);
+		deleted = Db.use(db).update(duSql);
+		deleted = Db.use(db).update(duRSql);
 		logger.info("deleted:" + deleted);
 		return deleted;
 	}
@@ -198,7 +199,7 @@ public class AdminServiceImpl implements AdminService {
 			roles.add(getRoleIdByRoleName(s));
 		}
 		String rSql = "select B.user_id,B.role_id from sec_user A join sec_user_role B on A.user_id = B.user_id where A.user_name = ?";
-		List<SecUser> secUser = SecUser.dao.find(rSql, username);
+		List<SecUser> secUser = SecUser.dao.use(db).find(rSql, username);
 		// Map<RoleId,value> value 为0则需要删除,为1不变,为2新增
 		Map<Integer, Integer> sort = new HashMap<Integer, Integer>();
 		int userId = 0;
@@ -232,12 +233,12 @@ public class AdminServiceImpl implements AdminService {
 		if (deleteRole.size() != 0) {
 			String deleteStr = StringUtils.arrayToQueryString(deleteRole.toArray(new String[deleteRole.size()]));
 			String dSql = "delete from sec_user_role where user_id = ? and role_id in (" + deleteStr + ")";
-			Db.update(dSql, userId);
+			Db.use(db).update(dSql, userId);
 		}
 		// 添加新增的role
 		if (addRole.size() != 0) {
 			for (int a : addRole) {
-				new SecUserRole().set("user_id", userId).set("role_id", a).save();
+				new SecUserRole().use(db).set("user_id", userId).set("role_id", a).save();
 			}
 		}
 	}

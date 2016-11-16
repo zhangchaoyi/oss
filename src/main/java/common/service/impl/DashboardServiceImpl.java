@@ -12,6 +12,7 @@ import common.model.DeviceInfo;
 import common.model.LogCharge;
 import common.model.Login;
 import common.model.Logout;
+import common.mysql.DbSelector;
 import common.service.DashboardService;
 /**
  * 查询dashboard 页 --数据不分终端
@@ -23,6 +24,7 @@ import common.service.DashboardService;
  */
 public class DashboardServiceImpl implements DashboardService{
 	private static Logger logger = Logger.getLogger(DashboardServiceImpl.class);
+	private String db = DbSelector.getDbName();
 	public Map<String, String>queryDashboardData(){
 		//表格一
 		String eTSql = "select count(*)count from device_info";
@@ -42,22 +44,22 @@ public class DashboardServiceImpl implements DashboardService{
 		String lPTSql = "select sum(online_time)online_time from logout";
 		String lPYSql = "select sum(case when online_time<86400 then online_time else 86400 end)online_time from logout where date=DATE_FORMAT(date_sub(now(),interval 1 day),'%Y-%m-%d');";
 				
-		List<DeviceInfo> eT = DeviceInfo.dao.find(eTSql);
-		List<DeviceInfo> eY = DeviceInfo.dao.find(eYSql);
-		List<CreateRole> pT = CreateRole.dao.find(pTSql);
-		List<CreateRole> pY = CreateRole.dao.find(pYSql);
-		List<Login> apT = Login.dao.find(aPTSql);
-		List<Login> apY = Login.dao.find(aPYSql);
-		List<LogCharge> pPT = LogCharge.dao.find(pPTSql);
-		List<LogCharge> pPY = LogCharge.dao.find(pPYSql);
-		List<LogCharge> pTT = LogCharge.dao.find(pTTSql);
-		List<LogCharge> pTY = LogCharge.dao.find(pTYSql);
-		List<LogCharge> rT = LogCharge.dao.find(rTSql);
-		List<LogCharge> rY = LogCharge.dao.find(rYSql);
-		List<Login> lTT = Login.dao.find(lTTSql);
-		List<Login> lTY = Login.dao.find(lTYSql);
-		List<Logout> lPT = Logout.dao.find(lPTSql);
-		List<Logout> lPY = Logout.dao.find(lPYSql);
+		List<DeviceInfo> eT = DeviceInfo.dao.use(db).find(eTSql);
+		List<DeviceInfo> eY = DeviceInfo.dao.use(db).find(eYSql);
+		List<CreateRole> pT = CreateRole.dao.use(db).find(pTSql);
+		List<CreateRole> pY = CreateRole.dao.use(db).find(pYSql);
+		List<Login> apT = Login.dao.use(db).find(aPTSql);
+		List<Login> apY = Login.dao.use(db).find(aPYSql);
+		List<LogCharge> pPT = LogCharge.dao.use(db).find(pPTSql);
+		List<LogCharge> pPY = LogCharge.dao.use(db).find(pPYSql);
+		List<LogCharge> pTT = LogCharge.dao.use(db).find(pTTSql);
+		List<LogCharge> pTY = LogCharge.dao.use(db).find(pTYSql);
+		List<LogCharge> rT = LogCharge.dao.use(db).find(rTSql);
+		List<LogCharge> rY = LogCharge.dao.use(db).find(rYSql);
+		List<Login> lTT = Login.dao.use(db).find(lTTSql);
+		List<Login> lTY = Login.dao.use(db).find(lTYSql);
+		List<Logout> lPT = Logout.dao.use(db).find(lPTSql);
+		List<Logout> lPY = Logout.dao.use(db).find(lPYSql);
 		long activePlayerTotal = apT.get(0).getLong("count");
 	    long activePlayerYesterday = apY.get(0).getLong("count");
 		double revenueTotal = rT.get(0).getDouble("revenue")==null?0.0:rT.get(0).getDouble("revenue");
@@ -138,14 +140,14 @@ public class DashboardServiceImpl implements DashboardService{
 		double revenueTSum = 0.0;
 		double revenueNSum = 0.0;
 		for(String s:os){
-			List<DeviceInfo> osDT = DeviceInfo.dao.find(osDTSql, s);
-			List<DeviceInfo> osDN = DeviceInfo.dao.find(osDNSql, s);
-			List<CreateRole> osPT = CreateRole.dao.find(osPTSql, s); 
-			List<CreateRole> osPN = CreateRole.dao.find(osPNSql, s);
-			List<Login> osGT = Login.dao.find(osGTSql, s);
-			List<Login> osGN = Login.dao.find(osGNSql, s);
-			List<LogCharge> osRT = LogCharge.dao.find(osRTSql, s);
-			List<LogCharge> osRN = LogCharge.dao.find(osRNSql, s);		
+			List<DeviceInfo> osDT = DeviceInfo.dao.use(db).find(osDTSql, s);
+			List<DeviceInfo> osDN = DeviceInfo.dao.use(db).find(osDNSql, s);
+			List<CreateRole> osPT = CreateRole.dao.use(db).find(osPTSql, s); 
+			List<CreateRole> osPN = CreateRole.dao.use(db).find(osPNSql, s);
+			List<Login> osGT = Login.dao.use(db).find(osGTSql, s);
+			List<Login> osGN = Login.dao.use(db).find(osGNSql, s);
+			List<LogCharge> osRT = LogCharge.dao.use(db).find(osRTSql, s);
+			List<LogCharge> osRN = LogCharge.dao.use(db).find(osRNSql, s);		
 			
 			deviceTSum += osDT.get(0).getLong("count");
 			deviceNSum += osDN.get(0).getLong("count");

@@ -11,6 +11,7 @@ import java.util.Set;
 import org.apache.log4j.Logger;
 
 import common.model.Login;
+import common.mysql.DbSelector;
 import common.service.OnlineAnalysisService;
 
 /**
@@ -21,7 +22,7 @@ import common.service.OnlineAnalysisService;
  */
 public class OnlineAnalysisServiceImpl implements OnlineAnalysisService {
 	private static Logger logger = Logger.getLogger(OnlineAnalysisServiceImpl.class);
-
+	private String db = DbSelector.getDbName();
 	/** 
 	 * 时段分布
 	 * @param days 所选时间段的天数
@@ -33,7 +34,7 @@ public class OnlineAnalysisServiceImpl implements OnlineAnalysisService {
 		logger.info("params:{"+"days:"+days+"}");
 		String sql = "select hour(A.login_time)hour,count(*)count from (select openudid,login_time from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("
 				+ icons + ") group by hour";
-		List<Login> distribution = Login.dao.find(sql, startDate, endDate);
+		List<Login> distribution = Login.dao.use(db).find(sql, startDate, endDate);
 		// init
 		Map<Integer, Long> sort = new LinkedHashMap<Integer, Long>();
 		for (int i = 0; i < 24; i++) {
@@ -61,7 +62,7 @@ public class OnlineAnalysisServiceImpl implements OnlineAnalysisService {
 	public List<Long> queryStartTimes(List<String> categories, String icons, String startDate, String endDate) {
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,count(*)count from (select openudid,date from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("
 				+ icons + ") group by date";
-		List<Login> startTimes = Login.dao.find(sql, startDate, endDate);
+		List<Login> startTimes = Login.dao.use(db).find(sql, startDate, endDate);
 		// init
 		Map<String, Long> sort = new LinkedHashMap<String, Long>();
 		for (String date : categories) {
@@ -86,7 +87,7 @@ public class OnlineAnalysisServiceImpl implements OnlineAnalysisService {
 			String endDate) {
 		String sql = "select A.account,A.timestamp from (select account,UNIX_TIMESTAMP(login_time)timestamp,openudid from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("
 				+ icons + ") order by A.timestamp";
-		List<Login> nsp = Login.dao.find(sql, startDate, endDate);
+		List<Login> nsp = Login.dao.use(db).find(sql, startDate, endDate);
 		// Map<account, List<timestamp>>
 		Map<String, List<Long>> sort = new HashMap<String, List<Long>>();
 		for (Login l : nsp) {

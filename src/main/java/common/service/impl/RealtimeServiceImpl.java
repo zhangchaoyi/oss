@@ -15,6 +15,7 @@ import common.model.DeviceInfo;
 import common.model.LogCharge;
 import common.model.Login;
 import common.model.Logout;
+import common.mysql.DbSelector;
 import common.service.RealtimeService;
 import common.utils.DateUtils;
 
@@ -28,6 +29,7 @@ import common.utils.DateUtils;
  */
 public class RealtimeServiceImpl implements RealtimeService{
 	private static Logger logger = Logger.getLogger(RealtimeServiceImpl.class);
+	private String db = DbSelector.getDbName();
 	//实时查询十个数据,用于动态更新
 	public Map<String, String> queryRealtimeData(String icons){
 		String eSql = "select count(*)count from device_info where DATE_FORMAT(create_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and os in (" + icons + ")";
@@ -41,16 +43,16 @@ public class RealtimeServiceImpl implements RealtimeService{
 		String rSumSql = "select sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ")";
 		String lGPTSql = "select sum(case when online_time<86400 then A.online_time else 86400 end)online_time,count(A.account)count from logout A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.date=DATE_FORMAT(now(),'%Y-%m-%d') and C.os in (" + icons + ")";
 		
-		List<DeviceInfo> e = DeviceInfo.dao.find(eSql);
-		List<Login> aP = Login.dao.find(aPSql);
-		List<LogCharge> pP = LogCharge.dao.find(pPSql);
-		List<LogCharge> rT = LogCharge.dao.find(rTSql);
-		List<Login> gT = Login.dao.find(gTSql);
-		List<CreateRole> nP = CreateRole.dao.find(nPSql);
-		List<Login> oP = Login.dao.find(oPSql);
-		List<LogCharge> pT = LogCharge.dao.find(pTSql);
-		List<LogCharge> rSum = LogCharge.dao.find(rSumSql);
-		List<Logout> lGPT = Logout.dao.find(lGPTSql);
+		List<DeviceInfo> e = DeviceInfo.dao.use(db).find(eSql);
+		List<Login> aP = Login.dao.use(db).find(aPSql);
+		List<LogCharge> pP = LogCharge.dao.use(db).find(pPSql);
+		List<LogCharge> rT = LogCharge.dao.use(db).find(rTSql);
+		List<Login> gT = Login.dao.use(db).find(gTSql);
+		List<CreateRole> nP = CreateRole.dao.use(db).find(nPSql);
+		List<Login> oP = Login.dao.use(db).find(oPSql);
+		List<LogCharge> pT = LogCharge.dao.use(db).find(pTSql);
+		List<LogCharge> rSum = LogCharge.dao.use(db).find(rSumSql);
+		List<Logout> lGPT = Logout.dao.use(db).find(lGPTSql);
 		
 		Map<String, String> data = new HashMap<String, String>();
 		data.put("e", e.get(0).getLong("count").toString());
@@ -92,16 +94,16 @@ public class RealtimeServiceImpl implements RealtimeService{
 		int[] day = {1,7,30};
 		//分别处理 昨日 七日 三十日
 		for(int d : day){
-			List<DeviceInfo> e = DeviceInfo.dao.find(eSql, d);
-			List<Login> aP = Login.dao.find(aPSql, d);
-			List<LogCharge> pP = LogCharge.dao.find(pPSql, d);
-			List<LogCharge> r = LogCharge.dao.find(rSql, d);
-			List<Login> gT = Login.dao.find(gTSql, d);
-			List<CreateRole> nP = CreateRole.dao.find(nPSql, d);
-			List<Login> oP = Login.dao.find(oPSql, d, d);
-			List<LogCharge> pT = LogCharge.dao.find(pTSql, d);
-			List<LogCharge> rSum = LogCharge.dao.find(rSumSql, d-1);
-			List<Logout> lGP = Logout.dao.find(lGPSql,d);
+			List<DeviceInfo> e = DeviceInfo.dao.use(db).find(eSql, d);
+			List<Login> aP = Login.dao.use(db).find(aPSql, d);
+			List<LogCharge> pP = LogCharge.dao.use(db).find(pPSql, d);
+			List<LogCharge> r = LogCharge.dao.use(db).find(rSql, d);
+			List<Login> gT = Login.dao.use(db).find(gTSql, d);
+			List<CreateRole> nP = CreateRole.dao.use(db).find(nPSql, d);
+			List<Login> oP = Login.dao.use(db).find(oPSql, d, d);
+			List<LogCharge> pT = LogCharge.dao.use(db).find(pTSql, d);
+			List<LogCharge> rSum = LogCharge.dao.use(db).find(rSumSql, d-1);
+			List<Logout> lGP = Logout.dao.use(db).find(lGPSql,d);
 			
 			data.put("e"+d, e.get(0).getLong("count").toString());
 			data.put("aP"+d, aP.get(0).getLong("count").toString());
@@ -138,7 +140,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 				return o2.compareTo(o1);
 			}});
 		for(String d : date){
-			List<DeviceInfo> deviceInfo = DeviceInfo.dao.find(sql,d);
+			List<DeviceInfo> deviceInfo = DeviceInfo.dao.use(db).find(sql,d);
 			Map<Integer, Long> sort = new TreeMap<Integer, Long>();
 			for(int i=0;i<24;i++){
 				sort.put(i, 0L);
@@ -167,7 +169,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 				return o2.compareTo(o1);
 			}});
 		for(String d: date){
-			List<CreateRole> createRole = CreateRole.dao.find(sql,d);
+			List<CreateRole> createRole = CreateRole.dao.use(db).find(sql,d);
 			Map<Integer, Long> sort = new TreeMap<Integer, Long>();
 			for(int i=0;i<24;i++){
 				sort.put(i, 0L);
@@ -195,7 +197,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 				return o2.compareTo(o1);
 			}});
 		for(String d: date){
-			List<LogCharge> logCharge = LogCharge.dao.find(sql,d);
+			List<LogCharge> logCharge = LogCharge.dao.use(db).find(sql,d);
 			Map<Integer, Double> sort = new TreeMap<Integer, Double>();
 			for(int i=0;i<24;i++){
 				sort.put(i, 0.0);

@@ -31,6 +31,7 @@ import common.model.SecRole;
 import common.model.SecUser;
 import common.model.SecUserRole;
 import common.model.UserFeedback;
+import common.mysql.DbSelector;
 import common.routes.AdminRoute;
 
 public class BaseConfig extends JFinalConfig {
@@ -48,26 +49,52 @@ public class BaseConfig extends JFinalConfig {
 
 	@Override
 	public void configPlugin(Plugins me) {
-		C3p0Plugin cp = createC3p0Plugin();
-		me.add(cp);
-		ActiveRecordPlugin arp = new ActiveRecordPlugin(cp);
-		me.add(arp);
-		arp.addMapping("create_role", CreateRole.class);
-		arp.addMapping("device_info", DeviceInfo.class);
-		arp.addMapping("logout", Logout.class);
-		arp.addMapping("login", Login.class);
-		arp.addMapping("active_user", ActiveUser.class);
-		arp.addMapping("log_charge", LogCharge.class);
-		arp.addMapping("level_up", LevelUp.class);
-		arp.addMapping("retain_user", RetainUser.class);
-		arp.addMapping("retain_equipment", RetainEquipment.class);
-		arp.addMapping("payment_detail", PaymentDetail.class);
-		arp.addMapping("loss_user", LossUser.class);
-		arp.addMapping("return_user", ReturnUser.class);
-		arp.addMapping("sec_role", "role_id", SecRole.class);
-		arp.addMapping("sec_user", "user_id", SecUser.class);
-		arp.addMapping("sec_user_role", SecUserRole.class);
-		arp.addMapping("user_feedback", UserFeedback.class);
+		PropKit.use("config.txt");
+
+		C3p0Plugin malaiCp = new C3p0Plugin(PropKit.get("jdbcUrl"), PropKit.get("user"),
+				PropKit.get("password").trim());
+		me.add(malaiCp);
+		ActiveRecordPlugin malaiArp = new ActiveRecordPlugin("malai", malaiCp);
+		me.add(malaiArp);
+		malaiArp.addMapping("create_role", CreateRole.class);
+		malaiArp.addMapping("device_info", DeviceInfo.class);
+		malaiArp.addMapping("logout", Logout.class);
+		malaiArp.addMapping("login", Login.class);
+		malaiArp.addMapping("active_user", ActiveUser.class);
+		malaiArp.addMapping("log_charge", LogCharge.class);
+		malaiArp.addMapping("level_up", LevelUp.class);
+		malaiArp.addMapping("retain_user", RetainUser.class);
+		malaiArp.addMapping("retain_equipment", RetainEquipment.class);
+		malaiArp.addMapping("payment_detail", PaymentDetail.class);
+		malaiArp.addMapping("loss_user", LossUser.class);
+		malaiArp.addMapping("return_user", ReturnUser.class);
+		malaiArp.addMapping("sec_role", "role_id", SecRole.class);
+		malaiArp.addMapping("sec_user", "user_id", SecUser.class);
+		malaiArp.addMapping("sec_user_role", SecUserRole.class);
+		malaiArp.addMapping("user_feedback", UserFeedback.class);
+
+		C3p0Plugin ucCp = new C3p0Plugin(PropKit.get("jdbcUcUrl"), PropKit.get("user"), PropKit.get("password").trim());
+		me.add(ucCp);
+		ActiveRecordPlugin ucArp = new ActiveRecordPlugin("uc", ucCp);
+		me.add(ucArp);
+		ucArp.addMapping("create_role", CreateRole.class);
+		ucArp.addMapping("device_info", DeviceInfo.class);
+		ucArp.addMapping("logout", Logout.class);
+		ucArp.addMapping("login", Login.class);
+		ucArp.addMapping("active_user", ActiveUser.class);
+		ucArp.addMapping("log_charge", LogCharge.class);
+		ucArp.addMapping("level_up", LevelUp.class);
+		ucArp.addMapping("retain_user", RetainUser.class);
+		ucArp.addMapping("retain_equipment", RetainEquipment.class);
+		ucArp.addMapping("payment_detail", PaymentDetail.class);
+		ucArp.addMapping("loss_user", LossUser.class);
+		ucArp.addMapping("return_user", ReturnUser.class);
+		ucArp.addMapping("sec_role", "role_id", SecRole.class);
+		ucArp.addMapping("sec_user", "user_id", SecUser.class);
+		ucArp.addMapping("sec_user_role", SecUserRole.class);
+		ucArp.addMapping("user_feedback", UserFeedback.class);
+		
+		DbSelector.setDbName("malai");
 	}
 
 	@Override
@@ -87,5 +114,4 @@ public class BaseConfig extends JFinalConfig {
 		PropKit.use("config.txt");
 		return new C3p0Plugin(PropKit.get("jdbcUrl"), PropKit.get("user"), PropKit.get("password").trim());
 	}
-
 }

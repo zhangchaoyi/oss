@@ -12,6 +12,7 @@ import org.apache.log4j.Logger;
 import com.jfinal.plugin.activerecord.Db;
 
 import common.model.UserFeedback;
+import common.mysql.DbSelector;
 import common.service.OperationService;
 
 /**
@@ -20,6 +21,7 @@ import common.service.OperationService;
  */
 public class OperationServiceImpl implements OperationService {
 	private static Logger logger = Logger.getLogger(OperationServiceImpl.class);
+	private String db = DbSelector.getDbName();
 	/**
 	 * 接收玩家反馈,并将其插入到mysql中
 	 * @param account 帐号id
@@ -32,7 +34,7 @@ public class OperationServiceImpl implements OperationService {
 	public boolean addFeedback(String account, String title, String content, String server, String port) {
 		logger.info("params:{"+"account:"+account+",title:"+title+",content:"+content+",server:"+server+",port:"+port+"}");
 		boolean succeed = false;
-		succeed  = new UserFeedback().set("account", account).set("title", title).set("content", content).set("server", server).set("port", port).set("create_time", new Date()).set("reply",0).save();
+		succeed  = new UserFeedback().use(db).set("account", account).set("title", title).set("content", content).set("server", server).set("port", port).set("create_time", new Date()).set("reply",0).save();
 		logger.info("return:" + succeed);
 		return succeed;
 	}
@@ -44,7 +46,7 @@ public class OperationServiceImpl implements OperationService {
 	public List<List<String>> queryFeedback(String startDate, String endDate, String server) {
 		logger.info("params:{"+"server:"+server+"}");
 		String sql = "select * from user_feedback where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and server = ?";
-		List<UserFeedback> userFeedback = UserFeedback.dao.find(sql, startDate, endDate, server);
+		List<UserFeedback> userFeedback = UserFeedback.dao.use(db).find(sql, startDate, endDate, server);
 		List<List<String>> data = new ArrayList<List<String>>();
 		for(UserFeedback uf : userFeedback){
 			String account = uf.getStr("account");
@@ -67,7 +69,7 @@ public class OperationServiceImpl implements OperationService {
 	public int completeReply(int id) {
 		logger.info("params:{"+"id"+id+"}");
 		String sql = "update user_feedback set reply = 1 where id = ?";
-		int succeed = Db.update(sql, id);
+		int succeed = Db.use(db).update(sql, id);
 		logger.info("return:" + succeed);
 		return succeed;
 	}
@@ -80,7 +82,7 @@ public class OperationServiceImpl implements OperationService {
 	public int deleteFeedback(String ids) {
 		logger.info("params:{"+"ids"+ids+"}");
 		String sql = "delete from user_feedback where id in (" + ids +")";
-		int deleted = Db.update(sql);
+		int deleted = Db.use(db).update(sql);
 		logger.info("return:" + deleted);
 		return deleted;
 	}
@@ -92,7 +94,7 @@ public class OperationServiceImpl implements OperationService {
 	public Map<String, String> queryFeedbackById(String id) {
 		logger.info("params:{"+"id"+id+"}");
 		String sql = "select * from user_feedback where id = ?";
-		UserFeedback uf = UserFeedback.dao.findFirst(sql, id);
+		UserFeedback uf = UserFeedback.dao.use(db).findFirst(sql, id);
 		Map<String, String> data = new HashMap<String, String>();
 		if(uf==null){
 			data.put("message", "failed");
