@@ -1,9 +1,14 @@
 function login(){
 	var username = $("#username").val();
 	var password = $("#password").val();
+	var db = $("#btn-db").attr("data-info");
 
 	if(username == "" || password == ""){
 		alert("请输入用户名或密码！");
+		return;
+	}
+	if(db=="none"){
+		alert("请选择服务器");
 		return;
 	}
 
@@ -12,7 +17,8 @@ function login(){
 	$.post("/oss/api/login", {
 		username:Encrypt(username, key),
 		password:Encrypt(password, key),
-		key:key
+		key:key,
+		db:db
     },
     function(data, status) {
     	if(data.message == "success"){
@@ -37,6 +43,15 @@ function getKey(e) {
 }
 $(function(){
 	$("#username").focus();
+        //选择服务器列表
+	$("#db-menu > li").click(function(){
+    	console.log("ss");
+    	var txt = $(this).children("a").text();
+        var info = $(this).children("a").attr("data-info");
+    	$("#btn-db").text("");
+    	$("#btn-db").append(txt+' <span class="caret"></span>');
+        $("#btn-db").attr("data-info", info);
+	});
 });
 
 function Encrypt(word, key){

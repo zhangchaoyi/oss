@@ -17,6 +17,7 @@ import com.jfinal.ext.interceptor.POST;
 
 import common.interceptor.DataGuestInterceptor;
 import common.model.SecUser;
+import common.mysql.DbSelector;
 import common.service.AdminService;
 import common.service.impl.AdminServiceImpl;
 import common.utils.EncryptUtils;
@@ -49,8 +50,9 @@ public class LoginController extends Controller {
 	public void loginValidate() {
 		String username = getPara("username");
 		String password = getPara("password");
+		String db = getPara("db", "malai");
 		String key = getPara("key");
-		logger.info("paras: {" + "username:"+username+",password:"+password+",key:"+key+"}");
+		logger.info("paras: {" + "username:"+username+",password:"+password+",db:"+db+",key:"+key+"}");
 		try {
 			username = EncryptUtils.aesDecrypt(username,key);
 			password = EncryptUtils.aesDecrypt(password,key);
@@ -70,6 +72,7 @@ public class LoginController extends Controller {
 		try {
 			if(EncryptUtils.checkpassword(password, queryPasswd)){
 				setCookie("login",username, -1, "/", true);
+				DbSelector.setDbName(db);
 				logger.info("login successfully");
 				renderJson("{\"message\":\"success\"}");
 				return;
@@ -95,7 +98,7 @@ public class LoginController extends Controller {
 		renderJson("{\"message\":\"success\"}");
 	}
 	/**
-	 * 得到cookie信息 --用户名
+	 * 得到cookie信息 --用户名  --服务器
 	 * @author chris
 	 * @role  data_guest
 	 */
@@ -109,11 +112,29 @@ public class LoginController extends Controller {
 			username = cookie.getValue();
 			message = "true";
 		}
+		String db = DbSelector.getDbName();
 		Map<String, String> data = new HashMap<String, String>();
 		data.put("username", username);
+		data.put("db", db);
+		data.put("dbName", getDbName(db));
 		data.put("message", message);
 		logger.info("cookie info" + data);
 		renderJson(data);
 	}
-
+	
+	private String getDbName(String db){
+		String dbName = "";
+		switch(db){
+		case "malai":
+			dbName = "马来服";
+			break;
+		case "uc":
+			dbName = "UC服";
+			break;
+		case "test":
+			dbName = "测试服";
+			break;
+		}
+		return dbName;
+	}
 }

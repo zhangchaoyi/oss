@@ -18,13 +18,13 @@ function GetQueryString(name)
 function iconsView() {
     var icons = $('.btn-icons');
     if(!$("ul.dropdown-menu.iconBar").find("div").hasClass("checked")){
-    	$("#platform-selected").css("display", "block");
-    	setTimeout('$("#platform-selected").css("display", "none")', 5000);
-    	$(".dropdown.open").toggleClass("open");
-    	return;
+        $("#platform-selected").css("display", "block");
+        setTimeout('$("#platform-selected").css("display", "none")', 5000);
+        $(".dropdown.open").toggleClass("open");
+        return;
     }
     for(var i=0;i<icons.length;i++){
-    	showIcon(icons[i]);    	
+        showIcon(icons[i]);     
     }
     loadData();
     $(".dropdown.open").toggleClass("open");
@@ -38,17 +38,17 @@ $("#main-menu > li a").click(function(){
 });
 
 function showIcon(icon){
-	var value = $(icon).attr("data-value");
-	var className = "span.fa.fa-" + value + ".icons";
-	
-	if($(icon).find("div").hasClass("checked")) {
-		//whether element is null
-		if($(className).length == 0){
-			$("#btn-dropdownIcon").prepend("<span class='fa fa-"+ value +" icons icons-view' data-info="+value+" aria-hidden='true'></span>");
-		}
-	}else{
-		$(className).remove();
-	}
+    var value = $(icon).attr("data-value");
+    var className = "span.fa.fa-" + value + ".icons";
+    
+    if($(icon).find("div").hasClass("checked")) {
+        //whether element is null
+        if($(className).length == 0){
+            $("#btn-dropdownIcon").prepend("<span class='fa fa-"+ value +" icons icons-view' data-info="+value+" aria-hidden='true'></span>");
+        }
+    }else{
+        $(className).remove();
+    }
 }
 
 $("button.btn.btn-default.btn-off").click(function(){
@@ -75,7 +75,7 @@ function getIcons(){
 
 // 复选框选择/取消
 $("li.btn-icons").click(function(){
-	$(this).iCheck('toggle');
+    $(this).iCheck('toggle');
 });
 
 //select more than one icon
@@ -96,7 +96,27 @@ $(function(){
          if(data.message=="true"){
             $("#dropdownMenu1").text("");
             $("#dropdownMenu1").append("<span class='glyphicon glyphicon-user btn-user'></span>" + data.username + "<span class='caret'></span>");
+        $("#btn-db").text("");
+            $("#btn-db").attr("data-info", data.db);
+        $("#btn-db").append(data.dbName + " <span class='caret'></span>");
          }
     }); 
    
+});
+
+//选择服务器
+$("#db-menu > li").click(function(){
+        var txt = $(this).children("a").text();
+        var info = $(this).children("a").attr("data-info");
+        $("#btn-db").text("");
+        $("#btn-db").append(txt+' <span class="caret"></span>');
+        $("#btn-db").attr("data-info", info);
+    $.post("/oss/api/changeDb", {
+        db:info
+    },
+    function(data, status) {
+        if(data=="succeed"){
+            loadData();     
+        }
+    });
 });

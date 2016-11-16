@@ -34,13 +34,8 @@ span.glyphicon.glyphicon-lock.login-password::before{
 	top: 26px;
 	}
 
-input#username.form-control.input-lg {
-
-}
-
 input#password.form-control.input-lg {
-	position:relative;
-	bottom:15px;
+	margin-top: 20px;
 }
 
 button.btn.btn-lg.btn-primary.btn-login {
@@ -50,10 +45,11 @@ button.btn.btn-lg.btn-primary.btn-login {
 div.input-group.login-page {
 	width: 50%;
 	left: 16%;
-	}
-
-form.col-lg-12.input-user-password {
-	
+	bottom: 35px;
+}
+.select-db{
+	left: 132px;
+    	margin-bottom: 10px;
 }
 
 body {

@@ -48,6 +48,10 @@ public class BaseConfig extends JFinalConfig {
 	}
 
 	@Override
+	/**
+	 * 配置多个数据源,每个数据源对应一个C3p0Plugin和ActiveRecordPlugin实例
+	 * @author chris
+	 */
 	public void configPlugin(Plugins me) {
 		PropKit.use("config.txt");
 
@@ -93,6 +97,27 @@ public class BaseConfig extends JFinalConfig {
 		ucArp.addMapping("sec_user", "user_id", SecUser.class);
 		ucArp.addMapping("sec_user_role", SecUserRole.class);
 		ucArp.addMapping("user_feedback", UserFeedback.class);
+		
+		C3p0Plugin testCp = new C3p0Plugin(PropKit.get("jdbcTestUrl"), PropKit.get("user"), PropKit.get("password").trim());
+		me.add(testCp);
+		ActiveRecordPlugin testArp = new ActiveRecordPlugin("test", testCp);
+		me.add(testArp);
+		testArp.addMapping("create_role", CreateRole.class);
+		testArp.addMapping("device_info", DeviceInfo.class);
+		testArp.addMapping("logout", Logout.class);
+		testArp.addMapping("login", Login.class);
+		testArp.addMapping("active_user", ActiveUser.class);
+		testArp.addMapping("log_charge", LogCharge.class);
+		testArp.addMapping("level_up", LevelUp.class);
+		testArp.addMapping("retain_user", RetainUser.class);
+		testArp.addMapping("retain_equipment", RetainEquipment.class);
+		testArp.addMapping("payment_detail", PaymentDetail.class);
+		testArp.addMapping("loss_user", LossUser.class);
+		testArp.addMapping("return_user", ReturnUser.class);
+		testArp.addMapping("sec_role", "role_id", SecRole.class);
+		testArp.addMapping("sec_user", "user_id", SecUser.class);
+		testArp.addMapping("sec_user_role", SecUserRole.class);
+		testArp.addMapping("user_feedback", UserFeedback.class);
 		
 		DbSelector.setDbName("malai");
 	}

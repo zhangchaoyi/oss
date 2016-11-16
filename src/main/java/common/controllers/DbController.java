@@ -14,13 +14,14 @@ public class DbController extends Controller{
 	
 	/**
 	 * 选择db
+	 * @author chris
 	 */
 	@Before(POST.class)
 	@ActionKey("/api/changeDb")
 	public void changeDb() {
 		String dbName = getPara("db","");
 		logger.info("params:{"+"dbName"+dbName+"}");
-		if(!dbName.equals("malai") && !dbName.equals("uc")){
+		if(!dbName.equals("malai") && !dbName.equals("uc") && !dbName.equals("test")){
 			renderText("fail");
 			return;
 		}

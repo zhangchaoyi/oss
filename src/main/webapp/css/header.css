@@ -121,7 +121,7 @@ button.btn.btn-default.btn-circle {
 	position: relative;
 	padding-left: 22px;
 	padding-right: 33px;
-	left: 40px;
+	left: 30px;
 }
 
 button.btn.btn-default.btn-circle:hover {
@@ -200,9 +200,8 @@ button#btn-dropdownIcon.btn.btn-default.dropdown-toggle > span.caret {
 
 div.service-bar {
 	float:left;
-	/* float: right; */
 	position:relative;
-	left:40px;
+	left:30px;
 	top: 0;
 	display: block;
 }
@@ -265,4 +264,19 @@ div#platform-selected {
 	filter:alpha(opacity=40);
 	display:none;
 	z-index: 1000;
+}
+
+.select-db {
+    float: left;
+    left: 30px;
+}
+#btn-db {
+    width: 108px;
+    height:50px;
+    color:white;
+    background:#303c48;
+    border: black;
+}
+#btn-db:hover {
+    background:black;
 }
