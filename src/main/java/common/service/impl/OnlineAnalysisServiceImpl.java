@@ -30,6 +30,7 @@ public class OnlineAnalysisServiceImpl implements OnlineAnalysisService {
 	 * @param endDate  所选结束时间
 	 */
 	public List<Long> queryPeriodDistribution(int days, String icons, String startDate, String endDate) {
+		logger.info("params:{"+"days:"+days+"}");
 		String sql = "select hour(A.login_time)hour,count(*)count from (select openudid,login_time from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("
 				+ icons + ") group by hour";
 		List<Login> distribution = Login.dao.find(sql, startDate, endDate);
@@ -46,7 +47,7 @@ public class OnlineAnalysisServiceImpl implements OnlineAnalysisService {
 		}
 		List<Long> data = new ArrayList<Long>();
 		data.addAll(sort.values());
-		logger.debug("queryPeriodDistribution:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -160,7 +161,7 @@ public class OnlineAnalysisServiceImpl implements OnlineAnalysisService {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.debug("queryNeighborStartPeriod error:", e);
+			logger.info(" error:", e);
 		}
 
 		List<Integer> count = new ArrayList<Integer>();

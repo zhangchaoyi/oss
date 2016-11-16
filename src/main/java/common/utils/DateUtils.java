@@ -22,8 +22,8 @@ public class DateUtils {
 		    sdf = new SimpleDateFormat("yyyy-MM-dd");  
 		    date = sdf.parse(dateString);  
 		}catch (ParseException e){  
-			logger.debug("throwable exception",e);
-			logger.debug(e.getStackTrace());
+			logger.info("throwable exception",e);
+			logger.info(e.getStackTrace());
 		}
 		return date;
 	}
@@ -35,8 +35,8 @@ public class DateUtils {
 		    sdf = new SimpleDateFormat("yyyy-MM");  
 		    date = sdf.parse(dateString);  
 		}catch (ParseException e){  
-			logger.debug("throwable exception",e);
-			logger.debug(e.getStackTrace());
+			logger.info("throwable exception",e);
+			logger.info(e.getStackTrace());
 		}
 		return date;
 	}
@@ -66,8 +66,8 @@ public class DateUtils {
 			}
 		}catch(Exception e){
 			e.printStackTrace();
-			logger.debug(e.getStackTrace());
-			logger.debug("data transform failed");
+			logger.info(e.getStackTrace());
+			logger.info("data transform failed");
 		}
 		return dateList;
 	}
@@ -87,8 +87,8 @@ public class DateUtils {
 			}
 		}catch(Exception e){
 			e.printStackTrace();
-			logger.debug(e.getStackTrace());
-			logger.debug("data transform failed");
+			logger.info(e.getStackTrace());
+			logger.info("data transform failed");
 		}
 		return monthList;
 	}

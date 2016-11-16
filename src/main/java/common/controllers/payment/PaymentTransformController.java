@@ -48,6 +48,7 @@ public class PaymentTransformController extends Controller{
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		logger.info("params:{"+"icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
 		
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		Map<String, Object> category = new LinkedHashMap<String, Object>();
@@ -69,7 +70,7 @@ public class PaymentTransformController extends Controller{
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
-		logger.debug("<PaymentTransformController> queryPaymentAddPaidAnalyze:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
 	/**
@@ -89,7 +90,8 @@ public class PaymentTransformController extends Controller{
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
-	
+		logger.info("params:{"+"tag:"+tag+",icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
+		
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		Map<String, Object> category = new LinkedHashMap<String, Object>();
 		Map<String, Object> seriesMap = new LinkedHashMap<String, Object>();
@@ -127,7 +129,7 @@ public class PaymentTransformController extends Controller{
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
-		logger.debug("<PaymentTransformController> queryPaymentRate:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
 	/**
@@ -146,6 +148,7 @@ public class PaymentTransformController extends Controller{
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		logger.info("params:{"+"tag:"+tag+",icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
 		
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		Map<String, Object> category = new LinkedHashMap<String, Object>();
@@ -176,7 +179,7 @@ public class PaymentTransformController extends Controller{
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
-		logger.debug("<PaymentTransformController> queryPaymentTransformDetail:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
 }

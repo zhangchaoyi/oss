@@ -48,13 +48,14 @@ public class FeedbackController extends Controller{
 		String content = getPara("content", "");
 		String server = getPara("server", "");
 		String port = getPara("port", "");
+		logger.info("params:{ " + "account:" + account + " title:" + title + " content:" + content + " server:" + server + " port:" + port + "}");
 		if("".equals(account)){
 			renderText("提交成功");
 			return;
 		}
 		boolean succeed = os.addFeedback(account, title, content, server, port);
 		if(succeed == true){
-			logger.debug("<FeedbackController> feedback:" + "succeed");
+			logger.info("return:" + "succeed");
 			renderText("提交成功");
 		}
 	}
@@ -70,8 +71,9 @@ public class FeedbackController extends Controller{
 		String startDate = getPara("startDate", "");
 		String endDate = getPara("endDate", "");
 		String server = getPara("server", "");
+		logger.info("params {"+"startDate:"+startDate+",endDate:"+endDate+",server:"+server+"}");
 		List<List<String>> data = os.queryFeedback(startDate, endDate, server);
-		logger.debug("<FeedbackController> queryFeedback:" + data);
+		logger.info("return:" + data);
 		renderJson(data);
 	}
 	
@@ -85,11 +87,12 @@ public class FeedbackController extends Controller{
 	@ActionKey("/api/operation/feedback/user/reply")
 	public void modifyFeedbackUserReply() {
 		String id = getPara("id");
+		logger.info("params {" + "id:" + id + "}");
 		try{
 			int succeed = os.completeReply(Integer.parseInt(id));
 			renderText(String.valueOf(succeed));
 		}catch(Exception e){
-			logger.debug("<FeedbackController> modifyFeedbackUserReply:", e);
+			logger.info("Exception:", e);
 		}
 	}
 	/**
@@ -101,8 +104,9 @@ public class FeedbackController extends Controller{
 	@ActionKey("/api/operation/feedback/user/delete")
 	public void deleteFeedbackUserReply() {
 		String ids = StringUtils.arrayToQueryString(getParaValues("ids[]"));
+		logger.info("params: {" + "ids:" + ids + "}");
 		int deleted = os.deleteFeedback(ids);
-		logger.debug("<FeedbackController> deleteFeedbackUserReply:" + deleted);
+		logger.info("return:" + deleted);
 		renderText(String.valueOf(deleted));
 	}
 	
@@ -115,6 +119,7 @@ public class FeedbackController extends Controller{
 	@ActionKey("/api/operation/feedback/user/detail")
 	public void deleteFeedbackUser() {
 		String id = getPara("id");
+		logger.info("params: {" + "id:" + id + "}");
 		Map<String, String> data = os.queryFeedbackById(id);
 		renderJson(data);
 	}

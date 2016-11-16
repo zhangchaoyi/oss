@@ -83,7 +83,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		series.put("首日付费玩家($)", fdPaidList);
 		data.put("sum", sum);
 		data.put("series", series);
-		logger.debug("queryMoneyPayment:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	/**
@@ -141,7 +141,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		
 		data.put("sum", sum);
 		data.put("series", series);
-		logger.debug("queryPeoplePayment:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	/**
@@ -188,7 +188,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		series.put("首日付费玩家", fdPaidList);
 		data.put("sum", sum);
 		data.put("series", series);
-		logger.debug("queryNumPayment:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -583,7 +583,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		series.addAll(avgArpu.values());
 		data.put("area", area);
 		data.put("data", series);
-		logger.debug("queryAreaARPU:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	
@@ -620,7 +620,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		series.addAll(avgArppu.values());
 		data.put("area", area);
 		data.put("data", series);
-		logger.debug("queryAreaARPPU:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	//处理中间数据
@@ -713,7 +713,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		series.addAll(avgArpu.values());
 		data.put("country", country);
 		data.put("data", series);
-		logger.debug("queryCountryARPU:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	
@@ -750,7 +750,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		series.addAll(avgArppu.values());
 		data.put("country", country);
 		data.put("data", series);
-		logger.debug("queryCountryARPPU:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	

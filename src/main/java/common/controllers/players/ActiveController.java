@@ -55,6 +55,7 @@ public class ActiveController extends Controller{
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		logger.info("params:{"+"playerTag:"+playerTag+",icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
 		
 		startDate = startDate + " 00:00:00";
 		endDate = endDate + " 23:59:59";
@@ -96,7 +97,7 @@ public class ActiveController extends Controller{
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
-		logger.debug("<ActiveController> queryActivePlayer:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
 	
@@ -119,6 +120,7 @@ public class ActiveController extends Controller{
 		String endDate = getPara("endDate");
 		startDate = startDate + " 00:00:00";
 		endDate = endDate + " 23:59:59";
+		logger.info("params:{"+"detailTagfInfo:"+",icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
 		
 		Map<String, Object> data = new LinkedHashMap<String,Object>();
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
@@ -168,7 +170,7 @@ public class ActiveController extends Controller{
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
-		logger.debug("<ActiveController> queryActiveDetail:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 		
 	}

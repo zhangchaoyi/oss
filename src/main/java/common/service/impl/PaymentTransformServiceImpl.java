@@ -101,7 +101,7 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		data.put("fdPP", fdPP);
 		data.put("fwPP", fwPP);
 		data.put("fmPP", fmPP);
-		logger.debug("queryAddPaymentAnalyze:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	
@@ -163,7 +163,7 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("dpr", rate);
 		data.put("tableData", tableData);
-		logger.debug("queryDayPaidRate:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	/**
@@ -229,7 +229,7 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		data.put("wpr", rate);
 		data.put("tableData", tableData);
 		data.put("categories", categories);
-		logger.debug("queryWeekPaidRate:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	
@@ -297,7 +297,7 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("mpr", rate);
 		data.put("tableData", tableData);
-		logger.debug("queryMonthPaidRate:" + data);
+		logger.info("data:" + data);
 		return data;
 	} 
 	
@@ -415,7 +415,7 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		data.put("rate", rate);
 		data.put("categories", categories);
 		data.put("tableData", tableData);
-		logger.debug("queryAreaPaidRate:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 }

@@ -28,6 +28,7 @@ public class AccdetailServiceImpl implements AccdetailService{
 	 * @return Map<String, Object>
 	 */
 	public Map<String, Object> queryAccdetail(String accountId) {
+		logger.info("params:{"+"accountId:"+accountId+"}");
 		Map<String, Object> data = new HashMap<String, Object>();
 		String deviceSql = "select B.model,B.resolution,B.os,B.os_version,B.country,B.province,B.carrier,B.net from (select distinct account,openudid  from login where account = ?) A join device_info B on A.openudid = B.openudid";
 		String loginSql = "select DATE_FORMAT(min(login_time),'%Y-%m-%d')firstLogin,DATE_FORMAT(max(login_time),'%Y-%m-%d')lastLogin,count(distinct date)loginDay,count(*)loginTimes  from login where account = ?";
@@ -81,7 +82,7 @@ public class AccdetailServiceImpl implements AccdetailService{
 		data.put("code", 0);
 		data.put("device", deviceTable);
 		data.put("detail", detailTable);
-		logger.debug("queryAccdetailData:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 }

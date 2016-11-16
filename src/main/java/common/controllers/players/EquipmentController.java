@@ -50,7 +50,8 @@ public class EquipmentController extends Controller {
 		String endDate = getPara("endDate");
 		startDate = startDate + " 00:00:00";
 		endDate = endDate + " 23:59:59";
-
+		logger.info("params:{"+"playerTagInfo:"+playerTagInfo+",icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
+		
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
 		// 保存chart中数据
@@ -105,7 +106,7 @@ public class EquipmentController extends Controller {
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
-		logger.debug("<EquipmentController> queryEquipmentPlayer:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
 	/**
@@ -123,7 +124,8 @@ public class EquipmentController extends Controller {
 		String endDate = getPara("endDate");
 		startDate = startDate + " 00:00:00";
 		endDate = endDate + " 23:59:59";
-
+		logger.info("params:{"+"playerTagInfo:"+playerTagInfo+",detailTagInfo:"+detailTagInfo+",icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
+		
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
 		// 保存chart中数据
@@ -323,7 +325,7 @@ public class EquipmentController extends Controller {
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
-		logger.debug("<EquipmentController> queryEquipmentDetails:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 
 	}

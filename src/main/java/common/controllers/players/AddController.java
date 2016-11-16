@@ -52,6 +52,7 @@ public class AddController extends Controller{
 		String endDate = getPara("endDate");	
 		startDate = startDate + " 00:00:00";
 		endDate = endDate + " 23:59:59";
+		logger.info("params:{"+"addTagInfo:"+addTagInfo+",icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
 		
 		//返回数据格式
 		Map<String, Object> data = new LinkedHashMap<String,Object>();	
@@ -86,7 +87,7 @@ public class AddController extends Controller{
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
-		logger.debug("<AddController> queryAddPlayer:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
     /**
@@ -168,7 +169,7 @@ public class AddController extends Controller{
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
-		logger.debug("<AddController> queryaddPlayerDetails:" + data);
+		logger.info("<AddController> queryaddPlayerDetails:" + data);
 		renderJson(data);	
 	}
 }

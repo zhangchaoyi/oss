@@ -44,7 +44,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 			sort.put(cr.getStr("date"), cr.getBigDecimal("dau").longValue());
 		}
 		data.addAll(sort.values());
-		logger.debug("queryDau:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	
@@ -96,7 +96,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 
 		data.put("paid", paid);
 		data.put("notpaid", notpaid);
-		logger.debug("queryPaidInActiveUser:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	/** 
@@ -157,7 +157,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		data.put("DAU", dauData);
 		data.put("WAU", wauData);
 		data.put("MAU", mauData);
-		logger.debug("queryActivePlayersInfo:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	/**
@@ -190,7 +190,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		}
 
 		data.addAll(sort.values());
-		logger.debug("queryActivePlayersDauMauRate:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	/**
@@ -249,7 +249,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		for (Integer i : record.values()) {
 			data.add(i.longValue());
 		}
-		logger.debug("queryPlayDays:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	/**
@@ -273,7 +273,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 				data.put(i, 0L);
 			}
 		}
-		logger.debug("queryRank:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	/**
@@ -294,7 +294,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		}
 		data.put("activePlayer", areaData);
 		data.put("area", province);
-		logger.debug("queryArea:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	/**
@@ -315,7 +315,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		}
 		data.put("activePlayer", countryData);
 		data.put("country", country);
-		logger.debug("queryCountry:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	/**
@@ -336,7 +336,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 		}
 		data.put("activePlayer", accountTypeData);
 		data.put("accountType", accountType);
-		logger.debug("queryAccountType:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	//map计数器

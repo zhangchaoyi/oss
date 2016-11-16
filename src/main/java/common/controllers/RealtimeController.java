@@ -2,7 +2,6 @@ package common.controllers;
 
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Set;
 
 import org.apache.log4j.Logger;
@@ -21,9 +20,10 @@ import common.service.RealtimeService;
 import common.service.impl.RealtimeServiceImpl;
 import common.utils.StringUtils;
 import common.interceptor.DataGuestInterceptor;
+
 /**
- * 实时数据页 --逻辑控制层
- * 目前实时在线为假数据
+ * 实时数据页 --逻辑控制层 目前实时在线为假数据
+ * 
  * @author chris
  *
  */
@@ -31,74 +31,82 @@ import common.interceptor.DataGuestInterceptor;
 public class RealtimeController extends Controller {
 	private static Logger logger = Logger.getLogger(RealtimeController.class);
 	private RealtimeService realtimeService = new RealtimeServiceImpl();
-	
+
 	/**
 	 * 实时概况页
+	 * 
 	 * @role data_guest
 	 */
-	@Before({GET.class, DataGuestInterceptor.class})
+	@Before({ GET.class, DataGuestInterceptor.class })
 	@ActionKey("/realtime/info")
 	public void activePlayer() {
 		render("info.html");
 	}
-    /**
-     * 实时概况 昨日/七日/三十日 接口 
-     * @getPara icon[]  当前的icon   ---apple/android/windows
-     * @role data_guest
-     */
-	@Before({POST.class, DataGuestInterceptor.class})
+
+	/**
+	 * 实时概况 昨日/七日/三十日 接口
+	 * 
+	 * @getPara icon[] 当前的icon ---apple/android/windows
+	 * @role data_guest
+	 */
+	@Before({ POST.class, DataGuestInterceptor.class })
 	@ActionKey("/api/realtime/beforedata")
 	public void queryBeforeData() {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
+		logger.info("params: {icons:" + icons + "}");
 		Map<String, String> data = realtimeService.queryBeforeData(icons);
-		logger.debug("<RealtimeController> queryBeforeData:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
-    /**
-     * 实时接口
-     * @getPara icon[]  当前的icon   ---apple/android/windows
-     * @role data_guest
-     */
-	@Before({POST.class, DataGuestInterceptor.class})
+
+	/**
+	 * 实时接口
+	 * 
+	 * @getPara icon[] 当前的icon ---apple/android/windows
+	 * @role data_guest
+	 */
+	@Before({ POST.class, DataGuestInterceptor.class })
 	@ActionKey("/api/realtime/realtimedata")
 	public void queryRealtimeData() {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
+		logger.info("params: {icons:" + icons + "}");
 		Map<String, String> data = realtimeService.queryRealtimeData(icons);
-		logger.debug("<RealtimeController> queryRealtimeData:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
+
 	/**
 	 * 详细栏接口
-	 * @getPara detailTag  tag选择器
+	 * 
+	 * @getPara detailTag tag选择器
 	 * @getPara startDate[] 对比时段
-	 * @getPara icon[]  当前的icon   ---apple/android/windows
-     * @role data_guest
+	 * @getPara icon[] 当前的icon ---apple/android/windows
+	 * @role data_guest
 	 */
-	@Before({POST.class, DataGuestInterceptor.class})
+	@Before({ POST.class, DataGuestInterceptor.class })
 	@ActionKey("/api/realtime/info")
 	public void queryRealtimeInfo() {
 		String detailTag = getPara("detailTag", "rto");
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String[] date = getParaValues("startDate[]");
-
+		logger.info("params: {" + "detailTag:" + detailTag + ",icons:" + icons + ",date[]" + date + "}");
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		List<String> categories = Arrays.asList("00:00~01:00", "01:00~02:00", "02:00~03:00", "03:00~04:00",
 				"04:00~05:00", "05:00~06:00", "06:00~07:00", "07:00~08:00", "08:00~09:00", "09:00~10:00", "10:00~11:00",
 				"11:00~12:00", "12:00~13:00", "13:00~14:00", "14:00~15:00", "15:00~16:00", "16:00~17:00", "17:00~18:00",
 				"18:00~19:00", "19:00~20:00", "20:00~21:00", "21:00~22:00", "22:00~23:00", "23:00~24:00");
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
-		Map<String,Object> seriesMap = new HashMap<String,Object>();
-		
+		Map<String, Object> seriesMap = new HashMap<String, Object>();
+
 		switch (detailTag) {
 		case "rto": {
 			for (String s : date) {
-				Random d = new Random();
 				List<Long> list = new ArrayList<Long>();
-			for (int i = 0; i < 24; i++) {
-				list.add((long) d.nextInt(100));
+				for (int i = 0; i < 24; i++) {
+					list.add(0L);
+				}
+				seriesMap.put(s, list);
 			}
-			seriesMap.put(s, list);
-		}
 			break;
 		}
 		case "equ": {
@@ -121,7 +129,7 @@ public class RealtimeController extends Controller {
 		data.put("category", category);
 		data.put("type", type.toArray());
 		data.put("data", seriesMap);
-		logger.debug("<RealtimeController> queryRealtimeInfo:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
 }

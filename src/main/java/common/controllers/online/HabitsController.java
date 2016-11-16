@@ -54,7 +54,8 @@ public class HabitsController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
-
+		logger.info("params:{"+"playerTag:"+playerTag+",tag:"+tag+",icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
+		
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
 		// 保存chart中数据
@@ -138,7 +139,7 @@ public class HabitsController extends Controller {
 		data.put("category", category);
 		data.put("data", seriesMap);
 		data.put("header", header);
-		logger.debug("<HabitsController> queryAvgGP:" + data);
+		logger.info("data" + data);
 		renderJson(data);
 	}
 	/**
@@ -159,7 +160,8 @@ public class HabitsController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
-
+		logger.info("params:{"+"playerTag:"+playerTag+",tag:"+tag+",icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
+		
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
 		// 保存chart中数据
@@ -276,7 +278,7 @@ public class HabitsController extends Controller {
 		data.put("category", category);
 		data.put("data", seriesMap);
 		data.put("header", header);
-		logger.debug("<HabitsController> queryAvgGP:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
 }

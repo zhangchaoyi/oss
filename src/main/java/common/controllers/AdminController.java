@@ -71,7 +71,7 @@ public class AdminController extends Controller {
 		String password = getPara("password");
 		String role = getPara("role", "data_guest");
 		String key = getPara("key");
-		
+		logger.info("params: {" + "username:"+username+",password:"+password+",role:"+role+",key:"+key+"}");
 		Map<String, String> data = new HashMap<String, String>();
 		
 		try {
@@ -80,7 +80,7 @@ public class AdminController extends Controller {
 			role = EncryptUtils.aesDecrypt(role,key);
 		} catch (Exception e) {
 			e.printStackTrace();
-			logger.debug("<AdminInterceptor> Exception:", e);
+			logger.info("Exception:", e);
 		}
 		
 		//username 是否已经存在
@@ -91,16 +91,16 @@ public class AdminController extends Controller {
 			return;
 		}
 		
-		logger.debug("username:" + username + "password:" + password + "role:" + role);
+		logger.info("username:" + username + "password:" + password + "role:" + role);
 		boolean succeed = as.signupUser(username, password, role);
 		
 		if(succeed==true){
-			logger.debug("signup successfully");
+			logger.info("signup successfully");
 			data.put("message", "successfully");
 			renderJson(data);
 			return;
 		}
-		logger.debug("createUser failed");
+		logger.info("createUser failed");
 		data.put("message", "failed");
 		renderJson(data);
 	}
@@ -114,7 +114,7 @@ public class AdminController extends Controller {
 	@ActionKey("/api/admin/manageUsers")
 	public void manageUsers() {
 		List<List<String>> data = as.queryAllUsers();
-		logger.debug("<AdminController> manageUsers:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
 	/**
@@ -130,7 +130,7 @@ public class AdminController extends Controller {
 		int deleted = as.deleteByUserName(users);
 		Map<String, String> data = new HashMap<String, String>();
 		data.put("message", String.valueOf(deleted));
-		logger.debug("<AdminController> deleteUsers:" + deleted);
+		logger.info("return:" + deleted);
 		renderJson(data);
 	}
 	/**
@@ -148,7 +148,7 @@ public class AdminController extends Controller {
 		Map<String, String> data = new HashMap<String, String>();
 		as.changeRoles(username, queryRole);
 		data.put("message", "successfully");
-		logger.debug("<AdminController> changeRole:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
 }

@@ -83,7 +83,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 				sort.put(date, subMap);
 			}
 		} catch (Exception e) {
-			logger.debug("Error queryAddpDayAvgGP:", e);
+			logger.info("Error queryAddpDayAvgGP:", e);
 		}
 		List<Double> times = new ArrayList<Double>();
 		List<Double> time = new ArrayList<Double>();
@@ -104,7 +104,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("times", times);
 		data.put("time", time);
-		logger.debug("queryAddpDayAvgGP:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -165,7 +165,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 				sort.put(period, subMap);
 			}
 		} catch (Exception e) {
-			logger.debug("Error queryAddpWeekAvgGP:", e);
+			logger.info("Error queryAddpWeekAvgGP:", e);
 		}
 
 		List<Double> times = new ArrayList<Double>();
@@ -189,7 +189,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		data.put("times", times);
 		data.put("time", time);
 		data.put("categories", categories);
-		logger.debug("queryAddpWeekAvgGP:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -255,7 +255,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 				sort.put(m, subMap);
 			}
 		} catch (Exception e) {
-			logger.debug("Error queryAddpMonthAvgGP:", e);
+			logger.info("Error queryAddpMonthAvgGP:", e);
 		}
 		List<Double> times = new ArrayList<Double>();
 		List<Double> time = new ArrayList<Double>();
@@ -275,7 +275,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("times", times);
 		data.put("time", time);
-		logger.debug("queryAddpMonthAvgGP:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -337,7 +337,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 				sort.put(date, subMap);
 			}
 		} catch (Exception e) {
-			logger.debug("Error queryActivepDayAvgGP:", e);
+			logger.info("Error queryActivepDayAvgGP:", e);
 		}
 		List<Double> times = new ArrayList<Double>();
 		List<Double> time = new ArrayList<Double>();
@@ -358,7 +358,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("times", times);
 		data.put("time", time);
-		logger.debug("queryActivepDayAvgGP:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -419,7 +419,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 				sort.put(period, subMap);
 			}
 		} catch (Exception e) {
-			logger.debug("Error queryActivepWeekAvgGP:", e);
+			logger.info("Error queryActivepWeekAvgGP:", e);
 		}
 
 		List<Double> times = new ArrayList<Double>();
@@ -443,7 +443,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		data.put("times", times);
 		data.put("time", time);
 		data.put("categories", categories);
-		logger.debug("queryActivepWeekAvgGP:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -509,7 +509,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 				sort.put(m, subMap);
 			}
 		} catch (Exception e) {
-			logger.debug("Error queryActivepMonthAvgGP:", e);
+			logger.info("Error queryActivepMonthAvgGP:", e);
 		}
 		List<Double> times = new ArrayList<Double>();
 		List<Double> time = new ArrayList<Double>();
@@ -529,7 +529,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("times", times);
 		data.put("time", time);
-		logger.debug("queryActivepMonthAvgGP:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -591,7 +591,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 				sort.put(date, subMap);
 			}
 		} catch (Exception e) {
-			logger.debug("Error queryPpDayAvgGP:", e);
+			logger.info("Error queryPpDayAvgGP:", e);
 		}
 		List<Double> times = new ArrayList<Double>();
 		List<Double> time = new ArrayList<Double>();
@@ -612,7 +612,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("times", times);
 		data.put("time", time);
-		logger.debug("queryPpDayAvgGP:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -673,7 +673,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 				sort.put(period, subMap);
 			}
 		} catch (Exception e) {
-			logger.debug("Error queryPpWeekAvgGP:", e);
+			logger.info("Error queryPpWeekAvgGP:", e);
 		}
 
 		List<Double> times = new ArrayList<Double>();
@@ -697,7 +697,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		data.put("times", times);
 		data.put("time", time);
 		data.put("categories", categories);
-		logger.debug("queryPpWeekAvgGP:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -763,7 +763,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 				sort.put(m, subMap);
 			}
 		} catch (Exception e) {
-			logger.debug("Error queryPpMonthAvgGP:", e);
+			logger.info("Error queryPpMonthAvgGP:", e);
 		}
 		List<Double> times = new ArrayList<Double>();
 		List<Double> time = new ArrayList<Double>();
@@ -783,7 +783,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("times", times);
 		data.put("time", time);
-		logger.debug("queryPpMonthAvgGP:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -824,7 +824,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 		}
 
 		List<Integer> data = new ArrayList<Integer>(sort.values());
-		logger.debug("queryAddDayGameTimes:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -868,11 +868,11 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 				}
 			}
 		} catch (Exception e) {
-			logger.debug("Error queryAddDayGameTime:", e);
+			logger.info("Error queryAddDayGameTime:", e);
 		}
 
 		List<Integer> data = new ArrayList<Integer>(sort.values());
-		logger.debug("queryAddDayGameTime:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -940,14 +940,14 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 				timesSort.put(key, value);
 			}
 		} catch (Exception e) {
-			logger.debug("Error queryAddDaySinglePeriod:", e);
+			logger.info("Error queryAddDaySinglePeriod:", e);
 		}
 		List<Integer> players = new ArrayList<Integer>(sort.values());
 		List<Integer> times = new ArrayList<Integer>(timesSort.values());
 		Map<String, List<Integer>> data = new HashMap<String, List<Integer>>();
 		data.put("players", players);
 		data.put("times", times);
-		logger.debug("queryAddDaySinglePeriod:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -968,7 +968,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 			sort.put(h, count);
 		}
 		List<Integer> data = new ArrayList<Integer>(sort.values());
-		logger.debug("queryAddDayPeriod:");
+		logger.info("data:" + data);
 		return data;
 	}
 	
@@ -1061,7 +1061,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 				data.add(avg);
 			}
 		}
-		logger.debug("queryActiveDayGameTimes:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -1153,7 +1153,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 				data.add(avg);
 			}
 		}
-		logger.debug("queryActiveWeekGameTimes:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -1256,7 +1256,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 				data.add(avg);
 			}
 		}
-		logger.debug("queryActiveWeekGameDays:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -1382,7 +1382,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 				data.add(avg);
 			}
 		}
-		logger.debug("queryActiveMonthGameDays:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -1488,7 +1488,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 				data.add(avg);
 			}
 		}
-		logger.debug("queryActiveDayGameTime:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -1607,7 +1607,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 				data.add(avg);
 			}
 		}
-		logger.debug("queryActiveWeekGameTime:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -1676,14 +1676,14 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 				timesSort.put(key, value);
 			}
 		} catch (Exception e) {
-			logger.debug("Error queryActiveDaySinglePeriod:", e);
+			logger.info("Error queryActiveDaySinglePeriod:", e);
 		}
 		List<Integer> players = new ArrayList<Integer>(sort.values());
 		List<Integer> times = new ArrayList<Integer>(timesSort.values());
 		Map<String, List<Integer>> data = new HashMap<String, List<Integer>>();
 		data.put("players", players);
 		data.put("times", times);
-		logger.debug("queryActiveDaySinglePeriod:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -1708,7 +1708,7 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 			sort.put(h, count);
 		}
 		List<Integer> data = new ArrayList<Integer>(sort.values());
-		logger.debug("queryActiveDayPeriod:");
+		logger.info("data:" + data);
 		return data;
 	}
 	

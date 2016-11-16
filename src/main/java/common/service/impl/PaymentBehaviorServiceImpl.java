@@ -36,7 +36,7 @@ public class PaymentBehaviorServiceImpl implements PaymentBehaviorService{
 		}
 		data.put("level", level);
 		data.put("revenue", revenue);
-		logger.debug("queryRankMoney:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	/**
@@ -59,7 +59,7 @@ public class PaymentBehaviorServiceImpl implements PaymentBehaviorService{
 		}
 		data.put("level", level);
 		data.put("count", count);
-		logger.debug("queryRankTimes:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	/**
@@ -252,7 +252,7 @@ public class PaymentBehaviorServiceImpl implements PaymentBehaviorService{
 		}
 		data.put("level", levelList);
 		data.put("count", countList);
-		logger.debug("queryFpRank:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	/**

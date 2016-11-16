@@ -52,7 +52,8 @@ public class LossController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
-
+		logger.info("params: {" + "playerTag:"+playerTag+",tag:"+tag+",icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
+		
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
 		// 保存chart中数据
@@ -122,7 +123,7 @@ public class LossController extends Controller {
 		data.put("data", seriesMap);
 		data.put("header", header);
 		data.put("tableData", queryDayData.get("tableData"));
-		logger.debug("<LossController> queryLoss:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
 }

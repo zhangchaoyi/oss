@@ -30,9 +30,10 @@ public class OperationServiceImpl implements OperationService {
 	 * @return true/false
 	 */
 	public boolean addFeedback(String account, String title, String content, String server, String port) {
+		logger.info("params:{"+"account:"+account+",title:"+title+",content:"+content+",server:"+server+",port:"+port+"}");
 		boolean succeed = false;
 		succeed  = new UserFeedback().set("account", account).set("title", title).set("content", content).set("server", server).set("port", port).set("create_time", new Date()).set("reply",0).save();
-		logger.debug("<OperationServiceImpl> addFeedback:" + succeed);
+		logger.info("return:" + succeed);
 		return succeed;
 	}
 	
@@ -41,6 +42,7 @@ public class OperationServiceImpl implements OperationService {
 	 * @return List<List<String>> 直接填充datatable
 	 */
 	public List<List<String>> queryFeedback(String startDate, String endDate, String server) {
+		logger.info("params:{"+"server:"+server+"}");
 		String sql = "select * from user_feedback where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and server = ?";
 		List<UserFeedback> userFeedback = UserFeedback.dao.find(sql, startDate, endDate, server);
 		List<List<String>> data = new ArrayList<List<String>>();
@@ -53,7 +55,7 @@ public class OperationServiceImpl implements OperationService {
 			List<String> subList = new ArrayList<String>(Arrays.asList(id,account,content,createTime,id,reply,id));
 			data.add(subList);
 		}
-		logger.debug("<OperationServiceImpl> queryFeedback:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	
@@ -63,9 +65,10 @@ public class OperationServiceImpl implements OperationService {
 	 * @return row id   /0表示失败
 	 */
 	public int completeReply(int id) {
+		logger.info("params:{"+"id"+id+"}");
 		String sql = "update user_feedback set reply = 1 where id = ?";
 		int succeed = Db.update(sql, id);
-		logger.debug("<OperationServiceImpl> completeReply:" + succeed);
+		logger.info("return:" + succeed);
 		return succeed;
 	}
 	
@@ -75,9 +78,10 @@ public class OperationServiceImpl implements OperationService {
 	 * @return int  row id  / 0表示失败
 	 */
 	public int deleteFeedback(String ids) {
+		logger.info("params:{"+"ids"+ids+"}");
 		String sql = "delete from user_feedback where id in (" + ids +")";
 		int deleted = Db.update(sql);
-		logger.debug("<OperationServiceImpl> deleteFeedback:" + deleted);
+		logger.info("return:" + deleted);
 		return deleted;
 	}
 	
@@ -86,19 +90,20 @@ public class OperationServiceImpl implements OperationService {
 	 * @param id --row id
 	 */
 	public Map<String, String> queryFeedbackById(String id) {
+		logger.info("params:{"+"id"+id+"}");
 		String sql = "select * from user_feedback where id = ?";
 		UserFeedback uf = UserFeedback.dao.findFirst(sql, id);
 		Map<String, String> data = new HashMap<String, String>();
 		if(uf==null){
 			data.put("message", "failed");
-			logger.debug("<OperationServiceImpl> queryFeedbackById: null" );
+			logger.info("<OperationServiceImpl> queryFeedbackById: null" );
 			return data;
 		}
 		String account = uf.getStr("account");
 		String content = uf.getStr("content")==null ? "": uf.getStr("content");
 		data.put("account",account);
 		data.put("content", content);
-		logger.debug("<OperationServiceImpl> queryFeedbackById:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 }

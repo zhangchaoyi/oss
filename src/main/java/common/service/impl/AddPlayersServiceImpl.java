@@ -43,7 +43,7 @@ public class AddPlayersServiceImpl implements AddPlayersService {
 			sort.put(cr.getStr("date"), cr.getLong("count"));
 		}
 		data.addAll(sort.values());
-		logger.debug("queryAddPlayersData:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 

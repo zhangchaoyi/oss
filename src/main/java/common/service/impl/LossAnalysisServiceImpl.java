@@ -33,6 +33,7 @@ public class LossAnalysisServiceImpl implements LossAnalysisService{
 	 * @param type  玩家类型 --活跃/付费/非付费 
 	 */
 	public Map<String, Object> queryDayLoss(List<String> categories, String icons, String startDate, String endDate, String type) {
+		logger.info("params:{"+"type:"+type+"}");
 		String[] typeArray = {type};
 		type = StringUtils.arrayToQueryString(typeArray);
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(num)num,sum(seven_day)sd,sum(forteen_day)fd,sum(thirty_day)td from loss_user where date between ? and ? and os in (" + icons + ") and type = " + type + " group by date;";
@@ -99,7 +100,7 @@ public class LossAnalysisServiceImpl implements LossAnalysisService{
 		data.put("fdLR", fdLR);
 		data.put("tdLR", tdLR);
 		data.put("tableData", tableData);
-		logger.debug("queryDayLoss:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	/**
@@ -111,6 +112,7 @@ public class LossAnalysisServiceImpl implements LossAnalysisService{
 	 * @param type  玩家类型 --活跃/付费/非付费 
 	 */
 	public Map<String, Object> queryDayReturn(List<String> categories, String icons, String startDate, String endDate, String type){
+		logger.info("params:{"+"type:"+type+"}");
 		String[] typeArray = {type};
 		type = StringUtils.arrayToQueryString(typeArray);
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(num)num,sum(seven_day)sd,sum(forteen_day)fd,sum(thirty_day)td from return_user where date between ? and ? and os in (" + icons + ") and type = " + type + " group by date";
@@ -161,7 +163,7 @@ public class LossAnalysisServiceImpl implements LossAnalysisService{
 		data.put("fdL",fdL);
 		data.put("tdL", tdL);
 		data.put("tableData", tableData);
-		logger.debug("queryDayReturn:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 }

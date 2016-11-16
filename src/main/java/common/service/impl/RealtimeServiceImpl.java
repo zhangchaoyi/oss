@@ -71,7 +71,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 			avgPerGamePeroid = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		}
 		data.put("aGPT", String.valueOf(avgPerGamePeroid));
-		logger.debug("queryRealtimeData:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	//查询昨日,七日,三十日过往不变数据
@@ -122,7 +122,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 			}
 			data.put("aGP"+d, String.valueOf(avgPerGamePeroid));
 		}
-		logger.debug("queryBeforeData:" + data);
+		logger.info("data:" + data);
 		return data;
 	} 
 	
@@ -151,7 +151,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 			d = DateUtils.convertDate(d);
 			data.put(d,al);
 		}
-		logger.debug("queryRealtimeDevice:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	
@@ -180,7 +180,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 			d = DateUtils.convertDate(d);
 			data.put(d, al);
 		}
-		logger.debug("queryRealtimeAddPlayers:" + data);
+		logger.info("queryRealtimeAddPlayers:" + data);
 		return data;
 	}
 	//查询实时收入金额
@@ -208,7 +208,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 			d = DateUtils.convertDate(d);
 			data.put(d, al);
 		}
-		logger.debug("queryRealtimeRevenue:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 }

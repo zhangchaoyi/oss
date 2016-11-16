@@ -47,12 +47,13 @@ public class PaymentRankController extends Controller{
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		logger.info("params:{"+"icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
 		
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		List<List<String>> queryData = paymentRankService.queryRank(icons, startDate, endDate);
 		
 		data.put("data", queryData);
-		logger.debug("<PaymentRankController> queryPaymentRank:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
 	/**
@@ -71,9 +72,10 @@ public class PaymentRankController extends Controller{
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		logger.info("params:{"+"account:"+account+",icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
+		
 		List<String> categories = DateUtils.getDateList(startDate, endDate);
 		String[] accountArray = new String[] {account}; 
-		
 		
 		Map<String, Object> category = new LinkedHashMap<String, Object>();
 		Map<String, Object> seriesMap = new LinkedHashMap<String, Object>();
@@ -90,7 +92,7 @@ public class PaymentRankController extends Controller{
 		data.put("category", category);
 		data.put("data", seriesMap);
 		data.put("tableData", queryData.get("tableData"));
-		logger.debug("<PaymentRankController> queryPaymentAccount:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
 }

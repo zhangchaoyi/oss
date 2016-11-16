@@ -97,6 +97,7 @@ public class PaymentRankServiceImpl implements PaymentRankService {
 	 * @param endDate  所选结束时间
 	 */
 	public Map<String, Object> queryAccountDetail(String[] accountArray, List<String> categories, String icons, String startDate, String endDate) {
+		logger.info("params:{"+"accountArray:"+accountArray+"}");
 		String account = StringUtils.arrayToQueryString(accountArray);
 		String lSql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,sum(A.online_time)online_time,count(*)count from logout A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.account=" + account + " and A.date between ? and ? and C.os in (" + icons + ") group by A.date";
 		String pSql = "select DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.account = " + account + " and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by date";
@@ -150,7 +151,7 @@ public class PaymentRankServiceImpl implements PaymentRankService {
 		data.put("lTList", lTList);
 		data.put("pRList", pRList);
 		data.put("tableData", tableData);
-		logger.debug("queryAccountDetail:" +data);
+		logger.info("data:" +data);
 		return data;
 	}
 }

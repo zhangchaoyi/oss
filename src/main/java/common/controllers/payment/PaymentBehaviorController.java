@@ -48,6 +48,7 @@ public class PaymentBehaviorController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		logger.info("params: {" + "tag:"+tag+",icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
 		
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		Map<String, Object> category = new LinkedHashMap<String, Object>();
@@ -75,7 +76,7 @@ public class PaymentBehaviorController extends Controller {
 		data.put("header", header);
 		data.put("category", category);
 		data.put("data", seriesMap);
-		logger.debug("<PaymentBehaviorController> queryPaymentBehaviorMoney:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
 	/**
@@ -94,6 +95,7 @@ public class PaymentBehaviorController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		logger.info("params:{"+"tag:"+tag+",icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
 		
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		Map<String, Object> category = new LinkedHashMap<String, Object>();
@@ -136,7 +138,7 @@ public class PaymentBehaviorController extends Controller {
 		data.put("header", header);
 		data.put("category", category);
 		data.put("data", seriesMap);
-		logger.debug("<PaymentBehaviorController> queryPaymentBehaviorPeriod:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
 	/**
@@ -157,6 +159,7 @@ public class PaymentBehaviorController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		logger.info("params:{"+"tag:"+tag+",subTag:"+subTag+",icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
 		
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		Map<String, Object> category = new LinkedHashMap<String, Object>();
@@ -216,7 +219,7 @@ public class PaymentBehaviorController extends Controller {
 		data.put("header", header);
 		data.put("category", category);
 		data.put("data", seriesMap);
-		logger.debug("<PaymentBehaviorController> queryPaymentBehaviorDetail:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
 	

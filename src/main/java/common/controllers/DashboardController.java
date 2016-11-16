@@ -39,7 +39,7 @@ public class DashboardController extends Controller {
 	@ActionKey("/api/dashboard")
 	public void queryDashboard() {
 		Map<String, String> data = ds.queryDashboardData();
-		logger.debug("<DashboardController> queryDashboard:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
 }

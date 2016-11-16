@@ -40,8 +40,9 @@ public class AccdetailController extends Controller{
 	@ActionKey("/api/players/accdetail")
 	public void queryActivePlayer() {
 		String accountId = getPara("accountId","");
+		logger.info("params:{"+"accountId"+accountId+"}");
 		Map<String, Object> data = accdetailService.queryAccdetail(accountId);
-		logger.debug("<AccdetailController> queryActivePlayer:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
 }

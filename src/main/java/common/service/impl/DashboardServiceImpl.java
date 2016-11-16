@@ -178,7 +178,7 @@ public class DashboardServiceImpl implements DashboardService{
 		data.put("gameTimesNSum", String.valueOf(gameTimesNSum));
 		data.put("revenueTSum", String.valueOf(revenueTSum));
 		data.put("revenueNSum", String.valueOf(revenueNSum));
-		logger.debug("queryDashboardData:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 }

@@ -69,6 +69,7 @@ public class RetainController extends Controller{
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		logger.info("params:{"+"icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
 		
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		List<String> categories = DateUtils.getDateList(startDate, endDate);
@@ -101,7 +102,7 @@ public class RetainController extends Controller{
 		data.put("nDRRateAvg", queryData.get("nDRRateAvg"));
 		data.put("sDRRateAvg", queryData.get("sDRRateAvg"));
 		data.put("mRRateAvg", queryData.get("mRRateAvg"));
-		logger.debug("<RetainController> queryRetain:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
 	/**
@@ -153,7 +154,7 @@ public class RetainController extends Controller{
 		}
 		data.put("header", tableHeader);
 		data.put("data", sourceData);
-		logger.debug("<RetainController> queryRetainCustomize:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
 	/**
@@ -169,6 +170,8 @@ public class RetainController extends Controller{
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		logger.info("params:{"+"icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
+		
 		List<String> categories = DateUtils.getDateList(startDate, endDate);
 		Map<String, Object> queryData = retainPlayersService.queryRetainEquipment(categories, icons, startDate, endDate);
 		
@@ -212,7 +215,7 @@ public class RetainController extends Controller{
 		data.put("data", seriesMap);
 		data.put("tableData", tableData);
 		data.put("header", tableHeader);
-		logger.debug("<RetainController> queryRetainEquipmentRate:" + data);
+		logger.info("data:" + data);
 		renderJson(data);
 	}
 }

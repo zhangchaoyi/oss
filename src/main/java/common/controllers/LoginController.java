@@ -34,8 +34,6 @@ public class LoginController extends Controller {
 	 */
 	@Before(GET.class)
 	public void index() {
-//		setAttr("from", getPara("from"));
-
 		render("login.html");
 	}
     /**
@@ -52,14 +50,14 @@ public class LoginController extends Controller {
 		String username = getPara("username");
 		String password = getPara("password");
 		String key = getPara("key");
-
+		logger.info("paras: {" + "username:"+username+",password:"+password+",key:"+key+"}");
 		try {
 			username = EncryptUtils.aesDecrypt(username,key);
 			password = EncryptUtils.aesDecrypt(password,key);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		logger.debug("username:" + username + " password:" + password + " key:" + key);
+		logger.info("After decrypt:--"+"username:" + username + " password:" + password + " key:" + key);
 		
 		SecUser secUser = as.getUser(username);
 		if(secUser==null){
@@ -72,16 +70,16 @@ public class LoginController extends Controller {
 		try {
 			if(EncryptUtils.checkpassword(password, queryPasswd)){
 				setCookie("login",username, -1, "/", true);
-				logger.debug("login successfully");
+				logger.info("login successfully");
 				renderJson("{\"message\":\"success\"}");
 				return;
 			}
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-			logger.debug("<LoginController> Exception:", e);
+			logger.info("<LoginController> Exception:", e);
 			e.printStackTrace();
 		}
 		
-		logger.debug("login failed");
+		logger.info("login failed");
 		renderJson("{\"message\":\"failed\"}");
 	}
 	/**
@@ -92,7 +90,7 @@ public class LoginController extends Controller {
 	@Before(POST.class)
 	@ActionKey("/api/logout")
 	public void logout() {
-		logger.debug("logout succefully");
+		logger.info("logout succefully");
 		removeCookie("login");
 		renderJson("{\"message\":\"success\"}");
 	}
@@ -114,7 +112,7 @@ public class LoginController extends Controller {
 		Map<String, String> data = new HashMap<String, String>();
 		data.put("username", username);
 		data.put("message", message);
-		logger.debug("cookie info" + data);
+		logger.info("cookie info" + data);
 		renderJson(data);
 	}
 

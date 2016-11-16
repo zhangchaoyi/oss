@@ -35,6 +35,7 @@ public class AdminServiceImpl implements AdminService {
 	 * @return 用户对象
 	 */
 	public SecUser getUser(String username) {
+		logger.info("params:{"+"username:"+username+"username");
 		String sql = "select password, salt from sec_user where user_name = ?";
 		SecUser secUser = SecUser.dao.findFirst(sql, username);
 		return secUser;
@@ -93,7 +94,7 @@ public class AdminServiceImpl implements AdminService {
 			password = EncryptUtils.EncoderByMd5(password);
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
 			e.printStackTrace();
-			logger.debug("<AdminServiceImpl> Exception:", e);
+			logger.info("Exception:", e);
 		}
 		SecUser secUser = new SecUser().set("user_name", username).set("password", password).set("salt", salt)
 				.set("created_time", new Date());
@@ -163,7 +164,7 @@ public class AdminServiceImpl implements AdminService {
 			subList.add(entry.getKey());
 			data.add(subList);
 		}
-		logger.debug("<AdminServiceImpl> queryAllUsers:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
@@ -186,7 +187,7 @@ public class AdminServiceImpl implements AdminService {
 
 		deleted = Db.update(duSql);
 		deleted = Db.update(duRSql);
-		logger.debug("<AdminServiceImpl> deleted:" + deleted);
+		logger.info("deleted:" + deleted);
 		return deleted;
 	}
 

@@ -157,7 +157,7 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 		data.put("nDRRateAvg", nDRRateAvg);
 		data.put("sDRRateAvg", sDRRateAvg);
 		data.put("mRRateAvg", mRRateAvg);
-		logger.debug("queryRetainUser:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 	/**
@@ -325,7 +325,7 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 		data.put("sevenD", sevenDData);
 		data.put("ftD", ftDData);
 		data.put("ttD", ttDData);
-		logger.debug("queryRetainEquipment:" + data);
+		logger.info("data:" + data);
 		return data;
 	}
 
