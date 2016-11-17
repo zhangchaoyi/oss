@@ -87,12 +87,13 @@ $("button.btn.btn-default.btn-circle").click(function(){
     location.reload();
 })
 
-//用户显示栏
+//用户显示栏  头部服务器选项列表  用户名信息
 $(function(){
     $.post("/oss/api/cookie/info", {
 
     },
     function(data, status) {
+        //cookie不存在的情况会被java拦截器 返回login页
         if(data.message=="true"){
             $("#dropdownMenu1").text("");
             $("#dropdownMenu1").append("<span class='glyphicon glyphicon-user btn-user'></span>" + data.username + "<span class='caret'></span>");
@@ -103,24 +104,33 @@ $(function(){
             }else{
                 $("#btn-db").append(data.dbName + " <span class='caret'></span>");    
             }
+            var dbs = data.dbs;
+            var dbsDom = "";
+            for(var key in dbs){
+                dbsDom += "<li><a data-info="+key+">"+dbs[key]+"</a></li>";
+            }
+            $("#db-menu").append(dbsDom);
+            initDbMenu();
          }
     }); 
    
 });
 
 //选择服务器
-$("#db-menu > li").click(function(){
+function initDbMenu(){
+    $("#db-menu > li").click(function(){
         var txt = $(this).children("a").text();
         var info = $(this).children("a").attr("data-info");
         $("#btn-db").text("");
         $("#btn-db").append(txt+' <span class="caret"></span>');
         $("#btn-db").attr("data-info", info);
-    $.post("/oss/api/changeDb", {
-        db:info
-    },
-    function(data, status) {
-        if(data=="succeed"){
-            loadData();     
-        }
+        $.post("/oss/api/changeDb", {
+            db:info
+        },
+        function(data, status) {
+            if(data=="succeed"){
+                loadData();     
+            }
+        });
     });
-});
+}

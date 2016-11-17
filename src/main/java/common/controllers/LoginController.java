@@ -36,6 +36,13 @@ public class LoginController extends Controller {
 	public void index() {
 		render("login.html");
 	}
+	
+	@Before(POST.class)
+	@ActionKey("/api/login/serverInfo")
+	public void loginServer() {
+		renderJson("dbs", DbSelector.getDbs());
+	}
+	
     /**
      * 登录校验接口,先根据username查询mysql的salt,将(传来的password经解密后 + salt) md5 得到摘要 比对 数据库的password摘要  
      * @author chris
@@ -112,28 +119,13 @@ public class LoginController extends Controller {
 			message = "true";
 		}
 		String db = DbSelector.getDbName();
-		Map<String, String> data = new HashMap<String, String>();
+		Map<String, Object> data = new HashMap<String, Object>();
 		data.put("username", username);
 		data.put("db", db);
-		data.put("dbName", getDbName(db));
+		data.put("dbName", DbSelector.getDbName(db));
+		data.put("dbs", DbSelector.getDbs());
 		data.put("message", message);
 		logger.info("cookie info" + data);
 		renderJson(data);
-	}
-	
-	private String getDbName(String db){
-		String dbName = "";
-		switch(db){
-		case "malai":
-			dbName = "马来服";
-			break;
-		case "uc":
-			dbName = "UC服";
-			break;
-		case "test":
-			dbName = "测试服";
-			break;
-		}
-		return dbName;
 	}
 }

@@ -1,10 +1,14 @@
 $(function(){
+	loadData();
+});
+
+function loadData(){
 	$.post("/oss/api/dashboard", {
     },
     function(data, status) {
        configTable(data);   
     });
-});
+}
 
 function configTable(data){
 	$("#equipTotal").text(data["eT"]);

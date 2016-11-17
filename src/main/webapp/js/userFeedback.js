@@ -1,3 +1,4 @@
+//默认url
 var emailAddress = "http://47.89.47.176:8002/gm";
 
 $(function(){
@@ -96,6 +97,9 @@ $(".nav-tab.feedback > ul > li").click(function(){
     }
     if(server=="egguccn2.koogame.cn"){
         emailAddress = "http://118.178.17.105:8002/gm";
+    }
+    if(server=="egguccn.koogame.cn"){
+        emailAddress = "http://118.178.19.95:8002/gm";
     }
     loadFeedbackData(server);
 });
@@ -212,6 +216,7 @@ function initSelectAll(){
             $("#table-feedback-detail tbody tr td input").prop("checked","");
         }
     });
+    
 }
 
 
@@ -219,7 +224,11 @@ function initSelectAll(){
 $("button.btn.btn-default.btn-circle").attr('disabled',"true");
 $("ul.dropdown-menu.iconBar > li").addClass("disabled");
 $("li.btn-icons").unbind("click");
-$('.btn-icons > a > div').iCheck('disable');
 $("li.disabled > button.btn.btn-primary").attr('disabled',"true");
-$("#db-menu > li").addClass("disabled");
-$("#db-menu > li").unbind("click");
+$("#btn-db").one("click",function(){
+    $("#db-menu > li").addClass("disabled");
+    $("#db-menu > li").unbind("click");   
+});
+$("#btn-dropdownIcon").one("click", function(){
+    $('.btn-icons > a > div').iCheck('disable');
+});

@@ -81,7 +81,11 @@ function randomWord(randomFlag, min, max){
 $("button.btn.btn-default.btn-circle").attr('disabled',"true");
 $("ul.dropdown-menu.iconBar > li").addClass("disabled");
 $("li.btn-icons").unbind("click");
-$('input').iCheck('disable');
 $("li.disabled > button.btn.btn-primary").attr('disabled',"true");
-$("#db-menu > li").addClass("disabled");
-$("#db-menu > li").unbind("click");
+$("#btn-db").one("click",function(){
+    $("#db-menu > li").addClass("disabled");
+    $("#db-menu > li").unbind("click");   
+});
+$("#btn-dropdownIcon").one("click", function(){
+    $('.btn-icons > a > div').iCheck('disable');
+});
