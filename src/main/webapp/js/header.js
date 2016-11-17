@@ -131,6 +131,9 @@ function initDbMenu(){
             if(data=="succeed"){
                 loadData();     
             }
+            if(data=="failed"){
+                alert("切换数据源失败");
+            }
         });
     });
 }

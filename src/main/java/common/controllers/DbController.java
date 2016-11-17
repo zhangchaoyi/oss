@@ -21,8 +21,8 @@ public class DbController extends Controller{
 	public void changeDb() {
 		String dbName = getPara("db","");
 		logger.info("params:{"+"dbName"+dbName+"}");
-		if(!dbName.equals("malai") && !dbName.equals("uc") && !dbName.equals("test")){
-			renderText("fail");
+		if(!dbName.equals("malai") && !dbName.equals("uc") && !dbName.equals("test") && !dbName.equals("ios")){
+			renderText("failed");
 			return;
 		}
 		DbSelector.setDbName(dbName);
