@@ -33,7 +33,7 @@ public class AdminController extends Controller {
 	@Before(GET.class)
 	@ActionKey("/admin/authority/error")
 	public void authorityError() {
-		render("authorityError.html");
+		renderError(401,"authorityError.html");
 	}
 	/**
 	 *  新增用户页

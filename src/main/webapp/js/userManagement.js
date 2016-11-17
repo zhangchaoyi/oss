@@ -226,7 +226,7 @@ function isRoleChange(cr,inputTxt){
 $("button.btn.btn-default.btn-circle").attr('disabled',"true");
 $("ul.dropdown-menu.iconBar > li").addClass("disabled");
 $("li.btn-icons").unbind("click");
-$('.btn-icons > a > div > input').iCheck('disable');
+$('.btn-icons > a > div').iCheck('disable');
 $("li.disabled > button.btn.btn-primary").attr('disabled',"true");
 $("#db-menu > li").addClass("disabled");
 $("#db-menu > li").unbind("click");
