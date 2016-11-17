@@ -172,13 +172,24 @@ $(function() {
         if($(hrefs[i]).attr("href")==localPath){
             var subParentTag = $(hrefs[i]).parent().parent();
             var rootParentTag = $(subParentTag).parent();
+            //二级或三级菜单
             if(rootParentTag.get(0).tagName == "LI"){
                 $(rootParentTag).addClass("active");
                 $(subParentTag).addClass("in");
                 $(subParentTag).attr("aria-expanded","true");
+                //设置合适高度
                 var length = $(subParentTag).children().length;
                 length = length * 39;
                 $(subParentTag).css("height",length + "px");
+
+                if(subParentTag.hasClass("nav-third-level")){
+                    var secondUl = $(rootParentTag).parent();
+                    var secondLi = $(secondUl).parent();
+                    $(secondLi).addClass("active");
+                    $(secondUl).addClass("in");
+                    $(secondUl).attr("aria-expanded","true");
+                }
+
             }
             $(hrefs[i]).css("background","#d6d5d5");
         }
