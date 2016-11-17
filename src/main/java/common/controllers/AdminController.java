@@ -14,6 +14,7 @@ import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 
 import common.interceptor.RootInterceptor;
+import common.mysql.DbSelector;
 import common.service.AdminService;
 import common.service.impl.AdminServiceImpl;
 import common.utils.EncryptUtils;
@@ -92,7 +93,16 @@ public class AdminController extends Controller {
 		}
 		
 		logger.info("username:" + username + "password:" + password + "role:" + role);
+		
+		//对各个数据库同时进行用户管理,修改完成恢复原数据库
+		String originDb = DbSelector.getDbName();
+		DbSelector.setDbName("malai");
 		boolean succeed = as.signupUser(username, password, role);
+		DbSelector.setDbName("uc");
+		succeed = as.signupUser(username, password, role);
+		DbSelector.setDbName("test");
+		succeed = as.signupUser(username, password, role);
+		DbSelector.setDbName(originDb);
 		
 		if(succeed==true){
 			logger.info("signup successfully");
@@ -127,7 +137,16 @@ public class AdminController extends Controller {
 	@ActionKey("/api/admin/deleteUsers")
 	public void deleteUsers() {
 		String users = StringUtils.arrayToQueryString(getParaValues("users[]"));
+		//对各个数据库同时进行用户管理,修改完成恢复原数据库
+		String originDb = DbSelector.getDbName();
+		DbSelector.setDbName("malai");
 		int deleted = as.deleteByUserName(users);
+		DbSelector.setDbName("uc");
+		deleted = as.deleteByUserName(users);
+		DbSelector.setDbName("test");
+		deleted = as.deleteByUserName(users);
+		DbSelector.setDbName(originDb);
+		
 		Map<String, String> data = new HashMap<String, String>();
 		data.put("message", String.valueOf(deleted));
 		logger.info("return:" + deleted);
@@ -146,7 +165,16 @@ public class AdminController extends Controller {
 		String username = getPara("username");
 		String[] queryRole = getParaValues("roles[]");
 		Map<String, String> data = new HashMap<String, String>();
+		//对各个数据库同时进行用户管理,修改完成恢复原数据库
+		String originDb = DbSelector.getDbName();
+		DbSelector.setDbName("malai");
 		as.changeRoles(username, queryRole);
+		DbSelector.setDbName("uc");
+		as.changeRoles(username, queryRole);
+		DbSelector.setDbName("test");
+		as.changeRoles(username, queryRole);
+		DbSelector.setDbName(originDb);
+		
 		data.put("message", "successfully");
 		logger.info("data:" + data);
 		renderJson(data);

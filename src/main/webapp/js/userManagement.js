@@ -228,3 +228,5 @@ $("ul.dropdown-menu.iconBar > li").addClass("disabled");
 $("li.btn-icons").unbind("click");
 $('.btn-icons > a > div > input').iCheck('disable');
 $("li.disabled > button.btn.btn-primary").attr('disabled',"true");
+$("#db-menu > li").addClass("disabled");
+$("#db-menu > li").unbind("click");

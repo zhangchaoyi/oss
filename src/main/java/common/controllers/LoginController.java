@@ -15,7 +15,6 @@ import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 
-import common.interceptor.DataGuestInterceptor;
 import common.model.SecUser;
 import common.mysql.DbSelector;
 import common.service.AdminService;
@@ -102,7 +101,7 @@ public class LoginController extends Controller {
 	 * @author chris
 	 * @role  data_guest
 	 */
-	@Before({POST.class, DataGuestInterceptor.class})
+	@Before(POST.class)
 	@ActionKey("/api/cookie/info")
 	public void getCookieInfo(){
 		Cookie cookie = getCookieObject("login");

@@ -44,7 +44,7 @@ public class VipInterceptor implements Interceptor {
 		if (actionKey.startsWith("/api")) {
 			if (cookie == null) {
 				controller.redirect("/login");
-				logger.debug("<VipInterceptor>: cookie is null,permission denied");
+				logger.info("cookie is null,permission denied");
 				return;
 			}
 			controller.redirect("/admin/authority/error");
@@ -55,10 +55,10 @@ public class VipInterceptor implements Interceptor {
 		String from = "/oss" + actionKey + (queryString == null ? "" : "?" + queryString);
 		if(cookie==null){
 			controller.redirect("/login?from="+from);
-			logger.debug("<VipInterceptor>: cookie is null,permission denied");
+			logger.info("cookie is null,permission denied");
 			return;
 		}
-		logger.debug("<VipInterceptor>: cookie is not null,permission denied");
+		logger.info("cookie is not null,permission denied");
 		controller.redirect("/admin/authority/error?from=" + from);
 	}
 }

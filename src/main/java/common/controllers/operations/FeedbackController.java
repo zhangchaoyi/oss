@@ -2,7 +2,6 @@ package common.controllers.operations;
 
 import java.util.List;
 import java.util.Map;
-
 import org.apache.log4j.Logger;
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
@@ -10,7 +9,8 @@ import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
-import common.interceptor.VipInterceptor;
+import common.interceptor.GmInterceptor;
+import common.mysql.DbSelector;
 import common.service.OperationService;
 import common.service.impl.OperationServiceImpl;
 import common.utils.StringUtils;
@@ -24,9 +24,10 @@ public class FeedbackController extends Controller{
 	 * @author chris
 	 * @role vip
 	 */
-	@Before({GET.class, VipInterceptor.class})
+	@Before({GET.class, GmInterceptor.class})
 	@ActionKey("/operation/feedback")
 	public void feedbackIndex() {
+		DbSelector.setDbName("malai");
 		render("userFeedback.html");
 	}
 	
@@ -76,7 +77,7 @@ public class FeedbackController extends Controller{
 	 * @author chris
 	 * @role vip
 	 */
-	@Before({POST.class, VipInterceptor.class})
+	@Before({POST.class, GmInterceptor.class})
 	@ActionKey("/api/operation/feedback/list")
 	public void queryFeedback() {
 		String startDate = getPara("startDate", "");
@@ -94,7 +95,7 @@ public class FeedbackController extends Controller{
 	 * @getPara id  -- mysql row id
 	 * @role vip 
 	 */
-	@Before({POST.class, VipInterceptor.class})
+	@Before({POST.class, GmInterceptor.class})
 	@ActionKey("/api/operation/feedback/user/reply")
 	public void modifyFeedbackUserReply() {
 		String id = getPara("id");
@@ -111,7 +112,7 @@ public class FeedbackController extends Controller{
 	 * @author chris
 	 * @getPara id[]  获取row id列表
 	 */
-	@Before({POST.class, VipInterceptor.class})
+	@Before({POST.class, GmInterceptor.class})
 	@ActionKey("/api/operation/feedback/user/delete")
 	public void deleteFeedbackUserReply() {
 		String ids = StringUtils.arrayToQueryString(getParaValues("ids[]"));
@@ -126,7 +127,7 @@ public class FeedbackController extends Controller{
 	 * @author chris
 	 * @getPara id 获取row id
 	 */
-	@Before(POST.class)
+	@Before({POST.class,GmInterceptor.class})
 	@ActionKey("/api/operation/feedback/user/detail")
 	public void deleteFeedbackUser() {
 		String id = getPara("id");

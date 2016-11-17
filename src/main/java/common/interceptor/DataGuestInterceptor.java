@@ -44,7 +44,7 @@ public class DataGuestInterceptor implements Interceptor {
 		if (actionKey.startsWith("/api")) {
 			if (cookie == null) {
 				controller.redirect("/login");
-				logger.debug("<DataGuestInterceptor>: cookie is null,permission denied");
+				logger.info("cookie is null,permission denied");
 				return;
 			}
 			controller.redirect("/admin/authority/error");
@@ -55,10 +55,10 @@ public class DataGuestInterceptor implements Interceptor {
 		String from = "/oss" + actionKey + (queryString == null ? "" : "?" + queryString);
 		if(cookie==null){
 			controller.redirect("/login?from="+from);
-			logger.debug("<DataGuestInterceptor>: cookie is null,permission denied");
+			logger.info("cookie is null,permission denied");
 			return;
 		}
-		logger.debug("<DataGuestInterceptor>: cookie is not null,permission denied");
+		logger.info("cookie is not null,permission denied");
 		controller.redirect("/admin/authority/error?from=" + from);
 	}
 

@@ -29,14 +29,14 @@ import com.jfinal.plugin.activerecord.Db;
  */
 public class AdminServiceImpl implements AdminService {
 	private static Logger logger = Logger.getLogger(AdminServiceImpl.class);
-	private String db = DbSelector.getDbName();
 	/**
 	 * 查看user是否存在
 	 * @param username 用户名
 	 * @return 用户对象
 	 */
 	public SecUser getUser(String username) {
-		logger.info("params:{"+"username:"+username+"username");
+		String db = DbSelector.getDbName();
+		logger.info("params:{"+"username:"+username+"username"+"}"+"db"+db);
 		String sql = "select password, salt from sec_user where user_name = ?";
 		SecUser secUser = SecUser.dao.use(db).findFirst(sql, username);
 		return secUser;
@@ -48,6 +48,8 @@ public class AdminServiceImpl implements AdminService {
 	 * @return 用户角色列表
 	 */
 	public List<String> queryRoleByUsername(String username) {
+		String db = DbSelector.getDbName();
+		logger.info("params:{"+"username:"+username+"}"+" db:"+db);
 		String sql = "select role_name from sec_role A join sec_user_role B on A.role_id = B.role_id join sec_user C on B.user_id = C.user_id where C.user_name = ?";
 		List<SecRole> secRole = SecRole.dao.use(db).find(sql, username);
 
@@ -62,6 +64,7 @@ public class AdminServiceImpl implements AdminService {
 	/**
 	 * 判断角色是否具有该角色权限,如果该用户的role列表中存在一个role比当前Interceptor权重大则为true
 	 * 例如Interceptor为DataGuest,而用户的具有admin的role权限,则为true
+	 * 先判断 两个角色是否相同 
 	 * @param roles 用户具有的角色
 	 * @param 所需校验的角色
 	 * @return true/false
@@ -70,7 +73,11 @@ public class AdminServiceImpl implements AdminService {
 		boolean permission = false;
 		int queryRoleWeight = getRoleWeight(queryRole);
 		for (String r : roles) {
-			if (getRoleWeight(r) >= queryRoleWeight) {
+			if(r.equals(queryRole)){
+				permission = true;
+				break;
+			}
+			if (getRoleWeight(r) > queryRoleWeight) {
 				permission = true;
 				break;
 			}
@@ -86,6 +93,8 @@ public class AdminServiceImpl implements AdminService {
 	 * @return boolean
 	 */
 	public boolean signupUser(String username, String password, String role) {
+		String db = DbSelector.getDbName();
+		logger.info("params:{"+"username:"+username+",password:"+password+",role:"+role+"}"+" db:"+db);
 		boolean succeed = false;
 		String salt = RandomUtil.getRandomString(6);
 		// 密码原文 + salt
@@ -111,6 +120,8 @@ public class AdminServiceImpl implements AdminService {
 	 *  @return boolean
 	 */
 	public boolean existUser(String username) {
+		String db = DbSelector.getDbName();
+		logger.info("params:{"+"username:"+username+"}"+" db:"+db);
 		boolean exist = false;
 		String sql = "select * from sec_user where user_name = ?";
 		SecUser secUser = SecUser.dao.use(db).findFirst(sql, username);
@@ -125,6 +136,7 @@ public class AdminServiceImpl implements AdminService {
 	 *  @return list
 	 */
 	public List<List<String>> queryAllUsers() {
+		String db = DbSelector.getDbName();
 		String sql = "select A.user_name,A.created_time,C.role_name from sec_user A join sec_user_role B on A.user_id = B.user_id join sec_role C on B.role_id = C.role_id;";
 		List<SecUser> secUsers = SecUser.dao.use(db).find(sql);
 		// Map<username,Map<role/createTime,String>>
@@ -175,6 +187,8 @@ public class AdminServiceImpl implements AdminService {
 	 *  @return row id /0 表示失败
 	 */
 	public int deleteByUserName(String users) {
+		String db = DbSelector.getDbName();
+		logger.info("params:{"+"users:"+users+"}"+" db"+db);
 		int deleted = 0;
 		String qSql = "select user_id from sec_user where user_name in (" + users + ") ";
 		List<SecUser> secUser = SecUser.dao.use(db).find(qSql);
@@ -194,6 +208,8 @@ public class AdminServiceImpl implements AdminService {
 
 	// 先根据用户名查询现有的角色,比对 新要求角色 得到需要删除的角色列表,需要新增的角色列表,不变的角色列表,更改用户的角色
 	public void changeRoles(String username, String[] queryRole) {
+		String db = DbSelector.getDbName();
+		logger.info("params:{"+"username:"+username+",queryRole:"+queryRole+"}"+" db:"+db);
 		List<Integer> roles = new ArrayList<Integer>();
 		for (String s : queryRole) {
 			roles.add(getRoleIdByRoleName(s));

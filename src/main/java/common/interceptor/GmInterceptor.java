@@ -1,7 +1,17 @@
 package common.interceptor;
 
+import java.util.List;
+
+import javax.servlet.http.Cookie;
+
+import org.apache.log4j.Logger;
+
 import com.jfinal.aop.Interceptor;
 import com.jfinal.aop.Invocation;
+import com.jfinal.core.Controller;
+
+import common.service.AdminService;
+import common.service.impl.AdminServiceImpl;
 /**
  * 要求用户的角色至少为gm
  * @author chris
@@ -9,10 +19,48 @@ import com.jfinal.aop.Invocation;
  */
 public class GmInterceptor implements Interceptor {
 
+	private static Logger logger = Logger.getLogger(GmInterceptor.class);
+	private AdminService as = new AdminServiceImpl();
 	@Override
-	public void intercept(Invocation inv) {
-		// TODO Auto-generated method stub
-		
+	public void intercept(Invocation invocation) {
+		Controller controller = invocation.getController();
+		Cookie cookie = controller.getCookieObject("login");
+		String username = "";
+		boolean permission = false;
+		if (cookie != null) {
+			username = cookie.getValue();
+			// 获取role列表
+			if (!"".equals(username)) {
+				List<String> roles = as.queryRoleByUsername(username);
+				permission = as.validateRolePermission(roles, "gm");
+			}
+			if(permission==true){
+				invocation.invoke();
+				return;
+			}
+		}
+
+		String actionKey = invocation.getActionKey();
+		// 接口校验不通过直接返回/login
+		if (actionKey.startsWith("/api")) {
+			if (cookie == null) {
+				controller.redirect("/login");
+				logger.info("cookie is null,permission denied");
+				return;
+			}
+			controller.redirect("/admin/authority/error");
+			return;
+		}
+		// 页面校验不通过需要记录来时的url再返回/login
+		String queryString = controller.getRequest().getQueryString();
+		String from = "/oss" + actionKey + (queryString == null ? "" : "?" + queryString);
+		if(cookie==null){
+			controller.redirect("/login?from="+from);
+			logger.info("cookie is null,permission denied");
+			return;
+		}
+		logger.info("cookie is not null,permission denied");
+		controller.redirect("/admin/authority/error?from=" + from);
 	}
 
 }

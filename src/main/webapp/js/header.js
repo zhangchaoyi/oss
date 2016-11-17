@@ -93,12 +93,16 @@ $(function(){
 
     },
     function(data, status) {
-         if(data.message=="true"){
+        if(data.message=="true"){
             $("#dropdownMenu1").text("");
             $("#dropdownMenu1").append("<span class='glyphicon glyphicon-user btn-user'></span>" + data.username + "<span class='caret'></span>");
-        $("#btn-db").text("");
+            $("#btn-db").text("");
             $("#btn-db").attr("data-info", data.db);
-        $("#btn-db").append(data.dbName + " <span class='caret'></span>");
+            if(location.href.indexOf("admin")!=-1){
+                $("#btn-db").append("所有服务器" + " <span class='caret'></span>");    
+            }else{
+                $("#btn-db").append(data.dbName + " <span class='caret'></span>");    
+            }
          }
     }); 
    

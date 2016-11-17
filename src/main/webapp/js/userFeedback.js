@@ -1,4 +1,4 @@
-var emailAddress = "http://120.25.209.140:8002/gm";
+var emailAddress = "http://47.89.47.176:8002/gm";
 
 $(function(){
     loadData();
@@ -221,3 +221,5 @@ $("ul.dropdown-menu.iconBar > li").addClass("disabled");
 $("li.btn-icons").unbind("click");
 $('.btn-icons > a > div > input').iCheck('disable');
 $("li.disabled > button.btn.btn-primary").attr('disabled',"true");
+$("#db-menu > li").addClass("disabled");
+$("#db-menu > li").unbind("click");
