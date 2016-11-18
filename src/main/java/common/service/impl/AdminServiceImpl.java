@@ -29,6 +29,7 @@ import com.jfinal.plugin.activerecord.Db;
  */
 public class AdminServiceImpl implements AdminService {
 	private static Logger logger = Logger.getLogger(AdminServiceImpl.class);
+
 	/**
 	 * 查看user是否存在
 	 * @param username 用户名
@@ -36,7 +37,7 @@ public class AdminServiceImpl implements AdminService {
 	 */
 	public SecUser getUser(String username) {
 		String db = DbSelector.getDbName();
-		logger.info("params:{"+"username:"+username+"username"+"}"+"db"+db);
+		logger.info("params:{" + "username:" + username + "username" + "}" + "db" + db);
 		String sql = "select password, salt from sec_user where user_name = ?";
 		SecUser secUser = SecUser.dao.use(db).findFirst(sql, username);
 		return secUser;
@@ -44,12 +45,13 @@ public class AdminServiceImpl implements AdminService {
 
 	/**
 	 * 根据username查询 用户角色
+	 * 
 	 * @param username 用户名
 	 * @return 用户角色列表
 	 */
 	public List<String> queryRoleByUsername(String username) {
 		String db = DbSelector.getDbName();
-		logger.info("params:{"+"username:"+username+"}"+" db:"+db);
+		logger.info("params:{" + "username:" + username + "}" + " db:" + db);
 		String sql = "select role_name from sec_role A join sec_user_role B on A.role_id = B.role_id join sec_user C on B.user_id = C.user_id where C.user_name = ?";
 		List<SecRole> secRole = SecRole.dao.use(db).find(sql, username);
 
@@ -63,8 +65,7 @@ public class AdminServiceImpl implements AdminService {
 
 	/**
 	 * 判断角色是否具有该角色权限,如果该用户的role列表中存在一个role比当前Interceptor权重大则为true
-	 * 例如Interceptor为DataGuest,而用户的具有admin的role权限,则为true
-	 * 先判断 两个角色是否相同 
+	 * 例如Interceptor为DataGuest,而用户的具有admin的role权限,则为true 先判断 两个角色是否相同
 	 * @param roles 用户具有的角色
 	 * @param 所需校验的角色
 	 * @return true/false
@@ -73,7 +74,7 @@ public class AdminServiceImpl implements AdminService {
 		boolean permission = false;
 		int queryRoleWeight = getRoleWeight(queryRole);
 		for (String r : roles) {
-			if(r.equals(queryRole)){
+			if (r.equals(queryRole)) {
 				permission = true;
 				break;
 			}
@@ -94,7 +95,8 @@ public class AdminServiceImpl implements AdminService {
 	 */
 	public boolean signupUser(String username, String password, String role) {
 		String db = DbSelector.getDbName();
-		logger.info("params:{"+"username:"+username+",password:"+password+",role:"+role+"}"+" db:"+db);
+		logger.info(
+				"params:{" + "username:" + username + ",password:" + password + ",role:" + role + "}" + " db:" + db);
 		boolean succeed = false;
 		String salt = RandomUtil.getRandomString(6);
 		// 密码原文 + salt
@@ -115,13 +117,13 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	/**
-	 *  用户名是否已经存在
-	 *  @param username 用户名
-	 *  @return boolean
+	 * 用户名是否已经存在
+	 * @param username 用户名
+	 * @return boolean
 	 */
 	public boolean existUser(String username) {
 		String db = DbSelector.getDbName();
-		logger.info("params:{"+"username:"+username+"}"+" db:"+db);
+		logger.info("params:{" + "username:" + username + "}" + " db:" + db);
 		boolean exist = false;
 		String sql = "select * from sec_user where user_name = ?";
 		SecUser secUser = SecUser.dao.use(db).findFirst(sql, username);
@@ -132,13 +134,31 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	/**
-	 *  查询所有用户的权限列表
-	 *  @return list
+	 * 查询所有用户的权限列表
+	 * 有参数则根据用户名查询,参数为""则查询所有,只支持最多一个username
+	 * 供 用户管理页 和 个人帐号权限页 使用 
+	 * queryUsername
+	 * @return list
 	 */
-	public List<List<String>> queryAllUsers() {
+	public List<List<String>> queryUsers(String...queryUsername) {
 		String db = DbSelector.getDbName();
-		String sql = "select A.user_name,A.created_time,C.role_name from sec_user A join sec_user_role B on A.user_id = B.user_id join sec_role C on B.role_id = C.role_id;";
-		List<SecUser> secUsers = SecUser.dao.use(db).find(sql);
+		boolean userManagePage = false;
+		List<List<String>> data = new ArrayList<List<String>>();
+		List<SecUser> secUsers = new ArrayList<SecUser>();
+		if(queryUsername.length==0){
+			userManagePage = true;
+			logger.info("无参数" + " db:"+db);
+			String sql = "select A.user_name,A.created_time,C.role_name from sec_user A join sec_user_role B on A.user_id = B.user_id join sec_role C on B.role_id = C.role_id;";
+			secUsers = SecUser.dao.use(db).find(sql);
+		}else if(queryUsername.length > 1){
+			logger.info("参数列表长度超过1个");
+			return data;
+		}else{
+			String sql = "select A.user_name,A.created_time,C.role_name from sec_user A join sec_user_role B on A.user_id = B.user_id join sec_role C on B.role_id = C.role_id where A.user_name = ?";
+			secUsers = SecUser.dao.find(sql, queryUsername[0]);
+			logger.info("params:{"+"queryUsername:"+queryUsername[0]+"}"+" db:"+db);
+		}
+		
 		// Map<username,Map<role/createTime,String>>
 		Map<String, Map<String, String>> sort = new HashMap<String, Map<String, String>>();
 		for (SecUser su : secUsers) {
@@ -159,22 +179,25 @@ public class AdminServiceImpl implements AdminService {
 			}
 			sort.put(username, subMap);
 		}
-		List<List<String>> data = new ArrayList<List<String>>();
+		
 		for (Map.Entry<String, Map<String, String>> entry : sort.entrySet()) {
 			List<String> subList = new ArrayList<String>();
-			subList.add(entry.getKey());
 			subList.add(entry.getKey());
 			for (Map.Entry<String, String> subEntry : entry.getValue().entrySet()) {
 				switch (subEntry.getKey()) {
 				case "roleName":
-					subList.add(2, subEntry.getValue());
+					subList.add(1, subEntry.getValue());
 					break;
 				case "createTime":
-					subList.add(3, subEntry.getValue());
+					subList.add(2, subEntry.getValue());
 					break;
 				}
 			}
-			subList.add(entry.getKey());
+			//用户管理页 <删除> <修改权限>列
+			if(userManagePage==true){
+				subList.add(0, entry.getKey());
+				subList.add(entry.getKey());
+			}
 			data.add(subList);
 		}
 		logger.info("data:" + data);
@@ -182,13 +205,13 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	/**
-	 *  根据用户名删除用户 返回值大于0为删除成功
-	 *  @param users 删除用户名
-	 *  @return row id /0 表示失败
+	 * 根据用户名删除用户 返回值大于0为删除成功
+	 * @param users  删除用户名
+	 * @return row id /0 表示失败
 	 */
 	public int deleteByUserName(String users) {
 		String db = DbSelector.getDbName();
-		logger.info("params:{"+"users:"+users+"}"+" db"+db);
+		logger.info("params:{" + "users:" + users + "}" + " db" + db);
 		int deleted = 0;
 		String qSql = "select user_id from sec_user where user_name in (" + users + ") ";
 		List<SecUser> secUser = SecUser.dao.use(db).find(qSql);
@@ -206,10 +229,15 @@ public class AdminServiceImpl implements AdminService {
 		return deleted;
 	}
 
-	// 先根据用户名查询现有的角色,比对 新要求角色 得到需要删除的角色列表,需要新增的角色列表,不变的角色列表,更改用户的角色
+	/**
+	 * 先根据用户名查询现有的角色,比对 新要求角色 得到需要删除的角色列表,需要新增的角色列表,不变的角色列表,更改用户的角色
+	 * @params username 用户名
+	 * @params queryRole 所选的角色
+	 */
+
 	public void changeRoles(String username, String[] queryRole) {
 		String db = DbSelector.getDbName();
-		logger.info("params:{"+"username:"+username+",queryRole:"+queryRole+"}"+" db:"+db);
+		logger.info("params:{" + "username:" + username + ",queryRole:" + queryRole + "}" + " db:" + db);
 		List<Integer> roles = new ArrayList<Integer>();
 		for (String s : queryRole) {
 			roles.add(getRoleIdByRoleName(s));
@@ -258,7 +286,8 @@ public class AdminServiceImpl implements AdminService {
 			}
 		}
 	}
-    //根据角色名获取权重
+
+	// 根据角色名获取权重
 	private int getRoleWeight(String role) {
 		int weight = 0;
 		switch (role) {
@@ -280,7 +309,8 @@ public class AdminServiceImpl implements AdminService {
 		}
 		return weight;
 	}
-    //根据角色名获取角色编号
+
+	// 根据角色名获取角色编号
 	private int getRoleIdByRoleName(String role) {
 		int roleId = 0;
 		switch (role) {

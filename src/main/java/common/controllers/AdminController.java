@@ -1,9 +1,12 @@
 package common.controllers;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.servlet.http.Cookie;
 
 import org.apache.log4j.Logger;
 
@@ -57,6 +60,17 @@ public class AdminController extends Controller {
 	public void manageUsersIndex() {
 		render("userManagement.html");
 	}
+	/**
+	 * 用户个人权限页
+	 * @author chris
+	 * @role all 
+	 */
+	@Before(GET.class)
+	@ActionKey("/admin/account")
+	public void accountIndex(){
+		render("account-permission.html");
+	}
+	
 	/**
 	 *  新增用户接口 
 	 * @author chris
@@ -125,7 +139,7 @@ public class AdminController extends Controller {
 	@Before({POST.class, RootInterceptor.class})
 	@ActionKey("/api/admin/manageUsers")
 	public void manageUsers() {
-		List<List<String>> data = as.queryAllUsers();
+		List<List<String>> data = as.queryUsers();
 		logger.info("data:" + data);
 		renderJson(data);
 	}
@@ -183,6 +197,31 @@ public class AdminController extends Controller {
 		
 		data.put("message", "successfully");
 		logger.info("data:" + data);
+		renderJson(data);
+	}
+	
+	/**
+	 * 用户个人帐号权限页
+	 * 从cookie中获取用户名,cookie不存在则返回空数据
+	 * @author chris
+	 * @role  all
+	 */
+	@Before(POST.class)
+	@ActionKey("/api/admin/account")
+	public void accountPermission(){
+		Cookie cookie = getCookieObject("login");
+		String username = "chris";
+		if(cookie!=null){
+			username = cookie.getValue();
+		}
+		logger.info("get username from cookie:" + "{"+username+"}");
+		List<List<String>> data = new ArrayList<List<String>>();
+		if("".equals(username)){
+			logger.info("cookie 不存在");
+			renderJson(data);
+			return;
+		}
+		data = as.queryUsers(username);
 		renderJson(data);
 	}
 }

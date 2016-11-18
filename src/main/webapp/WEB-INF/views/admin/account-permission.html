@@ -18,23 +18,9 @@
   <link href="http://oss.koogame.cn/oss/css/polaris/polaris.css?v=0.1" rel="stylesheet" /> 
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/jquery.dataTables.css?v=0.1" /> 
   <style type="text/css">
-  .signup-logo {
-    width: 194px;
-    height: 69px;
-    background: url("../../images/logobackup.gif");
-    position: relative;
-    bottom: 19px;
-    border-radius: 8px 8px 8px 8px;
-    text-align: center;
-    opacity: 0.9;
-    left: 27%;
-  }
 
-  hr {
-    width:inherit;
-    right: inherit;
-    bottom:inherit;
-    margin-bottom: inherit;
+  th {
+    text-align: center;
   }
   </style>
   <title>KooGame</title> 
@@ -54,10 +40,6 @@
        </div>
        <div class="btn-group" id="admin-btn"> 
         <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-user btn-user"></span>admin<span class="caret"></span></button> 
-        <ul class="dropdown-menu user-bars" aria-labelledby="dropdownMenu1"> 
-         <li> <a href="#">Action</a></li> 
-         <li> <a href="#">Action1</a></li> 
-        </ul> 
        </div> 
        <div class="logout-btn"> 
         <button type="button" class="btn btn-default btn-off"> <span class="glyphicon glyphicon-off" aria-hidden="true"></span> </button> 
@@ -72,6 +54,12 @@
      <div class="crumb-inner"> 
       <em>全部数据</em> 
      </div> 
+     <div class="btn-group select-db">
+          <button type="button" id="btn-db" class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-info="none">
+            选择服务器 <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu" id="db-menu"></ul>
+     </div>
      <div class="service-bar"> 
       <div class="dropdown"> 
        <button class="btn btn-default dropdown-toggle" type="button" id="btn-dropdownIcon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <span class="caret"></span> </button> 
@@ -92,7 +80,7 @@
    <nav class="navbar-default navbar-side" role="navigation"> 
     <div class="sidebar-collapse"> 
      <ul class="nav" id="main-menu"> 
-      <li> <a href="#"> <i class="fa fa-clock-o "></i>实时概况</a> </li> 
+      <li> <a href="/oss/realtime/info"> <i class="fa fa-clock-o "></i>实时概况</a> </li> 
       <li> <a href="#"> <i class="fa fa-line-chart "></i>报表</a> </li> 
       <li> <a href="#"> <i class="fa fa-user"></i>玩家分析 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
@@ -136,8 +124,8 @@
         <li> <a href="#"> <i class="fa fa-filter "></i>漏斗管理</a> </li> 
        </ul> </li> 
       <li> <a href="#"> <i class="fa fa-send "></i>运营支持 <span class="fa arrow"></span></a> 
-       <ul class="nav nav-second-level">
-        <li> <a href="#"> <i class="fa fa-commenting-o"></i>用户反馈</a> </li> 
+       <ul class="nav nav-second-level"> 
+        <li> <a href="/oss/operation/feedback"> <i class="fa fa-commenting-o"></i>用户反馈</a> </li>
         <li> <a href="#"> <i class="fa fa-bell"></i>数据报警</a> </li> 
        </ul> </li> 
       <li> <a href="#"> <i class="fa fa-anchor "></i>数据挖掘 <span class="fa arrow"></span></a> 
@@ -158,7 +146,7 @@
         <li> <a href="#"> <i class="fa fa-gears"></i>设置 <span class="fa arrow"></span></a> 
          <ul class="nav nav-third-level">
            <li> <a href="/oss/admin/createUser"><i class="fa fa-plus "></i>新增用户角色</a></li>
-           <li> <a href="#"><i class="fa fa-comments-o "></i>用户角色管理</a></li>
+           <li> <a href="/oss/admin/manageUsers"><i class="fa fa-comments-o "></i>用户角色管理</a></li>
          </ul></li> 
         <li> <a href="#"> <i class="fa fa-cloud-download "></i>下载中心</a> </li> 
        </ul> </li> 
@@ -172,11 +160,19 @@
      <div class="row" id="data-first" style="top:55px"> 
       <div class="panel panel-default"> 
        <div class="panel-heading"> 
-        <span class="data-first-panel-heading">用户反馈</span>
+        <span class="data-first-panel-heading">用户权限</span>
        </div> 
        <div class="panel-body"> 
         <div class="tab-content">
-          <table id="data-table-feedback" class="hover stripe row-border"></table> 
+          <table id="data-table-account-permission" class="hover stripe row-border">
+            <thead>
+              <tr role="row">
+                <th>用户名</th>
+                <th>角色</th>
+                <th>创建时间</th>
+              </tr>
+             </thead>
+          </table>
         </div> 
        </div> 
       </div> 
@@ -207,6 +203,6 @@
   <script src="http://oss.koogame.cn/oss/js/dateselector/monthPicker.js?v=0.1"></script> 
   <script src="http://oss.koogame.cn/oss/js/checkbox/icheck.js?v=0.1"></script>
   <script src="http://oss.koogame.cn/oss/js/common.js?v=0.1"></script>
-  <script src="../../js/userFeedback.js?v=0.1"></script>
+  <script src="http://oss.koogame.cn/oss/js/account-permission.js?v=0.1"></script>
  </body>
 </html>
