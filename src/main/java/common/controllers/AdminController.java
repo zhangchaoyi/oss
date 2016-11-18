@@ -3,6 +3,7 @@ package common.controllers;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.log4j.Logger;
 
@@ -24,6 +25,7 @@ import common.utils.StringUtils;
 public class AdminController extends Controller {
 	private static Logger logger = Logger.getLogger(AdminController.class);
 	private AdminService as = new AdminServiceImpl();
+	private Set<String> dbs = DbSelector.getDbs().keySet();
 	
 	/**
 	 * 没有权限页
@@ -93,15 +95,15 @@ public class AdminController extends Controller {
 		}
 		
 		logger.info("username:" + username + "password:" + password + "role:" + role);
+		logger.info("dbs:"+dbs);
 		
 		//对各个数据库同时进行用户管理,修改完成恢复原数据库
 		String originDb = DbSelector.getDbName();
-		DbSelector.setDbName("malai");
-		boolean succeed = as.signupUser(username, password, role);
-		DbSelector.setDbName("uc");
-		succeed = as.signupUser(username, password, role);
-		DbSelector.setDbName("test");
-		succeed = as.signupUser(username, password, role);
+		boolean succeed = false;
+		for(String db : dbs){
+			DbSelector.setDbName(db);
+			succeed = as.signupUser(username, password, role);
+		}
 		DbSelector.setDbName(originDb);
 		
 		if(succeed==true){
@@ -115,7 +117,7 @@ public class AdminController extends Controller {
 		renderJson(data);
 	}
 	/**
-	 * 用户管理接口
+	 * 用户管理接口 由于多个数据源的用户是一致的,只需要查询其中一个
 	 * @author chris
 	 * @return 返回所有用户列表
 	 * @role  root 
@@ -137,14 +139,16 @@ public class AdminController extends Controller {
 	@ActionKey("/api/admin/deleteUsers")
 	public void deleteUsers() {
 		String users = StringUtils.arrayToQueryString(getParaValues("users[]"));
+		logger.info("params:{"+"users[]:"+users+"}");
+		logger.info("dbs:"+dbs);
+		
 		//对各个数据库同时进行用户管理,修改完成恢复原数据库
 		String originDb = DbSelector.getDbName();
-		DbSelector.setDbName("malai");
-		int deleted = as.deleteByUserName(users);
-		DbSelector.setDbName("uc");
-		deleted = as.deleteByUserName(users);
-		DbSelector.setDbName("test");
-		deleted = as.deleteByUserName(users);
+		int deleted = 0;
+		for(String db : dbs){
+			DbSelector.setDbName(db);
+			deleted = as.deleteByUserName(users);
+		}
 		DbSelector.setDbName(originDb);
 		
 		Map<String, String> data = new HashMap<String, String>();
@@ -164,15 +168,17 @@ public class AdminController extends Controller {
 	public void changeRole(){
 		String username = getPara("username");
 		String[] queryRole = getParaValues("roles[]");
+		logger.info("params:{"+"username:"+username+",queryRole:"+queryRole+"}");
+		logger.info("dbs:"+dbs);
+		
 		Map<String, String> data = new HashMap<String, String>();
+		
 		//对各个数据库同时进行用户管理,修改完成恢复原数据库
 		String originDb = DbSelector.getDbName();
-		DbSelector.setDbName("malai");
-		as.changeRoles(username, queryRole);
-		DbSelector.setDbName("uc");
-		as.changeRoles(username, queryRole);
-		DbSelector.setDbName("test");
-		as.changeRoles(username, queryRole);
+		for(String db : dbs){
+			DbSelector.setDbName(db);
+			as.changeRoles(username, queryRole);
+		}
 		DbSelector.setDbName(originDb);
 		
 		data.put("message", "successfully");

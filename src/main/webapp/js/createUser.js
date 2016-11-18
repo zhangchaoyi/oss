@@ -18,6 +18,10 @@ $("#create-user").click(function(){
 		alert("帐号或密码长度需要大于五个字符");
 		return;
 	}
+	if(username==password){
+		alert("帐号名不能和密码相同");
+		return;
+	}
 	var role = $("#role-show").attr("data-info");
 	if(role=="none"){
 		alert("请选择角色");
