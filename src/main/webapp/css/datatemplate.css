@@ -999,7 +999,7 @@ table#attach-table {
     bottom:250px;
 }
 
-input.form-control.hero-selected {
+input.form-control.attach-selected {
     width:55px;
 }
 div#attach-result {
@@ -1009,4 +1009,7 @@ div#attach-result {
     float:left;
     width: 108px;
     margin:5px 5px 10px 5px;
+}
+button#btn-attach-save {
+    margin-top: 6px;
 }

@@ -230,19 +230,22 @@ $(".btn-group.btn-attachment > ul > li").click(function(){
         case "money":
         placeHolder = "请输入金币数量";
         attaText = "金币数量";
-        $(".attachment").html("<div class='input-group'><span class='input-group-addon'><i class='fa fa-plus-circle nest' aria-hidden='true'></i>" + attaText + "</span><input type='text' class='form-control' id='attachment-num' placeholder=" + placeHolder + "></div>");
+        $(".attachment").html("<div class='input-group'><span class='input-group-addon'><i class='fa fa-plus-circle nest' aria-hidden='true'></i>" + attaText + "</span><input type='text' class='form-control' id='attachment-num' placeholder=" + placeHolder + "></div><button type='button' class='btn btn-danger' id='btn-attach-save'>保存</button>");
+        initAttachBtn("金币","obj_1");
         break;
 
         case "diamond":
         placeHolder = "请输入钻石数量";
         attaText = "钻石数量";
-        $(".attachment").html("<div class='input-group'><span class='input-group-addon'><i class='fa fa-plus-circle nest' aria-hidden='true'></i>" + attaText +  "</span><input type='text' class='form-control' id='attachment-num' placeholder=" + placeHolder + "></div>");
+        $(".attachment").html("<div class='input-group'><span class='input-group-addon'><i class='fa fa-plus-circle nest' aria-hidden='true'></i>" + attaText +  "</span><input type='text' class='form-control' id='attachment-num' placeholder=" + placeHolder + "></div><button type='button' class='btn btn-danger' id='btn-attach-save'>保存</button>");
+        initAttachBtn("钻石","obj_2");
         break;
 
         case "exp":
         placeHolder = "请输入经验值";
         attaText = "经验值";
-        $(".attachment").html("<div class='input-group'><span class='input-group-addon'><i class='fa fa-plus-circle nest' aria-hidden='true'></i>" + attaText +  "</span><input type='text' class='form-control' id='attachment-num' placeholder=" + placeHolder + "></div>");
+        $(".attachment").html("<div class='input-group'><span class='input-group-addon'><i class='fa fa-plus-circle nest' aria-hidden='true'></i>" + attaText +  "</span><input type='text' class='form-control' id='attachment-num' placeholder=" + placeHolder + "></div><button type='button' class='btn btn-danger' id='btn-attach-save'>保存</button>");
+        initAttachBtn("经验","obj_3");
         break;
 
         case "hero":
@@ -254,7 +257,7 @@ $(".btn-group.btn-attachment > ul > li").click(function(){
             $(this).toggleClass("selected");
             if($(this).hasClass("selected")){
                 $(this).parent().css("background-color","#B9DEA0");
-                $("#attach-result").append("<span class='input-group selected-result'><span class='input-group-addon'>" + hero + "</span><input type='text' class='form-control hero-selected' value='1' placeholder='阶数' hero-info=" + id + "></span>");    
+                $("#attach-result").append("<span class='input-group selected-result'><span class='input-group-addon'>" + hero + "</span><input type='text' class='form-control attach-selected' value='1' placeholder='阶数' hero-info=" + id + "></span>");    
                 //允许选择后的结果可以点击删除 将英雄列表中对应的英雄修改为[未选择]状态 
                 $("#attach-result > span > span").click(function(){
                     var heroId = $(this).siblings("input").attr("hero-info");
@@ -279,7 +282,7 @@ $(".btn-group.btn-attachment > ul > li").click(function(){
             $(this).toggleClass("selected");
             if($(this).hasClass("selected")){
                 $(this).parent().css("background-color","#B9DEA0");
-                $("#attach-result").append("<span class='input-group selected-result'><span class='input-group-addon'>" + property + "</span><input type='text' class='form-control hero-selected' value='1' placeholder='数量' prop-info=" + id + "></span>");    
+                $("#attach-result").append("<span class='input-group selected-result'><span class='input-group-addon'>" + property + "</span><input type='text' class='form-control attach-selected' value='1' placeholder='数量' prop-info=" + id + "></span>");    
                 //允许选择后的结果可以点击删除 将物品列表中对应的物品修改为[未选择]状态
                 $("#attach-result > span > span").click(function(){
                     var propId = $(this).siblings("input").attr("prop-info");
@@ -301,7 +304,29 @@ $(".btn-group.btn-attachment > ul > li").click(function(){
     $("#attachment-num").attr("data-info", info);
 });
 
-
+//验证附件物品数量为正整数
+function checkNum(num){
+    var re = /^[1-9]+[0-9]*]*$/;
+    return re.test(num);
+}
+//初始化附件保存按钮
+function initAttachBtn(txt, objId){
+    $("#btn-attach-save").click(function(){
+        if($("[obj-id="+objId+"]").length > 0){
+            return;
+        }
+        var val = $('#attachment-num').val();
+        if(!checkNum(val)){
+            val = 1;
+        }
+        $("#attach-result").append("<span class='input-group selected-result'><span class='input-group-addon'>"+ txt +"</span><input type='text' class='form-control attach-selected' value="+ val +" readonly='readonly' obj-id="+objId+"></span>");
+        //点击结果集删除
+        $("#attach-result > span").click(function(){
+            $(this).remove();
+        });
+    });
+    
+}
 
 
 //锁死图标选择下拉菜单 清除按钮
