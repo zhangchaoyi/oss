@@ -219,6 +219,90 @@ function initSelectAll(){
     
 }
 
+//附件按钮 切换选项则清除覆盖前面选项
+$(".btn-group.btn-attachment > ul > li").click(function(){
+    var info = $(this).children("a").attr("data-info");
+    var html = $(this).children("a").html();
+
+    var placeHolder = "";
+    var attaText = "";
+    switch(info){
+        case "money":
+        placeHolder = "请输入金币数量";
+        attaText = "金币数量";
+        $(".attachment").html("<div class='input-group'><span class='input-group-addon'><i class='fa fa-plus-circle nest' aria-hidden='true'></i>" + attaText + "</span><input type='text' class='form-control' id='attachment-num' placeholder=" + placeHolder + "></div>");
+        break;
+
+        case "diamond":
+        placeHolder = "请输入钻石数量";
+        attaText = "钻石数量";
+        $(".attachment").html("<div class='input-group'><span class='input-group-addon'><i class='fa fa-plus-circle nest' aria-hidden='true'></i>" + attaText +  "</span><input type='text' class='form-control' id='attachment-num' placeholder=" + placeHolder + "></div>");
+        break;
+
+        case "exp":
+        placeHolder = "请输入经验值";
+        attaText = "经验值";
+        $(".attachment").html("<div class='input-group'><span class='input-group-addon'><i class='fa fa-plus-circle nest' aria-hidden='true'></i>" + attaText +  "</span><input type='text' class='form-control' id='attachment-num' placeholder=" + placeHolder + "></div>");
+        break;
+
+        case "hero":
+        $(".attachment").html("<table id='attach-table'><tbody><tr><td><li id='linchong'>林冲</li></td><td><li id='zhangfei'>张飞</li></td><td><li id='zhaoyun'>赵云</li></td><td><li id='yuantiangang'>袁天罡</li></td><td><li id='huangzhong'>黄忠</li></td></tr><tr><td><li id='zhentianxingcun'>真田幸村</li></td><td><li id='diaochan'>貂蝉</li></td><td><li id='fububanzang'>服部半藏</li></td><td><li id='daji'>妲己</li></td><td><li id='baiqi'>白起</li></td></tr><tr><td><li id='fahai'>法海</li></td><td><li id='fengchenxiuji'>丰臣秀吉</li></td><td><li id='yuanfeizuozhu'>猿飞佐助</li></td><td><li id='sibada'>斯巴达</li></td><td><li id='lvbu'>吕布</li></td></tr><tr><td><li id='likui'>李逵</li></td><td><li id='jingke'>荆轲</li></td><td><li id='mozi'>墨子</li></td><td><li id='guidie'>归蝶</li></td><td><li id='zhitianxinchang'>织田信长</li></td></tr><tr><td><li id='chengyaojin'>程咬金</li></td><td><li id='anbeiqingming'>安倍晴明</li></td><td><li id='zhugeliang'>诸葛亮</li></td><td><li id='liguang'>李广</li></td></tr></tbody></table><div id='attach-result'></div>");
+        //选择英雄列表 支持动态操作dom
+        $("#attach-table td > li").click(function(){
+            var id = $(this).attr("id");
+            var hero = $(this).text();
+            $(this).toggleClass("selected");
+            if($(this).hasClass("selected")){
+                $(this).parent().css("background-color","#B9DEA0");
+                $("#attach-result").append("<span class='input-group selected-result'><span class='input-group-addon'>" + hero + "</span><input type='text' class='form-control hero-selected' value='1' placeholder='阶数' hero-info=" + id + "></span>");    
+                //允许选择后的结果可以点击删除 将英雄列表中对应的英雄修改为[未选择]状态 
+                $("#attach-result > span > span").click(function(){
+                    var heroId = $(this).siblings("input").attr("hero-info");
+                    $("#"+heroId).toggleClass("selected");
+                    $("#"+heroId).parent().css("background-color","#E6CAC4");
+                    $(this).parent().remove();
+                });
+            }else{
+                $(this).parent().css("background-color","#E6CAC4");
+                $("[hero-info="+ id +"]").parent().remove();
+            }
+            
+        });
+        break;
+
+        case "property":
+        $(".attachment").html("<table id='attach-table' style='font-size:5px'><tbody><tr><td><li id='obj_19'>绿宝箱</li></td><td><li id='obj_21'>蓝宝箱</li></td><td><li id='obj_22'>紫宝箱</li></td><td><li id='obj_23'>金宝箱</li></td><td><li id='obj_27'>蓝色钥匙</li></td></tr><tr><td><li id='obj_28'>紫色钥匙</li></td><td><li id='obj_29'>金色钥匙</li></td><td><li id='obj_31'>大碎片宝箱</li></td><td><li id='obj_33'>紫色瞬开宝箱</li></td><td><li id='obj_34'>金色瞬开宝箱</li></td></tr><tr><td><li id='obj_36'>技能石</li></td><td><li id='obj_37'>碎片宝箱</li></td><td><li id='obj_7'>队伍等级</li></td><td><li id='obj_3000'>钢铁之躯</li></td><td><li id='obj_3001'>热血战魂</li></td></tr><tr><td><li id='obj_3002'>盗贼笔记</li></td><td><li id='obj_3003'>百步穿杨</li></td><td><li id='obj_3004'>大道无形</li></td><td><li id='obj_3005'>护甲片</li></td><td><li id='obj_3006'>枪头</li></td></tr><tr><td><li id='obj_3007'>毒药</li></td><td><li id='obj_3008'>箭羽</li></td><td><li id='obj_3009'>太极图</li></td><td><li id='obj_6000'>万能碎片</li></td><td><li id='obj_6001'>关羽碎片</li></td></tr><tr><td><li id='obj_6002'>秦琼碎片</li></td><td><li id='obj_6003'>李逵碎片</li></td><td><li id='obj_6004'>程咬金碎片</li></td><td><li id='obj_6005'>项羽碎片</li></td><td><li id='obj_6006'>丰臣秀吉碎片</li></td></tr><tr><td><li id='obj_6007'>张飞碎片</li></td><td><li id='obj_6008'>林冲碎片</li></td><td><li id='obj_6009'>赵云碎片</li></td><td><li id='obj_6010'>吕布碎片</li></td><td><li id='obj_6011'>白起碎片</li></td></tr><tr><td><li id='obj_6012'>斯巴达碎片</li></td><td><li id='obj_6013'>真田幸村碎片</li></td><td><li id='obj_6014'>黄忠碎片</li></td><td><li id='obj_6015'>花木兰碎片</li></td><td><li id='obj_6016'>李广碎片</li></td></tr><tr><td><li id='obj_6017'>养由基碎片</li></td><td><li id='obj_6018'>织田信长碎片</li></td><td><li id='obj_6019'>归蝶碎片</li></td><td><li id='obj_6020'>荆轲碎片</li></td><td><li id='obj_6021'>貂蝉碎片</li></td></tr><tr><td><li id='obj_6022'>李白碎片</li></td><td><li id='obj_6023'>墨子碎片</li></td><td><li id='obj_6024'>猿飞佐助碎片</li></td><td><li id='obj_6025'>服部半藏碎片</li></td><td><li id='obj_6026'>姜子牙碎片</li></td></tr><tr><td><li id='obj_6027'>妲己碎片</li></td><td><li id='obj_6028'>袁天罡碎片</li></td><td><li id='obj_6029'>诸葛亮碎片</li></td><td><li id='obj_6030'>安倍晴明碎片</li></td><td><li id='obj_6031'>法海碎片</li></td></tr></tbody></table><div id='attach-result'></div>");
+        //物品选择列表 
+        $("#attach-table td > li").click(function(){
+            var id = $(this).attr("id");
+            var property = $(this).text();
+            $(this).toggleClass("selected");
+            if($(this).hasClass("selected")){
+                $(this).parent().css("background-color","#B9DEA0");
+                $("#attach-result").append("<span class='input-group selected-result'><span class='input-group-addon'>" + property + "</span><input type='text' class='form-control hero-selected' value='1' placeholder='数量' prop-info=" + id + "></span>");    
+                //允许选择后的结果可以点击删除 将物品列表中对应的物品修改为[未选择]状态
+                $("#attach-result > span > span").click(function(){
+                    var propId = $(this).siblings("input").attr("prop-info");
+                    $("#"+propId).toggleClass("selected");
+                    $("#"+propId).parent().css("background-color","#E6CAC4");
+                    $(this).parent().remove();
+                });
+            }else{
+                $(this).parent().css("background-color","#E6CAC4");
+                $("[prop-info="+ id +"]").parent().remove();
+            }
+        });
+
+        break;
+    }
+
+    $("#btn-attachment").text("");
+    $("#btn-attachment").append(html);
+    $("#attachment-num").attr("data-info", info);
+});
+
+
+
 
 //锁死图标选择下拉菜单 清除按钮
 $("button.btn.btn-default.btn-circle").attr('disabled',"true");

@@ -272,11 +272,27 @@
                   <div class="form-group">
                     <textarea class="form-control" rows="3" placeholder="正文" id="area"></textarea>
                   </div>
+                  <div class="attachment">  
+                  </div>
                  </div> 
                 </div> 
                </div> 
               </div> 
-              <div class="modal-footer"> 
+              <div class="modal-footer">
+               <div class="btn-group btn-attachment">
+                <button type="button" class="btn btn-success" id="btn-attachment"><i class="fa fa-plus nest" aria-hidden="true"></i>附件</button>
+                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+                  <span class="caret"></span>
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <ul class="dropdown-menu" role="menu">
+                  <li><a data-info="money"><i class="fa fa-stop-circle nest" aria-hidden="true"></i>金币</a></li>
+                  <li><a data-info="diamond"><i class="fa fa-diamond nest" aria-hidden="true"></i>钻石</a></li>
+                  <li><a data-info="exp"><i class="fa fa-star nest" aria-hidden="true"></i>经验</a></li>
+                  <li><a data-info="hero"><i class="fa fa-universal-access nest" aria-hidden="true"></i>英雄</a></li>
+                  <li><a data-info="property"><i class="fa fa-gavel nest" aria-hidden="true"></i>物品</a></li>
+                </ul>
+               </div> 
                <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn-send">发送</button> 
                <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn-reply-close">关闭</button> 
               </div> 

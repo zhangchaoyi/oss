@@ -967,3 +967,46 @@ a#whaleDetailback {
     padding-top: 15px;
     padding-bottom: 15px;
 }
+
+.nest {
+    font-size:16px;
+    margin-right:7px;
+}
+
+.btn-group.btn-attachment {
+    float:left;
+}
+
+.attachment {
+    margin-bottom: 10px;
+}
+
+table#attach-table td {
+    border:1px solid black;
+    padding:2px 2px;
+    background-color: #E6CAC4;
+}
+
+table#attach-table {
+    border-spacing: 10px;
+    border:1px solid black;
+    text-align:center;
+    border-collapse: separate;
+}
+
+#feedback > div > div.modal-content {
+    position:relative;
+    bottom:250px;
+}
+
+input.form-control.hero-selected {
+    width:55px;
+}
+div#attach-result {
+    margin-top:15px;
+}
+.selected-result {
+    float:left;
+    width: 108px;
+    margin:5px 5px 10px 5px;
+}
