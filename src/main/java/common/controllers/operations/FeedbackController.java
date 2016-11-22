@@ -98,8 +98,11 @@ public class FeedbackController extends Controller{
 	@Before({POST.class, GmInterceptor.class})
 	@ActionKey("/api/operation/feedback/user/reply")
 	public void modifyFeedbackUserReply() {
-		String id = getPara("id");
+		String id = getPara("id","");
 		logger.info("params {" + "id:" + id + "}");
+		if("".equals(id)){
+			return;
+		}
 		try{
 			int succeed = os.completeReply(Integer.parseInt(id));
 			renderText(String.valueOf(succeed));

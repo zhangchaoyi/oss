@@ -1007,7 +1007,7 @@ div#attach-result {
 }
 .selected-result {
     float:left;
-    width: 108px;
+    width: 150px;
     margin:5px 5px 10px 5px;
 }
 button#btn-attach-save {
