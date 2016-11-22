@@ -13,4 +13,6 @@ public interface OperationService {
 	public int deleteFeedback(String ids);
 	
 	public Map<String, String> queryFeedbackById(String id);
+	
+	public boolean insertGmRecord(String account, String operation);
 }

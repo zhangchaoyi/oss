@@ -65,4 +65,12 @@ public abstract class BaseUserFeedback<M extends BaseUserFeedback<M>> extends Mo
 		return get("create_time");
 	}
 
+	public void setReply(java.lang.Integer reply) {
+		set("reply", reply);
+	}
+
+	public java.lang.Integer getReply() {
+		return get("reply");
+	}
+
 }

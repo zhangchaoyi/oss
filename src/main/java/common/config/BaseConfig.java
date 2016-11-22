@@ -22,6 +22,7 @@ import common.interceptor.VipInterceptor;
 import common.model.ActiveUser;
 import common.model.CreateRole;
 import common.model.DeviceInfo;
+import common.model.GmRecord;
 import common.model.LevelUp;
 import common.model.LogCharge;
 import common.model.Login;
@@ -91,6 +92,7 @@ public class BaseConfig extends JFinalConfig {
 				arp.addMapping("sec_user", "user_id", SecUser.class);
 				arp.addMapping("sec_user_role", SecUserRole.class);
 				arp.addMapping("user_feedback", UserFeedback.class);
+				arp.addMapping("gm_record", GmRecord.class);
 				// 设置默认的数据库
 				DbSelector.setDbName(PropKit.get("jdbcDefault"));
 			}
@@ -116,6 +118,6 @@ public class BaseConfig extends JFinalConfig {
 
 	public static C3p0Plugin createC3p0Plugin() {
 		PropKit.use("config.txt");
-		return new C3p0Plugin(PropKit.get("jdbcUrl"), PropKit.get("user"), PropKit.get("password").trim());
+		return new C3p0Plugin(PropKit.get("malaiUrl"), PropKit.get("user"), PropKit.get("password").trim());
 	}
 }

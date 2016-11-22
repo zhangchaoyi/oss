@@ -11,6 +11,7 @@ import org.apache.log4j.Logger;
 
 import com.jfinal.plugin.activerecord.Db;
 
+import common.model.GmRecord;
 import common.model.UserFeedback;
 import common.mysql.DbSelector;
 import common.service.OperationService;
@@ -92,7 +93,7 @@ public class OperationServiceImpl implements OperationService {
 	 * @param id --row id
 	 */
 	public Map<String, String> queryFeedbackById(String id) {
-		logger.info("params:{"+"id"+id+"}");
+		logger.info("params:{"+"id:"+id+"}");
 		String sql = "select * from user_feedback where id = ?";
 		UserFeedback uf = UserFeedback.dao.use(db).findFirst(sql, id);
 		Map<String, String> data = new HashMap<String, String>();
@@ -107,5 +108,16 @@ public class OperationServiceImpl implements OperationService {
 		data.put("content", content);
 		logger.info("data:" + data);
 		return data;
+	}
+	
+	/**
+	 * 插入gm操作
+	 * @param account 管理员帐号
+	 * @param operation gm指令
+	 */
+	public boolean insertGmRecord(String account, String operation){
+		logger.info("params:{"+"account:"+account+",operation:"+operation+"}");
+		boolean succeed = new GmRecord().use(db).set("account", account).set("operation", operation).set("create_time", new Date()).save();
+		return succeed;
 	}
 }

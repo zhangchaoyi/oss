@@ -1,5 +1,5 @@
 //鼠标覆盖按钮自动下拉菜单
-$("#dropdownMenu1").on("mouseover", function() {
+$("#userAccount").on("mouseover", function() {
     if ($(this).parent().is(".open")) {
         return
     }
@@ -95,8 +95,7 @@ $(function(){
     function(data, status) {
         //cookie不存在的情况会被java拦截器 返回login页
         if(data.message=="true"){
-            $("#dropdownMenu1").text("");
-            $("#dropdownMenu1").append("<span class='glyphicon glyphicon-user btn-user'></span>" + data.username + "<span class='caret'></span>");
+            $("#userAccount").html("<span class='glyphicon glyphicon-user btn-user'></span>" + data.username + "<span class='caret'></span>");
             $("#btn-db").text("");
             $("#btn-db").attr("data-info", data.db);
             if(location.href.indexOf("admin")!=-1){

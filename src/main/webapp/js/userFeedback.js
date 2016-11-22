@@ -154,7 +154,7 @@ $("#btn-send").click(function(){
         }
     }
     text.push(objList);
-    var data = {
+    var payloadData = {
     "cmd":"send_custom_mail",
     "parms":text,
     "account":"admin",
@@ -165,15 +165,24 @@ $("#btn-send").click(function(){
         type: "POST",
         url: emailAddress,
         contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(data),
+        data: JSON.stringify(payloadData),
         crossDomain: true,
         dataType: "json",
         success: function (data) {
             if (data.result == '1') {
                 alert("已发送");
+                $.post("/oss/api/operation/record", {
+                    account:$("#userAccount").text(),
+                    operation:JSON.stringify(payloadData)
+                },
+                function(data, status) {
+                    loadFeedbackData($(".nav-tab.feedback > ul > li.active > a").attr("data-info"));
+                });
+
                 if(id==undefined){
                     return;
                 }
+
                 $.post("/oss/api/operation/feedback/user/reply", {
                     id:id
                 },

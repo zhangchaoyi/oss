@@ -33,14 +33,6 @@ public abstract class BaseCreateRole<M extends BaseCreateRole<M>> extends Model<
 		return get("account_type");
 	}
 
-	public void setTeamName(java.lang.String teamName) {
-		set("team_name", teamName);
-	}
-
-	public java.lang.String getTeamName() {
-		return get("team_name");
-	}
-
 	public void setDateTime(java.util.Date dateTime) {
 		set("date_time", dateTime);
 	}
@@ -55,6 +47,30 @@ public abstract class BaseCreateRole<M extends BaseCreateRole<M>> extends Model<
 
 	public java.util.Date getCreateTime() {
 		return get("create_time");
+	}
+
+	public void setMainId(java.lang.Integer mainId) {
+		set("main_id", mainId);
+	}
+
+	public java.lang.Integer getMainId() {
+		return get("main_id");
+	}
+
+	public void setSubId(java.lang.Integer subId) {
+		set("sub_id", subId);
+	}
+
+	public java.lang.Integer getSubId() {
+		return get("sub_id");
+	}
+
+	public void setLevel(java.lang.Integer level) {
+		set("level", level);
+	}
+
+	public java.lang.Integer getLevel() {
+		return get("level");
 	}
 
 	public void setImei(java.lang.String imei) {
@@ -151,6 +167,14 @@ public abstract class BaseCreateRole<M extends BaseCreateRole<M>> extends Model<
 
 	public java.lang.String getPackageName() {
 		return get("package_name");
+	}
+
+	public void setTeamName(java.lang.String teamName) {
+		set("team_name", teamName);
+	}
+
+	public java.lang.String getTeamName() {
+		return get("team_name");
 	}
 
 }

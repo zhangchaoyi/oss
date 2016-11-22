@@ -139,4 +139,20 @@ public class FeedbackController extends Controller{
 		Map<String, String> data = os.queryFeedbackById(id);
 		renderJson(data);
 	}
+	
+	/**
+	 * 记录gm管理员的操作
+	 * @author chris
+	 * @getPara account 获取登录系统的帐号
+	 * @getPara operation 获取gm的操作指令
+	 */
+	@Before(POST.class)
+	@ActionKey("/api/operation/record")
+	public void recordGm(){
+		String account = getPara("account", "");
+		String operation = getPara("operation", "");
+		logger.info("params:{"+"account:"+account+",operation:"+operation+"}");
+		boolean succeed = os.insertGmRecord(account, operation);
+		renderText(String.valueOf(succeed));
+	}
 }

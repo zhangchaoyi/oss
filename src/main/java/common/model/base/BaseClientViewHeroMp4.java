@@ -9,12 +9,12 @@ import com.jfinal.plugin.activerecord.IBean;
 @SuppressWarnings("serial")
 public abstract class BaseClientViewHeroMp4<M extends BaseClientViewHeroMp4<M>> extends Model<M> implements IBean {
 
-	public void setInt(java.lang.Integer _int) {
-		set("int", _int);
+	public void setId(java.lang.Integer id) {
+		set("id", id);
 	}
 
-	public java.lang.Integer getInt() {
-		return get("int");
+	public java.lang.Integer getId() {
+		return get("id");
 	}
 
 	public void setHeroId(java.lang.String heroId) {
@@ -39,6 +39,14 @@ public abstract class BaseClientViewHeroMp4<M extends BaseClientViewHeroMp4<M>> 
 
 	public java.lang.Integer getLevel() {
 		return get("level");
+	}
+
+	public void setViewSource(java.lang.String viewSource) {
+		set("view_source", viewSource);
+	}
+
+	public java.lang.String getViewSource() {
+		return get("view_source");
 	}
 
 	public void setDt(java.util.Date dt) {
