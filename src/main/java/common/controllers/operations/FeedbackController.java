@@ -101,6 +101,7 @@ public class FeedbackController extends Controller{
 		String id = getPara("id","");
 		logger.info("params {" + "id:" + id + "}");
 		if("".equals(id)){
+			renderText("0");
 			return;
 		}
 		try{

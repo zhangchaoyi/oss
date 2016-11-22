@@ -136,6 +136,7 @@ function configPlayerTable(data) {
         // retrive:true,
         "data": tableData,
         "dom": '<"top"f>rt<"left"lip>',
+        "orderFixed": [ 0, 'desc' ],
         'language': {
             'emptyTable': '没有数据',
             'loadingRecords': '加载中...',
