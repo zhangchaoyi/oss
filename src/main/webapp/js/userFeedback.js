@@ -123,11 +123,37 @@ $("#btn-send").click(function(){
         return;
     }
 
+    //[account,title,content,[{"obj_id":"obj_1","num":1024},{"obj_id":"obj_2","num":21},{"obj_id":"obj_11","num":1,"param_list":{"guanyu",3}}]]
     var text = [];
     text.push(account);
     text.push(title);
     text.push(area);
 
+    var objList = [];
+    var objs = $("#attach-result > span > input");
+    for(var i=0;i<objs.length;i++){
+        var objId = $(objs[i]).attr("obj-id");
+        var heroId = $(objs[i]).attr("hero-info");
+        //非英雄
+        if(heroId==undefined){
+            var num = $(objs[i]).val();
+            if(!checkNum(num)){
+                alert("附件物品数量需要是正整数");
+                return;
+            }
+            var item = {"obj_id":objId,"num":parseInt(num)};
+            objList.push(item);
+        }else{
+            var level = $(objs[i]).val();
+            if(!checkNum(level)){
+                alert("附件英雄阶数需要是正整数");
+                return;
+            }
+            var item = {"obj_id":"obj_11","num":1,"param_list":[heroId,parseInt(level)]};
+            objList.push(item);
+        }
+    }
+    text.push(objList);
     var data = {
     "cmd":"send_custom_mail",
     "parms":text,
@@ -158,8 +184,12 @@ $("#btn-send").click(function(){
         },
     });
 
+    //邮件发送完需要清空
     $("#reply-title").val("");
     $("#area").val("");
+    $("#btn-attachment").html("<i class='fa fa-plus nest' aria-hidden='true'></i>附件");
+    $("div.attachment").empty();
+    $("#attach-result").empty();
 });
 //点击关闭按钮
 $("#btn-reply-close").click(function(){
@@ -325,9 +355,8 @@ $(".btn-group.btn-attachment > ul > li").click(function(){
         });
         break;
     }
-
-    $("#btn-attachment").text("");
-    $("#btn-attachment").append(html);
+    //修改附件按钮的状态
+    $("#btn-attachment").html(html);
     $("#attachment-num").attr("data-info", info);
 });
 
