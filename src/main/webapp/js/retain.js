@@ -93,14 +93,13 @@ function configChart(data) {
 }
 
 function configTable(data) {
-    appendTableHeader(data);
     var tableData = dealTableData(data);
     $('#data-table-newPlayers-retain').dataTable({
         destroy: true,
         // retrive:true,
         "data": tableData,
         "dom": '<"top"f>rt<"left"lip>',
-        "orderFixed": [ 0, 'desc' ],
+        "order": [[ 0, 'desc' ]],
         'language': {
             'emptyTable': '没有数据',
             'loadingRecords': '加载中...',
@@ -158,46 +157,6 @@ function showPlayerNote(data){
     $("#nR").text(nDRRateAvg + '%');
     $("#sR").text(sDRRateAvg + '%');
     $("#mR").text(mRRateAvg + '%');
-}
-//处理表格对应的 头列
-function appendTableHeader(data) {
-    var type = data.type;
-    var category = data.category;
-    var addPlayer = data.addPlayer;
-    var activeDevice = data.activeDevice;
-    var addDevice = data.addDevice;
-    var txt = "";
-    //表头 时间
-    for (var key in category) {
-        txt = "<th><span>" + key + "</span></th>";
-    }
-    //表头 新增玩家
-    for (var key in addPlayer) {
-        txt = txt + "<th><span>" + key + "</span></th>";
-    }
-    //表头 激活设备
-    for (var key in activeDevice) {
-        txt = txt + "<th><span>" + key + "</span></th>";
-    }
-    //表头 新增设备
-    for (var key in addDevice) {
-        txt = txt + "<th><span>" + key + "</span></th>";
-    }
-    //表头 留存
-    for (var i = 0; i < type.length; i++) {
-        txt = txt + "<th><span>" + type[i] + "</span></th>"
-    }
-    if ($("table#data-table-newPlayers-retain > thead").length != 0) {
-        $("table#data-table-newPlayers-retain > thead").remove();
-        $("#data-table-newPlayers-retain").prepend("<thead><tr>" + txt + "</tr></thead>");
-        // var spans = $("table#effective-table > thead").find("span");
-        // for(var i=1;i<spans.length;i++){
-        //     $(spans[i]).text(type[i]);
-        // }
-        return;
-
-    }
-    $("#data-table-newPlayers-retain").append("<thead><tr>" + txt + "</tr></thead>");
 }
 
 //默认选择前七天,在留存统计中 选择前14天

@@ -32,7 +32,7 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 	 */
 	public Map<String, Object> queryRetainUser(List<String> categories, String icons, String startDate, String endDate) {
 		Map<String, Object> data = new HashMap<String, Object>();
-		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(add_user) add_user,sum(next_day_retain) next_day_retain,sum(seven_day_retain)seven_day_retain,sum(month_retain)month_retain from retain_user where date between ? and ? and os in (" + icons + ") group by date";
+		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(add_user) add_user,sum(first_day)first_day,sum(second_day)second_day,sum(third_day)third_day,sum(forth_day)forth_day,sum(fifth_day)fifth_day,sum(sixth_day)sixth_day,sum(seven_day)seven_day,sum(eighth_day)eighth_day,sum(ninth_day)ninth_day,sum(tenth_day)tenth_day,sum(eleventh_day)eleventh_day,sum(twelfth_day)twelfth_day,sum(thirteenth_day)thirteenth_day,sum(fourteenth_day)fourteenth_day,sum(thirty_day)thirty_day from retain_user where date between ? and ? and os in ("+ icons +") group by date;";
 		String eSql = "select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(*) count from device_info where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and os in (" + icons + ") group by date";
 		String aSql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(add_equipment)add_equipment from retain_equipment where date between ? and ? and os in (" + icons + ") group by date";
 		List<RetainUser> retainUser = RetainUser.dao.use(db).find(sql, startDate, endDate);
@@ -45,8 +45,20 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 		for (String category : categories) {
 			Map<String, Object> subMap = new HashMap<String, Object>();
 			subMap.put("addUser", 0L);
-			subMap.put("nextDayRetain", 0D);
-			subMap.put("sevenDayRetain", 0D);
+			subMap.put("firstRetain", 0D);
+			subMap.put("secondRetain", 0D);
+			subMap.put("thirdRetain", 0D);
+			subMap.put("forthRetain", 0D);
+			subMap.put("fifthRetain", 0D);
+			subMap.put("sixthRetain", 0D);
+			subMap.put("seventhRetain", 0D);
+			subMap.put("eighthRetain", 0D);
+			subMap.put("ninthRetain", 0D);
+			subMap.put("tenthRetain", 0D);
+			subMap.put("eleventhRetain", 0D);
+			subMap.put("twelfthRetain", 0D);
+			subMap.put("thirteenthRetain", 0D);
+			subMap.put("fourteenthRetain", 0D);
 			subMap.put("monthRetain", 0D);
 			subMap.put("activeDevice", 0L);
 			subMap.put("addDevice", 0L);
@@ -61,28 +73,78 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 			String date = rr.getStr("date");
 			Map<String, Object> subMap = sort.get(date);
 			int add = rr.getBigDecimal("add_user").intValue();
-			int nDR = rr.getBigDecimal("next_day_retain").intValue();
-			int sDR = rr.getBigDecimal("seven_day_retain").intValue();
-			int mR = rr.getBigDecimal("month_retain").intValue();
-			//divisor can not be 0;
+			int firstDR = rr.getBigDecimal("first_day").intValue();
+			int secondDR = rr.getBigDecimal("second_day").intValue();
+			int thirdDR = rr.getBigDecimal("third_day").intValue();
+			int fourDR = rr.getBigDecimal("forth_day").intValue();
+			int fifthDR = rr.getBigDecimal("fifth_day").intValue();
+			int sixDR = rr.getBigDecimal("sixth_day").intValue();
+			int sevenDR = rr.getBigDecimal("seven_day").intValue();
+			int eighthDR = rr.getBigDecimal("eighth_day").intValue();
+			int ninthDR = rr.getBigDecimal("ninth_day").intValue();
+			int tenthDR = rr.getBigDecimal("tenth_day").intValue();
+			int elevenDR = rr.getBigDecimal("eleventh_day").intValue();
+			int twelfthDR = rr.getBigDecimal("twelfth_day").intValue();
+			int thirteenDR = rr.getBigDecimal("thirteenth_day").intValue();
+			int fourteenDR = rr.getBigDecimal("fourteenth_day").intValue();
+			int mR = rr.getBigDecimal("thirty_day").intValue();
+			//divisor can not be 0; 如果当天的新增用户为0,则次日,3日,4日...30日留存用户全为0
 			if(add==0){
 				continue;
 			}
-			//cal sum for avg
-			nDRSum += nDR;
-			sDRSum += sDR;
+			//cal sum for avg 
+			nDRSum += firstDR;
+			sDRSum += sevenDR;
 			mRSum += mR;
 			addSum += add;
-			
-			BigDecimal nDRBg = new BigDecimal(nDR * 100.0 / add);
-			BigDecimal sDRBg = new BigDecimal(sDR * 100.0 / add);
+			//计算当天的次日,3日..7日...14日留存率
+			BigDecimal firstDRBg = new BigDecimal(firstDR * 100.0 / add);
+			BigDecimal secondDRBg = new BigDecimal(secondDR * 100.0 / add);
+			BigDecimal thirdDRBg = new BigDecimal(thirdDR * 100.0 / add);
+			BigDecimal fourDRBg = new BigDecimal(fourDR * 100.0 / add);
+			BigDecimal fifthDRBg = new BigDecimal(fifthDR * 100.0 / add);
+			BigDecimal sixDRBg = new BigDecimal(sixDR * 100.0 / add);
+			BigDecimal sevenDRBg = new BigDecimal(sevenDR * 100.0 / add);
+			BigDecimal eighthDRBg = new BigDecimal(eighthDR * 100.0 / add);
+			BigDecimal ninthDRBg = new BigDecimal(ninthDR * 100.0 / add);
+			BigDecimal tenthDRBg = new BigDecimal(tenthDR * 100.0 / add);
+			BigDecimal elevenDRBg = new BigDecimal(elevenDR * 100.0 / add);
+			BigDecimal twelfthDRBg = new BigDecimal(twelfthDR * 100.0 / add);
+			BigDecimal thirteenDRBg = new BigDecimal(thirteenDR * 100.0 / add);
+			BigDecimal fourteenDRBg = new BigDecimal(fourteenDR * 100.0 / add);
 			BigDecimal mRBg = new BigDecimal(mR * 100.0 / add);
-			double nDRRate = nDRBg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
-			double sDRRate = sDRBg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+
+			double firstDRRate = firstDRBg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			double secondDRRate = secondDRBg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			double thirdDRRate = thirdDRBg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			double fourDRRate = fourDRBg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			double fifthDRRate = fifthDRBg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			double sixDRRate = sixDRBg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			double sevenDRRate = sevenDRBg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			double eighthDRRate = eighthDRBg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			double ninthDRRate = ninthDRBg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			double tenthDRRate = tenthDRBg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			double elevenDRRate = elevenDRBg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			double twelfthDRRate = twelfthDRBg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			double thirteenDRRate = thirteenDRBg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			double fourteenDRRate = fourteenDRBg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 			double mRRate = mRBg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			
 			subMap.put("addUser", (long)add);
-			subMap.put("nextDayRetain", nDRRate);
-			subMap.put("sevenDayRetain", sDRRate);
+			subMap.put("firstRetain", firstDRRate);
+			subMap.put("secondRetain", secondDRRate);
+			subMap.put("thirdRetain", thirdDRRate);
+			subMap.put("forthRetain", fourDRRate);
+			subMap.put("fifthRetain", fifthDRRate);
+			subMap.put("sixthRetain", sixDRRate);
+			subMap.put("seventhRetain", sevenDRRate);
+			subMap.put("eighthRetain", eighthDRRate);
+			subMap.put("ninthRetain", ninthDRRate);
+			subMap.put("tenthRetain", tenthDRRate);
+			subMap.put("eleventhRetain", elevenDRRate);
+			subMap.put("twelfthRetain", twelfthDRRate);
+			subMap.put("thirteenthRetain", thirteenDRRate);
+			subMap.put("fourteenthRetain", fourteenDRRate);
 			subMap.put("monthRetain", mRRate);
 			sort.put(date, subMap);
 		}
@@ -100,7 +162,7 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 			subMap.put("addDevice", re.getBigDecimal("add_equipment").longValue());
 			sort.put(date, subMap);
 		}
-		//计算留存用户平均值
+		//计算留存用户留存率平均值
 		double nDRRateAvg = 0.0;
 		double sDRRateAvg = 0.0;
 		double mRRateAvg = 0.0;
@@ -115,9 +177,23 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 		}
 		
 		List<Long> addData = new ArrayList<Long>();
-		List<Double> nDRData = new ArrayList<Double>();
-		List<Double> sDRData = new ArrayList<Double>();
+		//多天的留存
+		List<Double> firstDRData = new ArrayList<Double>();
+		List<Double> secondDRData = new ArrayList<Double>();
+		List<Double> thirdDRData = new ArrayList<Double>();
+		List<Double> forthDRData = new ArrayList<Double>();
+		List<Double> fifthDRData = new ArrayList<Double>();
+		List<Double> sixthDRData = new ArrayList<Double>();
+		List<Double> sevenDRData = new ArrayList<Double>();
+		List<Double> eighthDRData = new ArrayList<Double>();
+		List<Double> ninthDRData = new ArrayList<Double>();
+		List<Double> tenthDRData = new ArrayList<Double>();
+		List<Double> eleventhDRData = new ArrayList<Double>();
+		List<Double> twelfthDRData = new ArrayList<Double>();
+		List<Double> thirteenthDRData = new ArrayList<Double>();
+		List<Double> fourteenthDRData = new ArrayList<Double>();
 		List<Double> mRData = new ArrayList<Double>();
+		
 		List<Long> aDData = new ArrayList<Long>();
 		List<Long> addDData = new ArrayList<Long>();
 		for(Map.Entry<String, Map<String, Object>> entry : sort.entrySet()) {
@@ -127,12 +203,60 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 						addData.add((Long)subEntry.getValue());
 						break;
 					}
-					case "nextDayRetain":{
-						nDRData.add((Double)subEntry.getValue());	
+					case "firstRetain":{
+						firstDRData.add((Double)subEntry.getValue());	
 						break;
 					}
-					case "sevenDayRetain":{
-						sDRData.add((Double)subEntry.getValue());
+					case "secondRetain":{
+						secondDRData.add((Double)subEntry.getValue());
+						break;
+					}
+					case "thirdRetain":{
+						thirdDRData.add((Double)subEntry.getValue());	
+						break;
+					}
+					case "forthRetain":{
+						forthDRData.add((Double)subEntry.getValue());
+						break;
+					}
+					case "fifthRetain":{
+						fifthDRData.add((Double)subEntry.getValue());	
+						break;
+					}
+					case "sixthRetain":{
+						sixthDRData.add((Double)subEntry.getValue());
+						break;
+					}
+					case "seventhRetain":{
+						sevenDRData.add((Double)subEntry.getValue());	
+						break;
+					}
+					case "eighthRetain":{
+						eighthDRData.add((Double)subEntry.getValue());
+						break;
+					}
+					case "ninthRetain":{
+						ninthDRData.add((Double)subEntry.getValue());	
+						break;
+					}
+					case "tenthRetain":{
+						tenthDRData.add((Double)subEntry.getValue());
+						break;
+					}
+					case "eleventhRetain":{
+						eleventhDRData.add((Double)subEntry.getValue());	
+						break;
+					}
+					case "twelfthRetain":{
+						twelfthDRData.add((Double)subEntry.getValue());
+						break;
+					}
+					case "thirteenthRetain":{
+						thirteenthDRData.add((Double)subEntry.getValue());	
+						break;
+					}
+					case "fourteenthRetain":{
+						fourteenthDRData.add((Double)subEntry.getValue());
 						break;
 					}
 					case "monthRetain":{
@@ -151,8 +275,20 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 		}
 		
 		data.put("add", addData);
-		data.put("nDR", nDRData);
-		data.put("sDR", sDRData);
+		data.put("firstDR", firstDRData);
+		data.put("secondDR", secondDRData);
+		data.put("thirdDR", thirdDRData);
+		data.put("forthDR", forthDRData);
+		data.put("fifthDR", fifthDRData);
+		data.put("sixthDR", sixthDRData);
+		data.put("sevenDR", sevenDRData);
+		data.put("eighthDR", eighthDRData);
+		data.put("ninthDR", ninthDRData);
+		data.put("tenthDR", tenthDRData);
+		data.put("eleventhDR", eleventhDRData);
+		data.put("twelfthDR", twelfthDRData);
+		data.put("thirteenthDR", thirteenthDRData);
+		data.put("fourteenthDR", fourteenthDRData);
 		data.put("mR", mRData);
 		data.put("activeDevice", aDData);
 		data.put("addDevice", addDData);

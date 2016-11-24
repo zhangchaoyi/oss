@@ -1,5 +1,6 @@
 package common.controllers.players;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -82,10 +83,22 @@ public class RetainController extends Controller{
 
 		//保存chart中数据
 		Map<String, Object> seriesMap = new LinkedHashMap<String, Object>();
-		seriesMap.put("次日留存率", queryData.get("nDR"));
-		seriesMap.put("7日留存率", queryData.get("sDR"));
-		seriesMap.put("30日留存率", queryData.get("mR"));
-		
+		seriesMap.put("+1日", queryData.get("firstDR"));
+		seriesMap.put("+2日", queryData.get("secondDR"));
+		seriesMap.put("+3日", queryData.get("thirdDR"));
+		seriesMap.put("+4日", queryData.get("forthDR"));
+		seriesMap.put("+5日", queryData.get("fifthDR"));
+		seriesMap.put("+6日", queryData.get("sixthDR"));
+		seriesMap.put("+7日", queryData.get("sevenDR"));
+		seriesMap.put("+8日", queryData.get("eighthDR"));
+		seriesMap.put("+9日", queryData.get("ninthDR"));
+		seriesMap.put("+10日", queryData.get("tenthDR"));
+		seriesMap.put("+11日", queryData.get("eleventhDR"));
+		seriesMap.put("+12日", queryData.get("twelfthDR"));
+		seriesMap.put("+13日", queryData.get("thirteenthDR"));
+		seriesMap.put("+14日", queryData.get("fourteenthDR"));
+		seriesMap.put("+30日", queryData.get("mR"));
+
 		Set<String> type = seriesMap.keySet();
 		
 		category.put("日期", categories);
