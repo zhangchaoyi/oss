@@ -130,6 +130,7 @@ $("#btn-send").click(function(){
     text.push(area);
 
     var objList = [];
+    //获取所勾选的物品列表
     var objs = $("#attach-result > span > input");
     for(var i=0;i<objs.length;i++){
         var objId = $(objs[i]).attr("obj-id");
@@ -138,15 +139,26 @@ $("#btn-send").click(function(){
         if(heroId==undefined){
             var num = $(objs[i]).val();
             if(!checkNum(num)){
-                alert("附件物品数量需要是正整数");
+                alert("附件物品输入框内需要是正整数");
                 return;
             }
-            var item = {"obj_id":objId,"num":parseInt(num)};
+            var item = "";
+            //宝箱类型 num是类型编号(1~100) 数量恒定为1个
+            if(objId=='obj_19'||objId=='obj_21'||objId=='obj_22'||objId=='obj_23'||objId=='obj_31'||objId=='obj_37'){
+                item = {"obj_id":objId,"num":1,"param_list":[parseInt(num),1]};
+            }else{
+                item = {"obj_id":objId,"num":parseInt(num)};
+            }
             objList.push(item);
         }else{
+            //英雄 数量恒定为一个 输入框为阶数
             var level = $(objs[i]).val();
             if(!checkNum(level)){
                 alert("附件英雄阶数需要是正整数");
+                return;
+            }
+            if(parseInt(level)>10){
+                alert("英雄阶数最大是10阶");
                 return;
             }
             var item = {"obj_id":"obj_11","num":1,"param_list":[heroId,parseInt(level)]};
@@ -295,7 +307,7 @@ $(".btn-group.btn-attachment > ul > li").click(function(){
         break;
 
         case "hero":
-        $(".attachment").html("<table id='attach-table'><tbody><tr><td><li id='linchong'>林冲</li></td><td><li id='zhangfei'>张飞</li></td><td><li id='zhaoyun'>赵云</li></td><td><li id='yuantiangang'>袁天罡</li></td><td><li id='huangzhong'>黄忠</li></td></tr><tr><td><li id='zhentianxingcun'>真田幸村</li></td><td><li id='diaochan'>貂蝉</li></td><td><li id='fububanzang'>服部半藏</li></td><td><li id='daji'>妲己</li></td><td><li id='baiqi'>白起</li></td></tr><tr><td><li id='fahai'>法海</li></td><td><li id='fengchenxiuji'>丰臣秀吉</li></td><td><li id='yuanfeizuozhu'>猿飞佐助</li></td><td><li id='sibada'>斯巴达</li></td><td><li id='lvbu'>吕布</li></td></tr><tr><td><li id='likui'>李逵</li></td><td><li id='jingke'>荆轲</li></td><td><li id='mozi'>墨子</li></td><td><li id='guidie'>归蝶</li></td><td><li id='zhitianxinchang'>织田信长</li></td></tr><tr><td><li id='chengyaojin'>程咬金</li></td><td><li id='anbeiqingming'>安倍晴明</li></td><td><li id='zhugeliang'>诸葛亮</li></td><td><li id='liguang'>李广</li></td></tr></tbody></table>");
+        $(".attachment").html("<table id='attach-table'><tbody><tr><td><li id='linchong'>林冲</li></td><td><li id='zhangfei'>张飞</li></td><td><li id='zhaoyun'>赵云</li></td><td><li id='yuantiangang'>袁天罡</li></td><td><li id='huangzhong'>黄忠</li></td></tr><tr><td><li id='zhentianxingcun'>真田幸村</li></td><td><li id='diaochan'>貂蝉</li></td><td><li id='fububanzang'>服部半藏</li></td><td><li id='daji'>妲己</li></td><td><li id='baiqi'>白起</li></td></tr><tr><td><li id='fahai'>法海</li></td><td><li id='fengchenxiuji'>丰臣秀吉</li></td><td><li id='yuanfeizuozhu'>猿飞佐助</li></td><td><li id='changzongwobuyuanqin'>斯巴达</li></td><td><li id='lvbu'>吕布</li></td></tr><tr><td><li id='likui'>李逵</li></td><td><li id='jingke'>荆轲</li></td><td><li id='mozi'>墨子</li></td><td><li id='guidie'>归蝶</li></td><td><li id='zhitianxinchang'>织田信长</li></td></tr><tr><td><li id='chengyaojin'>程咬金</li></td><td><li id='anbeiqingming'>安倍晴明</li></td><td><li id='zhugeliang'>诸葛亮</li></td><td><li id='liguang'>李广</li></td></tr></tbody></table>");
         //获取result中已选的英雄,对英雄菜单进行背景色预处理
         var selectedHero = $("[hero-info]");
         for(var i=0;i<selectedHero.length;i++){
@@ -331,7 +343,7 @@ $(".btn-group.btn-attachment > ul > li").click(function(){
         break;
 
         case "property":
-        $(".attachment").html("<table id='attach-table' style='font-size:5px'><tbody><tr><td><li id='obj_19'>绿宝箱</li></td><td><li id='obj_21'>蓝宝箱</li></td><td><li id='obj_22'>紫宝箱</li></td><td><li id='obj_23'>金宝箱</li></td><td><li id='obj_27'>蓝色钥匙</li></td></tr><tr><td><li id='obj_28'>紫色钥匙</li></td><td><li id='obj_29'>金色钥匙</li></td><td><li id='obj_31'>大碎片宝箱</li></td><td><li id='obj_33'>紫色瞬开宝箱</li></td><td><li id='obj_34'>金色瞬开宝箱</li></td></tr><tr><td><li id='obj_36'>技能石</li></td><td><li id='obj_37'>碎片宝箱</li></td><td><li id='obj_7'>队伍等级</li></td><td><li id='obj_3000'>钢铁之躯</li></td><td><li id='obj_3001'>热血战魂</li></td></tr><tr><td><li id='obj_3002'>盗贼笔记</li></td><td><li id='obj_3003'>百步穿杨</li></td><td><li id='obj_3004'>大道无形</li></td><td><li id='obj_3005'>护甲片</li></td><td><li id='obj_3006'>枪头</li></td></tr><tr><td><li id='obj_3007'>毒药</li></td><td><li id='obj_3008'>箭羽</li></td><td><li id='obj_3009'>太极图</li></td><td><li id='obj_6000'>万能碎片</li></td><td><li id='obj_6001'>关羽碎片</li></td></tr><tr><td><li id='obj_6002'>秦琼碎片</li></td><td><li id='obj_6003'>李逵碎片</li></td><td><li id='obj_6004'>程咬金碎片</li></td><td><li id='obj_6005'>项羽碎片</li></td><td><li id='obj_6006'>丰臣秀吉碎片</li></td></tr><tr><td><li id='obj_6007'>张飞碎片</li></td><td><li id='obj_6008'>林冲碎片</li></td><td><li id='obj_6009'>赵云碎片</li></td><td><li id='obj_6010'>吕布碎片</li></td><td><li id='obj_6011'>白起碎片</li></td></tr><tr><td><li id='obj_6012'>斯巴达碎片</li></td><td><li id='obj_6013'>真田幸村碎片</li></td><td><li id='obj_6014'>黄忠碎片</li></td><td><li id='obj_6015'>花木兰碎片</li></td><td><li id='obj_6016'>李广碎片</li></td></tr><tr><td><li id='obj_6017'>养由基碎片</li></td><td><li id='obj_6018'>织田信长碎片</li></td><td><li id='obj_6019'>归蝶碎片</li></td><td><li id='obj_6020'>荆轲碎片</li></td><td><li id='obj_6021'>貂蝉碎片</li></td></tr><tr><td><li id='obj_6022'>李白碎片</li></td><td><li id='obj_6023'>墨子碎片</li></td><td><li id='obj_6024'>猿飞佐助碎片</li></td><td><li id='obj_6025'>服部半藏碎片</li></td><td><li id='obj_6026'>姜子牙碎片</li></td></tr><tr><td><li id='obj_6027'>妲己碎片</li></td><td><li id='obj_6028'>袁天罡碎片</li></td><td><li id='obj_6029'>诸葛亮碎片</li></td><td><li id='obj_6030'>安倍晴明碎片</li></td><td><li id='obj_6031'>法海碎片</li></td></tr></tbody></table>");
+        $(".attachment").html("<table id='attach-table' style='font-size:5px'><tbody><tr><td><li id='obj_19'>绿宝箱</li></td><td><li id='obj_21'>蓝宝箱</li></td><td><li id='obj_22'>紫宝箱</li></td><td><li id='obj_23'>金宝箱</li></td><td><li id='obj_27'>蓝色钥匙</li></td></tr><tr><td><li id='obj_28'>紫色钥匙</li></td><td><li id='obj_29'>金色钥匙</li></td><td><li id='obj_31'>大碎片宝箱</li></td><td><li id='obj_36'>技能石</li></td><td><li id='obj_37'>碎片宝箱</li></td></tr><tr><td><li id='obj_3002'>盗贼笔记</li></td><td><li id='obj_3003'>百步穿杨</li></td><td><li id='obj_3004'>大道无形</li></td><td><li id='obj_3005'>护甲片</li></td><td><li id='obj_3006'>枪头</li></td></tr><tr><td><li id='obj_3007'>毒药</li></td><td><li id='obj_3008'>箭羽</li></td><td><li id='obj_3009'>太极图</li></td><td><li id='obj_6000'>万能碎片</li></td><td><li id='obj_6001'>关羽碎片</li></td></tr><tr><td><li id='obj_3000'>钢铁之躯</li></td><td><li id='obj_3001'>热血战魂</li></td><td><li id='obj_6029'>诸葛亮碎片</li></td><td><li id='obj_6030'>安倍晴明碎片</li></td><td><li id='obj_6031'>法海碎片</li></td></tr><tr><td><li id='obj_6002'>秦琼碎片</li></td><td><li id='obj_6003'>李逵碎片</li></td><td><li id='obj_6004'>程咬金碎片</li></td><td><li id='obj_6005'>项羽碎片</li></td><td><li id='obj_6006'>丰臣秀吉碎片</li></td></tr><tr><td><li id='obj_6007'>张飞碎片</li></td><td><li id='obj_6008'>林冲碎片</li></td><td><li id='obj_6009'>赵云碎片</li></td><td><li id='obj_6010'>吕布碎片</li></td><td><li id='obj_6011'>白起碎片</li></td></tr><tr><td><li id='obj_6012'>斯巴达碎片</li></td><td><li id='obj_6013'>真田幸村碎片</li></td><td><li id='obj_6014'>黄忠碎片</li></td><td><li id='obj_6015'>花木兰碎片</li></td><td><li id='obj_6016'>李广碎片</li></td></tr><tr><td><li id='obj_6017'>养由基碎片</li></td><td><li id='obj_6018'>织田信长碎片</li></td><td><li id='obj_6019'>归蝶碎片</li></td><td><li id='obj_6020'>荆轲碎片</li></td><td><li id='obj_6021'>貂蝉碎片</li></td></tr><tr><td><li id='obj_6022'>李白碎片</li></td><td><li id='obj_6023'>墨子碎片</li></td><td><li id='obj_6024'>猿飞佐助碎片</li></td><td><li id='obj_6025'>服部半藏碎片</li></td><td><li id='obj_6026'>姜子牙碎片</li></td></tr><tr><td><li id='obj_6027'>妲己碎片</li></td><td><li id='obj_6028'>袁天罡碎片</li></td></tr></tbody></table>");
         var selectedProp = $("[prop-info]");
         for(var i=0;i<selectedProp.length;i++){
             var selectedId = $(selectedProp[i]).attr("obj-id");
@@ -345,7 +357,11 @@ $(".btn-group.btn-attachment > ul > li").click(function(){
             $(this).toggleClass("selected");
             if($(this).hasClass("selected")){
                 $(this).parent().css("background-color","#B9DEA0");
-                $("#attach-result").append("<span class='input-group selected-result'><span class='input-group-addon'>" + property + "</span><input type='text' class='form-control attach-selected' value='1' placeholder='数量' prop-info='true' obj-id=" + id + "></span>");    
+                if(id=='obj_19'||id=='obj_21'||id=='obj_22'||id=='obj_23'||id=='obj_31'||id=='obj_37'){
+                    $("#attach-result").append("<span class='input-group selected-result'><span class='input-group-addon'>" + property + "</span><input type='text' class='form-control attach-selected' value='1' placeholder='类型' prop-info='true' obj-id=" + id + "></span>");    
+                }else{
+                    $("#attach-result").append("<span class='input-group selected-result'><span class='input-group-addon'>" + property + "</span><input type='text' class='form-control attach-selected' value='1' placeholder='数量' prop-info='true' obj-id=" + id + "></span>");    
+                }
                 //允许选择后的结果可以点击删除 将物品列表中对应的物品修改为[未选择]状态
                 $("#attach-result > span > span").click(function(){
                     var propId = $(this).siblings("input").attr("obj-id");
