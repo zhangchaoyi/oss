@@ -176,7 +176,6 @@ $("#btn-send").click(function(){
                     operation:JSON.stringify(payloadData)
                 },
                 function(data, status) {
-                    loadFeedbackData($(".nav-tab.feedback > ul > li.active > a").attr("data-info"));
                 });
 
                 if(id==undefined){
