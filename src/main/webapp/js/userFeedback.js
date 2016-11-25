@@ -104,12 +104,18 @@ $(".nav-tab.feedback > ul > li").click(function(){
     loadFeedbackData(server);
 });
 
-//点击回复反馈按钮
+//点击任意回复反馈按钮
+$("#btn-atwill-reply").click(function(){
+    $("#reply-account").removeAttr("readonly");
+});
+
+//点击个人回复反馈按钮
 $(document).on("click","#table-feedback-detail tbody tr td button.btn.btn-danger",function() {
     var account = $(this).attr("account-info");
-    $("#reply-account").attr("value", account);
+    $("#reply-account").val(account);
     var id = $(this).attr("id-info");
     $("#reply-account").attr("id-info", id);
+    $("#reply-account").attr("readonly","readonly");
 });
 //点击发送按钮 需要获取回复反馈的所有内容,包括附件信息,需要验证是否为空或者参数不符合要求
 $("#btn-send").click(function(){
@@ -120,6 +126,14 @@ $("#btn-send").click(function(){
 
     if(account==null||account==""||account.length!=8){
         alert("账户名不合法");
+        return;
+    }
+    if(title==null||title==""){
+        alert("标题不能为空");
+        return;
+    }
+    if(area==null||area==""){
+        alert("正文内容不能为空");
         return;
     }
 
@@ -204,7 +218,8 @@ $("#btn-send").click(function(){
         },
     });
 
-    //邮件发送完需要清空
+    //邮件发送完需要清空/还原
+    $("#reply-account").val("");
     $("#reply-title").val("");
     $("#area").val("");
     $("#btn-attachment").html("<i class='fa fa-plus nest' aria-hidden='true'></i>附件");
@@ -212,17 +227,26 @@ $("#btn-send").click(function(){
     $("#attach-result").empty();
 });
 //点击关闭按钮
-$("#btn-reply-close").click(function(){
+$("#btn-reply-close,#btn-fb-close").click(function(){
+    //关闭邮件需要清空/还原
+    $("#reply-account").val("");
     $("#reply-title").val("");
     $("#area").val("");
+    $("#btn-attachment").html("<i class='fa fa-plus nest' aria-hidden='true'></i>附件");
+    $("div.attachment").empty();
+    $("#attach-result").empty();
 });
+
 
 //点击详情后的回复按钮
 $("#btn-reply").click(function(){
     var account = $("#feedback-account").val();
     var id = $("#btn-reply").attr("id-info");
-    $("#reply-account").attr("value", account);
+    $("#reply-account").val(account);
     $("#reply-account").attr("id-info", id);
+    $("#reply-account").attr("readonly","readonly");
+    //调整样式变形
+    $("body").css("padding-right","0px");
 });
 
 //点击详情按钮

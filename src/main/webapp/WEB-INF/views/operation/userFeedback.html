@@ -193,13 +193,13 @@
           <table id="table-feedback-detail" class="hover stripe row-border">
             <thead>
               <tr>
-                <th style="width:100px"><a class="btn btn-danger" data-toggle="modal" data-target="#delete-confirm"><i class="fa fa-times" aria-hidden="true" style="font-size:large"></i>删除</a><input type="checkbox" /></th>
+                <th style="width:100px"><a class="btn btn-warning" data-toggle="modal" data-target="#delete-confirm"><i class="fa fa-times" aria-hidden="true" style="font-size:large"></i>删除</a><input type="checkbox" /></th>
                 <th>帐号名</th>
                 <th>反馈内容</th>
                 <th>创建时间</th>
                 <th>详情</th>
                 <th>是否回复</th>
-                <th>回复</th>
+                <th><a class="btn btn-danger" id="btn-atwill-reply" data-toggle="modal" data-target="#feedback">回复</a></th>
               </tr>
             </thead>
           </table>
@@ -252,7 +252,7 @@
            <div class="modal-dialog"> 
             <div class="modal-content"> 
              <div class="modal-header"> 
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
+               <button type="button" class="close" id="btn-fb-close" data-dismiss="modal" aria-hidden="true">&times;</button> 
                <h4 class="modal-title" id="myModalLabel"><i>回复反馈</i></h4> 
              </div> 
              <div class="modal-body"> 
@@ -261,7 +261,7 @@
                  <div class="filter-header">
                    <div class="input-group">
                     <span class="input-group-addon">帐号</span>
-                    <input type="text" class="form-control" id="reply-account" readonly="readonly">
+                    <input type="text" class="form-control" id="reply-account" readonly="readonly" placeholder="输入8位帐号">
                    </div> 
                    <div class="input-group">
                     <span class="input-group-addon">标题</span>
