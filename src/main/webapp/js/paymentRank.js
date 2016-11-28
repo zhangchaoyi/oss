@@ -68,10 +68,12 @@ $("ul.nav.nav-tabs.rank-payment-tab > li").click(function(){
 
 function configTable(data) {
     $('#data-table-rank-paymentBehavior').dataTable().fnClearTable();
+    $("#data-table-rank-paymentBehavior > tbody > tr > td > span[title]").tooltip({"delay":0,"track":true,"fade":250});
     var _table = $('#data-table-rank-paymentBehavior').dataTable({
         "destroy": true,
         "data": data==null?null:data.data,
         "dom": '',
+        "order": [[ 0, 'desc' ]],
         'language': {
             'emptyTable': '没有数据',
             'loadingRecords': '加载中...',
@@ -87,6 +89,20 @@ function configTable(data) {
            "targets": -1,
            "render": function ( data, type, full, meta ) {
             return '<a class="detail-rank" data-info='+data+'>查看</a>';
+           }
+         },
+         {
+           "targets": 2,
+           "render": function ( data, type, full, meta ) {
+                var weekday = getWeekdayFromDate(data);
+                return '<span title='+weekday+'>'+data+'</span>';
+           }
+         },
+         {
+           "targets": 3,
+           "render": function ( data, type, full, meta ) {
+                var weekday = getWeekdayFromDate(data);
+                return '<span title='+weekday+'>'+data+'</span>';
            }
          } ]
     });

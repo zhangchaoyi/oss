@@ -313,12 +313,14 @@ function showPaidNote(data){
 }
 
 function configDataPaymentTable(data) {
-    $('#data-table-data-payment').dataTable().fnClearTable();  
+    $('#data-table-data-payment').dataTable().fnClearTable();
+    $("#data-table-data-payment > tbody > tr > td > span[title]").tooltip({"delay":0,"track":true,"fade":250});  
     $('#data-table-data-payment').dataTable({
         "destroy": true,
         // retrive:true,
         "data": data,
         "dom": '<"top"f>rt<"left"lip>',
+        "order": [[ 0, 'desc' ]],
         'language': {
             'emptyTable': '没有数据',
             'loadingRecords': '加载中...',
@@ -329,7 +331,14 @@ function configDataPaymentTable(data) {
             "sInfo": "(共 _TOTAL_ 条记录)",
             'infoEmpty': '没有数据',
             'infoFiltered': '(过滤总件数 _MAX_ 条)'
-        }
+        },
+        "columnDefs": [ {
+           "targets": 0,
+           "render": function ( data, type, full, meta ) {
+                var weekday = getWeekdayFromDate(data);
+                return '<span title='+weekday+'>'+data+'</span>';
+            }
+         }]
     });
 }
 

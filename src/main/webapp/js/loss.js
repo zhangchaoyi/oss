@@ -100,8 +100,8 @@ function configChart(data, chart, chartName) {
 function configTable(data,dataTable) {
     appendTableHeader(data,dataTable);
     var tableData = data.tableData;
-
     $(dataTable).dataTable().fnClearTable();  
+    $(dataTable+" > tbody > tr > td > span[title]").tooltip({"delay":0,"track":true,"fade":250});
     $(dataTable).dataTable({
         "destroy": true,
         // retrive:true,
@@ -118,7 +118,14 @@ function configTable(data,dataTable) {
             "sInfo": "(共 _TOTAL_ 条记录)",
             'infoEmpty': '没有数据',
             'infoFiltered': '(过滤总件数 _MAX_ 条)'
-        }
+        },
+        "columnDefs": [ {
+           "targets": 0,
+           "render": function ( data, type, full, meta ) {
+                var weekday = getWeekdayFromDate(data);
+                return '<span title='+weekday+'>'+data+'</span>';
+            }
+         }]
     });
 }
 

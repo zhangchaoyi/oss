@@ -159,6 +159,14 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
             "num-html-pre": function(a) {
                 var time = String(a).split(" ")[1];
                 var num = String(a).split(" ")[0].split("~")[0];
+                if(num=='<span'){
+                   var date = String(a).substring(16,26);
+                   var nums = String(date).split("-");
+                   var num = "";
+                    for(var i=0;i<nums.length;i++){
+                        num += nums[i];
+                    }          
+                }
                 if(num=='<10'){
                     num = 9;
                 }
@@ -193,7 +201,7 @@ jQuery.extend(jQuery.fn.dataTableExt.oSort, {
 function configTable(data, dataTable, percent) {
     appendTableHeader(data,dataTable);
     var tableData = dealTableData(data, percent);
-
+    $(dataTable+" > tbody > tr > td > span[title]").tooltip({"delay":0,"track":true,"fade":250});
     $(dataTable).dataTable().fnClearTable();  
     $(dataTable).dataTable({
         "destroy": true,
@@ -201,7 +209,14 @@ function configTable(data, dataTable, percent) {
         "data": tableData,
         columnDefs: [{
                 type: 'num-html',
-                targets: 0
+                targets: 0,
+                "render": function ( data, type, full, meta ) {
+                    var weekday = getWeekdayFromDate(data);
+                    if(weekday==undefined){
+                       return data;     
+                    }
+                    return '<span title='+weekday+'>'+data+'</span>';
+                }
         }],
         "dom": '<"top"f>rt<"left"lip>',
         "order": [[ 0, 'desc' ]],

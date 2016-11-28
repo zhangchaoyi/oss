@@ -95,6 +95,7 @@ function configChart(data) {
 function configTable(data) {
     appendTableHeader(data);
     var tableData = dealTableData(data);
+    $("#data-table-equipment-retain > tbody > tr > td > span[title]").tooltip({"delay":0,"track":true,"fade":250});
     table = $('#data-table-equipment-retain').dataTable({
         destroy: true,
         // retrive:true,
@@ -111,7 +112,14 @@ function configTable(data) {
             "sInfo": "(共 _TOTAL_ 条记录)",
             'infoEmpty': '没有数据',
             'infoFiltered': '(过滤总件数 _MAX_ 条)'
-        }
+        },
+        "columnDefs": [ {
+           "targets": 0,
+           "render": function ( data, type, full, meta ) {
+                var weekday = getWeekdayFromDate(data);
+                return '<span title='+weekday+'>'+data+'</span>';
+            }
+         }]
     });
 }
 

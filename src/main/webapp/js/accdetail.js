@@ -8,32 +8,36 @@ function checkInput(){
 }
 
 $(function(){
-  	var param = GetQueryString("account-id");
-  	$("#account-id").attr("value",param);
-  	if(param != null && param.toString().length>1){
-  		$.post("/oss/api/players/accdetail", {
-        accountId:param
-        },
-	    function(data, status) {
-	    	if(data.code==1){
-	    		$("#account-not-exist").css("display", "block");
-    			setTimeout('$("#account-not-exist").css("display", "none")', 5000);
-	    		configTable(null);
-	    		return;		
-	    	}
-	        configTable(data)
-	    });
-  	}else{
-  		//初始化表头
-  		configTable(null);
-  	}
-
+  loadData();
 })
+
+function loadData(){
+  var param = GetQueryString("account-id");
+  $("#account-id").attr("value",param);
+  if(param != null && param.toString().length>1){
+      $.post("/oss/api/players/accdetail", {
+        accountId:param
+      },
+      function(data, status) {
+        if(data.code==1){
+          $("#account-not-exist").css("display", "block");
+          setTimeout('$("#account-not-exist").css("display", "none")', 5000);
+          configTable(null);
+          return;   
+        }
+        configTable(data)
+      });
+  }else{
+      //初始化表头
+      configTable(null);
+    }
+}
 
 
 function configTable(data) {
     $('#data-table-detail-first').dataTable().fnClearTable();
-    $('#data-table-detail-second').dataTable().fnClearTable();  
+    $('#data-table-detail-second').dataTable().fnClearTable();
+    $("#data-table-detail-second > tbody > tr > td > span[title]").tooltip({"delay":0,"track":true,"fade":250});
     $('#data-table-detail-first').dataTable({
         "destroy": true,
         "data": data==null?null:data.device,
@@ -64,7 +68,21 @@ function configTable(data) {
             "sInfo": "(共 _TOTAL_ 条记录)",
             'infoEmpty': '没有数据',
             'infoFiltered': '(过滤总件数 _MAX_ 条)'
-        }
+        },
+        "columnDefs": [ {
+           "targets": 0,
+           "render": function ( data, type, full, meta ) {
+                var weekday = getWeekdayFromDate(data);
+                return '<span title='+weekday+'>'+data+'</span>';
+            }
+         },
+         {
+           "targets": 1,
+           "render": function ( data, type, full, meta ) {
+                var weekday = getWeekdayFromDate(data);
+                return '<span title='+weekday+'>'+data+'</span>';
+            }
+         }]
     });
 }
 //锁死图标选择下拉菜单 清除按钮

@@ -56,7 +56,7 @@ public class DbSelector {
 			dbName = "测试服";
 			break;
 		case "ios":
-			dbName = "IOS服";
+			dbName = "iOS服";
 			break;
 		}
 		return dbName;
