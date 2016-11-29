@@ -140,7 +140,7 @@ public class EquipmentAnalyzeServiceImpl implements EquipmentAnalyzeService{
 	 * @param endDate  所选结束时间 
 	 */
 	public List<DeviceInfo> queryPaidPlayersEquipment(String icons, String startDate, String endDate) {
-		String sql = "select C.model model,count(C.model) count from (select distinct account from log_charge where timestamp >= ? and timestamp <= ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") group by C.model";
+		String sql = "select C.model model,count(C.model) count from (select distinct account from log_charge where timestamp >= ? and timestamp <= ? and is_product = 1) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") group by C.model";
 		List<DeviceInfo> paidPlayerEquipment = DeviceInfo.dao.use(db).find(sql, startDate, endDate);
 		
 		return paidPlayerEquipment;
@@ -152,7 +152,7 @@ public class EquipmentAnalyzeServiceImpl implements EquipmentAnalyzeService{
 	 * @param endDate  所选结束时间 
 	 */
 	public List<DeviceInfo> queryPaidPlayersEquipmentResolution(String icons, String startDate, String endDate) {
-		String sql = "select C.resolution resolution,count(C.resolution) count from (select distinct account from log_charge where timestamp >= ? and timestamp <= ? ) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") group by C.resolution;";
+		String sql = "select C.resolution resolution,count(C.resolution) count from (select distinct account from log_charge where timestamp >= ? and timestamp <= ? and is_product = 1) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") group by C.resolution;";
 		List<DeviceInfo> paidPlayersEquipmentResolution = DeviceInfo.dao.use(db).find(sql, startDate, endDate);
 		
 		return 	paidPlayersEquipmentResolution;
@@ -164,7 +164,7 @@ public class EquipmentAnalyzeServiceImpl implements EquipmentAnalyzeService{
 	 * @param endDate  所选结束时间 
 	 */
 	public List<DeviceInfo> queryPaidPlayersEquipmentOsVersion(String icons, String startDate, String endDate) {
-		String sql = "select C.os_version,count(C.os_version) count from (select distinct account from log_charge where timestamp >= ? and timestamp <= ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") group by C.os_version";
+		String sql = "select C.os_version,count(C.os_version) count from (select distinct account from log_charge where timestamp >= ? and timestamp <= ? and is_product = 1) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") group by C.os_version";
 		List<DeviceInfo> paidPlayersEquipmentOsVersion = DeviceInfo.dao.use(db).find(sql, startDate, endDate);
 		
 		return 	paidPlayersEquipmentOsVersion;
@@ -176,7 +176,7 @@ public class EquipmentAnalyzeServiceImpl implements EquipmentAnalyzeService{
 	 * @param endDate  所选结束时间 
 	 */
 	public List<DeviceInfo> queryPaidPlayersEquipmentNet(String icons, String startDate, String endDate) {
-		String sql = "select C.net net,count(C.net) count from (select distinct account from log_charge where timestamp >= ? and timestamp <= ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") group by C.net;";
+		String sql = "select C.net net,count(C.net) count from (select distinct account from log_charge where timestamp >= ? and timestamp <= ? and is_product = 1) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") group by C.net;";
 		List<DeviceInfo> paidPlayersEquipmentNet = DeviceInfo.dao.use(db).find(sql, startDate, endDate);
 		
 		return 	paidPlayersEquipmentNet;
@@ -188,7 +188,7 @@ public class EquipmentAnalyzeServiceImpl implements EquipmentAnalyzeService{
 	 * @param endDate  所选结束时间 
 	 */
 	public List<DeviceInfo> queryPaidPlayersEquipmentBandOperator(String icons, String startDate, String endDate) {
-		String sql = "select C.carrier carrier,count(C.carrier) count from (select distinct account from log_charge where timestamp >= ? and timestamp <= ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") group by C.carrier;";
+		String sql = "select C.carrier carrier,count(C.carrier) count from (select distinct account from log_charge where timestamp >= ? and timestamp <= ? and is_product = 1) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") group by C.carrier;";
 		List<DeviceInfo> paidPlayersEquipmentCarrier = DeviceInfo.dao.use(db).find(sql, startDate, endDate);
 		
 		return 	paidPlayersEquipmentCarrier;

@@ -59,7 +59,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 	 */
 	public Map<String, List<Long>> queryPaidInActiveUser(List<String> categories, String icons, String startDate, String endDate){
 		Map<String, List<Long>> data = new HashMap<String, List<Long>>();
-		String sql = "select DATE_FORMAT(E.date,'%Y-%m-%d') date,sum(case when F.account is not null then 1 else 0 end)paid,sum(case when F.account is null then 1 else 0 end)notpaid from(select A.date,A.account from (select distinct account,date from login where login_time >= ? and login_time <= ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in("+ icons +")) E left join (select distinct account from log_charge) F on E.account=F.account group by DATE_FORMAT(E.date,'%Y-%m-%d')";
+		String sql = "select DATE_FORMAT(E.date,'%Y-%m-%d') date,sum(case when F.account is not null then 1 else 0 end)paid,sum(case when F.account is null then 1 else 0 end)notpaid from(select A.date,A.account from (select distinct account,date from login where login_time >= ? and login_time <= ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in("+ icons +")) E left join (select distinct account from log_charge where is_product = 1) F on E.account=F.account group by DATE_FORMAT(E.date,'%Y-%m-%d')";
 		List<LogCharge> activePlayers = LogCharge.dao.use(db).find(sql, startDate, endDate);
 		//Map<Date,Map<paid/notpaid,value>>
 		Map<String, Map<String,Long>> sort = new TreeMap<String, Map<String, Long>>();

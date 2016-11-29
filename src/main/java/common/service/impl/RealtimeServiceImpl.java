@@ -34,13 +34,13 @@ public class RealtimeServiceImpl implements RealtimeService{
 	public Map<String, String> queryRealtimeData(String icons){
 		String eSql = "select count(*)count from device_info where DATE_FORMAT(create_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and os in (" + icons + ")";
 		String aPSql = "select count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and B.os in (" + icons + ")";
-		String pPSql = "select count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and C.os in (" + icons + ")";
-		String rTSql = "select sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and C.os in (" + icons + ")";
+		String pPSql = "select count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and C.os in (" + icons + ")";
+		String rTSql = "select sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and C.os in (" + icons + ")";
 		String gTSql = "select count(*)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and B.os in (" + icons + ")";
 		String nPSql = "select count(*)count from create_role A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.create_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and B.os in (" + icons + ")";
 		String oPSql = "select count(*)count from (select distinct C.account from login C join device_info D on C.openudid = D.openudid where D.os in (" + icons + ") and DATE_FORMAT(C.login_time, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')) A left join (select E.account from create_role E join device_info F on E.openudid = F.openudid where F.os in (" + icons + ") and DATE_FORMAT(E.create_time,'%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')) B on A.account = B.account where B.account is null";
-		String pTSql = "select count(*)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ") and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d')";
-		String rSumSql = "select sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in (" + icons + ")";
+		String pTSql = "select count(*)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and C.os in (" + icons + ") and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d')";
+		String rSumSql = "select sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and C.os in (" + icons + ")";
 		String lGPTSql = "select sum(case when online_time<86400 then A.online_time else 86400 end)online_time,count(A.account)count from logout A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.date=DATE_FORMAT(now(),'%Y-%m-%d') and C.os in (" + icons + ")";
 		
 		List<DeviceInfo> e = DeviceInfo.dao.use(db).find(eSql);
@@ -80,13 +80,13 @@ public class RealtimeServiceImpl implements RealtimeService{
 	public Map<String, String> queryBeforeData(String icons){
 		String eSql = "select count(*)count from device_info where DATE_FORMAT(create_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and os in (" + icons + ")";
 		String aPSql = "select count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and B.os in (" + icons + ")";
-		String pPSql = "select count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and C.os in (" + icons + ")";
-		String rSql = "select sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and C.os in (" + icons + ")";
+		String pPSql = "select count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and C.os in (" + icons + ")";
+		String rSql = "select sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and C.os in (" + icons + ")";
 		String gTSql = "select count(*)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and B.os in (" + icons + ")";
 		String nPSql = "select count(*)count from create_role A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.create_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and B.os in (" + icons + ")";
 		String oPSql = "select count(*)count from (select distinct C.account from login C join device_info D on C.openudid = D.openudid where D.os in (" + icons + ") and DATE_FORMAT(C.login_time, '%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day), '%Y-%m-%d')) A left join (select E.account from create_role E join device_info F on E.openudid = F.openudid where F.os in (" + icons + ") and DATE_FORMAT(E.create_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day), '%Y-%m-%d')) B on A.account = B.account where B.account is null";
-		String pTSql = "select count(*)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and C.os in (" + icons + ")";
-		String rSumSql = "select sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.timestamp < DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and C.os in (" + icons + ")";
+		String pTSql = "select count(*)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and C.os in (" + icons + ")";
+		String rSumSql = "select sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.timestamp < DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and C.os in (" + icons + ") and A.is_product = 1";
 		//登陆时长
 		String lGPSql = "select sum(case when A.online_time<86400 then A.online_time else 86400 end)online_time,count(A.account)count from logout A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.date=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and C.os in ("+ icons + ")";
 
@@ -187,7 +187,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 	}
 	//查询实时收入金额
 	public Map<String, Object> queryRealtimeRevenue(String icons, String[] date){
-		String sql = "select sum(A.count)revenue,hour(A.timestamp)hour from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d')= ? and C.os in (" + icons + ") group by hour(A.timestamp)";
+		String sql = "select sum(A.count)revenue,hour(A.timestamp)hour from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d')= ? and C.os in (" + icons + ") group by hour(A.timestamp)";
 		Map<String, Object> data = new TreeMap<String, Object>(new Comparator<String>(){
 			@Override
 			public int compare(String o1, String o2) {

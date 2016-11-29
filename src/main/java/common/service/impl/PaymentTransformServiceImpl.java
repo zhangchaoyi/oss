@@ -115,7 +115,7 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 	 * @param endDate  所选结束时间
 	 */
 	public Map<String, Object> queryDayPaidRate(List<String>categories, String icons, String startDate, String endDate) {
-		String pSql = "select DATE_FORMAT(A.timestamp,'%Y-%m-%d') date, count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by date";
+		String pSql = "select DATE_FORMAT(A.timestamp,'%Y-%m-%d') date, count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by date";
 		String aSql = "select DATE_FORMAT(A.date,'%Y-%m-%d') date, count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(login_time,'%Y-%m-%d') between ? and ? and B.os in (" + icons + ") group by date";
 		
 		List<LogCharge> paid = LogCharge.dao.use(db).find(pSql, startDate, endDate);
@@ -178,7 +178,7 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		Map<String, String> week = DateUtils.divideDateToWeek(startDate, endDate);
 		Map<String, PaidRate> sort = new LinkedHashMap<String, PaidRate>();
 		
-		String pSql = "select count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ")";
+		String pSql = "select count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ")";
 		String aSql = "select count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(login_time,'%Y-%m-%d') between ? and ? and B.os in (" + icons + ")";
 		//循环执行 各周时间段 语句
 		for(Map.Entry<String, String> entry : week.entrySet()){
@@ -246,7 +246,7 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 		String start = DateUtils.monthToStr(DateUtils.strToDate(startDate));
 		String end = DateUtils.monthToStr(DateUtils.strToDate(endDate));
 		
-		String pSql = "select DATE_FORMAT(A.timestamp,'%Y-%m') month, count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m') between ? and ? and C.os in (" + icons + ") group by month";
+		String pSql = "select DATE_FORMAT(A.timestamp,'%Y-%m') month, count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m') between ? and ? and C.os in (" + icons + ") group by month";
 		String aSql = "select DATE_FORMAT(A.date,'%Y-%m') month, count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(login_time,'%Y-%m') between ? and ? and B.os in (" + icons + ") group by month";
 		
 		List<String> month = categories;
@@ -311,11 +311,11 @@ public class PaymentTransformServiceImpl implements PaymentTransformService{
 	 * @param tag 选项栏
 	 */
 	public Map<String, Object> queryAreaPaidRate(String icons, String startDate, String endDate, String tag) {
-		String pSql = "select C.province,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by C.province,date;";
+		String pSql = "select C.province,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by C.province,date;";
 		String aSql = "select B.province,DATE_FORMAT(A.login_time,'%Y-%m-%d')date,count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(login_time,'%Y-%m-%d') between ? and ? and B.os in (" + icons + ") group by B.province,date";
 		
 		if("country".equals(tag)){
-			pSql = "select C.country,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by C.country,date;";
+			pSql = "select C.country,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date,count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by C.country,date;";
 			aSql = "select B.country,DATE_FORMAT(A.login_time,'%Y-%m-%d')date,count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(login_time,'%Y-%m-%d') between ? and ? and B.os in (" + icons + ") group by B.country,date";
 		}
 		

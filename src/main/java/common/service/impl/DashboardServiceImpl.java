@@ -33,12 +33,12 @@ public class DashboardServiceImpl implements DashboardService{
 		String pYSql = "select count(*)count from create_role where DATE_FORMAT(create_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval 1 day),'%Y-%m-%d')";
 		String aPTSql = "select count(*)count from(select count(account)times from login group by account having count(account)>1) A";
 		String aPYSql = "select count(distinct account)count from login where DATE_FORMAT(login_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval 1 day),'%Y-%m-%d')";
-		String pPTSql = "select count(distinct account)count from log_charge";
-		String pPYSql = "select count(distinct account)count from log_charge where DATE_FORMAT(timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval 1 day),'%Y-%m-%d')";
-		String pTTSql = "select count(*)count from log_charge";
-		String pTYSql = "select count(*)count from log_charge where DATE_FORMAT(timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval 1 day),'%Y-%m-%d')";
-		String rTSql = "select sum(count)revenue from log_charge";
-		String rYSql = "select sum(count)revenue from log_charge where DATE_FORMAT(timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval 1 day),'%Y-%m-%d')";
+		String pPTSql = "select count(distinct account)count from log_charge where is_product = 1";
+		String pPYSql = "select count(distinct account)count from log_charge where DATE_FORMAT(timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval 1 day),'%Y-%m-%d') and is_product = 1";
+		String pTTSql = "select count(*)count from log_charge where is_product = 1";
+		String pTYSql = "select count(*)count from log_charge where DATE_FORMAT(timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval 1 day),'%Y-%m-%d') and is_product = 1";
+		String rTSql = "select sum(count)revenue from log_charge where is_product = 1";
+		String rYSql = "select sum(count)revenue from log_charge where DATE_FORMAT(timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval 1 day),'%Y-%m-%d') and is_product = 1";
 		String lTTSql = "select count(*)count from login";
 		String lTYSql = "select count(*)count from login where DATE_FORMAT(login_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval 1 day),'%Y-%m-%d')";
 		String lPTSql = "select sum(online_time)online_time from logout";
@@ -127,8 +127,8 @@ public class DashboardServiceImpl implements DashboardService{
 		String osPNSql = "select count(*)count from create_role A join device_info B on A.openudid=B.openudid where DATE_FORMAT(A.create_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and B.os= ?";
 		String osGTSql = "select count(*)count from login A join device_info B on A.openudid = B.openudid where B.os = ?";
 		String osGNSql = "select count(*)count from login A join device_info B on A.openudid = B.openudid where B.os = ? and A.date=DATE_FORMAT(now(),'%Y-%m-%d')";
-		String osRTSql = "select sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os = ?";
-		String osRNSql = "select sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os = ? and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d')";
+		String osRTSql = "select sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and C.os = ?";
+		String osRNSql = "select sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and C.os = ? and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d')";
 		
 		String[] os = {"iOS", "android", "windows"};
 		long deviceTSum = 0;
