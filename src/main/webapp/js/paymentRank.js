@@ -73,7 +73,7 @@ function configTable(data) {
         "destroy": true,
         "data": data==null?null:data.data,
         "dom": '',
-        "order": [[ 0, 'desc' ]],
+        "order": [[ 0, 'asc' ]],
         'language': {
             'emptyTable': '没有数据',
             'loadingRecords': '加载中...',

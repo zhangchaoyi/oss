@@ -37,7 +37,7 @@ public class AdminServiceImpl implements AdminService {
 	 */
 	public SecUser getUser(String username) {
 		String db = DbSelector.getDbName();
-		logger.info("params:{" + "username:" + username + "username" + "}" + "db" + db);
+		logger.info("params:{" + "username:" + username + "}" + "db" + db);
 		String sql = "select password, salt from sec_user where user_name = ?";
 		SecUser secUser = SecUser.dao.use(db).findFirst(sql, username);
 		return secUser;
