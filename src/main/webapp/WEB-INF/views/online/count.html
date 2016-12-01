@@ -35,7 +35,7 @@
        <div class="btn-group" id="admin-btn"> 
         <button class="btn btn-default dropdown-toggle" type="button" id="userAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-user btn-user"></span>admin <span class="caret"></span></button> 
         <ul class="dropdown-menu user-bars" aria-labelledby="userAccount"> 
-         <li> <a href="/oss/admin/account">帐号与权限</a></li> 
+         <li> <a href="/oss/admin/account">帐号与权限</a></li>
         </ul> 
        </div> 
        <div class="logout-btn"> 
@@ -46,7 +46,7 @@
     </div> 
     <div id="menu"> 
      <div class="crumb"> 
-      <a href="/oss/dashboard"><button type="button" class="btn btn-default btn-home" aria-label="Left Align"> <span class="glyphicon glyphicon-home" aria-hidden="true"></span> </button></a> 
+      <a href="/oss/dashboard"><button type="button" class="btn btn-default btn-home" aria-label="Left Align"> <span class="glyphicon glyphicon-home" aria-hidden="true"></span> </button></a>
      </div> 
      <div class="crumb-inner"> 
       <em>全部数据</em> 
@@ -77,7 +77,7 @@
    <nav class="navbar-default navbar-side" role="navigation"> 
     <div class="sidebar-collapse"> 
      <ul class="nav" id="main-menu"> 
-      <li> <a href="/oss/realtime/info"> <i class="fa fa-clock-o "></i>实时概况</a> </li> 
+      <li> <a href="/oss/realtime/info"> <i class="fa fa-clock-o "></i>实时概况</a> </li>
       <li> <a href="#"> <i class="fa fa-line-chart "></i>报表</a> </li> 
       <li> <a href="#"> <i class="fa fa-user"></i>玩家分析 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
@@ -99,8 +99,8 @@
       <li> <a href="#"> <i class="fa fa-check-square-o "></i>在线分析 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
         <li> <a href="/oss/online/analysis"> <i class="fa fa-check-square-o"></i>在线分析</a> </li> 
-        <li> <a href="/oss/online/habits"> <i class="fa fa-arrows "></i>在线习惯</a> </li> 
-        <li> <a href="/oss/online/count"> <i class="fa fa-street-view"></i>在线人数</a> </li>
+        <li> <a href="/oss/online/habits"> <i class="fa fa-arrows"></i>在线习惯</a> </li>
+        <li> <a href="/oss/online/count"> <i class="fa fa-street-view"></i>在线人数</a> </li> 
        </ul> </li> 
       <li> <a href="#"> <i class="fa fa-shopping-cart "></i>渠道分析 <span class="fa arrow"></span></a> 
        <ul class="nav nav-second-level"> 
@@ -246,7 +246,7 @@
              </div> 
             </div> 
             <div class="modal-footer"> 
-             <button type="button" class="btn btn-primary" id="btn-filtersave">保存</button> 
+             <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn-filtersave">保存</button> 
              <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button> 
             </div> 
            </div> 
@@ -264,17 +264,17 @@
          <span class="explain-heading">指标说明</span> 
          <button class="btn btn-2 btn-2c" id="btn-explain-switch">关闭</button> 
         </div> 
-        <div class="panel-body" id="explain-panel"> 
+        <div class="panel-body" id="explain-panel" style="height:inherit"> 
          <div class="explain-content-panel cut"> 
           <div class="explain-content-box"> 
            <div class="explain-content-row"> 
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              付费玩家:
+              PCU:
              </dt> 
              <dd>
-              统计所选时期内，每日登陆的玩家中有过付费行为的玩家数量。
+              最高同时在线人数。
              </dd> 
             </dl> 
            </div> 
@@ -282,106 +282,16 @@
             <i class="fa fa-circle" aria-hidden="true"></i> 
             <dl> 
              <dt>
-              DAU（日活跃玩家数量）:
+              CCU：
              </dt> 
              <dd>
-              统计所选时期内，每日成功登录游戏的玩家数量。
+              当时同时在线人数。
              </dd> 
             </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              WAU（周活跃玩家数量）:
-             </dt> 
-             <dd>
-              统计所选时期内，当日往前推7日（当日计入天数）期间内，登陆过游戏的玩家总数量，按照玩家ID排重。
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              MAU（月活跃玩家数量）:
-             </dt> 
-             <dd>
-               统计所选时期内，当日往前推30日（当日计入天数）期间内，登陆过游戏的玩家总数量，按照玩家ID排重。
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              DAU/MAU:
-             </dt> 
-             <dd>
-               统计所选时期内，当日活跃玩家数量与当月活跃玩家数量的比例。此比例越趋近于1，说明游戏玩家的活跃度越高。
-             </dd> 
-            </dl> 
-           </div>             
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              已玩天数:
-             </dt> 
-             <dd>
-               统计所选时期内，活跃玩家从新增日到所选时期最后一日为止，登陆游戏的总天数分布（时间区间选择为1天以上的情况，则为每日结算后结果相加，未排重）。
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              活跃玩家等级:
-             </dt> 
-             <dd>
-               统计所选时期内，活跃玩家在所选日期最后一次退出游戏时的等级分布情况（未排重）。
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              活跃玩家地区/国家
-             </dt> 
-             <dd>
-               统计所选时期内，活跃玩家在所选日期最后一次退出游戏时的地区/国家分布情况（未排重）。
-             </dd> 
-            </dl> 
-           </div> 
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              活跃玩家性别:
-             </dt> 
-             <dd>
-               统计所选时期内，活跃玩家注册信息中性别分布情况（未排重）。
-             </dd> 
-            </dl> 
-           </div>
-           <div class="explain-content-row"> 
-            <i class="fa fa-circle" aria-hidden="true"></i> 
-            <dl> 
-             <dt>
-              活跃玩家年龄:
-             </dt> 
-             <dd>
-               统计所选时期内，活跃玩家注册信息中年龄分布情况（未排重）。
-             </dd> 
-            </dl> 
-           </div> 
+           </div>  
           </div> 
          </div> 
         </div> 
-        <button type="button" class="btn btn-default disabled" id="btn-explain-up"> <span class="fa fa-chevron-up" aria-hidden="true"></span> </button> 
-        <button type="button" class="btn btn-default" id="btn-explain-down"> <span class="fa fa-chevron-down" aria-hidden="true"></span> </button> 
        </div> 
       </div> 
      </div> 
@@ -389,44 +299,40 @@
      <div class="row" id="data-first"> 
       <div class="panel panel-default"> 
        <div class="panel-heading"> 
-        <span class="data-first-panel-heading">活跃玩家</span>
+        <span class="data-first-panel-heading">CCU分布</span>
         <button class="btn btn-2 btn-2c" id="btn-first-data-panel-switch">关闭</button> 
        </div> 
-       <div class="panel-body"> 
-        <ul class="nav nav-tabs activeplayer"> 
-         <li class="active"> <a data-toggle="tab" data-info="dau">DAU</a></li> 
-         <li class=""> <a data-toggle="tab" data-info="dauwaumau">DAU|WAU|MAU</a></li>
-         <li class=""> <a data-toggle="tab" data-info="daumau">DAU/MAU</a></li> 
-        </ul> 
-        <div class="tab-content"> 
-         <div id="active-players-chart" style="width: 100%;height:400px;display:inline;position:relative;float:left"></div> 
-         <div class="table-zoom-first"> 
-          <table id="data-table-active-players" class="hover stripe row-border"></table>
-         </div>          
+       <div class="panel-body">  
+        <div class="tab-content">
+          <div class="data-results">
+            <span>
+              <em>区间PCU:</em>
+              <font class="period-pcu">0</font>
+            </span>
+            <span>
+              <em>历史PCU:</em>
+              <font class="history-pcu">10</font>
+            </span>
+          </div>
+          <div id="online-count-ccu-chart" style="width:100%;height:400px;display:inline;float:left"></div> 
         </div> 
        </div> 
       </div> 
      </div>
-     <div class="row" id="data-second">
-        <ul class="nav nav-tabs active-details"> 
-         <li class="active"> <a data-toggle="tab" data-info="played-days">已玩天数</a></li> 
-         <li class=""> <a data-toggle="tab" data-info="rank">等级</a></li>
-         <li class=""> <a data-toggle="tab" data-info="area">地区</a></li> 
-         <li class=""> <a data-toggle="tab" data-info="country">国家</a></li>
-         <li class=""> <a data-toggle="tab" data-info="account">账户类型</a></li>
-         <button class="btn btn-2 btn-2c" id="btn-gamedetail-switch">关闭</button>  
-        </ul> 
-        <div class="tab-content"> 
-         <div id="active-details-chart" style="width: 100%;height:400px;display:inline;position:relative;float:left"></div> 
-         <div class="table-zoom-second"> 
-          <table id="data-table-active-details" class="hover stripe row-border"></table>
-         </div> 
-        </div>
-     </div>
-     <div class="row"> 
-      <div class="alert alert-warning fade in" data-dismiss="alert" id="platform-selected"> 
-       <a href="#" class="close" data-dismiss="alert">&times;</a> 
-       <strong>请选择平台</strong> 
+     <div class="row" id="data-third"> 
+      <div class="panel panel-default"> 
+       <div class="panel-heading"> 
+        <span class="data-first-panel-heading">PCU分布</span>
+        <button class="btn btn-2 btn-2c" id="btn-third-data-panel-switch">关闭</button> 
+       </div> 
+       <div class="panel-body"> 
+        <div class="tab-content">
+          <div id="online-count-pcu-chart" style="width:100%;height:400px;display:inline;float:left"></div> 
+          <div class="table-zoom-third"> 
+           <table id="data-table-online-count-pcu" class="hover stripe row-border"></table> 
+          </div>              
+        </div> 
+       </div> 
       </div> 
      </div>
      <div class="row">  
@@ -459,7 +365,7 @@
   <script src="http://oss.koogame.cn/oss/js/dateselector/dateRange.js?v=0.1"></script> 
   <script src="http://oss.koogame.cn/oss/js/dateselector/monthPicker.js?v=0.1"></script> 
   <script src="http://oss.koogame.cn/oss/js/checkbox/icheck.js?v=0.1"></script>
-  <script src="http://oss.koogame.cn/oss/js/common.js?v=0.1"></script>
-  <script src="http://oss.koogame.cn/oss/js/activePlayers.js?v=0.1"></script>
+  <script src="http://oss.koogame.cn/oss/js/common.js?v=0.1"></script> 
+  <script src="http://oss.koogame.cn/oss/js/onlineCount.js?v=0.1"></script>
  </body>
 </html>
