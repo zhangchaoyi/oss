@@ -1,7 +1,5 @@
 package common.controllers.loss;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -59,7 +57,6 @@ public class LossController extends Controller {
 		// 保存chart中数据
 		Map<String, Object> seriesMap = new LinkedHashMap<String, Object>();
 		List<String> categories = DateUtils.getDateList(startDate, endDate);
-		List<String> header = new ArrayList<String>();
 		String playerType = "";
 		Map<String, Object> queryDayData = new HashMap<String, Object>();
 
@@ -69,11 +66,9 @@ public class LossController extends Controller {
 			switch (tag) {
 			case "day-loss":
 				queryDayData = las.queryDayLoss(categories, icons, startDate, endDate, playerType);
-				header.addAll(Arrays.asList("日期", "活跃用户", "+1日", "+2日", "+3日", "+4日", "+5日", "+6日", "+7日", "+8日", "+9日", "+10日", "+11日", "+12日", "+13日", "+14日", "+30日"));
 				break;
 			case "week-back":
 				queryDayData = las.queryDayReturn(categories, icons, startDate, endDate, playerType);
-				header.addAll(Arrays.asList("日期", "活跃用户", "+1日", "+2日", "+3日", "+4日", "+5日", "+6日", "+7日", "+8日", "+9日", "+10日", "+11日", "+12日", "+13日", "+14日", "+30日"));
 				break;
 			}
 			break;
@@ -82,11 +77,9 @@ public class LossController extends Controller {
 			switch (tag) {
 			case "day-loss":
 				queryDayData = las.queryDayLoss(categories, icons, startDate, endDate, playerType);
-				header.addAll(Arrays.asList("日期", "付费用户", "+1日", "+2日", "+3日", "+4日", "+5日", "+6日", "+7日", "+8日", "+9日", "+10日", "+11日", "+12日", "+13日", "+14日", "+30日"));
 				break;
 			case "week-back":
 				queryDayData = las.queryDayReturn(categories, icons, startDate, endDate, playerType);
-				header.addAll(Arrays.asList("日期", "付费用户", "+1日", "+2日", "+3日", "+4日", "+5日", "+6日", "+7日", "+8日", "+9日", "+10日", "+11日", "+12日", "+13日", "+14日", "+30日"));
 				break;
 			}
 			break;
@@ -95,11 +88,9 @@ public class LossController extends Controller {
 			switch (tag) {
 			case "day-loss":
 				queryDayData = las.queryDayLoss(categories, icons, startDate, endDate, playerType);
-				header.addAll(Arrays.asList("日期", "非付费用户", "+1日", "+2日", "+3日", "+4日", "+5日", "+6日", "+7日", "+8日", "+9日", "+10日", "+11日", "+12日", "+13日", "+14日", "+30日"));
 				break;
 			case "week-back":
 				queryDayData = las.queryDayReturn(categories, icons, startDate, endDate, playerType);
-				header.addAll(Arrays.asList("日期", "非付费用户", "+1日", "+2日", "+3日", "+4日", "+5日", "+6日", "+7日", "+8日", "+9日", "+10日", "+11日", "+12日", "+13日", "+14日", "+30日"));
 				break;
 			}
 			break;
@@ -145,7 +136,6 @@ public class LossController extends Controller {
 		data.put("type", type.toArray());
 		data.put("category", category);
 		data.put("data", seriesMap);
-		data.put("header", header);
 		data.put("tableData", queryDayData.get("tableData"));
 		logger.info("data:" + data);
 		renderJson(data);

@@ -7,11 +7,11 @@ $(function(){
 })
 
 function loadData(){
-	loadLossData($("div.nav-tab.loss > ul > li.active > a").attr("data-info"), $("ul.nav.nav-tabs.loss-count-tab > li.active > a").attr("data-info"));
+    loadLossData($("div.nav-tab.loss > ul > li.active > a").attr("data-info"), $("ul.nav.nav-tabs.loss-count-tab > li.active > a").attr("data-info"));
 }
 
 function loadLossData(playerTag,tag){
-	$.post("/oss/api/loss", {
+    $.post("/oss/api/loss", {
         playerTag:playerTag,
         tag:tag,
         icon:getIcons(),
@@ -98,7 +98,7 @@ function configChart(data, chart, chartName) {
 }
 
 function configTable(data,dataTable) {
-    appendTableHeader(data,dataTable);
+    appendTableHeader();
     var tableData = data.tableData;
     $(dataTable).dataTable().fnClearTable();  
     $(dataTable+" > tbody > tr > td > span[title]").tooltip({"delay":0,"track":true,"fade":250});
@@ -129,26 +129,13 @@ function configTable(data,dataTable) {
     });
 }
 
-function appendTableHeader(data,dataTable) {
-    var header = data.header;
-    var txt = "";
-
-    var tableId = dataTable;
-
-    for (var i = 0; i < header.length; i++) {
-        txt = txt + "<th><span>" + header[i] + "</span></th>";
-    }
-
-    if ($(tableId).children("thead").length != 0) {
-        $(tableId).children("thead").empty();
-        $(tableId).prepend("<thead><tr>" + txt + "</tr></thead>");
-        return;
-    }
-    $(tableId).append("<thead><tr>" + txt + "</tr></thead>");
+function appendTableHeader() {
+    var info = $("div.nav-tab.loss > ul > li.active > a > span").text();
+    $("#player-type").text(info); 
 }
 
 $("div.nav-tab.loss > ul.nav.nav-pills > li").click(function(){
-	$(this).siblings("li.active").toggleClass("active");
+    $(this).siblings("li.active").toggleClass("active");
     $(this).addClass("active");
     loadLossData($(this).children("a").attr("data-info"), $("ul.nav.nav-tabs.loss-count-tab > li.active > a").attr("data-info"));
 });

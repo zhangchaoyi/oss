@@ -37,6 +37,15 @@ public class DayUser {
 		this.thirtyDay = 0;
 	}
 
+	@Override
+	public String toString() {
+		return "DayUser [num=" + num + ", firstDay=" + firstDay + ", secondDay=" + secondDay + ", thirdDay=" + thirdDay
+				+ ", forthDay=" + forthDay + ", fifthDay=" + fifthDay + ", sixthDay=" + sixthDay + ", seventhDay="
+				+ seventhDay + ", eighthDay=" + eighthDay + ", ninthDay=" + ninthDay + ", tenthDay=" + tenthDay
+				+ ", eleventhDay=" + eleventhDay + ", twelfthDay=" + twelfthDay + ", thirteenthDay=" + thirteenthDay
+				+ ", fourteenthDay=" + fourteenthDay + ", thirtyDay=" + thirtyDay + "]";
+	}
+
 	public int getNum() {
 		return num;
 	}

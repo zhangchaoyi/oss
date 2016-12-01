@@ -65,7 +65,6 @@ public class LossAnalysisServiceImpl implements LossAnalysisService{
 			int thirteenthDay = lu.getBigDecimal("thirteenth_day").intValue();
 			int fourteenthDay = lu.getBigDecimal("fourteenth_day").intValue();
 			int thirtyDay = lu.getBigDecimal("thirty_day").intValue();
-			
 			DayUser du = sort.get(date);
 			du.setNum(num);
 			du.setFirstDay(firstDay);
@@ -82,7 +81,7 @@ public class LossAnalysisServiceImpl implements LossAnalysisService{
 			du.setTwelfthDay(twelfthDay);
 			du.setThirteenthDay(thirteenthDay);
 			du.setFourteenthDay(fourteenthDay);
-			du.setThirdDay(thirtyDay);
+			du.setThirtyDay(thirtyDay);
 			sort.put(date, du);
 		}
 		
@@ -122,7 +121,6 @@ public class LossAnalysisServiceImpl implements LossAnalysisService{
 			int thirteenthDay = du.getThirteenthDay();
 			int fourteenthDay = du.getFourteenthDay();
 			int thirtyDay = du.getThirtyDay();
-			
 			double firstDayDr = 0.00;
 			double secondDayDr = 0.00;
 			double thirdDayDr = 0.00;
@@ -203,7 +201,6 @@ public class LossAnalysisServiceImpl implements LossAnalysisService{
 			thirteenthDayLR.add(thirteenthDayDr);
 			fourteenthDayLR.add(fourteenthDayDr);
 			thirtyDayLR.add(thirtyDayDr);
-
 			List<String> subList = new ArrayList<String>(Arrays.asList(entry.getKey(), String.valueOf(num), firstDay+"("+firstDayDr+"%)", secondDay+"("+secondDayDr+"%)", thirdDay+"("+thirdDayDr+"%)", forthDay+"("+forthDayDr+"%)", fifthDay+"("+fifthDayDr+"%)", sixthDay+"("+sixthDayDr+"%)",seventhDay+"("+sevenDayDr+"%)",eighthDay+"("+eighthDayDr+"%)",ninthDay+"("+ninthDayDr+"%)",tenthDay+"("+tenthDayDr+"%)",eleventhDay+"("+eleventhDayDr+"%)",twelfthDay+"("+twelfthDayDr+"%)",thirteenthDay+"("+thirteenthDayDr+"%)",fourteenthDay+"("+fourteenthDayDr+"%)",thirtyDay+"("+thirtyDayDr+"%)"));
 			tableData.add(subList);
 		}
@@ -224,7 +221,6 @@ public class LossAnalysisServiceImpl implements LossAnalysisService{
 		data.put("thirteenthDayLR", thirteenthDayLR);
 		data.put("fourteenthDayLR", fourteenthDayLR);
 		data.put("thirtyDayLR", thirtyDayLR);
-		
 		data.put("tableData", tableData);
 		logger.info("data:" + data);
 		return data;
@@ -285,7 +281,7 @@ public class LossAnalysisServiceImpl implements LossAnalysisService{
 			du.setTwelfthDay(twelfthDay);
 			du.setThirteenthDay(thirteenthDay);
 			du.setFourteenthDay(fourteenthDay);
-			du.setThirdDay(thirtyDay);
+			du.setThirtyDay(thirtyDay);
 			sort.put(date, du);
 		}
 		
