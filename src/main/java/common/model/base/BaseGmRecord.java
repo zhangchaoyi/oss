@@ -41,4 +41,12 @@ public abstract class BaseGmRecord<M extends BaseGmRecord<M>> extends Model<M> i
 		return get("create_time");
 	}
 
+	public void setEmailAddress(java.lang.String emailAddress) {
+		set("email_address", emailAddress);
+	}
+
+	public java.lang.String getEmailAddress() {
+		return get("email_address");
+	}
+
 }

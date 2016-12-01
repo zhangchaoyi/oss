@@ -115,9 +115,9 @@ public class OperationServiceImpl implements OperationService {
 	 * @param account 管理员帐号
 	 * @param operation gm指令
 	 */
-	public boolean insertGmRecord(String account, String operation){
-		logger.info("params:{"+"account:"+account+",operation:"+operation+"}");
-		boolean succeed = new GmRecord().use(db).set("account", account).set("operation", operation).set("create_time", new Date()).save();
+	public boolean insertGmRecord(String account, String operation, String emailAddress){
+		logger.info("params:{"+"account:"+account+",operation:"+operation+",emailAddress:"+emailAddress+"}");
+		boolean succeed = new GmRecord().use(db).set("account", account).set("operation", operation).set("create_time", new Date()).set("email_address", emailAddress).save();
 		return succeed;
 	}
 }

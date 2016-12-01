@@ -65,6 +65,14 @@ public abstract class BaseLogCharge<M extends BaseLogCharge<M>> extends Model<M>
 		return get("count");
 	}
 
+	public void setIsProduct(java.lang.Boolean isProduct) {
+		set("is_product", isProduct);
+	}
+
+	public java.lang.Boolean getIsProduct() {
+		return get("is_product");
+	}
+
 	public void setTimestamp(java.util.Date timestamp) {
 		set("timestamp", timestamp);
 	}

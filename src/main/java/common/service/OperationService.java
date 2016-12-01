@@ -14,5 +14,5 @@ public interface OperationService {
 	
 	public Map<String, String> queryFeedbackById(String id);
 	
-	public boolean insertGmRecord(String account, String operation);
+	public boolean insertGmRecord(String account, String operation, String emailAddress);
 }

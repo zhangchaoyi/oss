@@ -199,7 +199,8 @@ $("#btn-send").click(function(){
                 alert("已发送");
                 $.post("/oss/api/operation/record", {
                     account:$("#userAccount").text(),
-                    operation:JSON.stringify(payloadData)
+                    operation:JSON.stringify(payloadData),
+                    emailAddress:emailAddress
                 },
                 function(data, status) {
                 });
