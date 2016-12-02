@@ -28,6 +28,7 @@ import common.model.LogCharge;
 import common.model.Login;
 import common.model.Logout;
 import common.model.LossUser;
+import common.model.OnlineCount;
 import common.model.PaymentDetail;
 import common.model.RetainEquipment;
 import common.model.RetainUser;
@@ -93,6 +94,7 @@ public class BaseConfig extends JFinalConfig {
 				arp.addMapping("sec_user_role", SecUserRole.class);
 				arp.addMapping("user_feedback", UserFeedback.class);
 				arp.addMapping("gm_record", GmRecord.class);
+				arp.addMapping("online_count", OnlineCount.class);
 				// 设置默认的数据库
 				DbSelector.setDbName(PropKit.get("jdbcDefault"));
 			}

@@ -27,6 +27,7 @@ public class _MappingKit {
 		arp.addMapping("login", "id", Login.class);
 		arp.addMapping("logout", "id", Logout.class);
 		arp.addMapping("loss_user", "id", LossUser.class);
+		arp.addMapping("online_count", "id", OnlineCount.class);
 		arp.addMapping("payment_detail", "id", PaymentDetail.class);
 		arp.addMapping("retain_equipment", "id", RetainEquipment.class);
 		arp.addMapping("retain_user", "id", RetainUser.class);

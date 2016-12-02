@@ -307,11 +307,11 @@
           <div class="data-results">
             <span>
               <em>区间PCU:</em>
-              <font class="period-pcu">0</font>
+              <font id="period-pcu">0</font>
             </span>
             <span>
               <em>历史PCU:</em>
-              <font class="history-pcu">10</font>
+              <font id="history-pcu">0</font>
             </span>
           </div>
           <div id="online-count-ccu-chart" style="width:100%;height:400px;display:inline;float:left"></div> 
@@ -329,7 +329,14 @@
         <div class="tab-content">
           <div id="online-count-pcu-chart" style="width:100%;height:400px;display:inline;float:left"></div> 
           <div class="table-zoom-third"> 
-           <table id="data-table-online-count-pcu" class="hover stripe row-border"></table> 
+           <table id="data-table-online-count-pcu" class="hover stripe row-border">
+            <thead>
+              <tr>
+                <th>日期</th>
+                <th>PCU</th>
+              </tr>
+            </thead>
+           </table> 
           </div>              
         </div> 
        </div> 
