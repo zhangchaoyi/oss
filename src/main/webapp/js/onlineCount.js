@@ -120,7 +120,14 @@ function configTable(data) {
             "sInfo": "(共 _TOTAL_ 条记录)",
             'infoEmpty': '没有数据',
             'infoFiltered': '(过滤总件数 _MAX_ 条)'
-        }
+        },
+        "columnDefs": [ {
+           "targets": 0,
+           "render": function ( data, type, full, meta ) {
+                var weekday = getWeekdayFromDate(data);
+                return '<span title='+weekday+'>'+data+'</span>';
+            }
+         }]
     });
 }
 
@@ -147,7 +154,6 @@ function dealTableData(data) {
 }
 
 //锁死图标选择下拉菜单 清除按钮
-$("button.btn.btn-default.btn-circle").attr('disabled',"true");
 $("ul.dropdown-menu.iconBar > li").addClass("disabled");
 $("li.btn-icons").unbind("click");
 $("li.disabled > button.btn.btn-primary").attr('disabled',"true");

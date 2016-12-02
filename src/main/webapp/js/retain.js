@@ -118,7 +118,8 @@ function configTable(data) {
                 var weekday = getWeekdayFromDate(data);
                 return '<span title='+weekday+'>'+data+'</span>';
             }
-         }]
+         }],
+         "scrollX": true
     });
 }
 //处理表格对应的列数据

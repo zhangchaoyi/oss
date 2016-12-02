@@ -119,7 +119,8 @@ function configTable(data) {
                 var weekday = getWeekdayFromDate(data);
                 return '<span title='+weekday+'>'+data+'</span>';
             }
-         }]
+         }],
+         "scrollX": true
     });
 }
 
