@@ -196,6 +196,7 @@ $(function() {
     }
 });
 
+//判断日期选择器和右侧 时间栏不相符时去除高亮效果
 function validateSelectedDate(){
     var id = $("div.time-title.active > a.selected").attr("id");
     var sD = $("input#startDate").attr("value");
@@ -229,6 +230,7 @@ function validateSelectedDate(){
     }
 }
 
+//用于进行表格的日期 判断星期几
 function getWeekdayFromDate(date){
     if(date.split("-").length!=3){
         return undefined;
