@@ -1013,3 +1013,16 @@ div#attach-result {
 button#btn-attach-save {
     margin-top: 6px;
 }
+.cu-select-detail {
+    margin-left: 29px;
+    font-size: 10px;
+    text-align: left;
+}
+.cu-permission {
+    position: relative;
+    right: 60%;
+    width: 1060px;
+}
+form#create-form {
+    margin-top: 32px;
+}

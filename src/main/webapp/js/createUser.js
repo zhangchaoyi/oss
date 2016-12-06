@@ -32,10 +32,29 @@ $("#create-user").click(function(){
 		return;
 	}
 	var key = randomWord(false,16,16);
+	var selectList = {};
+	var checkbox = $(".cu-select-data");
+	for(var i=0;i<checkbox.length;i++){
+		if($(checkbox[i]).prop("checked")){
+			var dataInfo = $(checkbox[i]).parent().siblings("a").attr("data-info");
+			var groupInfo = $(checkbox[i]).parent().siblings("a").attr("group-info");
+			if(selectList.hasOwnProperty(groupInfo)){
+				var value = selectList[groupInfo];
+				value.push(dataInfo);
+				selectList[groupInfo] = value;
+			}else{
+				var value = [];
+				value.push(dataInfo);
+				selectList[groupInfo] = value;
+			}
+		}
+	}
+
 	$.post("/oss/api/admin/createUser", {
 		username:Encrypt(username, key),
 		password:Encrypt(password, key),
 		role:Encrypt(role, key),
+		selectList:JSON.stringify(selectList),
 		key:key
     },
     function(data, status) {
@@ -80,6 +99,29 @@ function randomWord(randomFlag, min, max){
     return str;
 }
 
+function initSelect(){
+	$("#cu-select-all").siblings("ins").click(function(){
+		var checked = $(this).parent().hasClass("checked");
+		if(checked==true) {
+			$(".cu-select-options input").iCheck("check");
+		}else{
+			$(".cu-select-options input").iCheck("uncheck");
+		}
+	});
+
+	$(".cu-type").siblings("ins").click(function(){
+		var checked = $(this).parent().hasClass("checked");
+		if(checked==true) {
+			$(this).parent().siblings("div").find("input").iCheck("check");
+		}else{
+			$(this).parent().siblings("div").find("input").iCheck("uncheck");
+		}
+	});
+}
+
+$(function(){
+	initSelect();
+})
 
 //锁死图标选择下拉菜单 清除按钮
 $("button.btn.btn-default.btn-circle").attr('disabled',"true");

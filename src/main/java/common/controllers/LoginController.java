@@ -3,11 +3,15 @@ package common.controllers;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
 
 import org.apache.log4j.Logger;
+import org.eclipse.jetty.util.ajax.JSON;
+
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
@@ -25,32 +29,38 @@ import common.utils.EncryptUtils;
 public class LoginController extends Controller {
 	private static Logger logger = Logger.getLogger(LoginController.class);
 	private AdminService as = new AdminServiceImpl();
-	
+
 	/**
 	 * 登录页
+	 * 
 	 * @author chris
-	 * @getPara from  跳转登录页前的 页面url
-	 * @role  所有角色
+	 * @getPara from 跳转登录页前的 页面url
+	 * @role 所有角色
 	 */
 	@Before(GET.class)
 	public void index() {
 		render("login.html");
 	}
-	
+
 	@Before(POST.class)
 	@ActionKey("/api/login/serverInfo")
 	public void loginServer() {
 		renderJson("dbs", DbSelector.getDbs());
 	}
-	
-    /**
-     * 登录校验接口,先根据username查询mysql的salt,将(传来的password经解密后 + salt) md5 得到摘要 比对 数据库的password摘要  
-     * @author chris
-     * @param username 用户名(加密后)
-     * @param password 密码(加密后)
-     * @param key 加密密钥
-     * @role 所有角色
-     */
+
+	/**
+	 * 登录校验接口,先根据username查询mysql的salt,将(传来的password经解密后 + salt) md5 得到摘要 比对
+	 * 数据库的password摘要
+	 * 
+	 * @author chris
+	 * @param username
+	 *            用户名(加密后)
+	 * @param password
+	 *            密码(加密后)
+	 * @param key
+	 *            加密密钥
+	 * @role 所有角色
+	 */
 	@Before(POST.class)
 	@ActionKey("/api/login")
 	public void loginValidate() {
@@ -58,17 +68,17 @@ public class LoginController extends Controller {
 		String password = getPara("password");
 		String db = getPara("db", "malai");
 		String key = getPara("key");
-		logger.info("paras: {" + "username:"+username+",password:"+password+",db:"+db+",key:"+key+"}");
+		logger.info("paras: {" + "username:" + username + ",password:" + password + ",db:" + db + ",key:" + key + "}");
 		try {
-			username = EncryptUtils.aesDecrypt(username,key);
-			password = EncryptUtils.aesDecrypt(password,key);
+			username = EncryptUtils.aesDecrypt(username, key);
+			password = EncryptUtils.aesDecrypt(password, key);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		logger.info("After decrypt:--"+"username:" + username + " password:" + password + " key:" + key);
-		
+		logger.info("After decrypt:--" + "username:" + username + " password:" + password + " key:" + key);
+
 		SecUser secUser = as.getUser(username);
-		if(secUser==null){
+		if (secUser == null) {
 			renderJson("{\"message\":\"failed\"}");
 			return;
 		}
@@ -76,8 +86,10 @@ public class LoginController extends Controller {
 		String salt = secUser.getStr("salt");
 		password += salt;
 		try {
-			if(EncryptUtils.checkpassword(password, queryPasswd)){
-				setCookie("login",username, -1, "/", true);
+			if (EncryptUtils.checkpassword(password, queryPasswd)) {
+				Map<String,String> menu = initUserMap(secUser);
+				setCookie("menu", JSON.toString(menu), -1, "/", false);
+				setCookie("login", username, -1, "/", true);
 				DbSelector.setDbName(db);
 				logger.info("login successfully");
 				renderJson("{\"message\":\"success\"}");
@@ -87,12 +99,14 @@ public class LoginController extends Controller {
 			logger.info("<LoginController> Exception:", e);
 			e.printStackTrace();
 		}
-		
+
 		logger.info("login failed");
 		renderJson("{\"message\":\"failed\"}");
 	}
+
 	/**
 	 * 登出接口,清理cookie
+	 * 
 	 * @author chris
 	 * @role 所有角色
 	 */
@@ -103,18 +117,20 @@ public class LoginController extends Controller {
 		removeCookie("login");
 		renderJson("{\"message\":\"success\"}");
 	}
+
 	/**
-	 * 得到cookie信息 --用户名  --服务器
+	 * 得到cookie信息 --用户名 --服务器
+	 * 
 	 * @author chris
-	 * @role  data_guest
+	 * @role data_guest
 	 */
 	@Before(POST.class)
 	@ActionKey("/api/cookie/info")
-	public void getCookieInfo(){
+	public void getCookieInfo() {
 		Cookie cookie = getCookieObject("login");
 		String username = "";
 		String message = "false";
-		if(cookie!=null){
+		if (cookie != null) {
 			username = cookie.getValue();
 			message = "true";
 		}
@@ -128,4 +144,56 @@ public class LoginController extends Controller {
 		logger.info("cookie info" + data);
 		renderJson(data);
 	}
+
+	/**
+	 * 对secUser 源数据进行处理,将不包含"1"的key-value 去除
+	 * 返回最终包含"1"的map
+	 * @param secUser
+	 * @return
+	 */
+	private Map<String, String> initUserMap(SecUser secUser) {
+		Map<String, String> map = new LinkedHashMap<String, String>();
+		String realtime = secUser.getStr("realtime");
+		String form = secUser.getStr("form");
+		String playerAnalyse = secUser.getStr("player_analyse");
+		String paidAnalyse = secUser.getStr("paid_analyse");
+		String loss = secUser.getStr("loss");
+		String onlineAnalyse = secUser.getStr("online_analyse");
+		String channelAnalyse = secUser.getStr("channel_analyse");
+		String systemAnalyse = secUser.getStr("system_analyse");
+		String versionAnalyse = secUser.getStr("version_analyse");
+		String customEvent = secUser.getStr("custom_event");
+		String opSupport = secUser.getStr("op_support");
+		String dataDig = secUser.getStr("data_dig");
+		String marketAnalyse = secUser.getStr("market_analyse");
+		String techSupport = secUser.getStr("tech_support");
+		String managementCenter = secUser.getStr("management_center");
+		String server = secUser.getStr("server");
+
+		map.put("realtime", realtime);
+		map.put("form", form);
+		map.put("playerAnalyse", playerAnalyse);
+		map.put("paidAnalyse", paidAnalyse);
+		map.put("loss", loss);
+		map.put("onlineAnalyse", onlineAnalyse);
+		map.put("channelAnalyse", channelAnalyse);
+		map.put("systemAnalyse", systemAnalyse);
+		map.put("versionAnalyse", versionAnalyse);
+		map.put("customEvent", customEvent);
+		map.put("opSupport", opSupport);
+		map.put("dataDig", dataDig);
+		map.put("marketAnalyse", marketAnalyse);
+		map.put("techSupport", techSupport);
+		map.put("managementCenter", managementCenter);
+		map.put("server", server);
+		Iterator<Map.Entry<String, String>> it = map.entrySet().iterator();  
+		while(it.hasNext()){
+			Map.Entry<String, String> entry = it.next();
+			if(!entry.getValue().contains("1")){
+				it.remove();
+			}
+		}
+		return map;
+	}
+	
 }

@@ -32,13 +32,15 @@ public class AdminServiceImpl implements AdminService {
 
 	/**
 	 * 查看user是否存在
-	 * @param username 用户名
+	 * 
+	 * @param username
+	 *            用户名
 	 * @return 用户对象
 	 */
 	public SecUser getUser(String username) {
 		String db = DbSelector.getDbName();
 		logger.info("params:{" + "username:" + username + "}" + "db" + db);
-		String sql = "select password, salt from sec_user where user_name = ?";
+		String sql = "select password,salt,realtime,form,player_analyse,paid_analyse,loss,online_analyse,channel_analyse,system_analyse,version_analyse,custom_event,op_support,data_dig,market_analyse,tech_support,management_center,server from sec_user where user_name = ?";
 		SecUser secUser = SecUser.dao.use(db).findFirst(sql, username);
 		return secUser;
 	}
@@ -46,7 +48,8 @@ public class AdminServiceImpl implements AdminService {
 	/**
 	 * 根据username查询 用户角色
 	 * 
-	 * @param username 用户名
+	 * @param username
+	 *            用户名
 	 * @return 用户角色列表
 	 */
 	public List<String> queryRoleByUsername(String username) {
@@ -66,7 +69,9 @@ public class AdminServiceImpl implements AdminService {
 	/**
 	 * 判断角色是否具有该角色权限,如果该用户的role列表中存在一个role比当前Interceptor权重大则为true
 	 * 例如Interceptor为DataGuest,而用户的具有admin的role权限,则为true 先判断 两个角色是否相同
-	 * @param roles 用户具有的角色
+	 * 
+	 * @param roles
+	 *            用户具有的角色
 	 * @param 所需校验的角色
 	 * @return true/false
 	 */
@@ -88,12 +93,16 @@ public class AdminServiceImpl implements AdminService {
 
 	/**
 	 * 注册新账户 将 (密码原文 + salt) md5 存数据库
-	 * @param username 用户名(原文)
-	 * @param password 密码(原文)
-	 * @param role 角色(原文)
+	 * 
+	 * @param username
+	 *            用户名(原文)
+	 * @param password
+	 *            密码(原文)
+	 * @param role
+	 *            角色(原文)
 	 * @return boolean
 	 */
-	public boolean signupUser(String username, String password, String role) {
+	public boolean signupUser(String username, String password, String role, Map<String, String> map) {
 		String db = DbSelector.getDbName();
 		logger.info(
 				"params:{" + "username:" + username + ",password:" + password + ",role:" + role + "}" + " db:" + db);
@@ -109,7 +118,14 @@ public class AdminServiceImpl implements AdminService {
 			logger.info("Exception:", e);
 		}
 		SecUser secUser = new SecUser().use(db).set("user_name", username).set("password", password).set("salt", salt)
-				.set("created_time", new Date());
+				.set("created_time", new Date()).set("realtime", map.get("realtime")).set("form", map.get("form"))
+				.set("player_analyse", map.get("player-analyse")).set("paid_analyse", map.get("paid-analyse"))
+				.set("loss", map.get("loss")).set("online_analyse", map.get("online-analyse"))
+				.set("channel_analyse", map.get("channel-analyse")).set("system_analyse", map.get("system-analyse"))
+				.set("version_analyse", map.get("version-analyse")).set("custom_event", map.get("custom-event"))
+				.set("op_support", map.get("op-support")).set("data_dig", map.get("data-dig"))
+				.set("market_analyse", map.get("market-analyse")).set("tech_support", map.get("tech-support"))
+				.set("management_center", map.get("management-center")).set("server", map.get("server"));
 		succeed = secUser.save();
 		int roleId = getRoleIdByRoleName(role);
 		succeed = new SecUserRole().use(db).set("user_id", secUser.get("user_id")).set("role_id", roleId).save();
@@ -118,7 +134,9 @@ public class AdminServiceImpl implements AdminService {
 
 	/**
 	 * 用户名是否已经存在
-	 * @param username 用户名
+	 * 
+	 * @param username
+	 *            用户名
 	 * @return boolean
 	 */
 	public boolean existUser(String username) {
@@ -134,31 +152,30 @@ public class AdminServiceImpl implements AdminService {
 	}
 
 	/**
-	 * 查询所有用户的权限列表
-	 * 有参数则根据用户名查询,参数为""则查询所有,只支持最多一个username
-	 * 供 用户管理页 和 个人帐号权限页 使用 
+	 * 查询所有用户的权限列表 有参数则根据用户名查询,参数为""则查询所有,只支持最多一个username 供 用户管理页 和 个人帐号权限页 使用
 	 * queryUsername
+	 * 
 	 * @return list
 	 */
-	public List<List<String>> queryUsers(String...queryUsername) {
+	public List<List<String>> queryUsers(String... queryUsername) {
 		String db = DbSelector.getDbName();
 		boolean userManagePage = false;
 		List<List<String>> data = new ArrayList<List<String>>();
 		List<SecUser> secUsers = new ArrayList<SecUser>();
-		if(queryUsername.length==0){
+		if (queryUsername.length == 0) {
 			userManagePage = true;
-			logger.info("无参数" + " db:"+db);
+			logger.info("无参数" + " db:" + db);
 			String sql = "select A.user_name,A.created_time,C.role_name from sec_user A join sec_user_role B on A.user_id = B.user_id join sec_role C on B.role_id = C.role_id;";
 			secUsers = SecUser.dao.use(db).find(sql);
-		}else if(queryUsername.length > 1){
+		} else if (queryUsername.length > 1) {
 			logger.info("参数列表长度超过1个");
 			return data;
-		}else{
+		} else {
 			String sql = "select A.user_name,A.created_time,C.role_name from sec_user A join sec_user_role B on A.user_id = B.user_id join sec_role C on B.role_id = C.role_id where A.user_name = ?";
 			secUsers = SecUser.dao.find(sql, queryUsername[0]);
-			logger.info("params:{"+"queryUsername:"+queryUsername[0]+"}"+" db:"+db);
+			logger.info("params:{" + "queryUsername:" + queryUsername[0] + "}" + " db:" + db);
 		}
-		
+
 		// Map<username,Map<role/createTime,String>>
 		Map<String, Map<String, String>> sort = new HashMap<String, Map<String, String>>();
 		for (SecUser su : secUsers) {
@@ -179,7 +196,7 @@ public class AdminServiceImpl implements AdminService {
 			}
 			sort.put(username, subMap);
 		}
-		
+
 		for (Map.Entry<String, Map<String, String>> entry : sort.entrySet()) {
 			List<String> subList = new ArrayList<String>();
 			subList.add(entry.getKey());
@@ -193,8 +210,8 @@ public class AdminServiceImpl implements AdminService {
 					break;
 				}
 			}
-			//用户管理页 <删除> <修改权限>列
-			if(userManagePage==true){
+			// 用户管理页 <删除> <修改权限>列
+			if (userManagePage == true) {
 				subList.add(0, entry.getKey());
 				subList.add(entry.getKey());
 			}
@@ -206,7 +223,9 @@ public class AdminServiceImpl implements AdminService {
 
 	/**
 	 * 根据用户名删除用户 返回值大于0为删除成功
-	 * @param users  删除用户名
+	 * 
+	 * @param users
+	 *            删除用户名
 	 * @return row id /0 表示失败
 	 */
 	public int deleteByUserName(String users) {
@@ -231,6 +250,7 @@ public class AdminServiceImpl implements AdminService {
 
 	/**
 	 * 先根据用户名查询现有的角色,比对 新要求角色 得到需要删除的角色列表,需要新增的角色列表,不变的角色列表,更改用户的角色
+	 * 
 	 * @params username 用户名
 	 * @params queryRole 所选的角色
 	 */

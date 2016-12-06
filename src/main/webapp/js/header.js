@@ -89,6 +89,7 @@ $("button.btn.btn-default.btn-circle").click(function(){
 
 //用户显示栏  头部服务器选项列表  用户名信息
 $(function(){
+
     $.post("/oss/api/cookie/info", {
 
     },
@@ -136,3 +137,4 @@ function initDbMenu(){
         });
     });
 }
+

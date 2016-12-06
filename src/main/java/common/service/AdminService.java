@@ -1,6 +1,7 @@
 package common.service;
 
 import java.util.List;
+import java.util.Map;
 
 import common.model.SecUser;
 
@@ -11,7 +12,7 @@ public interface AdminService {
 	
 	public SecUser getUser(String username);
 
-	public boolean signupUser(String username, String password, String role);
+	public boolean signupUser(String username, String password, String role, Map<String, String> map);
 	
 	public boolean existUser(String username);
 	

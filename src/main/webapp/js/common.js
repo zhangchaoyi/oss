@@ -165,6 +165,9 @@ $(function() {
         // increaseArea: '-10%' // optional
     });
 
+    var menu = JSON.parse(JSON.parse(getCookie("menu")));
+    initMenu(menu);
+
     //左侧导航栏展开 显示当前的页面
     var hrefs = $("#main-menu").find("a");
     var localPath = window.location.pathname.split("-")[0];
@@ -238,4 +241,192 @@ function getWeekdayFromDate(date){
     var weekArray = new Array("星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六");
     var weekday = weekArray[new Date(date).getDay()];
     return weekday;
+}
+
+//获取cookie 前提是可读
+function getCookie(name){
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+    if(arr=document.cookie.match(reg))
+        return unescape(arr[2]);
+    else
+        return null;
+}
+
+//根据cookie 动态生成menu 带顺序
+function initMenu(menu){
+    var menuHtml = "";
+    if(menu.realtime!=undefined){
+        menuHtml += '<li> <a href="/oss/realtime/info"> <i class="fa fa-clock-o "></i>实时概况</a> </li>';
+    }
+    if(menu.form!=undefined){
+        menuHtml += '<li> <a href="#"> <i class="fa fa-line-chart "></i>报表</a> </li>';
+    }
+    if(menu.playerAnalyse!=undefined){
+        menuHtml += '<li> <a href="#"> <i class="fa fa-user"></i>玩家分析 <span class="fa arrow"></span></a><ul class="nav nav-second-level collapse" aria-expanded="false">';
+        var player = menu.playerAnalyse;
+        if(player.charAt(0)=='1'){
+            menuHtml += '<li> <a href="/oss/players/add"> <i class="fa fa-user-plus" aria-hidden="true"></i>新增玩家</a> </li>';
+        }
+        if(player.charAt(1)=='1'){
+            menuHtml += '<li> <a href="/oss/players/active"> <i class="fa fa-users "></i>活跃玩家</a> </li>';
+        }
+        if(player.charAt(2)=='1'){
+            menuHtml += '<li> <a href="/oss/players/retain"> <i class="fa fa-bars "></i>留存统计</a> </li>';
+        }
+        if(player.charAt(3)=='1'){
+            menuHtml += '<li> <a href="/oss/players/effective"> <i class="fa fa-user-secret "></i>有效玩家</a> </li>';
+        }
+        if(player.charAt(4)=='1'){
+            menuHtml += '<li> <a href="/oss/players/equipment"> <i class="fa fa-tablet "></i>设备分析</a> </li>';
+        }
+        if(player.charAt(5)=='1'){
+            menuHtml += '<li> <a href="/oss/players/accdetail"> <i class="fa fa-circle-o-notch "></i>生命轨迹</a> </li>';
+        }
+        menuHtml += '</ul></li>';
+    }
+    if(menu.paidAnalyse!=undefined){
+        menuHtml += '<li> <a href="#"> <i class="fa fa-money "></i>付费分析 <span class="fa arrow"></span></a><ul class="nav nav-second-level collapse" aria-expanded="false">';
+        var paidAnalyse = menu.paidAnalyse;
+        if(paidAnalyse.charAt(0)=='1'){
+            menuHtml += '<li> <a href="/oss/payment/data"> <i class="fa fa-bar-chart"></i>付费数据</a> </li>';
+        }
+        if(paidAnalyse.charAt(1)=='1'){
+            menuHtml += '<li> <a href="/oss/payment/behavior"> <i class="fa fa-neuter "></i>付费行为</a> </li>';
+        }
+        if(paidAnalyse.charAt(2)=='1'){
+            menuHtml += '<li> <a href="/oss/payment/transform"> <i class="fa fa-key "></i>付费转化</a> </li>';
+        }
+        if(paidAnalyse.charAt(3)=='1'){
+            menuHtml += '<li> <a href="/oss/payment/rank"> <i class="fa fa-arrows-v "></i>付费排行</a> </li>';
+        }
+        menuHtml += '</ul> </li>';
+    }
+    if(menu.loss!=undefined){
+        menuHtml += '<li> <a href="/oss/loss"> <i class="fa fa-spinner "></i>流失分析</a> </li>';
+    }
+    if(menu.onlineAnalyse!=undefined){
+        menuHtml += '<li> <a href="#"> <i class="fa fa-check-square-o "></i>在线分析 <span class="fa arrow"></span></a><ul class="nav nav-second-level collapse" aria-expanded="false">';
+        var onlineAnalyse = menu.onlineAnalyse;
+        if(onlineAnalyse.charAt(0)=='1'){
+            menuHtml += '<li> <a href="/oss/online/analysis"> <i class="fa fa-check-square-o"></i>在线分析</a> </li>';
+        }
+        if(onlineAnalyse.charAt(1)=='1'){
+            menuHtml += '<li> <a href="/oss/online/habits"> <i class="fa fa-arrows "></i>在线习惯</a> </li>';
+        }
+        if(onlineAnalyse.charAt(2)=='1'){
+            menuHtml += '<li> <a href="/oss/online/count"> <i class="fa fa-street-view"></i>在线人数</a> </li>';
+        }
+        menuHtml += '</ul> </li>';
+    }
+    if(menu.channelAnalyse!=undefined){
+        menuHtml += '<li> <a href="#"> <i class="fa fa-shopping-cart "></i>渠道分析 <span class="fa arrow"></span></a><ul class="nav nav-second-level collapse" aria-expanded="false">';
+        var channelAnalyse = menu.channelAnalyse;
+        if(channelAnalyse.charAt(0)=='1'){
+            menuHtml += '<li> <a href="#"> <i class="fa fa-shopping-cart"></i>渠道分析</a> </li>';
+        }
+        if(channelAnalyse.charAt(1)=='1'){
+            menuHtml += '<li> <a href="#"> <i class="fa fa-link "></i>渠道短链追踪</a> </li>';
+        }
+        menuHtml += '</ul> </li>';
+    }
+    if(menu.systemAnalyse!=undefined){
+        menuHtml += '<li> <a href="#"> <i class="fa fa-gamepad "></i>系统分析 <span class="fa arrow"></span></a><ul class="nav nav-second-level collapse" aria-expanded="false">';
+        var systemAnalyse = menu.systemAnalyse;
+        if(systemAnalyse.charAt(0)=='1'){
+            menuHtml += '<li> <a href="#"> <i class="fa fa-gavel"></i>道具分析</a> </li>';
+        }
+        if(systemAnalyse.charAt(1)=='1'){
+            menuHtml += '<li> <a href="#"> <i class="fa fa-tasks "></i>任务分析</a> </li>';
+        }
+        if(systemAnalyse.charAt(2)=='1'){
+            menuHtml += '<li> <a href="#"> <i class="fa fa-rocket "></i>关卡分析</a> </li>';
+        }
+        if(systemAnalyse.charAt(3)=='1'){
+            menuHtml += '<li> <a href="#"> <i class="fa fa-flag "></i>等级分析</a> </li>';
+        }
+        if(systemAnalyse.charAt(4)=='1'){
+            menuHtml += '<li> <a href="#"> <i class="fa fa-bitcoin "></i>虚拟币统计</a> </li>';
+        }
+        menuHtml += '</ul> </li>';
+    }
+    if(menu.versionAnalyse!=undefined){
+        menuHtml += '<li> <a href="#"> <i class="fa fa-file "></i>版本分析</a> </li>';
+    }
+    if(menu.customEvent!=undefined){
+        menuHtml += '<li> <a href="#"> <i class="fa fa-cog "></i>自定义事件 <span class="fa arrow"></span></a> <ul class="nav nav-second-level collapse" aria-expanded="false">';
+        var customEvent = menu.customEvent;
+        if(customEvent.charAt(0)=='1'){
+            menuHtml += '<li> <a href="#"> <i class="fa fa-qrcode"></i>事件列表</a> </li>';
+        }
+        if(customEvent.charAt(1)=='1'){
+            menuHtml += '<li> <a href="#"> <i class="fa fa-filter "></i>漏斗管理</a> </li>';
+        }
+        menuHtml += '</ul> </li>';
+    }
+    if(menu.opSupport!=undefined){
+        menuHtml += '<li> <a href="#"> <i class="fa fa-send "></i>运营支持 <span class="fa arrow"></span></a> <ul class="nav nav-second-level collapse" aria-expanded="false">';
+        var opSupport = menu.opSupport;
+        if(opSupport.charAt(0)=='1'){
+            menuHtml += '<li> <a href="/oss/operation/feedback"> <i class="fa fa-commenting-o"></i>用户反馈</a> </li>';
+        }
+        if(opSupport.charAt(1)=='1'){
+            menuHtml += '<li> <a href="#"> <i class="fa fa-bell"></i>数据报警</a> </li>';
+        }
+        menuHtml += '</ul> </li>';
+    }
+    if(menu.dataDig!=undefined){
+        menuHtml += '<li> <a href="#"> <i class="fa fa-anchor "></i>数据挖掘 <span class="fa arrow"></span></a> <ul class="nav nav-second-level collapse" aria-expanded="false">';
+        var dataDig = menu.dataDig;
+        if(dataDig.charAt(0)=='1'){
+            menuHtml += '<li> <a href="#"> <i class="fa fa-crop"></i>聚类分析</a> </li>';
+        }
+        if(dataDig.charAt(1)=='1'){
+            menuHtml += '<li> <a href="#"> <i class="fa fa-shopping-cart"></i>新玩家价值</a> </li>';
+        }
+        menuHtml += '</ul> </li>';
+    }
+    if(menu.marketAnalyse!=undefined){
+        menuHtml += '<li> <a href="#"> <i class="fa fa-bar-chart "></i>市场分析</a> </li>';
+    }
+    if(menu.techSupport!=undefined){
+        menuHtml += '<li> <a href="#"> <i class="fa fa-wrench "></i>技术支持 <span class="fa arrow"></span></a> <ul class="nav nav-second-level collapse" aria-expanded="false">';
+        var techSupport = menu.techSupport;
+        if(techSupport.charAt(0)=='1'){
+            menuHtml += '<li> <a href="#"> <i class="fa fa-vine"></i>在线参数</a> </li>';
+        }
+        if(techSupport.charAt(1)=='1'){
+            menuHtml += '<li> <a href="#"> <i class="fa fa-bookmark "></i>实时日志</a> </li>';
+        }
+        if(techSupport.charAt(2)=='1'){
+            menuHtml += '<li> <a href="#"> <i class="fa fa-ban "></i>崩溃分析</a> </li>';
+        }
+        if(techSupport.charAt(3)=='1'){
+            menuHtml += '<li> <a href="#"> <i class="fa fa-exclamation-triangle "></i>用户错误</a> </li>';
+        }
+        menuHtml += '</ul> </li>';
+    }
+    if(menu.managementCenter!=undefined){
+        menuHtml += '<li> <a href="#"> <i class="fa fa-suitcase "></i>管理中心 <span class="fa arrow"></span></a> <ul class="nav nav-second-level collapse" aria-expanded="false">';
+        var managementCenter = menu.managementCenter;
+        if(managementCenter.charAt(0)=='1'){
+            menuHtml += '<li> <a href="/oss/admin/createUser"><i class="fa fa-plus "></i>新增用户角色</a></li>';
+        }
+        if(managementCenter.charAt(1)=='1'){
+            menuHtml += '<li> <a href="/oss/admin/manageUsers"><i class="fa fa-comments-o "></i>用户角色管理</a></li>';
+        }
+        menuHtml += '</ul> </li>';
+    }
+    $("#main-menu").html(menuHtml);
+    $("#main-menu ul.nav").parent("li").click(function(){
+        $(this).toggleClass("active");
+        var ul = $(this).children("ul");
+        var expanded = $(ul).attr("aria-expanded");
+        if(expanded=="true"){
+            $(ul).removeClass("in");
+            $(ul).attr("aria-expanded","false");
+        }else{
+            $(ul).addClass("in");
+            $(ul).attr("aria-expanded","true");
+        }
+    });
 }
