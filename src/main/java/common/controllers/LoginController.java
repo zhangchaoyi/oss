@@ -1,6 +1,7 @@
 package common.controllers;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -8,16 +9,14 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
-
 import org.apache.log4j.Logger;
-import org.eclipse.jetty.util.ajax.JSON;
-
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
+import com.jfinal.kit.JsonKit;
 
 import common.model.SecUser;
 import common.mysql.DbSelector;
@@ -92,9 +91,8 @@ public class LoginController extends Controller {
 					renderJson("{\"message\":\"failed\"}");
 				}
 				Map<String,String> menu = initUserMap(secUser);
-				setCookie("menu", JSON.toString(menu), -1, "/", false);
+				setCookie("menu", URLEncoder.encode(JsonKit.toJson(menu),"GBK"), -1, "/", false);
 				setCookie("login", username, -1, "/", true);
-				
 				logger.info("login successfully");
 				renderJson("{\"message\":\"success\"}");
 				return;

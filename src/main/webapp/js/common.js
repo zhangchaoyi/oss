@@ -165,7 +165,13 @@ $(function() {
         // increaseArea: '-10%' // optional
     });
 
-    var menu = JSON.parse(JSON.parse(getCookie("menu")));
+    var menuCookie = getCookie("menu");
+    var menu = "";
+    if(location.hostname=="localhost"){
+        menu = JSON.parse(String(menuCookie).substring(1,menuCookie.length-1));     
+    }else{
+        menu = JSON.parse(menuCookie);     
+    }
     initMenu(menu);
 
     //点击菜单tab 页面跳转时添加icon参数 添加时间参数 用于页面跳转时携带时间和icons
