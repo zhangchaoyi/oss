@@ -27,7 +27,6 @@ public class FeedbackController extends Controller{
 	@Before({GET.class, GmInterceptor.class})
 	@ActionKey("/operation/feedback")
 	public void feedbackIndex() {
-		DbSelector.setDbName("malai");
 		render("userFeedback.html");
 	}
 	
@@ -74,6 +73,7 @@ public class FeedbackController extends Controller{
 	
 	/**
 	 * 查询用户反馈列表
+	 * 当首次进入feedback页面 由于页面渲染的原因js可能获取不到当前服务器，server参数可能为“”，此时使用后端当前的db
 	 * @author chris
 	 * @role vip
 	 */
@@ -82,7 +82,8 @@ public class FeedbackController extends Controller{
 	public void queryFeedback() {
 		String startDate = getPara("startDate", "");
 		String endDate = getPara("endDate", "");
-		String server = getPara("server", "");
+		String server = getPara("server", getEmailServerNameByServer(DbSelector.getDbName()));
+	
 		logger.info("params {"+"startDate:"+startDate+",endDate:"+endDate+",server:"+server+"}");
 		List<List<String>> data = os.queryFeedback(startDate, endDate, server);
 		logger.info("return:" + data);
@@ -155,5 +156,24 @@ public class FeedbackController extends Controller{
 		logger.info("params:{"+"account:"+account+",operation:"+operation+",emailAddress:"+emailAddress+"}");
 		boolean succeed = os.insertGmRecord(account, operation, emailAddress);
 		renderText(String.valueOf(succeed));
+	}
+	
+	private String getEmailServerNameByServer(String server){
+		String emailServer = "";
+		switch(server){
+		case "malai":
+			emailServer = "egghk.koogame.cn";
+			break;
+		case "uc":
+			emailServer = "egguccn2.koogame.cn";
+			break;
+		case "ios":
+			emailServer = "egguccn.koogame.cn";
+			break;
+		case "test":
+			emailServer = "eggactest.koogame.cn";
+			break;
+		}
+		return emailServer;
 	}
 }

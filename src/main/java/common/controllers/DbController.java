@@ -1,5 +1,7 @@
 package common.controllers;
 
+import java.util.Map;
+
 import org.apache.log4j.Logger;
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
@@ -14,6 +16,7 @@ public class DbController extends Controller{
 	
 	/**
 	 * 选择db
+	 * 需要进行权限校验
 	 * @author chris
 	 */
 	@Before(POST.class)
@@ -22,6 +25,12 @@ public class DbController extends Controller{
 		String dbName = getPara("db","");
 		logger.info("params:{"+"dbName"+dbName+"}");
 		if(!dbName.equals("malai") && !dbName.equals("uc") && !dbName.equals("test") && !dbName.equals("ios")){
+			renderText("failed");
+			return;
+		}
+		//校验数据库权限
+		Map<String,String> dbs = DbSelector.getUserDbs();
+		if(!dbs.containsKey(dbName)){
 			renderText("failed");
 			return;
 		}

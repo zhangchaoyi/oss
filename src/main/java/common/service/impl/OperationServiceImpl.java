@@ -13,18 +13,17 @@ import com.jfinal.plugin.activerecord.Db;
 
 import common.model.GmRecord;
 import common.model.UserFeedback;
-import common.mysql.DbSelector;
 import common.service.OperationService;
 
 /**
  * 用户运营页接口
+ * 表存放在马来服上
  * @author chris
  */
 public class OperationServiceImpl implements OperationService {
 	private static Logger logger = Logger.getLogger(OperationServiceImpl.class);
-	private String db = DbSelector.getDbName();
 	/**
-	 * 接收玩家反馈,并将其插入到mysql中
+	 * 接收玩家反馈,并将其插入到mysql中 使用马来服接受反馈
 	 * @param account 帐号id
 	 * @param title 标题
 	 * @param content 内容
@@ -35,19 +34,19 @@ public class OperationServiceImpl implements OperationService {
 	public boolean addFeedback(String account, String title, String content, String server, String port) {
 		logger.info("params:{"+"account:"+account+",title:"+title+",content:"+content+",server:"+server+",port:"+port+"}");
 		boolean succeed = false;
-		succeed  = new UserFeedback().use(db).set("account", account).set("title", title).set("content", content).set("server", server).set("port", port).set("create_time", new Date()).set("reply",0).save();
+		succeed  = new UserFeedback().use("malai").set("account", account).set("title", title).set("content", content).set("server", server).set("port", port).set("create_time", new Date()).set("reply",0).save();
 		logger.info("return:" + succeed);
 		return succeed;
 	}
 	
 	/**
-	 * 查询用户反馈列表
+	 * 查询用户反馈列表 查询马来服上的反馈数据
 	 * @return List<List<String>> 直接填充datatable
 	 */
 	public List<List<String>> queryFeedback(String startDate, String endDate, String server) {
 		logger.info("params:{"+"server:"+server+"}");
 		String sql = "select * from user_feedback where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and server = ?";
-		List<UserFeedback> userFeedback = UserFeedback.dao.use(db).find(sql, startDate, endDate, server);
+		List<UserFeedback> userFeedback = UserFeedback.dao.use("malai").find(sql, startDate, endDate, server);
 		List<List<String>> data = new ArrayList<List<String>>();
 		for(UserFeedback uf : userFeedback){
 			String account = uf.getStr("account");
@@ -70,7 +69,7 @@ public class OperationServiceImpl implements OperationService {
 	public int completeReply(int id) {
 		logger.info("params:{"+"id"+id+"}");
 		String sql = "update user_feedback set reply = 1 where id = ?";
-		int succeed = Db.use(db).update(sql, id);
+		int succeed = Db.use("malai").update(sql, id);
 		logger.info("return:" + succeed);
 		return succeed;
 	}
@@ -83,7 +82,7 @@ public class OperationServiceImpl implements OperationService {
 	public int deleteFeedback(String ids) {
 		logger.info("params:{"+"ids"+ids+"}");
 		String sql = "delete from user_feedback where id in (" + ids +")";
-		int deleted = Db.use(db).update(sql);
+		int deleted = Db.use("malai").update(sql);
 		logger.info("return:" + deleted);
 		return deleted;
 	}
@@ -95,7 +94,7 @@ public class OperationServiceImpl implements OperationService {
 	public Map<String, String> queryFeedbackById(String id) {
 		logger.info("params:{"+"id:"+id+"}");
 		String sql = "select * from user_feedback where id = ?";
-		UserFeedback uf = UserFeedback.dao.use(db).findFirst(sql, id);
+		UserFeedback uf = UserFeedback.dao.use("malai").findFirst(sql, id);
 		Map<String, String> data = new HashMap<String, String>();
 		if(uf==null){
 			data.put("message", "failed");
@@ -117,7 +116,7 @@ public class OperationServiceImpl implements OperationService {
 	 */
 	public boolean insertGmRecord(String account, String operation, String emailAddress){
 		logger.info("params:{"+"account:"+account+",operation:"+operation+",emailAddress:"+emailAddress+"}");
-		boolean succeed = new GmRecord().use(db).set("account", account).set("operation", operation).set("create_time", new Date()).set("email_address", emailAddress).save();
+		boolean succeed = new GmRecord().use("malai").set("account", account).set("operation", operation).set("create_time", new Date()).set("email_address", emailAddress).save();
 		return succeed;
 	}
 }

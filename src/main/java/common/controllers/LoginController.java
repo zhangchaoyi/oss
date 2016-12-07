@@ -51,7 +51,7 @@ public class LoginController extends Controller {
 	/**
 	 * 登录校验接口,先根据username查询mysql的salt,将(传来的password经解密后 + salt) md5 得到摘要 比对
 	 * 数据库的password摘要
-	 * 
+	 * 登录成功后设置cookie 包括用户名,menu的选项,用户拥有的服务器列表以及设置当前的服务器列表
 	 * @author chris
 	 * @param username
 	 *            用户名(加密后)
@@ -66,9 +66,8 @@ public class LoginController extends Controller {
 	public void loginValidate() {
 		String username = getPara("username");
 		String password = getPara("password");
-		String db = getPara("db", "malai");
 		String key = getPara("key");
-		logger.info("paras: {" + "username:" + username + ",password:" + password + ",db:" + db + ",key:" + key + "}");
+		logger.info("paras: {" + "username:" + username + ",password:" + password + ",key:" + key + "}");
 		try {
 			username = EncryptUtils.aesDecrypt(username, key);
 			password = EncryptUtils.aesDecrypt(password, key);
@@ -87,10 +86,15 @@ public class LoginController extends Controller {
 		password += salt;
 		try {
 			if (EncryptUtils.checkpassword(password, queryPasswd)) {
+				int code = DbSelector.setUserDbs(secUser.getStr("server"));
+				if(code==0){
+					logger.info("login failed");
+					renderJson("{\"message\":\"failed\"}");
+				}
 				Map<String,String> menu = initUserMap(secUser);
 				setCookie("menu", JSON.toString(menu), -1, "/", false);
 				setCookie("login", username, -1, "/", true);
-				DbSelector.setDbName(db);
+				
 				logger.info("login successfully");
 				renderJson("{\"message\":\"success\"}");
 				return;
@@ -105,8 +109,8 @@ public class LoginController extends Controller {
 	}
 
 	/**
-	 * 登出接口,清理cookie
-	 * 
+	 * 登出接口,清理所有的cookie
+	 * 清空内存里的userDbs
 	 * @author chris
 	 * @role 所有角色
 	 */
@@ -115,12 +119,14 @@ public class LoginController extends Controller {
 	public void logout() {
 		logger.info("logout succefully");
 		removeCookie("login");
+		removeCookie("menu");
+		DbSelector.clearUserDbs();
 		renderJson("{\"message\":\"success\"}");
 	}
 
 	/**
-	 * 得到cookie信息 --用户名 --服务器
-	 * 
+	 * 得到cookie信息 --用户名 --用户具有的服务器列表
+	 * 不存放在cookie的主要原因在于需要获取服务器当前正使用的服
 	 * @author chris
 	 * @role data_guest
 	 */
@@ -139,7 +145,7 @@ public class LoginController extends Controller {
 		data.put("username", username);
 		data.put("db", db);
 		data.put("dbName", DbSelector.getDbName(db));
-		data.put("dbs", DbSelector.getDbs());
+		data.put("dbs", DbSelector.getUserDbs());
 		data.put("message", message);
 		logger.info("cookie info" + data);
 		renderJson(data);
@@ -168,7 +174,6 @@ public class LoginController extends Controller {
 		String marketAnalyse = secUser.getStr("market_analyse");
 		String techSupport = secUser.getStr("tech_support");
 		String managementCenter = secUser.getStr("management_center");
-		String server = secUser.getStr("server");
 
 		map.put("realtime", realtime);
 		map.put("form", form);
@@ -185,7 +190,6 @@ public class LoginController extends Controller {
 		map.put("marketAnalyse", marketAnalyse);
 		map.put("techSupport", techSupport);
 		map.put("managementCenter", managementCenter);
-		map.put("server", server);
 		Iterator<Map.Entry<String, String>> it = map.entrySet().iterator();  
 		while(it.hasNext()){
 			Map.Entry<String, String> entry = it.next();

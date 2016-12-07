@@ -1,16 +1,12 @@
 function login(){
 	var username = $("#username").val();
 	var password = $("#password").val();
-	var db = $("#btn-db").attr("data-info");
 
 	if(username == "" || password == ""){
 		alert("请输入用户名或密码！");
 		return;
 	}
-	if(db=="none"){
-		alert("请选择服务器");
-		return;
-	}
+
 
 	var key = randomWord(false,16,16);
 
@@ -18,7 +14,6 @@ function login(){
 		username:Encrypt(username, key),
 		password:Encrypt(password, key),
 		key:key,
-		db:db
     },
     function(data, status) {
     	if(data.message == "success"){
@@ -42,18 +37,7 @@ function getKey(e) {
 	}  
 }
 $(function(){
-	$.post("/oss/api/login/serverInfo", {
-    },
-    function(data, status) {
-    	var dbs = data.dbs;
-        var dbsDom = "";
-        for(var key in dbs){
-            dbsDom += "<li><a data-info="+key+">"+dbs[key]+"</a></li>";
-        }
-        $("#db-menu").append(dbsDom);
-        //选择服务器列表
-    	initDbMenu();
-    });
+
 	$("#username").focus();
 
 });
@@ -85,16 +69,5 @@ function randomWord(randomFlag, min, max){
         str += arr[pos];
     }
     return str;
-}
-
-//选择服务器
-function initDbMenu(){
-    $("#db-menu > li").click(function(){
-        var txt = $(this).children("a").text();
-        var info = $(this).children("a").attr("data-info");
-        $("#btn-db").text("");
-        $("#btn-db").append(txt+' <span class="caret"></span>');
-        $("#btn-db").attr("data-info", info);
-    });
 }
 

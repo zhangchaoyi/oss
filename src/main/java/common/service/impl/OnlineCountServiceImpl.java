@@ -33,7 +33,7 @@ public class OnlineCountServiceImpl implements OnlineCountService {
 		for(OnlineCount oc : onlineCount){
 			long count = oc.getInt("online_count");
 			Date datetime = oc.getDate("online_datetime");
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm"); 
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm"); 
 			ccu.add(count);
 			onlineDatetime.add(sdf.format(datetime));
 		}

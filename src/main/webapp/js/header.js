@@ -30,13 +30,6 @@ function iconsView() {
     $(".dropdown.open").toggleClass("open");
 }
 
-//点击菜单tab 页面跳转时添加icon参数 添加时间参数 用于页面跳转时携带时间和icons
-$("#main-menu > li a").click(function(){
-    var href = $(this).attr("href");
-    if(href=="#")return;
-    $(this).attr("href",href + "?icon=" + getIcons() + "&startDate=" + $("input#startDate").attr("value") + "&endDate=" + $("input#endDate").attr("value"));  
-});
-
 function showIcon(icon){
     var value = $(icon).attr("data-value");
     var className = "span.fa.fa-" + value + ".icons";

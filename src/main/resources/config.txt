@@ -6,4 +6,4 @@ user = zcy
 password = Zcy@0826
 devMode = true
 jdbcList = malai:uc:ios
-jdbcDefault = malai
+jdbcDefault = ios
