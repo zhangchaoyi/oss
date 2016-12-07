@@ -89,6 +89,7 @@ public class LoginController extends Controller {
 				if(code==0){
 					logger.info("login failed");
 					renderJson("{\"message\":\"failed\"}");
+					return;
 				}
 				Map<String,String> menu = initUserMap(secUser);
 				setCookie("menu", URLEncoder.encode(JsonKit.toJson(menu),"GBK"), -1, "/", false);

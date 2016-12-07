@@ -312,6 +312,9 @@ function initMenu(menu){
         if(paidAnalyse.charAt(3)=='1'){
             menuHtml += '<li> <a href="/oss/payment/rank"> <i class="fa fa-arrows-v "></i>付费排行</a> </li>';
         }
+        if(paidAnalyse.charAt(4)=='1'){
+            menuHtml += '<li> <a href="/oss/payment/players"> <i class="fa fa-credit-card "></i>付费玩家</a> </li>';
+        }
         menuHtml += '</ul> </li>';
     }
     if(menu.loss!=undefined){

@@ -244,7 +244,7 @@ public class AdminController extends Controller {
 
 	/**
 	 * 解析获取的js数据map,返回插入mysql表的数据,Map<type,"000"> 0为无,1为有 按顺序一一对应 实时概况 -- 1 报表
-	 * -- 1 玩家分析---6 (新增 活跃 留存 有效 设备分析 生命轨迹) 付费分析---4 (付费数据 付费行为 付费转化 付费排行)
+	 * -- 1 玩家分析---6 (新增 活跃 留存 有效 设备分析 生命轨迹) 付费分析---4 (付费数据 付费行为 付费转化 付费排行 付费玩家)
 	 * 流失分析--1 在线分析--3 (在线分析 在线习惯 在线人数) 渠道分析--2(渠道分析 渠道短链追踪) 系统分析--5 (道具分析 任务分析
 	 * 关卡分析 等级分析 虚拟币分析) 版本分析--1 自定义事件--2 (事件列表 漏斗管理) 运营支持--2(用户反馈 数据报警)
 	 * 数据挖掘--2(聚类分析 新玩家价值) 市场分析--1 技术支持--4 (在线参数 实时日志 崩溃分析 用户错误) 管理中心--2(新增用户角色
@@ -259,7 +259,7 @@ public class AdminController extends Controller {
 		result.put("realtime", "0");
 		result.put("form", "0");
 		result.put("player-analyse", "000000");
-		result.put("paid-analyse", "0000");
+		result.put("paid-analyse", "00000");
 		result.put("loss", "0");
 		result.put("online-analyse", "000");
 		result.put("channel-analyse", "00");
@@ -326,6 +326,9 @@ public class AdminController extends Controller {
 						case "paid-rank":
 							ca[3] = '1';
 							break;
+						case "paid-players":
+							ca[4] = '1';
+							break;	
 						}
 					}
 					break;

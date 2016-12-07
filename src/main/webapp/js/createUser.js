@@ -50,6 +50,16 @@ $("#create-user").click(function(){
 		}
 	}
 
+	if(isEmptyObject(selectList)){
+		alert("请选择服务器");
+		return;
+	}
+
+	if(selectList.server==undefined){
+		alert("请选择服务器");
+		return;
+	}
+
 	$.post("/oss/api/admin/createUser", {
 		username:Encrypt(username, key),
 		password:Encrypt(password, key),
@@ -122,6 +132,13 @@ function initSelect(){
 $(function(){
 	initSelect();
 })
+
+function isEmptyObject(obj) {
+  for (var key in obj) {
+    return false;
+  }
+  return true;
+}
 
 //锁死图标选择下拉菜单 清除按钮
 $("button.btn.btn-default.btn-circle").attr('disabled',"true");

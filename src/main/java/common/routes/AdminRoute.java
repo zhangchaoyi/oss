@@ -14,6 +14,7 @@ import common.controllers.online.HabitsController;
 import common.controllers.operations.FeedbackController;
 import common.controllers.payment.PaymentBehaviorController;
 import common.controllers.payment.PaymentDataController;
+import common.controllers.payment.PaymentPlayersController;
 import common.controllers.payment.PaymentRankController;
 import common.controllers.payment.PaymentTransformController;
 import common.controllers.players.AccdetailController;
@@ -40,6 +41,7 @@ public class AdminRoute extends Routes {
 		add("/paymentBehavior", PaymentBehaviorController.class, "/WEB-INF/views/paid");
 		add("/paymentTransform", PaymentTransformController.class, "/WEB-INF/views/paid");
 		add("/paymentRank", PaymentRankController.class, "/WEB-INF/views/paid");
+		add("/paymentPlayers", PaymentPlayersController.class, "/WEB-INF/views/paid");
 		add("/onlineAnalysis", AnalysisController.class, "/WEB-INF/views/online");
 		add("/onlineHabit", HabitsController.class, "/WEB-INF/views/online");
 		add("/onlineCount", CountController.class, "/WEB-INF/views/online");

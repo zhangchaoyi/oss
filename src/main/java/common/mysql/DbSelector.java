@@ -113,6 +113,7 @@ public class DbSelector {
 				it.remove();
 			}
 		}
+		
 		//设置userDbs第一个key为当前的数据库
 		for(Map.Entry<String, String> entry : userDbs.entrySet()){
 			setDbName(entry.getKey());
