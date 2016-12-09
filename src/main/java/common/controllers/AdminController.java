@@ -37,7 +37,7 @@ public class AdminController extends Controller {
 	@Before(GET.class)
 	@ActionKey("/admin/authority/error")
 	public void authorityError() {
-		renderError(401, "authorityError.html");
+		render("authorityError.html");
 	}
 
 	/**

@@ -10,8 +10,6 @@ import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
-
-import common.interceptor.DataGuestInterceptor;
 import common.service.DashboardService;
 import common.service.impl.DashboardServiceImpl;
 
@@ -25,7 +23,7 @@ public class DashboardController extends Controller {
 	 * @author chris
 	 * @role data_guest
 	 */
-	@Before({GET.class, DataGuestInterceptor.class})
+	@Before(GET.class)
 	@ActionKey("/dashboard")
 	public void dashboard() {
 		render("dashboard.html");
@@ -35,7 +33,7 @@ public class DashboardController extends Controller {
 	 * @author chris
 	 * @role data_guest
 	 */
-	@Before({POST.class, DataGuestInterceptor.class})
+	@Before(POST.class)
 	@ActionKey("/api/dashboard")
 	public void queryDashboard() {
 		Map<String, String> data = ds.queryDashboardData();
