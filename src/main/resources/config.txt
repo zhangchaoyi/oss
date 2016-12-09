@@ -5,5 +5,5 @@ iosUrl = jdbc:mysql://eggioscn.koogame.cn/egg_log?characterEncoding=utf8&zeroDat
 user = zcy
 password = Zcy@0826
 devMode = true
-jdbcList = malai:uc:ios
+jdbcList = malai:uc:ios:test
 jdbcDefault = ios

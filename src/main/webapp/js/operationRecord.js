@@ -5,27 +5,27 @@ $(function(){
 })
 
 function loadData(){
-	//loadRecordData();
+	loadRecordData();
 }
 
 function loadRecordData(){
-	$.post("/api/operation/record/list", {
+	$.post("/oss/api/operation/record/list", {
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value"),
-        address:$("#btn-db").attr("data-info"),
+        icons:$("#btn-db").attr("data-info"),
         type:$("#btn-type").attr("data-info")
     },
     function(data, status) {
-        configTable(data, paymentPlayerTable);
+        configTable(data);
     });
 }
 
-function configTable(data,dataTable) {
+function configTable(data) {
     $("#table-operation-record").dataTable().fnClearTable();  
     $("#table-operation-record").dataTable({
         "destroy": true,
         // retrive:true,
-        "data": data==null?null:data.tableData,
+        "data": data,
         "dom": '<"top"f>rt<"left"lip>',
         "lengthMenu": [[10,30,-1 ],[10,30,'全部']],
         'language': {

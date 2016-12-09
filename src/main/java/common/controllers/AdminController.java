@@ -266,7 +266,7 @@ public class AdminController extends Controller {
 		result.put("system-analyse", "00000");
 		result.put("version-analyse", "0");
 		result.put("custom-event", "00");
-		result.put("op-support", "00");
+		result.put("op-support", "000");
 		result.put("data-dig", "00");
 		result.put("market-analyse", "0");
 		result.put("tech-support", "0000");
@@ -404,8 +404,11 @@ public class AdminController extends Controller {
 						case "user-feedback":
 							ca[0] = '1';
 							break;
-						case "data-alert":
+						case "op-record":
 							ca[1] = '1';
+							break;
+						case "data-alert":
+							ca[2] = '1';
 							break;
 						}
 					}

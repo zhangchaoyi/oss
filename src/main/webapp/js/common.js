@@ -386,6 +386,9 @@ function initMenu(menu){
             menuHtml += '<li> <a href="/oss/operation/feedback"> <i class="fa fa-commenting-o"></i>用户反馈</a> </li>';
         }
         if(opSupport.charAt(1)=='1'){
+            menuHtml += '<li> <a href="/oss/operation/record"> <i class="fa fa-history"></i>操作记录</a> </li>';
+        }
+        if(opSupport.charAt(2)=='1'){
             menuHtml += '<li> <a href="#"> <i class="fa fa-bell"></i>数据报警</a> </li>';
         }
         menuHtml += '</ul> </li>';

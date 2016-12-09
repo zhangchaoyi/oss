@@ -1,18 +1,13 @@
 package common.controllers.operations;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-
 import org.apache.log4j.Logger;
-
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
 import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
-
 import common.interceptor.GmInterceptor;
 import common.mysql.DbSelector;
 import common.service.OperationService;
@@ -38,7 +33,7 @@ public class GmRecordController extends Controller {
 	 * 查询gm 操作记录
 	 * @author chris
 	 */
-	@Before(POST.class)
+	@Before({POST.class, GmInterceptor.class})
 	@ActionKey("/api/operation/record/list")
 	public void queryRecrod() {
 		String startDate = getPara("startDate", "");

@@ -7,12 +7,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.log4j.Logger;
-
-import com.google.gson.JsonArray;
 import com.jfinal.plugin.activerecord.Db;
-
 import common.model.GmRecord;
 import common.model.UserFeedback;
 import common.service.OperationService;
