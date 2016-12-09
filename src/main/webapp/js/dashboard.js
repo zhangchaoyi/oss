@@ -71,3 +71,16 @@ function configTable(data){
 	$("#rT-sum-total").text('$' + data["revenueTSum"]);
 	$("#rN-sum-total").text('$' + data["revenueNSum"]);
 };
+
+$(".set-icons").click(function(){
+	var icon = $(this).attr("data-info");
+	var list = [];
+	list.push(icon);
+	setCookie("icons", list);
+})
+
+//设置cookie 作用域是/
+function setCookie(c_name,value)
+{
+    document.cookie=c_name+ "=" +escape(value)+";path=/";
+}

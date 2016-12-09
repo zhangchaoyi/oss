@@ -96,9 +96,9 @@ $("#btn-filtersave").click(function(){
 
 //onload initial 跳转页面获取url处理icon,起始结束时间
 $(document).ready(function(){
-    var icon = GetQueryString("icon");
-    startDate = GetQueryString("startDate");
-    endDate = GetQueryString("endDate");
+    var icon = getCookie("icons");
+    startDate = getCookie("startDate");
+    endDate = getCookie("endDate");
     icon=(icon==null)?"apple":icon;
     var iconArray = String(icon).split(",");
     var htmlStr="";
@@ -122,7 +122,7 @@ $(document).ready(function(){
 
     $("#btn-dropdownIcon").prepend(htmlStr);
     //去除url后参数不跳转 
-    window.history.pushState({},0,window.location.pathname );
+    ///window.history.pushState({},0,window.location.pathname );
 });
 
 //onload initial
@@ -139,6 +139,8 @@ $(function() {
         inputTrigger: 'input_trigger',
         theme: 'ta',
         success : function(obj) { 
+            setCookie("startDate", $("input#startDate").attr("value"));
+            setCookie("endDate", $("input#endDate").attr("value"));
             //设置回调句柄 
             loadData();
             validateSelectedDate();
@@ -175,11 +177,11 @@ $(function() {
     initMenu(menu);
 
     //点击菜单tab 页面跳转时添加icon参数 添加时间参数 用于页面跳转时携带时间和icons
-    $("#main-menu > li a").click(function(){
-        var href = $(this).attr("href");
-        if(href=="#")return;
-        $(this).attr("href",href + "?icon=" + getIcons() + "&startDate=" + $("input#startDate").attr("value") + "&endDate=" + $("input#endDate").attr("value"));  
-    });
+    // $("#main-menu > li a").click(function(){
+    //     var href = $(this).attr("href");
+    //     if(href=="#")return;
+    //     $(this).attr("href",href + "?icon=" + getIcons() + "&startDate=" + $("input#startDate").attr("value") + "&endDate=" + $("input#endDate").attr("value"));  
+    // });
 
     //左侧导航栏展开 显示当前的页面
     var hrefs = $("#main-menu").find("a");
@@ -263,6 +265,10 @@ function getCookie(name){
         return unescape(arr[2]);
     else
         return null;
+}
+//设置cookie 作用域是/
+function setCookie(c_name,value) {
+    document.cookie=c_name+ "=" +escape(value)+";path=/";
 }
 
 //根据cookie 动态生成menu 带顺序

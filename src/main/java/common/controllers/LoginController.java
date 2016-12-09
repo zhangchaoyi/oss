@@ -93,6 +93,9 @@ public class LoginController extends Controller {
 				}
 				Map<String,String> menu = initUserMap(secUser);
 				setCookie("menu", URLEncoder.encode(JsonKit.toJson(menu),"GBK"), -1, "/", false);
+				setCookie("icons", "iOS", -1, "/", false);
+				setCookie("startDate", "", -1, "/", false);
+				setCookie("endDate", "", -1, "/", false);
 				setCookie("login", username, -1, "/", true);
 				logger.info("login successfully");
 				renderJson("{\"message\":\"success\"}");
@@ -119,6 +122,9 @@ public class LoginController extends Controller {
 		logger.info("logout succefully");
 		removeCookie("login");
 		removeCookie("menu");
+		removeCookie("icons");
+		removeCookie("startDate");
+		removeCookie("endDate");
 		DbSelector.clearUserDbs();
 		renderJson("{\"message\":\"success\"}");
 	}

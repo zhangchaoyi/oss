@@ -26,6 +26,7 @@ function iconsView() {
     for(var i=0;i<icons.length;i++){
         showIcon(icons[i]);     
     }
+    setCookie("icons",getIcons());
     loadData();
     $(".dropdown.open").toggleClass("open");
 }
@@ -131,3 +132,7 @@ function initDbMenu(){
     });
 }
 
+//设置cookie 作用域是/
+function setCookie(c_name,value) {
+    document.cookie=c_name+ "=" +escape(value)+";path=/";
+}
