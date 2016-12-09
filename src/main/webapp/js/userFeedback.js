@@ -186,7 +186,8 @@ $("#btn-send").click(function(){
                 $.post("/oss/api/operation/record", {
                     account:$("#userAccount").text(),
                     operation:JSON.stringify(payloadData),
-                    emailAddress:getAddressFromIcon($("#btn-db").attr("data-info"))
+                    emailAddress:getAddressFromIcon($("#btn-db").attr("data-info")),
+                    type:"mail"
                 },
                 function(data, status) {
                 });

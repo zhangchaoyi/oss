@@ -153,8 +153,9 @@ public class FeedbackController extends Controller{
 		String account = getPara("account", "");
 		String operation = getPara("operation", "");
 		String emailAddress = getPara("emailAddress", "");
-		logger.info("params:{"+"account:"+account+",operation:"+operation+",emailAddress:"+emailAddress+"}");
-		boolean succeed = os.insertGmRecord(account, operation, emailAddress);
+		String type = getPara("type", "");
+		logger.info("params:{"+"account:"+account+",operation:"+operation+",emailAddress:"+emailAddress+",type"+type+"}");
+		boolean succeed = os.insertGmRecord(account, operation, emailAddress, type);
 		renderText(String.valueOf(succeed));
 	}
 	

@@ -12,6 +12,7 @@ import common.controllers.online.AnalysisController;
 import common.controllers.online.CountController;
 import common.controllers.online.HabitsController;
 import common.controllers.operations.FeedbackController;
+import common.controllers.operations.GmRecordController;
 import common.controllers.payment.PaymentBehaviorController;
 import common.controllers.payment.PaymentDataController;
 import common.controllers.payment.PaymentPlayersController;
@@ -48,6 +49,7 @@ public class AdminRoute extends Routes {
 		add("/loss", LossController.class, "/WEB-INF/views/loss");
 		add("/admin", AdminController.class, "/WEB-INF/views/admin");
 		add("/feedback", FeedbackController.class, "/WEB-INF/views/operation");
+		add("/gmRecord", GmRecordController.class, "/WEB-INF/views/operation");
 		add("/db", DbController.class);
 	}
 

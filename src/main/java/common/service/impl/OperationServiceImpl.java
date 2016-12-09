@@ -1,5 +1,6 @@
 package common.service.impl;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
@@ -9,11 +10,14 @@ import java.util.Map;
 
 import org.apache.log4j.Logger;
 
+import com.google.gson.JsonArray;
 import com.jfinal.plugin.activerecord.Db;
 
 import common.model.GmRecord;
 import common.model.UserFeedback;
 import common.service.OperationService;
+import common.utils.Contants;
+import common.utils.JsonToMap;
 
 /**
  * 用户运营页接口
@@ -114,9 +118,104 @@ public class OperationServiceImpl implements OperationService {
 	 * @param account 管理员帐号
 	 * @param operation gm指令
 	 */
-	public boolean insertGmRecord(String account, String operation, String emailAddress){
-		logger.info("params:{"+"account:"+account+",operation:"+operation+",emailAddress:"+emailAddress+"}");
-		boolean succeed = new GmRecord().use("malai").set("account", account).set("operation", operation).set("create_time", new Date()).set("email_address", emailAddress).save();
+	public boolean insertGmRecord(String account, String operation, String emailAddress, String type){
+		logger.info("params:{"+"account:"+account+",operation:"+operation+",address:"+emailAddress+",type:"+type+"}");
+		boolean succeed = new GmRecord().use("malai").set("account", account).set("operation", operation).set("create_time", new Date()).set("address", emailAddress).set("type",type).save();
 		return succeed;
 	}
+	
+	/**
+	 * 查询gm操作
+	 * @param type  操作类型
+	 * @param address  针对的服务器地址
+	 * @return 帐号/时间/标题/内容/附件/操作人
+	 */
+	public List<List<String>> queryGmRecord(String startDate, String endDate, String type, String address) {
+		String sql = "select account,operation,create_time from gm_record where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and type = ? and address = ?";
+		List<GmRecord> gmRecord = GmRecord.dao.use("malai").find(sql, startDate, endDate, type, address);
+		List<List<String>> data = new ArrayList<List<String>>();
+		for(GmRecord gr : gmRecord){
+			String account = gr.getStr("account");
+			String operation = gr.getStr("operation");
+			Date createTime = gr.getDate("create_time");
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+			Map<String, String> emailDetail = getEmailDetail(operation);
+			List<String> subList = new ArrayList<String>();
+			//帐号-时间-标题-内容-附件--操作人 
+			subList.add(sdf.format(createTime));
+			subList.add(account);
+		}
+		
+		
+		return data;
+	}
+	
+	//邮件发送的帐号 标题 正文 附件
+	private Map<String, String> getEmailDetail(String operation) {
+		Map<String, String> data = new HashMap<String, String>();
+		
+		//解析gm指令
+		Map<String, Object> map = JsonToMap.toMap(operation); 
+		//获取parms列表
+		@SuppressWarnings("unchecked")
+		List<Object> objList = (List<Object>)map.get("parms");
+		//获取发送的帐号
+		if(objList.size()!=4){
+			data.put("errCode", "格式不满足要求");
+			return data;
+		}
+		for(int i=0;i<objList.size();i++){
+			switch(i){
+			case 0:
+				data.put("account", String.valueOf(objList.get(i)));
+				break;
+			case 1:
+				data.put("title", String.valueOf(objList.get(i)));
+				break;
+			case 2:
+				data.put("content", String.valueOf(objList.get(i)));
+				break;
+			case 3:
+				@SuppressWarnings("unchecked")
+				List<Object> props = (List<Object>)objList.get(i);
+				String attachment = getAttachment(props);
+				data.put("attachment", attachment);
+				break;
+			}
+		}
+		
+		
+		return data;
+	}
+	
+	/**
+	 * @param props [{obj_id="obj_1", num=1}, {obj_id="obj_2", num=1}, {obj_id="obj_3", num=1,"param_list":[parseInt(num),1]}]
+	 * @return
+	 */
+	private String getAttachment(List<Object> props){
+		String attachment = "";
+		for(Object obj : props){
+			Map<String, Object> propMap = JsonToMap.toMap(String.valueOf(obj));
+			String objId = String.valueOf(propMap.get("obj_id"));
+			int num = Integer.parseInt(propMap.get("num").toString());
+			if(propMap.containsKey("param_list")){
+				System.out.println("----------------------");
+				@SuppressWarnings("unchecked")
+				List<Object> paramList = (List<Object>)propMap.get("param_list");
+				if(Contants.HEROID.equals(objId)){
+					System.out.println("----------------------");
+					String heroName = Contants.getPropName(String.valueOf(paramList.get(0)));
+					String level = String.valueOf(paramList.get(1));
+					attachment += heroName+"-"+level+"阶"+" ";
+					continue;
+				}
+			}
+			String propName = Contants.getPropName(objId);
+			attachment += propName+"*"+num+" ";
+		}
+		return attachment;
+	}
+	
+	
 }

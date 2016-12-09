@@ -39,6 +39,7 @@ import common.model.SecUserRole;
 import common.model.UserFeedback;
 import common.mysql.DbSelector;
 import common.routes.AdminRoute;
+import common.utils.Contants;
 
 public class BaseConfig extends JFinalConfig {
 	private static Logger logger = Logger.getLogger(BaseConfig.class);
@@ -61,6 +62,7 @@ public class BaseConfig extends JFinalConfig {
 	 */
 	public void configPlugin(Plugins me) {
 		PropKit.use("config.txt");
+		Contants.initPropMap();
 		DbSelector.initDbs();
 		Set<String> dbs = DbSelector.getDbs().keySet();
 		try {
