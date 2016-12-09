@@ -13,7 +13,6 @@ $(function(){
 })
 
 function loadData() {
-    //loadFeedbackData($(".nav-tab.feedback > ul > li.active > a").attr("data-info"));
     loadFeedbackData(getServerFromIcon($("#btn-db").attr("data-info")));
 }
 //访问用户列表接口

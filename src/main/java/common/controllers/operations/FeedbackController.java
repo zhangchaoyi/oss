@@ -83,7 +83,11 @@ public class FeedbackController extends Controller{
 		String startDate = getPara("startDate", "");
 		String endDate = getPara("endDate", "");
 		String server = getPara("server", getEmailServerNameByServer(DbSelector.getDbName()));
-	
+		
+		if("".equals(server)){
+			server = getEmailServerNameByServer(DbSelector.getDbName());
+		}
+		
 		logger.info("params {"+"startDate:"+startDate+",endDate:"+endDate+",server:"+server+"}");
 		List<List<String>> data = os.queryFeedback(startDate, endDate, server);
 		logger.info("return:" + data);

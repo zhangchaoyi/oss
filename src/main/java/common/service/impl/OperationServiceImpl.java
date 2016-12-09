@@ -134,19 +134,30 @@ public class OperationServiceImpl implements OperationService {
 		String sql = "select account,operation,create_time from gm_record where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and type = ? and address = ?";
 		List<GmRecord> gmRecord = GmRecord.dao.use("malai").find(sql, startDate, endDate, type, address);
 		List<List<String>> data = new ArrayList<List<String>>();
-		for(GmRecord gr : gmRecord){
-			String account = gr.getStr("account");
-			String operation = gr.getStr("operation");
-			Date createTime = gr.getDate("create_time");
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-			Map<String, String> emailDetail = getEmailDetail(operation);
-			List<String> subList = new ArrayList<String>();
-			//帐号-时间-标题-内容-附件--操作人 
-			subList.add(sdf.format(createTime));
-			subList.add(account);
+		try{
+			for(GmRecord gr : gmRecord){
+				String account = gr.getStr("account");
+				String operation = gr.getStr("operation");
+				Date createTime = gr.getDate("create_time");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				Map<String, String> emailDetail = getEmailDetail(operation);
+				if(emailDetail.containsKey("errCode")){
+					logger.info(emailDetail.get("errCode"));
+					return data;
+				}
+				List<String> subList = new ArrayList<String>();
+				//帐号-时间-标题-内容-附件--操作人
+				subList.add(emailDetail.get("account"));
+				subList.add(sdf.format(createTime));
+				subList.add(emailDetail.get("title"));
+				subList.add(emailDetail.get("content"));
+				subList.add(emailDetail.get("attachment"));
+				subList.add(account);
+				data.add(subList);
+			}
+		}catch(Exception e){
+			logger.info("转换operation JSON格式出错", e);
 		}
-		
 		
 		return data;
 	}
@@ -168,13 +179,13 @@ public class OperationServiceImpl implements OperationService {
 		for(int i=0;i<objList.size();i++){
 			switch(i){
 			case 0:
-				data.put("account", String.valueOf(objList.get(i)));
+				data.put("account", String.valueOf(objList.get(i)).replace("\"", ""));
 				break;
 			case 1:
-				data.put("title", String.valueOf(objList.get(i)));
+				data.put("title", String.valueOf(objList.get(i)).replace("\"", ""));
 				break;
 			case 2:
-				data.put("content", String.valueOf(objList.get(i)));
+				data.put("content", String.valueOf(objList.get(i)).replace("\"", ""));
 				break;
 			case 3:
 				@SuppressWarnings("unchecked")
@@ -184,13 +195,12 @@ public class OperationServiceImpl implements OperationService {
 				break;
 			}
 		}
-		
-		
 		return data;
 	}
 	
 	/**
 	 * @param props [{obj_id="obj_1", num=1}, {obj_id="obj_2", num=1}, {obj_id="obj_3", num=1,"param_list":[parseInt(num),1]}]
+	 * json中的字段可能会携带"" 因此需要进行去除"
 	 * @return
 	 */
 	private String getAttachment(List<Object> props){
@@ -200,18 +210,19 @@ public class OperationServiceImpl implements OperationService {
 			String objId = String.valueOf(propMap.get("obj_id"));
 			int num = Integer.parseInt(propMap.get("num").toString());
 			if(propMap.containsKey("param_list")){
-				System.out.println("----------------------");
 				@SuppressWarnings("unchecked")
 				List<Object> paramList = (List<Object>)propMap.get("param_list");
-				if(Contants.HEROID.equals(objId)){
-					System.out.println("----------------------");
+				if(Contants.HEROID.equals(objId.replace("\"", ""))){
 					String heroName = Contants.getPropName(String.valueOf(paramList.get(0)));
 					String level = String.valueOf(paramList.get(1));
-					attachment += heroName+"-"+level+"阶"+" ";
+					attachment += heroName+"*"+level+"阶"+" ";
 					continue;
 				}
 			}
 			String propName = Contants.getPropName(objId);
+			if(propName==null){
+				logger.info("propName is null"+ objId);
+			}
 			attachment += propName+"*"+num+" ";
 		}
 		return attachment;

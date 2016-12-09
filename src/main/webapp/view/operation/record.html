@@ -107,121 +107,32 @@
      <div class="row" id="data-first"> 
       <div class="panel panel-default"> 
        <div class="panel-heading">
-        <span class="data-first-panel-heading" id="user-role-manage">用户反馈详情</span>
+        <span class="data-first-panel-heading" >操作记录</span>
        </div> 
        <div class="panel-body">
         <div class="tab-content" style="top:-13px">
-          <table id="table-feedback-detail" class="hover stripe row-border">
+          <div class="btn-group">
+            <button type="button" class="btn btn-success" id="btn-type" data-info="null">类型</button>
+            <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
+              <span class="caret"></span>
+              <span class="sr-only">Toggle Dropdown</span>
+            </button>
+            <ul class="dropdown-menu" role="menu" id="type-list">
+              <li><a data-info="mail">邮件</a></li>
+            </ul>
+          </div>
+          <table id="table-operation-record" class="hover stripe row-border">
             <thead>
               <tr>
-                <th style="width:100px"><a class="btn btn-warning" data-toggle="modal" data-target="#delete-confirm"><i class="fa fa-times" aria-hidden="true" style="font-size:large"></i>删除</a><input type="checkbox" /></th>
-                <th>帐号名</th>
-                <th>反馈内容</th>
-                <th>创建时间</th>
-                <th>详情</th>
-                <th>是否回复</th>
-                <th><a class="btn btn-danger" id="btn-atwill-reply" data-toggle="modal" data-target="#feedback">回复</a></th>
+                <th>帐号</th>
+                <th>时间</th>
+                <th>标题</th>
+                <th>内容</th>
+                <th>附件信息</th>
+                <th>操作人</th>
               </tr>
             </thead>
           </table>
-          <div class="modal fade" id="delete-confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
-            <div class="modal-dialog"> 
-             <div class="modal-content"> 
-               <div class="modal-body"> 
-                 <div class="panel-body" style="text-align:center">
-                  <div class="alert alert-danger">确认删除?</div>
-                  <button type="button" class="btn btn-primary" data-dismiss="modal" id="delete-feedback">确认</button> 
-                  <button type="button" class="btn btn-primary" data-dismiss="modal" id="delete-cancel">取消</button> 
-                 </div>
-               </div>             
-             </div> 
-            </div> 
-          </div>
-          <div class="modal fade" id="fb-detail" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
-           <div class="modal-dialog"> 
-            <div class="modal-content"> 
-             <div class="modal-header"> 
-               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
-               <h4 class="modal-title" id="myModalLabel"><i>用户反馈</i></h4> 
-             </div> 
-             <div class="modal-body"> 
-               <div class="panel panel-default">
-                <div class="panel-body"> 
-                 <div class="filter-header">
-                   <div class="input-group">
-                    <span class="input-group-addon">帐号</span>
-                    <input type="text" class="form-control" id="feedback-account" readonly="readonly">
-                   </div> 
-                 </div> 
-                 <div class="tab-content"> 
-                  <div class="form-group">
-                    <textarea class="form-control" rows="3" id="feedback-content" readonly="readonly"></textarea>
-                  </div>
-                 </div> 
-                </div> 
-               </div> 
-              </div> 
-              <div class="modal-footer"> 
-               <button type="button" class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#feedback" id="btn-reply">回复</button> 
-               <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn-detail-close">关闭</button> 
-              </div> 
-            </div> 
-           </div> 
-          </div>
-
-          <div class="modal fade" id="feedback" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
-           <div class="modal-dialog"> 
-            <div class="modal-content"> 
-             <div class="modal-header"> 
-               <button type="button" class="close" id="btn-fb-close" data-dismiss="modal" aria-hidden="true">&times;</button> 
-               <h4 class="modal-title" id="myModalLabel"><i>回复反馈</i></h4> 
-             </div> 
-             <div class="modal-body"> 
-               <div class="panel panel-default">
-                <div class="panel-body"> 
-                 <div class="filter-header">
-                   <div class="input-group">
-                    <span class="input-group-addon">帐号</span>
-                    <input type="text" class="form-control" id="reply-account" readonly="readonly" placeholder="输入8位帐号">
-                   </div> 
-                   <div class="input-group">
-                    <span class="input-group-addon">标题</span>
-                    <input type="text" class="form-control" id="reply-title" placeholder="标题">
-                   </div>
-                 </div> 
-                 <div class="tab-content"> 
-                  <div class="form-group">
-                    <textarea class="form-control" rows="3" placeholder="正文" id="area"></textarea>
-                  </div>
-                  <div class="attachment">  
-                  </div>
-                  <div id="attach-result">
-                  </div>
-                 </div> 
-                </div> 
-               </div> 
-              </div> 
-              <div class="modal-footer">
-               <div class="btn-group btn-attachment">
-                <button type="button" class="btn btn-success" id="btn-attachment"><i class="fa fa-plus nest" aria-hidden="true"></i>附件</button>
-                <button type="button" class="btn btn-success dropdown-toggle" data-toggle="dropdown">
-                  <span class="caret"></span>
-                  <span class="sr-only">Toggle Dropdown</span>
-                </button>
-                <ul class="dropdown-menu" role="menu">
-                  <li><a data-info="money"><i class="fa fa-stop-circle nest" aria-hidden="true"></i>金币</a></li>
-                  <li><a data-info="diamond"><i class="fa fa-diamond nest" aria-hidden="true"></i>钻石</a></li>
-                  <li><a data-info="exp"><i class="fa fa-star nest" aria-hidden="true"></i>经验</a></li>
-                  <li><a data-info="hero"><i class="fa fa-universal-access nest" aria-hidden="true"></i>英雄</a></li>
-                  <li><a data-info="property"><i class="fa fa-gavel nest" aria-hidden="true"></i>物品</a></li>
-                </ul>
-               </div> 
-               <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn-send">发送</button> 
-               <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn-reply-close">关闭</button> 
-              </div> 
-            </div> 
-           </div> 
-          </div>
         </div> 
        </div> 
       </div> 
@@ -252,6 +163,6 @@
   <script src="http://oss.koogame.cn/oss/js/dateselector/monthPicker.js?v=0.1"></script> 
   <script src="http://oss.koogame.cn/oss/js/checkbox/icheck.js?v=0.1"></script>
   <script src="http://oss.koogame.cn/oss/js/common.js?v=0.1"></script>
-  <script src="http://oss.koogame.cn/oss/js/userFeedback.js?v=0.1"></script>
+  <script src="../../js/operationRecord.js?v=0.1"></script>
  </body>
 </html>

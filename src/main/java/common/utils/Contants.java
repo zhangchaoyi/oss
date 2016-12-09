@@ -12,12 +12,12 @@ public class Contants {
 	public static final String BIGFRAGMENTBOXID = "obj_31";
 	public static final String FRAGMENTBOXID = "obj_37";
 	private static final Map<String, String> propsMap = new HashMap<String, String>();
-	
-	public static Map<String, String> getPropMap(){
+
+	public static Map<String, String> getPropMap() {
 		return propsMap;
 	}
-	
-	public static void initPropMap(){
+
+	public static void initPropMap() {
 		propsMap.put("linchong", "林冲");
 		propsMap.put("zhangfei", "张飞");
 		propsMap.put("zhaoyun", "赵云");
@@ -98,9 +98,28 @@ public class Contants {
 		propsMap.put("obj_6027", "妲己碎片");
 		propsMap.put("obj_6028", "袁天罡碎片");
 	}
-	
-	public static String getPropName(String objId){
+
+	public static String getPropName(String objId) {
 		objId = objId.replace("\"", "");
 		return propsMap.get(objId);
+	}
+
+	public static String getAddressFromIcon(String icon) {
+		String emailAddress = "";
+		switch (icon) {
+		case "malai":
+			emailAddress = "http://47.89.47.176:8002/gm";
+			break;
+		case "uc":
+			emailAddress = "http://118.178.17.105:8002/gm";
+			break;
+		case "ios":
+			emailAddress = "http://118.178.19.95:8002/gm";
+			break;
+		case "test":
+			emailAddress = "http://120.25.209.140:8002/gm";
+			break;
+		}
+		return emailAddress;
 	}
 }

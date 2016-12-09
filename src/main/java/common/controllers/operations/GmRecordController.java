@@ -1,5 +1,7 @@
 package common.controllers.operations;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.apache.log4j.Logger;
@@ -12,8 +14,10 @@ import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 
 import common.interceptor.GmInterceptor;
+import common.mysql.DbSelector;
 import common.service.OperationService;
 import common.service.impl.OperationServiceImpl;
+import common.utils.Contants;
 @Clear
 public class GmRecordController extends Controller {
 	private static Logger logger = Logger.getLogger(GmRecordController.class);
@@ -39,10 +43,14 @@ public class GmRecordController extends Controller {
 	public void queryRecrod() {
 		String startDate = getPara("startDate", "");
 		String endDate = getPara("endDate", "");
-		String address = getPara("address", "");
+		String icons = getPara("icons", "");
 		String type = getPara("type", "");
-		logger.info("param:{"+",startDate:"+startDate+",endDate:"+endDate+",address:"+address+",type:"+type+"}");
+		logger.info("param:{"+",startDate:"+startDate+",endDate:"+endDate+",icos:"+icons+",type:"+type+"}");
 		
+		if("none".equals(icons)){
+			icons = DbSelector.getDbName();
+		}
+		String address = Contants.getAddressFromIcon(icons);
 		List<List<String>> tableData = os.queryGmRecord(startDate, endDate, type, address); 
 		renderJson(tableData);
 	}
