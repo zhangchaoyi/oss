@@ -121,8 +121,6 @@ $(document).ready(function(){
     }
 
     $("#btn-dropdownIcon").prepend(htmlStr);
-    //去除url后参数不跳转 
-    ///window.history.pushState({},0,window.location.pathname );
 });
 
 //onload initial
@@ -176,13 +174,6 @@ $(function() {
     }
     initMenu(menu);
 
-    //点击菜单tab 页面跳转时添加icon参数 添加时间参数 用于页面跳转时携带时间和icons
-    // $("#main-menu > li a").click(function(){
-    //     var href = $(this).attr("href");
-    //     if(href=="#")return;
-    //     $(this).attr("href",href + "?icon=" + getIcons() + "&startDate=" + $("input#startDate").attr("value") + "&endDate=" + $("input#endDate").attr("value"));  
-    // });
-
     //左侧导航栏展开 显示当前的页面
     var hrefs = $("#main-menu").find("a");
     var localPath = window.location.pathname.split("-")[0];
@@ -214,7 +205,7 @@ $(function() {
     }
 });
 
-//判断日期选择器和右侧 时间栏不相符时去除高亮效果
+//判断日期选择器和右侧 时间栏不相符时去除高亮效果  区分留存页
 function validateSelectedDate(){
     var id = $("div.time-title.active > a.selected").attr("id");
     var sD = $("input#startDate").attr("value");
@@ -231,18 +222,47 @@ function validateSelectedDate(){
             }
         break;
         case "aRecent7Days":
-            if(sD!=getFormatDate(6) || eD!=getFormatDate(0)){
-               $("div.time-title.active > a.selected").removeClass("selected");
+            if(location.pathname.indexOf("retain")!=-1){
+                if(sD!=getFormatDate(6) || eD!=getFormatDate(2)){
+                   $("div.time-title.active > a.selected").removeClass("selected");
+                }
+            }else{
+                if(sD!=getFormatDate(6) || eD!=getFormatDate(0)){
+                   $("div.time-title.active > a.selected").removeClass("selected");
+                }
+            }
+        break;
+        case "aRecent14Days":
+            if(location.pathname.indexOf("retain")!=-1){
+                if(sD!=getFormatDate(13) || eD!=getFormatDate(2)){
+                   $("div.time-title.active > a.selected").removeClass("selected");
+                }
+            }else{
+                if(sD!=getFormatDate(13) || eD!=getFormatDate(0)){
+                   $("div.time-title.active > a.selected").removeClass("selected");
+                }
             }
         break;
         case "aRecent30Days":
-            if(sD!=getFormatDate(29) || eD!=getFormatDate(0)){
-               $("div.time-title.active > a.selected").removeClass("selected");
+            if(location.pathname.indexOf("retain")!=-1){
+                if(sD!=getFormatDate(29) || eD!=getFormatDate(2)){
+                   $("div.time-title.active > a.selected").removeClass("selected");
+                }
+            }else{
+                if(sD!=getFormatDate(29) || eD!=getFormatDate(0)){
+                   $("div.time-title.active > a.selected").removeClass("selected");
+                }
             }
         break;
         case "aRecent90Days":
-            if(sD!=getFormatDate(89) || eD!=getFormatDate(0)){
-               $("div.time-title.active > a.selected").removeClass("selected");
+            if(location.pathname.indexOf("retain")!=-1){
+                if(sD!=getFormatDate(89) || eD!=getFormatDate(2)){
+                   $("div.time-title.active > a.selected").removeClass("selected");
+                }
+            }else{
+                if(sD!=getFormatDate(89) || eD!=getFormatDate(0)){
+                   $("div.time-title.active > a.selected").removeClass("selected");
+                }
             }
         break;
     }

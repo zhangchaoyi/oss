@@ -97,6 +97,7 @@ public class Contants {
 		propsMap.put("obj_6026", "姜子牙碎片");
 		propsMap.put("obj_6027", "妲己碎片");
 		propsMap.put("obj_6028", "袁天罡碎片");
+		propsMap.put("obj_38", "刷新券");
 	}
 
 	public static String getPropName(String objId) {

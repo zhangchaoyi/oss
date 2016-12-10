@@ -27,6 +27,7 @@ function configTable(data) {
         // retrive:true,
         "data": data,
         "dom": '<"top"f>rt<"left"lip>',
+        "order": [[ 1, 'asc' ]],
         "lengthMenu": [[10,30,-1 ],[10,30,'全部']],
         'language': {
             'emptyTable': '没有数据',

@@ -193,8 +193,3 @@ function validateDate(date) {
     }
     return date;
 }
-
-$("div.nav-tab.retain-tab > ul > li > a").click(function(){
-    var href = $(this).attr("href");
-    $(this).attr("href",href + "?icon=" + getIcons());
-});
