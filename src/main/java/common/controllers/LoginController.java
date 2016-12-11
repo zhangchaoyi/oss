@@ -3,6 +3,7 @@ package common.controllers;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedHashMap;
@@ -22,6 +23,7 @@ import common.model.SecUser;
 import common.mysql.DbSelector;
 import common.service.AdminService;
 import common.service.impl.AdminServiceImpl;
+import common.utils.DateUtils;
 import common.utils.EncryptUtils;
 
 @Clear
@@ -93,9 +95,9 @@ public class LoginController extends Controller {
 				}
 				Map<String,String> menu = initUserMap(secUser);
 				setCookie("menu", URLEncoder.encode(JsonKit.toJson(menu),"GBK"), -1, "/", false);
-				setCookie("icons", "iOS", -1, "/", false);
-				setCookie("startDate", "", -1, "/", false);
-				setCookie("endDate", "", -1, "/", false);
+				setCookie("icons", URLEncoder.encode("iOS", "GBK"), -1, "/", false);
+				setCookie("startDate", URLEncoder.encode(DateUtils.getSevenAgoDate(), "GBK"), -1, "/", false);
+				setCookie("endDate", URLEncoder.encode(DateUtils.getTodayDate(), "GBK"), -1, "/", false);
 				setCookie("login", username, -1, "/", true);
 				logger.info("login successfully");
 				renderJson("{\"message\":\"success\"}");
@@ -206,5 +208,4 @@ public class LoginController extends Controller {
 		}
 		return map;
 	}
-	
 }

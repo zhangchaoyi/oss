@@ -112,6 +112,22 @@ public class DateUtils {
 		}		
 		return d;
 	}
+	
+	public static String getTodayDate(){
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date date=new Date();
+		cal.setTime(date);
+		return formatter.format(cal.getTime());
+	}
+	public static String getSevenAgoDate(){
+		Calendar cal = Calendar.getInstance();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+		Date date=new Date();
+		cal.setTime(date);
+		cal.add(Calendar.DATE, -6);
+		return formatter.format(cal.getTime());
+	}
 	//将时间段划分成周 Map<start,end>  --以左边时间起始划分,右边时间不足补足七天
 //	public static Map<String, String> divideDateToWeek(String startDate, String endDate){
 //		Date start = DateUtils.strToDate(startDate);
@@ -183,6 +199,8 @@ public class DateUtils {
 //		System.out.println(monthToStr(DateUtils.strToDate("2016-10-13")));
 //		System.out.println(getTimeFromSecond(200000));
 //		System.out.println(strToMonth("2016-08-12"));
+//		System.out.println(getTodayDate());
+//		System.out.println(getSevenAgoDate());
 	}
 	
 }
