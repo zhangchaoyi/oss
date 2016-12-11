@@ -15,6 +15,7 @@ import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 
 import common.interceptor.RootInterceptor;
+import common.model.SecUser;
 import common.mysql.DbSelector;
 import common.service.AdminService;
 import common.service.impl.AdminServiceImpl;
@@ -156,7 +157,20 @@ public class AdminController extends Controller {
 		logger.info("data:" + data);
 		renderJson(data);
 	}
-
+	/**
+	 * 根据用户名 查询用户menu情况
+	 * @author chris
+	 * @role root
+	 */
+	@Before(POST.class)
+	@ActionKey("/api/admin/manageUsers/user")
+	public void queryUser(){
+		String userName = getPara("userName", "");
+		SecUser su = as.getUser(userName);
+		Map<String,String> menu = LoginController.initUserMap(su);
+		renderJson(menu);
+	}
+	
 	/**
 	 * 删除用户接口
 	 * 
@@ -199,7 +213,10 @@ public class AdminController extends Controller {
 	public void changeRole() {
 		String username = getPara("username");
 		String[] queryRole = getParaValues("roles[]");
-		logger.info("params:{" + "username:" + username + ",queryRole:" + queryRole + "}");
+		String selectList = getPara("selectList", "");
+		Map<String, Object> map = JsonToMap.toMap(selectList);
+		Map<String, String> sqlMap = convertToSqlData(map);
+		logger.info("params:{" + "username:" + username + ",queryRole:" + queryRole + ",sqlMap:" + sqlMap +"}");
 		logger.info("dbs:" + dbs);
 
 		Map<String, String> data = new HashMap<String, String>();
@@ -208,7 +225,7 @@ public class AdminController extends Controller {
 		String originDb = DbSelector.getDbName();
 		for (String db : dbs) {
 			DbSelector.setDbName(db);
-			as.changeRoles(username, queryRole);
+			as.changeRoles(username, queryRole, sqlMap);
 		}
 		DbSelector.setDbName(originDb);
 

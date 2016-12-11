@@ -20,5 +20,5 @@ public interface AdminService {
 	
 	public int deleteByUserName(String users);
 	
-	public void changeRoles(String username, String[] queryRole);
+	public void changeRoles(String username, String[] queryRole, Map<String, String> map);
 }

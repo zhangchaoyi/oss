@@ -162,7 +162,7 @@ public class LoginController extends Controller {
 	 * @param secUser
 	 * @return
 	 */
-	private Map<String, String> initUserMap(SecUser secUser) {
+	public static Map<String, String> initUserMap(SecUser secUser) {
 		Map<String, String> map = new LinkedHashMap<String, String>();
 		String realtime = secUser.getStr("realtime");
 		String form = secUser.getStr("form");
@@ -179,6 +179,7 @@ public class LoginController extends Controller {
 		String marketAnalyse = secUser.getStr("market_analyse");
 		String techSupport = secUser.getStr("tech_support");
 		String managementCenter = secUser.getStr("management_center");
+		String server = secUser.getStr("server");
 
 		map.put("realtime", realtime);
 		map.put("form", form);
@@ -195,6 +196,7 @@ public class LoginController extends Controller {
 		map.put("marketAnalyse", marketAnalyse);
 		map.put("techSupport", techSupport);
 		map.put("managementCenter", managementCenter);
+		map.put("server", server);
 		Iterator<Map.Entry<String, String>> it = map.entrySet().iterator();  
 		while(it.hasNext()){
 			Map.Entry<String, String> entry = it.next();

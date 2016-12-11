@@ -1,8 +1,10 @@
 var currentRole;
+var isMenuChanged = 0;
 $(function(){
     $("#data-second").hide();
     loadData();
     initSelectAll();
+    initSelectMenu();
 })
 //可以供 header.js 的图标按钮调用
 function loadData() {
@@ -108,6 +110,9 @@ $(document).on("click","#data-table-user-management tbody tr td a",function() {
     var role = $(this).attr("data-role");
     //保存当前用户角色 全局变量 用于判断是否发生修改
     currentRole = role;
+    
+    getOwnedPermission(accountParam);
+
     $("#username").text(accountParam);
     $("#role-manage").attr("value",role);
     $("#data-first").slideToggle();
@@ -160,9 +165,13 @@ $("#role-delete-menu > li").click(function(){
 //修改角色按钮
 $("#change-role").click(function(){
     var inputTxt = $("#role-manage").val();
-    if(!isRoleChange(currentRole, inputTxt)){
-        alert("无角色修改变动");
+    if(!isRoleChange(currentRole, inputTxt)&&isMenuChanged==0){
+        alert("无角色修改变动或者页面变动");
         return;
+    }
+    var username = $("#username").text();
+    if(username=="systemroot"){
+        alert("无法修改最高用户权限");
     }
     var list = [];
     var array = inputTxt.split(",");
@@ -173,13 +182,40 @@ $("#change-role").click(function(){
         alert("角色列表不能为空");
         return;
     }
-    var username = $("#username").text();
-    if(username=="systemroot"){
-        alert("无法修改最高用户权限");
+    
+    //页面菜单列表
+    var selectList = {};
+    var checkbox = $(".cu-select-data");
+    for(var i=0;i<checkbox.length;i++){
+        if($(checkbox[i]).prop("checked")){
+            var dataInfo = $(checkbox[i]).parent().siblings("a").attr("data-info");
+            var groupInfo = $(checkbox[i]).parent().siblings("a").attr("group-info");
+            if(selectList.hasOwnProperty(groupInfo)){
+                var value = selectList[groupInfo];
+                value.push(dataInfo);
+                selectList[groupInfo] = value;
+            }else{
+                var value = [];
+                value.push(dataInfo);
+                selectList[groupInfo] = value;
+            }
+        }
     }
+
+    if(isEmptyObject(selectList)){
+        alert("请选择服务器");
+        return;
+    }
+
+    if(selectList.server==undefined){
+        alert("请选择服务器");
+        return;
+    }
+
     $.post("/oss/api/admin/changeRole", {
         username:username,
-        roles:list
+        roles:list,
+        selectList:JSON.stringify(selectList)
     },
     function(data, status) {
         if(data.message=="successfully"){
@@ -221,6 +257,217 @@ function isRoleChange(cr,inputTxt){
     return changed;
 
 }
+
+
+function getOwnedPermission(userName){
+    $.post("/oss/api/admin/manageUsers/user", {
+        userName:userName
+    },
+    function(data, status) {
+        setPermission(data);
+    });
+
+}
+
+function setPermission(data){
+    if(data.realtime!=undefined){
+        $("[data-info='realtime']").siblings("div").children("input").iCheck('check');
+    }
+    if(data.form!=undefined){
+        $("[data-info='form']").siblings("div").children("input").iCheck('check');   
+    }
+    if(data.playerAnalyse!=undefined){
+        var playerAnalyse = data.playerAnalyse;
+        if(playerAnalyse.charAt(0)=='1'){
+            $("[data-info='new-players']").siblings("div").children("input").iCheck('check');
+        }
+        if(playerAnalyse.charAt(1)=='1'){
+            $("[data-info='active-players']").siblings("div").children("input").iCheck('check');
+        }
+        if(playerAnalyse.charAt(2)=='1'){
+            $("[data-info='retain']").siblings("div").children("input").iCheck('check');
+        }
+        if(playerAnalyse.charAt(3)=='1'){
+            $("[data-info='effective']").siblings("div").children("input").iCheck('check');
+        }
+        if(playerAnalyse.charAt(4)=='1'){
+            $("[data-info='equipment']").siblings("div").children("input").iCheck('check');
+        }
+        if(playerAnalyse.charAt(5)=='1'){
+            $("[data-info='circle']").siblings("div").children("input").iCheck('check');
+        }
+    }
+    if(data.paidAnalyse!=undefined){
+        var paidAnalyse = data.paidAnalyse;
+        if(paidAnalyse.charAt(0)=='1'){
+            $("[data-info='paid-data']").siblings("div").children("input").iCheck('check');
+        }
+        if(paidAnalyse.charAt(1)=='1'){
+            $("[data-info='paid-deed']").siblings("div").children("input").iCheck('check');
+        }
+        if(paidAnalyse.charAt(2)=='1'){
+            $("[data-info='paid-transform']").siblings("div").children("input").iCheck('check');
+        }
+        if(paidAnalyse.charAt(3)=='1'){
+            $("[data-info='paid-rank']").siblings("div").children("input").iCheck('check');
+        }
+        if(paidAnalyse.charAt(4)=='1'){
+            $("[data-info='paid-players']").siblings("div").children("input").iCheck('check');
+        }
+    }
+    if(data.loss!=undefined){
+        $("[data-info='loss']").siblings("div").children("input").iCheck('check');
+    }
+    if(data.onlineAnalyse!=undefined){
+        var onlineAnalyse = data.onlineAnalyse;
+        if(onlineAnalyse.charAt(0)=='1'){
+            $("[data-info='online-analyse']").siblings("div").children("input").iCheck('check');
+        }
+        if(onlineAnalyse.charAt(1)=='1'){
+            $("[data-info='online-habits']").siblings("div").children("input").iCheck('check');
+        }
+        if(onlineAnalyse.charAt(2)=='1'){
+            $("[data-info='online-count']").siblings("div").children("input").iCheck('check');
+        }
+    }
+    if(data.channelAnalyse!=undefined){
+        var channelAnalyse = data.channelAnalyse;
+        if(channelAnalyse.charAt(0)=='1'){
+            $("[data-info='channel-analyse']").siblings("div").children("input").iCheck('check');
+        }
+        if(channelAnalyse.charAt(1)=='1'){
+            $("[data-info='channel-trace']").siblings("div").children("input").iCheck('check');
+        }
+    }
+    if(data.systemAnalyse!=undefined){
+        var systemAnalyse = data.systemAnalyse;
+        if(systemAnalyse.charAt(0)=='1'){
+            $("[data-info='prop-analyse']").siblings("div").children("input").iCheck('check');
+        }
+        if(systemAnalyse.charAt(1)=='1'){
+            $("[data-info='task-analyse']").siblings("div").children("input").iCheck('check');
+        }
+        if(systemAnalyse.charAt(2)=='1'){
+            $("[data-info='pass-analyse']").siblings("div").children("input").iCheck('check');
+        }
+        if(systemAnalyse.charAt(3)=='1'){
+            $("[data-info='rank-analyse']").siblings("div").children("input").iCheck('check');
+        }
+        if(systemAnalyse.charAt(4)=='1'){
+            $("[data-info='money-count']").siblings("div").children("input").iCheck('check');
+        }
+    }
+    if(data.versionAnalyse!=undefined){
+        $("[data-info='version-analyse']").siblings("div").children("input").iCheck('check');
+    }
+    if(data.customEvent!=undefined){
+        var customEvent = data.customEvent;
+        if(customEvent.charAt(0)=='1'){
+            $("[data-info='event-list']").siblings("div").children("input").iCheck('check');
+        }
+        if(customEvent.charAt(1)=='1'){
+            $("[data-info='filter-management']").siblings("div").children("input").iCheck('check');
+        }
+    }   
+    if(data.opSupport!=undefined){
+        var opSupport = data.opSupport;
+        if(opSupport.charAt(0)=='1'){
+            $("[data-info='user-feedback']").siblings("div").children("input").iCheck('check');
+        }
+        if(opSupport.charAt(1)=='1'){
+            $("[data-info='op-record']").siblings("div").children("input").iCheck('check');
+        }
+        if(opSupport.charAt(2)=='1'){
+            $("[data-info='data-alert']").siblings("div").children("input").iCheck('check');
+        }
+    }
+    if(data.dataDig!=undefined){
+        var dataDig = data.dataDig;
+        if(dataDig.charAt(0)=='1'){
+            $("[data-info='cluster-analyse']").siblings("div").children("input").iCheck('check');
+        }
+        if(dataDig.charAt(0)=='1'){
+            $("[data-info='newplayers-value']").siblings("div").children("input").iCheck('check');
+        }
+    }
+    if(data.marketAnalyse!=undefined){
+        $("[data-info='market-analyse']").siblings("div").children("input").iCheck('check');
+    }
+    if(data.techSupport!=undefined){
+        var techSupport = data.techSupport;
+        if(techSupport.charAt(0)=='1'){
+            $("[data-info='online-param']").siblings("div").children("input").iCheck('check');
+        }
+        if(techSupport.charAt(1)=='1'){
+            $("[data-info='realtime-log']").siblings("div").children("input").iCheck('check');
+        }
+        if(techSupport.charAt(2)=='1'){
+            $("[data-info='crash-analyse']").siblings("div").children("input").iCheck('check');
+        }
+        if(techSupport.charAt(3)=='1'){
+            $("[data-info='user-mistake']").siblings("div").children("input").iCheck('check');
+        }
+    }
+    if(data.managementCenter!=undefined){
+        var management = data.managementCenter;
+        if(management.charAt(0)=='1'){
+            $("[data-info='create-role']").siblings("div").children("input").iCheck('check');   
+        }
+        if(management.charAt(1)=='1'){
+            $("[data-info='manage-role']").siblings("div").children("input").iCheck('check');
+        }
+    }
+    if(data.server!=undefined){
+        var server = data.server;
+        if(server.charAt(0)=='1'){
+            $("[data-info='malai']").siblings("div").children("input").iCheck('check');
+        }
+        if(server.charAt(1)=='1'){
+            $("[data-info='iOS']").siblings("div").children("input").iCheck('check');
+        }
+        if(server.charAt(2)=='1'){
+            $("[data-info='uc']").siblings("div").children("input").iCheck('check');
+        }
+        if(server.charAt(3)=='1'){
+            $("[data-info='test']").siblings("div").children("input").iCheck('check');
+        }
+    }
+
+}
+
+function initSelectMenu(){
+    $("#cu-select-all").siblings("ins").click(function(){
+        var checked = $(this).parent().hasClass("checked");
+        if(checked==true) {
+            $(".cu-select-options input").iCheck("check");
+        }else{
+            $(".cu-select-options input").iCheck("uncheck");
+        }
+        isMenuChanged = 1;
+    });
+
+    $(".cu-type").siblings("ins").click(function(){
+        var checked = $(this).parent().hasClass("checked");
+        if(checked==true) {
+            $(this).parent().siblings("div").find("input").iCheck("check");
+        }else{
+            $(this).parent().siblings("div").find("input").iCheck("uncheck");
+        }
+        isMenuChanged = 1;
+    });
+
+    $(".cu-select-data").siblings("ins").click(function(){
+        isMenuChanged = 1;
+    });
+}
+
+function isEmptyObject(obj) {
+  for (var key in obj) {
+    return false;
+  }
+  return true;
+}
+
 
 //锁死图标选择下拉菜单 清除按钮
 $("button.btn.btn-default.btn-circle").attr('disabled',"true");

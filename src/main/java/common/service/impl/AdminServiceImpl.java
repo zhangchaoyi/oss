@@ -255,9 +255,9 @@ public class AdminServiceImpl implements AdminService {
 	 * @params queryRole 所选的角色
 	 */
 
-	public void changeRoles(String username, String[] queryRole) {
+	public void changeRoles(String username, String[] queryRole, Map<String, String> map) {
 		String db = DbSelector.getDbName();
-		logger.info("params:{" + "username:" + username + ",queryRole:" + queryRole + "}" + " db:" + db);
+		logger.info("params:{" + "username:" + username + ",queryRole:" + queryRole + "map" + map + "}" + " db:" + db);
 		List<Integer> roles = new ArrayList<Integer>();
 		for (String s : queryRole) {
 			roles.add(getRoleIdByRoleName(s));
@@ -305,6 +305,12 @@ public class AdminServiceImpl implements AdminService {
 				new SecUserRole().use(db).set("user_id", userId).set("role_id", a).save();
 			}
 		}
+		// 修改menu权限
+		String menuSql = "update sec_user set realtime = ?,form = ?, player_analyse = ?,loss = ?,online_analyse=?,channel_analyse=?,system_analyse=?,version_analyse=?,custom_event=?,op_support=?,data_dig=?,market_analyse=?,tech_support=?,management_center=?,server=? where user_name = ?";
+		Db.use(db).update(menuSql, map.get("realtime"), map.get("form"), map.get("player-analyse"), map.get("loss"),
+				map.get("online-analyse"), map.get("channel-analyse"), map.get("system-analyse"),
+				map.get("version-analyse"), map.get("custom-event"), map.get("op-support"), map.get("data-dig"),
+				map.get("market-analyse"), map.get("tech-support"), map.get("management-center"), map.get("server"), username);
 	}
 
 	// 根据角色名获取权重
