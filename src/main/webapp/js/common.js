@@ -415,6 +415,18 @@ function initMenu(menu){
             menuHtml += '<li> <a href="/oss/operation/record"> <i class="fa fa-history"></i>操作记录</a> </li>';
         }
         if(opSupport.charAt(2)=='1'){
+            menuHtml += '<li> <a href="/oss/operation/currency"> <i class="fa fa-bitcoin"></i>货币消耗获取</a> </li>';
+        }
+        if(opSupport.charAt(3)=='1'){
+            menuHtml += '<li> <a href="/oss/operation/object"> <i class="fa fa-gavel"></i>物品消耗获取</a> </li>';
+        }
+        if(opSupport.charAt(4)=='1'){
+            menuHtml += '<li> <a href="/oss/operation/playerInfo"> <i class="fa fa-info-circle"></i>角色当前信息</a> </li>';
+        }
+        if(opSupport.charAt(5)=='1'){
+            menuHtml += '<li> <a href="/oss/operation/mailManagement"> <i class="fa fa-archive"></i>邮件管理</a> </li>';
+        }
+        if(opSupport.charAt(6)=='1'){
             menuHtml += '<li> <a href="#"> <i class="fa fa-bell"></i>数据报警</a> </li>';
         }
         menuHtml += '</ul> </li>';

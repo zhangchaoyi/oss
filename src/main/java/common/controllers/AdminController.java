@@ -263,7 +263,7 @@ public class AdminController extends Controller {
 	 * 解析获取的js数据map,返回插入mysql表的数据,Map<type,"000"> 0为无,1为有 按顺序一一对应 实时概况 -- 1 报表
 	 * -- 1 玩家分析---6 (新增 活跃 留存 有效 设备分析 生命轨迹) 付费分析---4 (付费数据 付费行为 付费转化 付费排行 付费玩家)
 	 * 流失分析--1 在线分析--3 (在线分析 在线习惯 在线人数) 渠道分析--2(渠道分析 渠道短链追踪) 系统分析--5 (道具分析 任务分析
-	 * 关卡分析 等级分析 虚拟币分析) 版本分析--1 自定义事件--2 (事件列表 漏斗管理) 运营支持--2(用户反馈 数据报警)
+	 * 关卡分析 等级分析 虚拟币分析) 版本分析--1 自定义事件--2 (事件列表 漏斗管理) 运营支持--7(用户反馈 操作记录 货币消耗获取 物品消耗获取 角色当前信息 邮件管理 数据报警)
 	 * 数据挖掘--2(聚类分析 新玩家价值) 市场分析--1 技术支持--4 (在线参数 实时日志 崩溃分析 用户错误) 管理中心--2(新增用户角色
 	 * 用户角色管理) 服务器--4 (马来服 iOS uc 测试)
 	 * 
@@ -283,7 +283,7 @@ public class AdminController extends Controller {
 		result.put("system-analyse", "00000");
 		result.put("version-analyse", "0");
 		result.put("custom-event", "00");
-		result.put("op-support", "000");
+		result.put("op-support", "0000000");
 		result.put("data-dig", "00");
 		result.put("market-analyse", "0");
 		result.put("tech-support", "0000");
@@ -424,8 +424,20 @@ public class AdminController extends Controller {
 						case "op-record":
 							ca[1] = '1';
 							break;
-						case "data-alert":
+						case "currency-obtain-consume":
 							ca[2] = '1';
+							break;
+						case "object-obtain-consume":
+							ca[3] = '1';
+							break;
+						case "role-current-info":
+							ca[4] = '1';
+							break;
+						case "mail-management":
+							ca[5] = '1';
+							break;
+						case "data-alert":
+							ca[6] = '1';
 							break;
 						}
 					}

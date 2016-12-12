@@ -378,6 +378,18 @@ function setPermission(data){
             $("[data-info='op-record']").siblings("div").children("input").iCheck('check');
         }
         if(opSupport.charAt(2)=='1'){
+            $("[data-info='currency-obtain-consume']").siblings("div").children("input").iCheck('check');
+        }
+        if(opSupport.charAt(3)=='1'){
+            $("[data-info='object-obtain-consume']").siblings("div").children("input").iCheck('check');
+        }
+        if(opSupport.charAt(4)=='1'){
+            $("[data-info='role-current-info']").siblings("div").children("input").iCheck('check');
+        }
+        if(opSupport.charAt(5)=='1'){
+            $("[data-info='mail-management']").siblings("div").children("input").iCheck('check');
+        }
+        if(opSupport.charAt(6)=='1'){
             $("[data-info='data-alert']").siblings("div").children("input").iCheck('check');
         }
     }
