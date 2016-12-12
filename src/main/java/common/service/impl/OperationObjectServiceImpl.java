@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import common.model.LogObj;
+import common.mysql.DbSelector;
 import common.service.OperationObjectService;
 import common.utils.Contants;
 
 public class OperationObjectServiceImpl implements OperationObjectService{
+	private String db = DbSelector.getDbName();
 	/**
 	 * 个人物品获取和消耗
 	 * @param startDate 
@@ -19,7 +21,7 @@ public class OperationObjectServiceImpl implements OperationObjectService{
 	 */
 	public List<List<String>> querySingleObject(String startDate, String endDate, String account) {
 		String sql = "select account,obj_id,count,get_or_consume,reason,timestamp from log_obj where date between ? and ? and account = ?";
-		List<LogObj> logObj = LogObj.dao.find(sql, startDate, endDate, account);
+		List<LogObj> logObj = LogObj.dao.use(db).find(sql, startDate, endDate, account);
 		List<List<String>> data = new ArrayList<List<String>>();
 		for(LogObj lo : logObj){
 			String objId = lo.getStr("obj_id");

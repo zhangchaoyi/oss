@@ -70,8 +70,8 @@ public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 	public List<List<String>> querySingleCurrency(String startDate, String endDate, String account) {
 		String goldSql = "select account,count,get_or_consume,reason,timestamp from log_gold where date between ? and ? and account = ?";
 		String RMBSql = "select account,count,get_or_consume,reason,timestamp from log_RMB where date between ? and ? and account = ?";
-		List<LogGold> logGold = LogGold.dao.find(goldSql, startDate, endDate, account);
-		List<LogRmb> logRmb = LogRmb.dao.find(RMBSql, startDate, endDate, account);
+		List<LogGold> logGold = LogGold.dao.use(db).find(goldSql, startDate, endDate, account);
+		List<LogRmb> logRmb = LogRmb.dao.use(db).find(RMBSql, startDate, endDate, account);
 		List<List<String>> data = new ArrayList<List<String>>();
 
 		for(LogGold lg : logGold){
