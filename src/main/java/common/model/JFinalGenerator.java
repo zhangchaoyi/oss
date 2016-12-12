@@ -35,7 +35,6 @@ public class JFinalGenerator {
 		gernerator.addExcludedTable("ladder_record");
 		gernerator.addExcludedTable("ladder_score");
 		gernerator.addExcludedTable("log_battle");
-		gernerator.addExcludedTable("log_obj");
 		gernerator.addExcludedTable("refresh_arena_exp_count");
 		gernerator.addExcludedTable("client_view_hero_mp4");
 		

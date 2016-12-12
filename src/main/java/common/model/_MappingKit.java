@@ -25,6 +25,7 @@ public class _MappingKit {
 		arp.addMapping("log_RMB", "id", LogRmb.class);
 		arp.addMapping("log_charge", "id", LogCharge.class);
 		arp.addMapping("log_gold", "id", LogGold.class);
+		arp.addMapping("log_obj", "id", LogObj.class);
 		arp.addMapping("login", "id", Login.class);
 		arp.addMapping("logout", "id", Logout.class);
 		arp.addMapping("loss_user", "id", LossUser.class);

@@ -177,4 +177,44 @@ public abstract class BaseCreateRole<M extends BaseCreateRole<M>> extends Model<
 		return get("team_name");
 	}
 
+	public void setRealIp(java.lang.String realIp) {
+		set("real_ip", realIp);
+	}
+
+	public java.lang.String getRealIp() {
+		return get("real_ip");
+	}
+
+	public void setCountry(java.lang.String country) {
+		set("country", country);
+	}
+
+	public java.lang.String getCountry() {
+		return get("country");
+	}
+
+	public void setProvince(java.lang.String province) {
+		set("province", province);
+	}
+
+	public java.lang.String getProvince() {
+		return get("province");
+	}
+
+	public void setCity(java.lang.String city) {
+		set("city", city);
+	}
+
+	public java.lang.String getCity() {
+		return get("city");
+	}
+
+	public void setScriptVersion(java.lang.String scriptVersion) {
+		set("script_version", scriptVersion);
+	}
+
+	public java.lang.String getScriptVersion() {
+		return get("script_version");
+	}
+
 }
