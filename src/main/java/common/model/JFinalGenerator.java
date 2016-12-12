@@ -34,10 +34,11 @@ public class JFinalGenerator {
 		gernerator.addExcludedTable("hero_module_change");
 		gernerator.addExcludedTable("ladder_record");
 		gernerator.addExcludedTable("ladder_score");
-		gernerator.addExcludedTable("log_RMB");
 		gernerator.addExcludedTable("log_battle");
-		gernerator.addExcludedTable("log_gold");
+		gernerator.addExcludedTable("log_obj");
 		gernerator.addExcludedTable("refresh_arena_exp_count");
+		gernerator.addExcludedTable("client_view_hero_mp4");
+		
 		
 		// 设置是否在 Model 中生成 dao 对象
 		gernerator.setGenerateDaoInModel(true);

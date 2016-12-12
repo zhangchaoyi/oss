@@ -25,6 +25,8 @@ import common.model.DeviceInfo;
 import common.model.GmRecord;
 import common.model.LevelUp;
 import common.model.LogCharge;
+import common.model.LogGold;
+import common.model.LogRmb;
 import common.model.Login;
 import common.model.Logout;
 import common.model.LossUser;
@@ -97,6 +99,9 @@ public class BaseConfig extends JFinalConfig {
 				arp.addMapping("user_feedback", UserFeedback.class);
 				arp.addMapping("gm_record", GmRecord.class);
 				arp.addMapping("online_count", OnlineCount.class);
+				arp.addMapping("log_gold", LogGold.class);
+				arp.addMapping("log_RMB", LogRmb.class);
+				
 				// 设置默认的数据库
 				DbSelector.setDbName(PropKit.get("jdbcDefault"));
 			}

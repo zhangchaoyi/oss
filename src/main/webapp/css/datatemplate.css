@@ -1026,3 +1026,7 @@ button#btn-attach-save {
 form#create-form {
     margin-top: 32px;
 }
+.nav-tab.sub-op-currency {
+    margin-top: 10px;
+    z-index: 1;
+}

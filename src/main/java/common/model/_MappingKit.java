@@ -17,13 +17,14 @@ public class _MappingKit {
 
 	public static void mapping(ActiveRecordPlugin arp) {
 		arp.addMapping("active_user", "id", ActiveUser.class);
-		arp.addMapping("client_view_hero_mp4", "id", ClientViewHeroMp4.class);
 		arp.addMapping("create_role", "account", CreateRole.class);
 		// Composite Primary Key order: openudid,os
 		arp.addMapping("device_info", "openudid,os", DeviceInfo.class);
 		arp.addMapping("gm_record", "id", GmRecord.class);
 		arp.addMapping("level_up", "id", LevelUp.class);
+		arp.addMapping("log_RMB", "id", LogRmb.class);
 		arp.addMapping("log_charge", "id", LogCharge.class);
+		arp.addMapping("log_gold", "id", LogGold.class);
 		arp.addMapping("login", "id", Login.class);
 		arp.addMapping("logout", "id", Logout.class);
 		arp.addMapping("loss_user", "id", LossUser.class);

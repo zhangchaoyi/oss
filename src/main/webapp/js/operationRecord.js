@@ -49,3 +49,12 @@ $("#type-list > li").click(function(){
 	$("#btn-type").attr("data-info",type);
 	$("#btn-type").text(txt);
 });
+
+//锁死图标选择下拉菜单 清除按钮
+$("button.btn.btn-default.btn-circle").attr('disabled',"true");
+$("ul.dropdown-menu.iconBar > li").addClass("disabled");
+$("li.btn-icons").unbind("click");
+$("li.disabled > button.btn.btn-primary").attr('disabled',"true");
+$("#btn-dropdownIcon").one("click", function(){
+    $('.btn-icons > a > div').iCheck('disable');
+});
