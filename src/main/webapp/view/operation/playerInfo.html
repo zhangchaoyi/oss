@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+ <head> 
+  <meta charset="utf-8" /> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
+  <link rel="shortcut icon" type="image/x-icon" href="http://oss.koogame.cn/oss/images/koogame.ico" media="screen" /> 
+  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/dateselector/dateRange.css?v=0.2" /> 
+  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/dateselector/monthPicker.css?v=0.2" /> 
+  <link href="http://oss.koogame.cn/oss/css/bootstrap.css?v=0.2" rel="stylesheet" /> 
+  <link href="http://oss.koogame.cn/oss/css/font-awesome.css?v=0.2" rel="stylesheet" /> 
+  <link href="http://oss.koogame.cn/oss/css/basic.css?v=0.2" rel="stylesheet" /> 
+  <link href="http://oss.koogame.cn/oss/css/custom.css?v=0.2" rel="stylesheet" /> 
+  <link href="http://oss.koogame.cn/oss/css/header.css?v=0.2" rel="stylesheet" /> 
+  <link href="http://oss.koogame.cn/oss/css/datatemplate.css?v=0.2" rel="stylesheet" /> 
+  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/default.css?v=0.2" /> 
+  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/component.css?v=0.2" /> 
+  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/animation.css?v=0.2" /> 
+  <link href="http://oss.koogame.cn/oss/css/polaris/polaris.css?v=0.2" rel="stylesheet" /> 
+  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/jquery.dataTables.css?v=0.2" /> 
+  <title>KooGame</title>
+  <style type="text/css">
+    .nav-tab.feedback {
+    margin-top: 1%;
+    position: relative;
+    left: 2px;
+    z-index: 1;
+  } 
+  </style> 
+ </head> 
+ <body> 
+  <div id="wrapper"> 
+   <nav class="navbar navbar-default navbar-cls-top " role="navigation" style="margin-bottom: 0"> 
+    <div id="header"> 
+     <div class="top"> 
+      <div class="logo-outer"> 
+       <a href="#" title="用心做游戏-koogame"> 
+        <div class="logo"></div> </a> 
+      </div> 
+      <div class="topnav"> 
+       <div class="envelope"> 
+        <button type="button" class="btn btn-default btn-envelope"> <span class="glyphicon glyphicon-envelope" aria-hidden="true"></span> </button> 
+       </div>
+       <div class="btn-group" id="admin-btn"> 
+        <button class="btn btn-default dropdown-toggle" type="button" id="userAccount" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"><span class="glyphicon glyphicon-user btn-user"></span>admin<span class="caret"></span></button> 
+        <ul class="dropdown-menu user-bars" aria-labelledby="userAccount"> 
+         <li> <a href="/oss/admin/account">帐号与权限</a></li> 
+        </ul> 
+       </div> 
+       <div class="logout-btn"> 
+        <button type="button" class="btn btn-default btn-off"> <span class="glyphicon glyphicon-off" aria-hidden="true"></span> </button> 
+       </div> 
+      </div> 
+     </div> 
+    </div> 
+    <div id="menu"> 
+     <div class="crumb"> 
+      <a href="/oss/dashboard"><button type="button" class="btn btn-default btn-home" aria-label="Left Align"> <span class="glyphicon glyphicon-home" aria-hidden="true"></span> </button></a>
+     </div> 
+     <div class="crumb-inner"> 
+      <em>全部数据</em> 
+     </div>
+     <div class="btn-group select-db">
+          <button type="button" id="btn-db" class="btn btn-success dropdown-toggle" data-toggle="dropdown" data-info="none">
+            选择服务器 <span class="caret"></span>
+          </button>
+          <ul class="dropdown-menu" role="menu" id="db-menu"></ul>
+     </div> 
+     <div class="service-bar"> 
+      <div class="dropdown"> 
+       <button class="btn btn-default dropdown-toggle" type="button" id="btn-dropdownIcon" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true"> <span class="caret"></span> </button> 
+       <ul class="dropdown-menu iconBar" aria-labelledby="dropdownIcon"> 
+        <li class="btn-icons" id="ios" data-value="apple"> <a> <input type="checkbox" /> <span class="fa fa-apple fa-style" aria-hidden="true"></span>iOS</a> </li> 
+        <li class="btn-icons" id="and" data-value="android"> <a> <input type="checkbox" /> <span class="fa fa-android fa-style" aria-hidden="true"></span>Android</a> </li> 
+        <li class="btn-icons" id="wp" data-value="windows"> <a> <input type="checkbox" /> <span class="fa fa-windows fa-style" aria-hidden="true"></span>WP</a> </li> 
+        <li> <button type="button" class="btn btn-primary" onclick="iconsView()">确定</button></li> 
+       </ul> 
+      </div> 
+     </div> 
+     <div class="clear-data"> 
+      <button type="button" class="btn btn-default btn-circle" aria-label="Left Align"> <span class="glyphicon glyphicon-ok-circle" aria-hidden="true"></span> <em>清除数据</em></button> 
+     </div> 
+    </div> 
+   </nav> 
+   <!-- /. NAV TOP --> 
+   <nav class="navbar-default navbar-side" role="navigation"> 
+    <div class="sidebar-collapse"> 
+     <ul class="nav" id="main-menu"></ul> 
+    </div> 
+   </nav> 
+   <!-- /. NAV SIDE --> 
+   <div id="page-wrapper" style="overflow-x: hidden;overflow-y:hidden;min-height:825px"> 
+    <div id="page-inner">
+     <div class="row" id="top-row"> 
+      <div class="filter-tool" style="height:110px">
+       <div class="date-bar"> 
+        <div class="calender-bar"> 
+         <div class="ta_date"> 
+          <span class="date_title" id="date_seletor"></span> 
+          <a class="opt_sel" id="input_trigger" href="#"> <i class="fa fa-calendar" aria-hidden="true"></i> </a> 
+         </div> 
+         <div id="datePicker"></div> 
+        </div> 
+       </div>
+      </div>
+     </div> 
+     <!-- /. ROW --> 
+     <div class="row" id="data-first"> 
+      <div class="panel panel-default"> 
+       <div class="panel-heading">
+        <span class="data-first-panel-heading" >角色当前信息</span>
+       </div> 
+       <div class="panel-body">
+        <div class="tab-content" style="top:-13px">
+          <div class="input-group">
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-dafault dropdown-toggle" id="btn-account-name" data-toggle="dropdown">角色帐号<span class="caret"></span></button>
+                <ul class="dropdown-menu" id="menu-account-name" role="menu">
+                  <li><a>角色帐号</a></li>
+                  <li><a>角色名</a></li>
+                </ul>
+            </div>
+            <input type="text" class="form-control" id="input-account-name" style="width:200px">
+            <a type="button" class="btn btn-info" style="margin-left:15px;float:left">查询</a>
+          </div>
+          <table id="table-player-info" class="hover stripe row-border">
+            <thead>
+              <tr>
+                <th>角色帐号</th>
+                <th>角色名</th>
+                <th>uid</th>
+                <th>等级</th>
+                <th>最后一次登录时间</th>
+                <th>最后一次充值时间</th>
+                <th>金币数量</th>
+                <th>钻石数量</th>
+                <th>仓库物品</th>
+                <th>PVP排名</th>
+                <th>历史结算</th>
+              </tr>
+            </thead>
+          </table>
+        </div> 
+       </div> 
+      </div> 
+     </div>
+    </div> 
+    <!-- /. PAGE INNER --> 
+   </div> 
+   <!-- /. PAGE WRAPPER --> 
+  </div> 
+  <!-- /. WRAPPER -->
+  </div> 
+  <div id="footer-sec" style="top:50px">
+    Copyright &copy; 2016.koogame All rights reserved. 
+   <a target="_blank" href="#"></a> 
+  </div> 
+  <!-- SCRIPTS -AT THE BOTOM TO REDUCE THE LOAD TIME--> 
+  <script src="http://oss.koogame.cn/oss/js/jquery.min.js?v=0.2"></script> 
+  <script src="http://oss.koogame.cn/oss/js/bootstrap.min.js?v=0.2"></script> 
+  <script src="http://oss.koogame.cn/oss/js/jquery.metisMenu.js?v=0.2"></script> 
+  <script src="http://oss.koogame.cn/oss/js/jquery.dataTables.min.js?v=0.2"></script> 
+  <script src="http://oss.koogame.cn/oss/js/custom.js?v=0.2"></script> 
+  <script src="http://oss.koogame.cn/oss/js/header.js?v=0.2"></script> 
+  <script src="http://oss.koogame.cn/oss/js/button/modernizr.custom.js?v=0.2"></script> 
+  <script src="http://oss.koogame.cn/oss/js/button/classie.js?v=0.2"></script> 
+  <script src="http://oss.koogame.cn/oss/js/echarts.min.js?v=0.2"></script> 
+  <script src="http://oss.koogame.cn/oss/js/filter/jcfilter.min.js?v=0.2"></script> 
+  <script src="http://oss.koogame.cn/oss/js/dateselector/dateRange.js?v=0.2"></script> 
+  <script src="http://oss.koogame.cn/oss/js/dateselector/monthPicker.js?v=0.2"></script> 
+  <script src="http://oss.koogame.cn/oss/js/checkbox/icheck.js?v=0.2"></script>
+  <script src="http://oss.koogame.cn/oss/js/common.js?v=0.3"></script>
+  <script src="../../js/playerInfo.js?v=0.3"></script>
+ </body>
+</html>

@@ -11,8 +11,12 @@ import common.controllers.loss.LossController;
 import common.controllers.online.AnalysisController;
 import common.controllers.online.CountController;
 import common.controllers.online.HabitsController;
+import common.controllers.operations.CurrencyController;
 import common.controllers.operations.FeedbackController;
 import common.controllers.operations.GmRecordController;
+import common.controllers.operations.MailManagementController;
+import common.controllers.operations.ObjectController;
+import common.controllers.operations.PlayerInfoController;
 import common.controllers.payment.PaymentBehaviorController;
 import common.controllers.payment.PaymentDataController;
 import common.controllers.payment.PaymentPlayersController;
@@ -50,6 +54,10 @@ public class AdminRoute extends Routes {
 		add("/admin", AdminController.class, "/WEB-INF/views/admin");
 		add("/feedback", FeedbackController.class, "/WEB-INF/views/operation");
 		add("/gmRecord", GmRecordController.class, "/WEB-INF/views/operation");
+		add("/currencyObtainConsume", CurrencyController.class, "/WEB-INF/views/operation");
+		add("/objectObtainConsume", ObjectController.class, "/WEB-INF/views/operation");
+		add("/mailManagement", MailManagementController.class, "/WEB-INF/views/operation");
+		add("/playerInfo", PlayerInfoController.class, "/WEB-INF/views/operation");
 		add("/db", DbController.class);
 	}
 
