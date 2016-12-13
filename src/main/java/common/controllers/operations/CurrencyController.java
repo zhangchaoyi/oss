@@ -1,7 +1,8 @@
 package common.controllers.operations;
 
+import java.util.HashMap;
 import java.util.List;
-
+import java.util.Map;
 import org.apache.log4j.Logger;
 import com.jfinal.aop.Before;
 import com.jfinal.aop.Clear;
@@ -35,11 +36,21 @@ public class CurrencyController extends Controller {
 	@Before(POST.class)
 	@ActionKey("/api/operation/currency/all")
 	public void queryAllServerCurrency() {
-		String startDate = getPara("startDate");
-		String endDate = getPara("endDate");
-		logger.info("getParam:"+"{startDate:"+startDate+",endDate:"+endDate+"}");
-		List<List<String>> queryData = ocs.queryAllCurrency(startDate, endDate);
-		renderJson(queryData);
+		String startDate = getPara("startDate", "");
+		String endDate = getPara("endDate", "");
+		String currency = getPara("currency", "gold");
+		int draw = getParaToInt("draw", 0);
+		int start = getParaToInt("start", 0);
+		int length = getParaToInt("length", 10);
+		logger.info("getParam:"+"{startDate:"+startDate+",endDate:"+endDate+""+",currency:"+currency+",draw:"+draw+",start:"+start+",length:"+length+"}");
+		//mysql分 RMB 和 金币
+		Map<String, Object> queryData = ocs.queryAllCurrency(startDate, endDate, currency, start, length);
+		Map<String, Object> data = new HashMap<String, Object>();
+		data.put("draw", draw);
+		data.put("recordsTotal", queryData.get("count"));
+		data.put("recordsFiltered", queryData.get("count"));
+		data.put("data", queryData.get("tableData"));
+		renderJson(data);
 	}
 	
 	/**
@@ -51,10 +62,11 @@ public class CurrencyController extends Controller {
 	@ActionKey("/api/operation/currency/player")
 	public void querySingleCurrency() {
 		String account = getPara("account", "");
-		String startDate = getPara("startDate");
-		String endDate = getPara("endDate");
-		logger.info("getParam:"+"{startDate:"+startDate+",endDate:"+endDate+",account:"+account+"}");
-		List<List<String>> queryData = ocs.querySingleCurrency(startDate, endDate, account);
+		String startDate = getPara("startDate", "");
+		String endDate = getPara("endDate", "");
+		String currency = getPara("currency", "gold");
+		logger.info("getParam:"+"{startDate:"+startDate+",endDate:"+endDate+",currency:"+currency+",account:"+account+"}");
+		List<List<String>> queryData = ocs.querySingleCurrency(startDate, endDate, currency, account);
 		renderJson(queryData);
 	}
 }

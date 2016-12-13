@@ -2,7 +2,10 @@ package common.service.impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import common.model.LogGold;
 import common.model.LogRmb;
 import common.mysql.DbSelector;
@@ -11,98 +14,120 @@ import common.service.OperationCurrencyService;
 public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 	private String db = DbSelector.getDbName();
 	/**
-	 * 全服货币获取和消耗
+	 * 全服货币币获取和消耗
 	 * @param startDate 
 	 * @param endDate
+	 * @param currency 货币类型 金币或钻石 
+	 * @param start  mysql limit 起始
+	 * @param length  mysql limit 长度
 	 * @format 帐号-时间-途径-物品类型-数量-操作
+	 * 需要对数据进行整理排序
 	 * @author chris
 	 */
-	public List<List<String>> queryAllCurrency(String startDate, String endDate) {
-		String goldSql = "select account,count,get_or_consume,reason,timestamp from log_gold where date between ? and ?";
-		String RMBSql = "select account,count,get_or_consume,reason,timestamp from log_RMB where date between ? and ?";
-		List<LogGold> logGold = LogGold.dao.use(db).find(goldSql, startDate, endDate);
-		List<LogRmb> logRmb = LogRmb.dao.use(db).find(RMBSql, startDate, endDate);
-		List<List<String>> data = new ArrayList<List<String>>();
-		for(LogGold lg : logGold){
-			String account = lg.getStr("account");
-			String count = lg.getInt("count").toString();
-			String getConsume = lg.getInt("get_or_consume")==1?"获取":"消耗";
-			String reason =  changeGoldReasonToChinese(lg.getStr("reason"));
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String timestamp = sdf.format(lg.getDate("timestamp"));
-			List<String> subList = new ArrayList<String>();
-			subList.add(account);
-			subList.add(timestamp);
-			subList.add(reason);
-			subList.add("金币");
-			subList.add(count);
-			subList.add(getConsume);
-			data.add(subList);
-		}
-		for(LogRmb lr : logRmb){
-			String account = lr.getStr("account");
-			String count = lr.getInt("count").toString();
-			String getConsume = lr.getInt("get_or_consume")==1?"获取":"消耗";
-			String reason =  changeRMBReasonToChinese(lr.getStr("reason"));
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String timestamp = sdf.format(lr.getDate("timestamp"));
-			List<String> subList = new ArrayList<String>();
-			subList.add(account);
-			subList.add(timestamp);
-			subList.add(reason);
-			subList.add("钻石");
-			subList.add(count);
-			subList.add(getConsume);
-			data.add(subList);
-		}
+	public Map<String, Object> queryAllCurrency(String startDate, String endDate, String currency, int start, int length) {
+		String goldSql = "select account,count,get_or_consume,reason,timestamp from log_gold where date between ? and ? limit ?,?";
+		String RMBSql = "select account,count,get_or_consume,reason,timestamp from log_RMB where date between ? and ? limit ?,?";
+		String goldCountSql = "select count(*)count from log_gold where date between ? and ?";
+		String RMBCountSql = "select count(*)count from log_RMB where date between ? and ?";
 		
+		Map<String, Object> data = new HashMap<String, Object>();
+		List<List<String>> tableData = new ArrayList<List<String>>();
+		if(currency.equals("gold")){
+			List<LogGold> logGold = LogGold.dao.use(db).find(goldSql, startDate, endDate, start, length);
+			LogGold goldCount = LogGold.dao.use(db).findFirst(goldCountSql, startDate, endDate);
+			for(LogGold lg : logGold){
+				String account = lg.getStr("account");
+				String count = lg.getInt("count").toString();
+				String getConsume = lg.getInt("get_or_consume")==1?"获取":"消耗";
+				String reason =  changeGoldReasonToChinese(lg.getStr("reason"));
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				Date queryTimestamp = lg.getDate("timestamp");
+				String timestamp = sdf.format(queryTimestamp);
+				List<String> subList = new ArrayList<String>();
+				subList.add(account);
+				subList.add(timestamp);
+				subList.add(reason);
+				subList.add("金币");
+				subList.add(count);
+				subList.add(getConsume);
+				tableData.add(subList);
+			}
+			data.put("count", goldCount.getLong("count").intValue());
+		}else{
+			List<LogRmb> logRmb = LogRmb.dao.use(db).find(RMBSql, startDate, endDate, start, length);
+			LogRmb RMBCount = LogRmb.dao.use(db).findFirst(RMBCountSql, startDate, endDate);
+			for(LogRmb lr : logRmb){
+				String account = lr.getStr("account");
+				String count = lr.getInt("count").toString();
+				String getConsume = lr.getInt("get_or_consume")==1?"获取":"消耗";
+				String reason =  changeRMBReasonToChinese(lr.getStr("reason"));
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				Date queryTimestamp = lr.getDate("timestamp");
+				String timestamp = sdf.format(queryTimestamp);
+				List<String> subList = new ArrayList<String>();
+				subList.add(account);
+				subList.add(timestamp);
+				subList.add(reason);
+				subList.add("钻石");
+				subList.add(count);
+				subList.add(getConsume);
+				tableData.add(subList);
+			}
+			data.put("count", RMBCount.getLong("count").intValue());
+		}
+		data.put("tableData", tableData);
 		return data;
 	}
+	
+	
 	
 	/**
 	 * 个人货币获取和消耗
 	 * @param startDate 
 	 * @param endDate
+	 * @param currency  货币类型 金币或钻石
 	 * @format 帐号-时间-途径-物品类型-数量-操作
 	 * @author chris
 	 * @return tableData
 	 */
-	public List<List<String>> querySingleCurrency(String startDate, String endDate, String account) {
+	public List<List<String>> querySingleCurrency(String startDate, String endDate, String currency, String account) {
 		String goldSql = "select account,count,get_or_consume,reason,timestamp from log_gold where date between ? and ? and account = ?";
 		String RMBSql = "select account,count,get_or_consume,reason,timestamp from log_RMB where date between ? and ? and account = ?";
-		List<LogGold> logGold = LogGold.dao.use(db).find(goldSql, startDate, endDate, account);
-		List<LogRmb> logRmb = LogRmb.dao.use(db).find(RMBSql, startDate, endDate, account);
 		List<List<String>> data = new ArrayList<List<String>>();
-
-		for(LogGold lg : logGold){
-			String count = lg.getInt("count").toString();
-			String getConsume = lg.getInt("get_or_consume")==1?"获取":"消耗";
-			String reason =  changeGoldReasonToChinese(lg.getStr("reason"));
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String timestamp = sdf.format(lg.getDate("timestamp"));
-			List<String> subList = new ArrayList<String>();
-			subList.add(account);
-			subList.add(timestamp);
-			subList.add(reason);
-			subList.add("金币");
-			subList.add(count);
-			subList.add(getConsume);
-			data.add(subList);
-		}
-		for(LogRmb lr : logRmb){
-			String count = lr.getInt("count").toString();
-			String getConsume = lr.getInt("get_or_consume")==1?"获取":"消耗";
-			String reason =  changeRMBReasonToChinese(lr.getStr("reason"));
-			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-			String timestamp = sdf.format(lr.getDate("timestamp"));
-			List<String> subList = new ArrayList<String>();
-			subList.add(account);
-			subList.add(timestamp);
-			subList.add(reason);
-			subList.add("钻石");
-			subList.add(count);
-			subList.add(getConsume);
-			data.add(subList);
+		if(currency.equals("gold")){
+			List<LogGold> logGold = LogGold.dao.use(db).find(goldSql, startDate, endDate, account);
+			for(LogGold lg : logGold){
+				String count = lg.getInt("count").toString();
+				String getConsume = lg.getInt("get_or_consume")==1?"获取":"消耗";
+				String reason =  changeGoldReasonToChinese(lg.getStr("reason"));
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String timestamp = sdf.format(lg.getDate("timestamp"));
+				List<String> subList = new ArrayList<String>();
+				subList.add(account);
+				subList.add(timestamp);
+				subList.add(reason);
+				subList.add("金币");
+				subList.add(count);
+				subList.add(getConsume);
+				data.add(subList);
+			}
+		}else{
+			List<LogRmb> logRmb = LogRmb.dao.use(db).find(RMBSql, startDate, endDate, account);
+			for(LogRmb lr : logRmb){
+				String count = lr.getInt("count").toString();
+				String getConsume = lr.getInt("get_or_consume")==1?"获取":"消耗";
+				String reason =  changeRMBReasonToChinese(lr.getStr("reason"));
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String timestamp = sdf.format(lr.getDate("timestamp"));
+				List<String> subList = new ArrayList<String>();
+				subList.add(account);
+				subList.add(timestamp);
+				subList.add(reason);
+				subList.add("钻石");
+				subList.add(count);
+				subList.add(getConsume);
+				data.add(subList);
+			}
 		}
 		return data;
 	} 
@@ -111,6 +136,9 @@ public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 		switch(reason){
 		case "ArenaGetGuideScoreReward":
 			reason = "天梯引导奖励";
+			break;
+		case "ArenaGuideBattleReward":
+			reason = "天梯引导战斗奖励";
 			break;
 		case "LevelUp":
 			reason = "升级";
@@ -232,6 +260,10 @@ public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 		case "LadderGetDanGradingReward":
 			reason = "角斗场段位奖励";
 			break;
+		case "CHONGZHI":
+			reason = "充值";
+		case "NEW_RONDOM_NAME":
+			reason = "重新命名";
 		}
 		return reason;
 	}

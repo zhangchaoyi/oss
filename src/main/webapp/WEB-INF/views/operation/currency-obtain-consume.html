@@ -107,24 +107,88 @@
      <div class="row" id="data-first"> 
       <div class="panel panel-default"> 
        <div class="panel-heading">
-        <span class="data-first-panel-heading" >货币信息</span>
+        <span class="data-first-panel-heading" >金币信息</span>
        </div> 
        <div class="panel-body">
-        <div class="nav-tab sub-op-currency">
+        <div class="nav-tab sub-op-gold">
           <ul class="nav nav-pills"> 
             <li class="active"><a><span data-info="single-player">单人</span></a> </li> 
             <li class=""><a><span data-info="all-server">全服</span></a></li>
           </ul> 
         </div>
-        <div class="tab-content" style="float:left">
-          <div class="input-group single-players">
+        <div class="tab-content gold-single-player" style="float:left">
+          <div class="input-group">
             <div class="input-group-btn">
-              <button type="button" class="btn btn-dafault dropdown-toggle" id="btn-account-name" data-toggle="dropdown">角色帐号</button>
+              <button type="button" class="btn btn-dafault dropdown-toggle" data-toggle="dropdown">角色帐号</button>
             </div>
-            <input type="text" class="form-control" id="input-account-name" style="width:200px">
-            <a type="button" class="btn btn-info" id="btn-single-currency" style="margin-left:15px;float:left">查询</a>
+            <input type="text" class="form-control" id="input-gold-account-name" style="width:200px">
+            <a type="button" class="btn btn-info" id="btn-gold-single-gold" style="margin-left:15px;float:left">查询</a>
           </div>
-          <table id="table-currency" class="hover stripe row-border">
+          <table id="table-gold-single-player" class="hover stripe row-border">
+            <thead>
+              <tr>
+                <th>角色帐号</th>
+                <th>时间</th>
+                <th>途径</th>
+                <th>物品类型</th>
+                <th>数量</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="tab-content gold-all-server" style="float:left;display:none">
+          <table id="table-gold-server" class="hover stripe row-border">
+            <thead>
+              <tr>
+                <th>角色帐号</th>
+                <th>时间</th>
+                <th>途径</th>
+                <th>物品类型</th>
+                <th>数量</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+          </table>
+        </div> 
+       </div> 
+      </div> 
+     </div>
+     <div class="row" id="data-second"> 
+      <div class="panel panel-default"> 
+       <div class="panel-heading">
+        <span class="data-first-panel-heading" >钻石信息</span>
+       </div> 
+       <div class="panel-body">
+        <div class="nav-tab sub-op-rmb">
+          <ul class="nav nav-pills"> 
+            <li class="active"><a><span data-info="single-player">单人</span></a> </li> 
+            <li class=""><a><span data-info="all-server">全服</span></a></li>
+          </ul> 
+        </div>
+        <div class="tab-content rmb-single-player" style="float:left">
+          <div class="input-group">
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-dafault dropdown-toggle" data-toggle="dropdown">角色帐号</button>
+            </div>
+            <input type="text" class="form-control" id="input-rmb-account-name" style="width:200px">
+            <a type="button" class="btn btn-info" id="btn-rmb-single-rmb" style="margin-left:15px;float:left">查询</a>
+          </div>
+          <table id="table-rmb-single-player" class="hover stripe row-border">
+            <thead>
+              <tr>
+                <th>角色帐号</th>
+                <th>时间</th>
+                <th>途径</th>
+                <th>物品类型</th>
+                <th>数量</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+          </table>
+        </div>
+        <div class="tab-content rmb-all-server" style="float:left;display:none">
+          <table id="table-rmb-server" class="hover stripe row-border">
             <thead>
               <tr>
                 <th>角色帐号</th>
