@@ -94,6 +94,14 @@ $("#btn-filtersave").click(function(){
     }
 });
 
+//部分页面不区分终端 ul显示全选 文字显示不区分
+function withoutIcon(){
+    $("#ios").find("input").iCheck('check');
+    $("#wp").find("input").iCheck('check');
+    $("#and").find("input").iCheck('check');
+    $("#btn-dropdownIcon").html("<span class='withoutIcon'>不区分终端</span>");
+}
+
 //onload initial 跳转页面获取url处理icon,起始结束时间
 $(document).ready(function(){
     var icon = getCookie("icons");

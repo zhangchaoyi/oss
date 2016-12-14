@@ -276,6 +276,7 @@ div#platform-selected {
     color:white;
     background:#303c48;
     border: black;
+    padding-top: 10px;
 }
 #btn-db:hover {
     background:black;

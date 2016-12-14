@@ -4,6 +4,7 @@ var rmbSingleTable = "#table-rmb-single-player";
 var rmbServerTable = "#table-rmb-server";
 
 $(function(){
+	withoutIcon();
 	loadData();
 })
 

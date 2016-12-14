@@ -1,5 +1,6 @@
 $(function(){
-	$("#btn-type").attr("data-info","mail");
+	withoutIcon();
+    $("#btn-type").attr("data-info","mail");
 	$("#btn-type").text("邮件");
 	loadData();
 })

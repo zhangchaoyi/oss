@@ -1037,3 +1037,7 @@ th.sorting_disabled {
     background: -webkit-gradient(linear,left top,left bottom,color-stop(0,#fff),color-stop(1,#dadada))!important;
     border: 1px solid #e4e4e4;
 }
+span.withoutIcon {
+    color: white;
+    font-size: 17px;
+}

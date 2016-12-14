@@ -10,6 +10,7 @@ var testServer = "eggactest.koogame.cn";
 $(function(){
     loadData();
     initSelectAll();
+    withoutIcon();
 })
 
 function loadData() {

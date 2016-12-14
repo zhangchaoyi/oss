@@ -2,6 +2,7 @@ var ccuChart = echarts.init(document.getElementById('online-count-ccu-chart'));
 var pcuChart = echarts.init(document.getElementById('online-count-pcu-chart'));
 
 $(function(){
+    withoutIcon();
 	loadData();
 });
 
