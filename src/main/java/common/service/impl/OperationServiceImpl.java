@@ -143,7 +143,9 @@ public class OperationServiceImpl implements OperationService {
 				}
 				List<String> subList = new ArrayList<String>();
 				//帐号-时间-标题-内容-附件--操作人
-				subList.add(emailDetail.get("account"));
+				String emailAccount = emailDetail.get("account");
+				emailAccount = "*".equals(emailAccount)?"全服":emailAccount;
+				subList.add(emailAccount);
 				subList.add(sdf.format(createTime));
 				subList.add(emailDetail.get("title"));
 				subList.add(emailDetail.get("content"));

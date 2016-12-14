@@ -89,13 +89,20 @@ function configTable(data) {
     });
 }
 
-//点击任意回复反馈按钮
+//点击任意回复反馈按钮  允许选择全服邮件
 $("#btn-atwill-reply").click(function(){
-    $("#reply-account").removeAttr("readonly");
+    $("#account-row").children("span").attr("data-toggle","dropdown");
+    var info = $("#reply-account").attr("data-info");
+    if(info!="mail-server"){
+        $("#reply-account").removeAttr("readonly");
+    }
 });
 
 //点击个人回复反馈按钮
 $(document).on("click","#table-feedback-detail tbody tr td button.btn.btn-danger",function() {
+    $("#account-row").children("span").removeAttr("data-toggle");
+    $("#reply-account").attr("data-info","mail-account");
+    $("#account-row").children("span").text("帐号");
     var account = $(this).attr("account-info");
     $("#reply-account").val(account);
     var id = $(this).attr("id-info");
@@ -105,11 +112,12 @@ $(document).on("click","#table-feedback-detail tbody tr td button.btn.btn-danger
 //点击发送按钮 需要获取回复反馈的所有内容,包括附件信息,需要验证是否为空或者参数不符合要求
 $("#btn-send").click(function(){
     var account = $("#reply-account").val();
+    var accountInfo = $("#reply-account").attr("data-info");
     var id = $("#reply-account").attr("id-info");
     var title = $("#reply-title").val();
     var area = $("#area").val();
 
-    if(account==null||account==""||account.length!=8){
+    if(accountInfo=="mail-account"&&(account==null||account==""||account.length!=8)){
         alert("账户名不合法");
         return;
     }
@@ -120,6 +128,9 @@ $("#btn-send").click(function(){
     if(area==null||area==""){
         alert("正文内容不能为空");
         return;
+    }
+    if(account=="全服邮件"&&accountInfo=="mail-server"){
+        account = '*';
     }
 
     //[account,title,content,[{"obj_id":"obj_1","num":1024},{"obj_id":"obj_2","num":21},{"obj_id":"obj_11","num":1,"param_list":{"guanyu",3}}]]
@@ -207,16 +218,22 @@ $("#btn-send").click(function(){
 
     //邮件发送完需要清空/还原
     $("#reply-account").val("");
+    $("#reply-account").attr("data-info","mail-account");
+    $("#account-row").children("span").removeAttr("data-toggle");
+    $("#account-row").children("span").text("帐号");
     $("#reply-title").val("");
     $("#area").val("");
     $("#btn-attachment").html("<i class='fa fa-plus nest' aria-hidden='true'></i>附件");
     $("div.attachment").empty();
     $("#attach-result").empty();
 });
-//点击关闭按钮
+//点击关闭按钮 还原初始设置
 $("#btn-reply-close,#btn-fb-close").click(function(){
     //关闭邮件需要清空/还原
     $("#reply-account").val("");
+    $("#reply-account").attr("data-info","mail-account");
+    $("#account-row").children("span").removeAttr("data-toggle");
+    $("#account-row").children("span").text("帐号");
     $("#reply-title").val("");
     $("#area").val("");
     $("#btn-attachment").html("<i class='fa fa-plus nest' aria-hidden='true'></i>附件");
@@ -227,11 +244,16 @@ $("#btn-reply-close,#btn-fb-close").click(function(){
 
 //点击详情后的回复按钮
 $("#btn-reply").click(function(){
+    $("#account-row").children("span").removeAttr("data-toggle");
+    $("#reply-account").attr("data-info","mail-account");
+    $("#account-row").children("span").text("帐号");
     var account = $("#feedback-account").val();
     var id = $("#btn-reply").attr("id-info");
     $("#reply-account").val(account);
     $("#reply-account").attr("id-info", id);
     $("#reply-account").attr("readonly","readonly");
+    $("#reply-title").val("");
+    $("#area").val("");
     //调整样式变形
     $("body").css("padding-right","0px");
 });
@@ -419,6 +441,21 @@ function initAttachBtn(txt, objId){
     
 }
 
+
+$("ul#select-account > li").click(function(){
+    var mailAccountInfo = $(this).children("a").attr("data-info");
+    var mailAccountTxt = $(this).children("a").text();
+    var spanAccount =  $("#select-account").siblings("span");
+    $(spanAccount).text(mailAccountTxt);
+    $("#reply-account").attr("data-info",mailAccountInfo);
+    if(mailAccountInfo=="mail-server"){
+        $("#reply-account").val(mailAccountTxt);
+        $("#reply-account").attr("readonly","readonly");
+    }else{
+        $("#reply-account").val("");
+        $("#reply-account").removeAttr("readonly");
+    }
+});
 
 //锁死图标选择下拉菜单 清除按钮
 $("button.btn.btn-default.btn-circle").attr('disabled',"true");

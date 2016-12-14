@@ -181,12 +181,16 @@
                <div class="panel panel-default">
                 <div class="panel-body"> 
                  <div class="filter-header">
-                   <div class="input-group">
-                    <span class="input-group-addon">帐号</span>
-                    <input type="text" class="form-control" id="reply-account" readonly="readonly" placeholder="输入8位帐号">
+                   <div class="input-group" id="account-row">
+                    <span class="input-group-addon dropdown-toggle">帐号</span>
+                     <ul class="dropdown-menu" id="select-account" role="menu">
+                      <li><a data-info="mail-account">帐号</a></li>
+                      <li><a data-info="mail-server">全服邮件</a></li>
+                     </ul>
+                    <input type="text" class="form-control" id="reply-account" readonly="readonly" data-info="mail-account" placeholder="输入8位帐号">
                    </div> 
                    <div class="input-group">
-                    <span class="input-group-addon">标题</span>
+                    <span class="input-group-addon" >标题</span>
                     <input type="text" class="form-control" id="reply-title" placeholder="标题">
                    </div>
                  </div> 
@@ -253,6 +257,6 @@
   <script src="http://oss.koogame.cn/oss/js/dateselector/monthPicker.js?v=0.2"></script> 
   <script src="http://oss.koogame.cn/oss/js/checkbox/icheck.js?v=0.2"></script>
   <script src="http://oss.koogame.cn/oss/js/common.js?v=0.3"></script>
-  <script src="http://oss.koogame.cn/oss/js/userFeedback.js?v=0.3"></script>
+  <script src="http://oss.koogame.cn/oss/js/userFeedback.js?v=0.4"></script>
  </body>
 </html>

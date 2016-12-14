@@ -31,6 +31,8 @@ public class GmRecordController extends Controller {
 	
 	/**
 	 * 查询gm 操作记录
+	 * @getPara icons 服务器图标
+	 * @getPara type gm操作类型
 	 * @author chris
 	 */
 	@Before({POST.class, GmInterceptor.class})
