@@ -110,7 +110,7 @@
         <span class="data-first-panel-heading" >角色当前信息</span>
        </div> 
        <div class="panel-body">
-        <div class="tab-content" style="top:-13px">
+        <div class="tab-content">
           <div class="input-group">
             <div class="input-group-btn">
               <button type="button" class="btn btn-dafault dropdown-toggle" id="btn-account-name" data-toggle="dropdown">角色帐号<span class="caret"></span></button>
@@ -120,7 +120,7 @@
                 </ul>
             </div>
             <input type="text" class="form-control" id="input-account-name" style="width:200px">
-            <a type="button" class="btn btn-info" style="margin-left:15px;float:left">查询</a>
+            <a type="button" class="btn btn-info" id="btn-player-info" style="margin-left:15px;float:left">查询</a>
           </div>
           <table id="table-player-info" class="hover stripe row-border">
             <thead>
@@ -133,15 +133,57 @@
                 <th>最后一次充值时间</th>
                 <th>金币数量</th>
                 <th>钻石数量</th>
-                <th>仓库物品</th>
-                <th>PVP排名</th>
-                <th>历史结算</th>
+                <th>天梯信息</th>
+                <th>角斗场信息</th>
+                <th>历史结算信息</th>
+                <th>PVP</th>
+                <th>好友信息</th>
               </tr>
             </thead>
           </table>
         </div> 
        </div> 
       </div> 
+     </div>
+     <div class="row">
+      <div class="col-md-6">
+        <div class="panel panel-default"> 
+         <div class="panel-heading">
+          <span class="data-first-panel-heading" >英雄列表</span>
+         </div> 
+         <div class="panel-body">
+          <div class="tab-content">
+            <table id="table-player-info-hero" class="hover stripe row-border">
+              <thead>
+                <tr>
+                  <th>英雄名称</th>
+                  <th>阶数</th>
+                </tr>
+              </thead>
+            </table>
+          </div> 
+         </div> 
+        </div>
+      </div>
+      <div class="col-md-6">
+        <div class="panel panel-default"> 
+         <div class="panel-heading">
+          <span class="data-first-panel-heading" >仓库信息</span>
+         </div> 
+         <div class="panel-body">
+          <div class="tab-content" style="top:-13px">
+            <table id="table-player-info-object" class="hover stripe row-border">
+              <thead>
+                <tr>
+                  <th>物品</th>
+                  <th>数量</th>
+                </tr>
+              </thead>
+            </table>
+          </div> 
+         </div> 
+        </div>
+      </div>
      </div>
     </div> 
     <!-- /. PAGE INNER --> 
@@ -169,6 +211,7 @@
   <script src="http://oss.koogame.cn/oss/js/dateselector/monthPicker.js?v=0.2"></script> 
   <script src="http://oss.koogame.cn/oss/js/checkbox/icheck.js?v=0.2"></script>
   <script src="http://oss.koogame.cn/oss/js/common.js?v=0.4"></script>
+  <script src="http://oss.koogame.cn/oss/js/properties.js?v=0.4"></script>
   <script src="http://oss.koogame.cn/oss/js/playerInfo.js?v=0.4"></script>
  </body>
 </html>

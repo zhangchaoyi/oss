@@ -200,6 +200,10 @@ public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 		case "LadderGetDanGradingReward":
 			reason = "角斗场段位奖励";
 			break;
+		case "OpenFixedRewardChest":
+			reason = "开固定宝箱奖励";
+		case "HandlerExReward":
+			reason = "额外奖励";
 		}
 		return reason;
 	}
@@ -264,6 +268,10 @@ public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 			reason = "充值";
 		case "NEW_RONDOM_NAME":
 			reason = "重新命名";
+		case "HandlerExReward":
+			reason = "额外奖励";
+		case "OpenFixedRewardChest":
+			reason = "开固定宝箱奖励";
 		}
 		return reason;
 	}

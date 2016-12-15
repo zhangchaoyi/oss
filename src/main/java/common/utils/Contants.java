@@ -42,6 +42,7 @@ public class Contants {
 		propsMap.put("anbeiqingming", "安倍晴明");
 		propsMap.put("zhugeliang", "诸葛亮");
 		propsMap.put("liguang", "李广");
+		propsMap.put("yangyouji", "养由基");
 		propsMap.put("obj_1", "金币");
 		propsMap.put("obj_2", "钻石");
 		propsMap.put("obj_3", "经验");
