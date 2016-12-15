@@ -118,9 +118,22 @@ $("#btn-send").click(function(){
     var title = $("#reply-title").val();
     var area = $("#area").val();
 
-    if(accountInfo=="mail-account"&&(account==null||account=="")){
+    if(account==null||account==""){
         alert("账户名不合法");
         return;
+    }
+    if(accountInfo=="mail-account"&&(!checkNum(account))){
+        alert("账户名不合法");
+        return;
+    }
+    if(accountInfo=="muti-mail-account"){
+        var array = account.trim().split(","); 
+        for(var i=0;i<array.length;i++){
+            if(!checkNum(array[i])){
+                alert("帐号不合法");
+                return;
+            }
+        }
     }
     if(title==null||title==""){
         alert("标题不能为空");
@@ -133,15 +146,7 @@ $("#btn-send").click(function(){
     if(account=="全服邮件"&&accountInfo=="mail-server"){
         account = '*';
     }
-    if(accountInfo=="muti-mail-account"){
-        var array = account.trim().split(","); 
-        for(var i=0;i<array.length;i++){
-            if(!checkNum(array[i])){
-                alert("帐号不合法");
-                return;
-            }
-        }
-    }
+    
 
     //[account,title,content,[{"obj_id":"obj_1","num":1024},{"obj_id":"obj_2","num":21},{"obj_id":"obj_11","num":1,"param_list":{"guanyu",3}}]]
     var text = [];
