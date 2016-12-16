@@ -118,17 +118,8 @@ function initDbMenu(){
         $("#btn-db").text("");
         $("#btn-db").append(txt+' <span class="caret"></span>');
         $("#btn-db").attr("data-info", info);
-        $.post("/oss/api/changeDb", {
-            db:info
-        },
-        function(data, status) {
-            if(data=="succeed"){
-                loadData();     
-            }
-            if(data=="failed"){
-                alert("切换数据源失败");
-            }
-        });
+        setCookie("server",info);
+        loadData();
     });
 }
 

@@ -5,8 +5,8 @@ import java.util.Map;
 
 public interface RetainPlayersService {
 	
-	public Map<String, Object> queryRetainUser(List<String> categories, String icons, String startDate, String endDate);
+	public Map<String, Object> queryRetainUser(List<String> categories, String icons, String startDate, String endDate, String db);
 
 	public Map<String, Object> queryRetainEquipment(List<String> categories, String icons, String startDate,
-			String endDate);
+			String endDate, String db);
 }

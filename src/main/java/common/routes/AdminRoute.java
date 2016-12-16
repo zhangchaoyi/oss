@@ -4,7 +4,6 @@ import com.jfinal.config.Routes;
 
 import common.controllers.AdminController;
 import common.controllers.DashboardController;
-import common.controllers.DbController;
 import common.controllers.LoginController;
 import common.controllers.RealtimeController;
 import common.controllers.loss.LossController;
@@ -58,7 +57,6 @@ public class AdminRoute extends Routes {
 		add("/objectObtainConsume", ObjectController.class, "/WEB-INF/views/operation");
 		add("/mailManagement", MailManagementController.class, "/WEB-INF/views/operation");
 		add("/playerInfo", PlayerInfoController.class, "/WEB-INF/views/operation");
-		add("/db", DbController.class);
 	}
 
 }

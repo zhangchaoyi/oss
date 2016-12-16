@@ -8,11 +8,9 @@ import java.util.List;
 import java.util.Map;
 import common.model.LogGold;
 import common.model.LogRmb;
-import common.mysql.DbSelector;
 import common.service.OperationCurrencyService;
 
 public class OperationCurrencyServiceImpl implements OperationCurrencyService {
-	private String db = DbSelector.getDbName();
 	/**
 	 * 全服货币币获取和消耗
 	 * @param startDate 
@@ -24,7 +22,7 @@ public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 	 * 需要对数据进行整理排序
 	 * @author chris
 	 */
-	public Map<String, Object> queryAllCurrency(String startDate, String endDate, String currency, int start, int length) {
+	public Map<String, Object> queryAllCurrency(String startDate, String endDate, String currency, int start, int length, String db) {
 		String goldSql = "select account,count,get_or_consume,reason,timestamp from log_gold where date between ? and ? limit ?,?";
 		String RMBSql = "select account,count,get_or_consume,reason,timestamp from log_RMB where date between ? and ? limit ?,?";
 		String goldCountSql = "select count(*)count from log_gold where date between ? and ?";
@@ -90,7 +88,7 @@ public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 	 * @author chris
 	 * @return tableData
 	 */
-	public List<List<String>> querySingleCurrency(String startDate, String endDate, String currency, String account) {
+	public List<List<String>> querySingleCurrency(String startDate, String endDate, String currency, String account, String db) {
 		String goldSql = "select account,count,get_or_consume,reason,timestamp from log_gold where date between ? and ? and account = ?";
 		String RMBSql = "select account,count,get_or_consume,reason,timestamp from log_RMB where date between ? and ? and account = ?";
 		List<List<String>> data = new ArrayList<List<String>>();

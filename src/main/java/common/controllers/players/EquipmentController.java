@@ -1,5 +1,7 @@
 package common.controllers.players;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,26 +24,30 @@ import common.utils.StringUtils;
 public class EquipmentController extends Controller {
 	private static Logger logger = Logger.getLogger(EquipmentController.class);
 	private EquipmentAnalyzeService equipmentAnalyzeService = new EquipmentAnalyzeServiceImpl();
+
 	/**
 	 * 设备分析页
+	 * 
 	 * @author chris
 	 * @role data_guest
 	 */
-	@Before({GET.class, DataGuestInterceptor.class})
+	@Before({ GET.class, DataGuestInterceptor.class })
 	@ActionKey("/players/equipment")
 	public void equipmentIndex() {
 		render("equipment.html");
 	}
+
 	/**
 	 * 设备分析接口
+	 * 
 	 * @author chris
 	 * @getPara playerTagInfo 玩家tag
-	 * @getPara icon[]  当前的icon   ---apple/android/windows
-	 * @getPara startDate  所选起始时间
-	 * @getPara endDate  所选结束时间 
+	 * @getPara icon[] 当前的icon ---apple/android/windows
+	 * @getPara startDate 所选起始时间
+	 * @getPara endDate 所选结束时间
 	 * @role data_guest
 	 */
-	@Before({POST.class, DataGuestInterceptor.class})
+	@Before({ POST.class, DataGuestInterceptor.class })
 	@ActionKey("/api/players/equipment")
 	public void queryEquipmentPlayer() {
 		String playerTagInfo = getPara("playerTagInfo", "add-players");
@@ -50,71 +56,82 @@ public class EquipmentController extends Controller {
 		String endDate = getPara("endDate");
 		startDate = startDate + " 00:00:00";
 		endDate = endDate + " 23:59:59";
-		logger.info("params:{"+"playerTagInfo:"+playerTagInfo+",icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
-		
+		logger.info("params:{" + "playerTagInfo:" + playerTagInfo + ",icons:" + icons + ",startDate:" + startDate
+				+ ",endDate:" + endDate + "}");
+
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
 		// 保存chart中数据
 		Map<String, List<Long>> seriesMap = new LinkedHashMap<String, List<Long>>();
 		List<String> categories = new ArrayList<String>();
 
-		switch (playerTagInfo) {
-		case "add-players": {
-			List<Long> equipmentsCount = new ArrayList<Long>();
-			List<DeviceInfo> addPlayersEquipment = equipmentAnalyzeService.queryAddPlayersEquipment(icons, startDate, endDate);
-			for (DeviceInfo di : addPlayersEquipment) {
-				String model = di.getStr("model");
-				Long count = di.getLong("count");
-				categories.add((model==null||"".equals(model))? "-" : model);
-				equipmentsCount.add(count==null? 0 : count);
+		try {
+			String db = URLDecoder.decode(getCookie("server"), "GBK");
+			switch (playerTagInfo) {
+			case "add-players": {
+				List<Long> equipmentsCount = new ArrayList<Long>();
+				List<DeviceInfo> addPlayersEquipment = equipmentAnalyzeService.queryAddPlayersEquipment(icons,
+						startDate, endDate, db);
+				for (DeviceInfo di : addPlayersEquipment) {
+					String model = di.getStr("model");
+					Long count = di.getLong("count");
+					categories.add((model == null || "".equals(model)) ? "-" : model);
+					equipmentsCount.add(count == null ? 0 : count);
+				}
+
+				seriesMap.put("新增玩家", equipmentsCount);
+				break;
+			}
+			case "active-players": {
+				List<Long> equipmentsCount = new ArrayList<Long>();
+				List<DeviceInfo> activePlayersEquipment = equipmentAnalyzeService.queryActivePlayersEquipment(icons,
+						startDate, endDate, db);
+				for (DeviceInfo di : activePlayersEquipment) {
+					String model = di.getStr("model");
+					Long count = di.getLong("count");
+					categories.add((model == null || "".equals(model)) ? "-" : model);
+					equipmentsCount.add(count == null ? 0 : count);
+				}
+
+				seriesMap.put("活跃玩家", equipmentsCount);
+				break;
+			}
+			case "paid-players": {
+				List<Long> equipmentsCount = new ArrayList<Long>();
+				List<DeviceInfo> paidPlayersEquipment = equipmentAnalyzeService.queryPaidPlayersEquipment(icons,
+						startDate, endDate, db);
+
+				for (DeviceInfo di : paidPlayersEquipment) {
+					String model = di.getStr("model");
+					Long count = di.getLong("count");
+					categories.add((model == null || "".equals(model)) ? "-" : model);
+					equipmentsCount.add(count == null ? 0 : count);
+				}
+				seriesMap.put("付费玩家", equipmentsCount);
+				break;
+			}
 			}
 
-			seriesMap.put("新增玩家", equipmentsCount);
-			break;
+			Set<String> type = seriesMap.keySet();
+			category.put("机型", categories);
+			data.put("type", type.toArray());
+			data.put("category", category);
+			data.put("data", seriesMap);
+			logger.info("data:" + data);
+			renderJson(data);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			logger.info("cookie decoder failed", e);
 		}
-		case "active-players": {
-			List<Long> equipmentsCount = new ArrayList<Long>();
-			List<DeviceInfo> activePlayersEquipment = equipmentAnalyzeService.queryActivePlayersEquipment(icons, startDate,
-					endDate);
-			for (DeviceInfo di : activePlayersEquipment) {
-				String model = di.getStr("model");
-				Long count = di.getLong("count");
-				categories.add((model==null||"".equals(model))? "-" : model);
-				equipmentsCount.add(count==null? 0 : count);
-			}
-
-			seriesMap.put("活跃玩家", equipmentsCount);
-			break;
-		}
-		case "paid-players": {
-			List<Long> equipmentsCount = new ArrayList<Long>();
-			List<DeviceInfo> paidPlayersEquipment = equipmentAnalyzeService.queryPaidPlayersEquipment(icons, startDate, endDate);
-			
-			for (DeviceInfo di : paidPlayersEquipment) {
-				String model = di.getStr("model");
-				Long count = di.getLong("count");
-				categories.add((model==null||"".equals(model))? "-" : model);
-				equipmentsCount.add(count==null? 0 : count);
-			}
-			seriesMap.put("付费玩家", equipmentsCount);
-			break;
-		}
-		}
-
-		Set<String> type = seriesMap.keySet();
-		category.put("机型", categories);
-		data.put("type", type.toArray());
-		data.put("category", category);
-		data.put("data", seriesMap);
-		logger.info("data:" + data);
-		renderJson(data);
 	}
+
 	/**
 	 * 详细栏接口
+	 * 
 	 * @author chris
 	 * @role data_guest
 	 */
-	@Before({POST.class, DataGuestInterceptor.class})
+	@Before({ POST.class, DataGuestInterceptor.class })
 	@ActionKey("/api/players/equipment/details")
 	public void queryEquipmentDetails() {
 		String playerTagInfo = getPara("playerTagInfo", "add-players");
@@ -124,209 +141,229 @@ public class EquipmentController extends Controller {
 		String endDate = getPara("endDate");
 		startDate = startDate + " 00:00:00";
 		endDate = endDate + " 23:59:59";
-		logger.info("params:{"+"playerTagInfo:"+playerTagInfo+",detailTagInfo:"+detailTagInfo+",icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
-		
+		logger.info("params:{" + "playerTagInfo:" + playerTagInfo + ",detailTagInfo:" + detailTagInfo + ",icons:"
+				+ icons + ",startDate:" + startDate + ",endDate:" + endDate + "}");
+
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
 		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
 		// 保存chart中数据
 		Map<String, List<Long>> seriesMap = new LinkedHashMap<String, List<Long>>();
 
-		String categoryName = "";
-		switch (playerTagInfo) {
+		String db;
+		try {
+			db = URLDecoder.decode(getCookie("server"), "GBK");
+
+			String categoryName = "";
+			switch (playerTagInfo) {
 			case "add-players": {
 				categoryName = "新增玩家";
 				switch (detailTagInfo) {
-					case "resolution": {
-						List<DeviceInfo> resolution = equipmentAnalyzeService.queryAddPlayersEquipmentResolution(icons, startDate, endDate);
-						List<String> categories = new ArrayList<String>();
-						List<Long> peopleCount = new ArrayList<Long>();
-						for (DeviceInfo di : resolution) {
-							String reso = di.getStr("resolution");
-							Long count = di.getLong("count");
-							categories.add((reso==null||"".equals(reso))? "-":reso);
-							peopleCount.add(count==null? 0L:count);
-						}
-						seriesMap.put(categoryName, peopleCount);
-						category.put("分辨率", categories);
-						break;
+				case "resolution": {
+					List<DeviceInfo> resolution = equipmentAnalyzeService.queryAddPlayersEquipmentResolution(icons,
+							startDate, endDate, db);
+					List<String> categories = new ArrayList<String>();
+					List<Long> peopleCount = new ArrayList<Long>();
+					for (DeviceInfo di : resolution) {
+						String reso = di.getStr("resolution");
+						Long count = di.getLong("count");
+						categories.add((reso == null || "".equals(reso)) ? "-" : reso);
+						peopleCount.add(count == null ? 0L : count);
 					}
-					case "operating-system": {
-						List<DeviceInfo> os = equipmentAnalyzeService.queryAddPlayersEquipmentOsVersion(icons, startDate, endDate);
-						List<String> categories = new ArrayList<String>();
-						List<Long> peopleCount = new ArrayList<Long>();
-						for (DeviceInfo di : os) {
-							String osV = di.getStr("os_version");
-							Long count = di.getLong("count");
-							categories.add((osV==null||"".equals(osV))? "-" : osV);
-							peopleCount.add(count==null? 0L:count);
-						}
-						seriesMap.put(categoryName, peopleCount);
-						category.put("操作系统", categories);
-						break;
+					seriesMap.put(categoryName, peopleCount);
+					category.put("分辨率", categories);
+					break;
+				}
+				case "operating-system": {
+					List<DeviceInfo> os = equipmentAnalyzeService.queryAddPlayersEquipmentOsVersion(icons, startDate,
+							endDate, db);
+					List<String> categories = new ArrayList<String>();
+					List<Long> peopleCount = new ArrayList<Long>();
+					for (DeviceInfo di : os) {
+						String osV = di.getStr("os_version");
+						Long count = di.getLong("count");
+						categories.add((osV == null || "".equals(osV)) ? "-" : osV);
+						peopleCount.add(count == null ? 0L : count);
 					}
-					case "network-mode": {
-						List<DeviceInfo> net = equipmentAnalyzeService.queryAddPlayersEquipmentNet(icons, startDate, endDate);
-						List<String> categories = new ArrayList<String>();
-						List<Long> peopleCount = new ArrayList<Long>();
-						for (DeviceInfo di : net) {
-							String netStr = di.getStr("net");
-							Long count = di.getLong("count");
-							categories.add((netStr==null||"".equals(netStr))? "-" : netStr);
-							peopleCount.add(count==null? 0L:count);
-						}
-						seriesMap.put(categoryName, peopleCount);
-						category.put("联网方式", categories);
-						break;
+					seriesMap.put(categoryName, peopleCount);
+					category.put("操作系统", categories);
+					break;
+				}
+				case "network-mode": {
+					List<DeviceInfo> net = equipmentAnalyzeService.queryAddPlayersEquipmentNet(icons, startDate,
+							endDate, db);
+					List<String> categories = new ArrayList<String>();
+					List<Long> peopleCount = new ArrayList<Long>();
+					for (DeviceInfo di : net) {
+						String netStr = di.getStr("net");
+						Long count = di.getLong("count");
+						categories.add((netStr == null || "".equals(netStr)) ? "-" : netStr);
+						peopleCount.add(count == null ? 0L : count);
 					}
-					case "band-operator": {
-						List<DeviceInfo> bandOperator = equipmentAnalyzeService.queryAddPlayersEquipmentBandOperator(icons, startDate, endDate);
-						List<String> categories = new ArrayList<String>();
-						List<Long> peopleCount = new ArrayList<Long>();
-						for (DeviceInfo di : bandOperator) {
-							String carrier = di.getStr("carrier");
-							Long count = di.getLong("count");
-							categories.add((carrier==null||"".equals(carrier))? "-" : carrier);
-							peopleCount.add(count==null? 0L:count);
-						}
-						seriesMap.put(categoryName, peopleCount);
-						category.put("宽带运营商", categories);
-						break;
+					seriesMap.put(categoryName, peopleCount);
+					category.put("联网方式", categories);
+					break;
+				}
+				case "band-operator": {
+					List<DeviceInfo> bandOperator = equipmentAnalyzeService.queryAddPlayersEquipmentBandOperator(icons,
+							startDate, endDate, db);
+					List<String> categories = new ArrayList<String>();
+					List<Long> peopleCount = new ArrayList<Long>();
+					for (DeviceInfo di : bandOperator) {
+						String carrier = di.getStr("carrier");
+						Long count = di.getLong("count");
+						categories.add((carrier == null || "".equals(carrier)) ? "-" : carrier);
+						peopleCount.add(count == null ? 0L : count);
 					}
+					seriesMap.put(categoryName, peopleCount);
+					category.put("宽带运营商", categories);
+					break;
+				}
 				}
 				break;
 			}
 			case "active-players": {
 				categoryName = "活跃玩家";
-				switch(detailTagInfo){
-					case "resolution":{
-						List<DeviceInfo> resolution = equipmentAnalyzeService.queryActivePlayersEquipmentResolution(icons, startDate, endDate);
-						List<String> categories = new ArrayList<String>();
-						List<Long> peopleCount = new ArrayList<Long>();
-						for(DeviceInfo di : resolution){
-							String reso = di.getStr("resolution");
-							Long count = di.getLong("count");
-							categories.add((reso==null||"".equals(reso))? "-":reso);
-							peopleCount.add(count==null? 0L:count);
-						}
-						seriesMap.put(categoryName,peopleCount);
-						category.put("分辨率", categories);
-						break;
+				switch (detailTagInfo) {
+				case "resolution": {
+					List<DeviceInfo> resolution = equipmentAnalyzeService.queryActivePlayersEquipmentResolution(icons,
+							startDate, endDate, db);
+					List<String> categories = new ArrayList<String>();
+					List<Long> peopleCount = new ArrayList<Long>();
+					for (DeviceInfo di : resolution) {
+						String reso = di.getStr("resolution");
+						Long count = di.getLong("count");
+						categories.add((reso == null || "".equals(reso)) ? "-" : reso);
+						peopleCount.add(count == null ? 0L : count);
 					}
-					case "operating-system":{
-						List<DeviceInfo> os = equipmentAnalyzeService.queryActivePlayersEquipmentOsVersion(icons, startDate, endDate);
-						List<String> categories = new ArrayList<String>();
-						List<Long> peopleCount = new ArrayList<Long>();
-						for(DeviceInfo di : os){
-							String osV = di.getStr("os_version");
-							Long count = di.getLong("count");
-							categories.add((osV==null||"".equals(osV))? "-" : osV);
-							peopleCount.add(count==null? 0L:count);
-						}
-						seriesMap.put(categoryName, peopleCount);
-						category.put("操作系统", categories);
-						break;
+					seriesMap.put(categoryName, peopleCount);
+					category.put("分辨率", categories);
+					break;
+				}
+				case "operating-system": {
+					List<DeviceInfo> os = equipmentAnalyzeService.queryActivePlayersEquipmentOsVersion(icons, startDate,
+							endDate, db);
+					List<String> categories = new ArrayList<String>();
+					List<Long> peopleCount = new ArrayList<Long>();
+					for (DeviceInfo di : os) {
+						String osV = di.getStr("os_version");
+						Long count = di.getLong("count");
+						categories.add((osV == null || "".equals(osV)) ? "-" : osV);
+						peopleCount.add(count == null ? 0L : count);
 					}
-					case "network-mode":{
-						List<DeviceInfo> net = equipmentAnalyzeService.queryActivePlayersEquipmentNet(icons, startDate, endDate);
-						List<String> categories = new ArrayList<String>();
-						List<Long> peopleCount = new ArrayList<Long>();
-						for(DeviceInfo di : net){
-							String netStr = di.getStr("net");
-							Long count = di.getLong("count");
-							categories.add((netStr==null||"".equals(netStr))? "-" : netStr);
-							peopleCount.add(count==null? 0L:count);
-						}
-						seriesMap.put(categoryName, peopleCount);
-						category.put("联网方式", categories);
-						break;			
+					seriesMap.put(categoryName, peopleCount);
+					category.put("操作系统", categories);
+					break;
+				}
+				case "network-mode": {
+					List<DeviceInfo> net = equipmentAnalyzeService.queryActivePlayersEquipmentNet(icons, startDate,
+							endDate, db);
+					List<String> categories = new ArrayList<String>();
+					List<Long> peopleCount = new ArrayList<Long>();
+					for (DeviceInfo di : net) {
+						String netStr = di.getStr("net");
+						Long count = di.getLong("count");
+						categories.add((netStr == null || "".equals(netStr)) ? "-" : netStr);
+						peopleCount.add(count == null ? 0L : count);
 					}
-					case "band-operator":{
-						List<DeviceInfo> bandOperator = equipmentAnalyzeService.queryActivePlayersEquipmentBandOperator(icons, startDate, endDate);
-						List<String> categories = new ArrayList<String>();
-						List<Long> peopleCount = new ArrayList<Long>();
-						for(DeviceInfo di : bandOperator){
-							String carrier = di.getStr("carrier");
-							Long count = di.getLong("count");
-							categories.add((carrier==null||"".equals(carrier))? "-" : carrier);
-							peopleCount.add(count==null? 0L:count);
-						}
-						seriesMap.put(categoryName, peopleCount);
-						category.put("宽带运营商", categories);
-						break;
+					seriesMap.put(categoryName, peopleCount);
+					category.put("联网方式", categories);
+					break;
+				}
+				case "band-operator": {
+					List<DeviceInfo> bandOperator = equipmentAnalyzeService
+							.queryActivePlayersEquipmentBandOperator(icons, startDate, endDate, db);
+					List<String> categories = new ArrayList<String>();
+					List<Long> peopleCount = new ArrayList<Long>();
+					for (DeviceInfo di : bandOperator) {
+						String carrier = di.getStr("carrier");
+						Long count = di.getLong("count");
+						categories.add((carrier == null || "".equals(carrier)) ? "-" : carrier);
+						peopleCount.add(count == null ? 0L : count);
 					}
+					seriesMap.put(categoryName, peopleCount);
+					category.put("宽带运营商", categories);
+					break;
+				}
 				}
 				break;
 			}
 			case "paid-players": {
 				categoryName = "付费玩家";
-				switch(detailTagInfo){
-					case "resolution":{
-						List<DeviceInfo> resolution = equipmentAnalyzeService.queryPaidPlayersEquipmentResolution(icons, startDate, endDate);
-						List<String> categories = new ArrayList<String>();
-						List<Long> peopleCount = new ArrayList<Long>();
-						for(DeviceInfo di : resolution){
-							String reso = di.getStr("resolution");
-							Long count = di.getLong("count");
-							categories.add((reso==null||"".equals(reso))? "-":reso);
-							peopleCount.add(count==null? 0L:count);
-						}
-						seriesMap.put(categoryName,peopleCount);
-						category.put("分辨率", categories);
-						break;
+				switch (detailTagInfo) {
+				case "resolution": {
+					List<DeviceInfo> resolution = equipmentAnalyzeService.queryPaidPlayersEquipmentResolution(icons,
+							startDate, endDate, db);
+					List<String> categories = new ArrayList<String>();
+					List<Long> peopleCount = new ArrayList<Long>();
+					for (DeviceInfo di : resolution) {
+						String reso = di.getStr("resolution");
+						Long count = di.getLong("count");
+						categories.add((reso == null || "".equals(reso)) ? "-" : reso);
+						peopleCount.add(count == null ? 0L : count);
 					}
-					case "operating-system":{
-						List<DeviceInfo> os = equipmentAnalyzeService.queryPaidPlayersEquipmentOsVersion(icons, startDate, endDate);
-						List<String> categories = new ArrayList<String>();
-						List<Long> peopleCount = new ArrayList<Long>();
-						for(DeviceInfo di : os){
-							String osV = di.getStr("os_version");
-							Long count = di.getLong("count");
-							categories.add((osV==null||"".equals(osV))? "-" : osV);
-							peopleCount.add(count==null? 0L:count);
-						}
-						seriesMap.put(categoryName, peopleCount);
-						category.put("操作系统", categories);
-						break;
+					seriesMap.put(categoryName, peopleCount);
+					category.put("分辨率", categories);
+					break;
+				}
+				case "operating-system": {
+					List<DeviceInfo> os = equipmentAnalyzeService.queryPaidPlayersEquipmentOsVersion(icons, startDate,
+							endDate, db);
+					List<String> categories = new ArrayList<String>();
+					List<Long> peopleCount = new ArrayList<Long>();
+					for (DeviceInfo di : os) {
+						String osV = di.getStr("os_version");
+						Long count = di.getLong("count");
+						categories.add((osV == null || "".equals(osV)) ? "-" : osV);
+						peopleCount.add(count == null ? 0L : count);
 					}
-					case "network-mode":{
-						List<DeviceInfo> net = equipmentAnalyzeService.queryPaidPlayersEquipmentNet(icons, startDate, endDate);
-						List<String> categories = new ArrayList<String>();
-						List<Long> peopleCount = new ArrayList<Long>();
-						for(DeviceInfo di : net){
-							String netStr = di.getStr("net");
-							Long count = di.getLong("count");
-							categories.add((netStr==null||"".equals(netStr))? "-" : netStr);
-							peopleCount.add(count==null? 0L:count);
-						}
-						seriesMap.put(categoryName, peopleCount);
-						category.put("联网方式", categories);
-						break;			
+					seriesMap.put(categoryName, peopleCount);
+					category.put("操作系统", categories);
+					break;
+				}
+				case "network-mode": {
+					List<DeviceInfo> net = equipmentAnalyzeService.queryPaidPlayersEquipmentNet(icons, startDate,
+							endDate, db);
+					List<String> categories = new ArrayList<String>();
+					List<Long> peopleCount = new ArrayList<Long>();
+					for (DeviceInfo di : net) {
+						String netStr = di.getStr("net");
+						Long count = di.getLong("count");
+						categories.add((netStr == null || "".equals(netStr)) ? "-" : netStr);
+						peopleCount.add(count == null ? 0L : count);
 					}
-					case "band-operator":{
-						List<DeviceInfo> bandOperator = equipmentAnalyzeService.queryPaidPlayersEquipmentBandOperator(icons, startDate, endDate);
-						List<String> categories = new ArrayList<String>();
-						List<Long> peopleCount = new ArrayList<Long>();
-						for(DeviceInfo di : bandOperator){
-							String carrier = di.getStr("carrier");
-							Long count = di.getLong("count");
-							categories.add((carrier==null||"".equals(carrier))? "-" : carrier);
-							peopleCount.add(count==null? 0L:count);
-						}
-						seriesMap.put(categoryName, peopleCount);
-						category.put("宽带运营商", categories);
-						break;
+					seriesMap.put(categoryName, peopleCount);
+					category.put("联网方式", categories);
+					break;
+				}
+				case "band-operator": {
+					List<DeviceInfo> bandOperator = equipmentAnalyzeService.queryPaidPlayersEquipmentBandOperator(icons,
+							startDate, endDate, db);
+					List<String> categories = new ArrayList<String>();
+					List<Long> peopleCount = new ArrayList<Long>();
+					for (DeviceInfo di : bandOperator) {
+						String carrier = di.getStr("carrier");
+						Long count = di.getLong("count");
+						categories.add((carrier == null || "".equals(carrier)) ? "-" : carrier);
+						peopleCount.add(count == null ? 0L : count);
 					}
+					seriesMap.put(categoryName, peopleCount);
+					category.put("宽带运营商", categories);
+					break;
+				}
 				}
 				break;
 			}
+			}
+
+			Set<String> type = seriesMap.keySet();
+			data.put("type", type.toArray());
+			data.put("category", category);
+			data.put("data", seriesMap);
+			logger.info("data:" + data);
+			renderJson(data);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			logger.info("cookie decoder failed", e);
 		}
-
-		Set<String> type = seriesMap.keySet();
-		data.put("type", type.toArray());
-		data.put("category", category);
-		data.put("data", seriesMap);
-		logger.info("data:" + data);
-		renderJson(data);
-
 	}
 }

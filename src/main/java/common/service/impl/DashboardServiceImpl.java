@@ -12,7 +12,6 @@ import common.model.DeviceInfo;
 import common.model.LogCharge;
 import common.model.Login;
 import common.model.Logout;
-import common.mysql.DbSelector;
 import common.service.DashboardService;
 /**
  * 查询dashboard 页 --数据不分终端
@@ -24,8 +23,8 @@ import common.service.DashboardService;
  */
 public class DashboardServiceImpl implements DashboardService{
 	private static Logger logger = Logger.getLogger(DashboardServiceImpl.class);
-	private String db = DbSelector.getDbName();
-	public Map<String, String>queryDashboardData(){
+
+	public Map<String, String>queryDashboardData(String db){
 		//表格一
 		String eTSql = "select count(*)count from device_info";
 		String eYSql = "select count(*)count from device_info where DATE_FORMAT(create_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval 1 day),'%Y-%m-%d')";

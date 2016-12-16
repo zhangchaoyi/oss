@@ -114,7 +114,7 @@ public class DbSelector {
 			}
 		}
 		
-		//设置userDbs第一个key为当前的数据库
+		//设置userDbs第一个key为某用户当前的数据库
 		for(Map.Entry<String, String> entry : userDbs.entrySet()){
 			setDbName(entry.getKey());
 			logger.info("current db:"+entry.getKey());

@@ -16,7 +16,6 @@ import common.model.LogCharge;
 import common.model.Login;
 import common.model.Logout;
 import common.model.OnlineCount;
-import common.mysql.DbSelector;
 import common.service.RealtimeService;
 import common.utils.DateUtils;
 
@@ -30,9 +29,9 @@ import common.utils.DateUtils;
  */
 public class RealtimeServiceImpl implements RealtimeService{
 	private static Logger logger = Logger.getLogger(RealtimeServiceImpl.class);
-	private String db = DbSelector.getDbName();
+
 	//实时查询十个数据,用于动态更新
-	public Map<String, String> queryRealtimeData(String icons){
+	public Map<String, String> queryRealtimeData(String icons, String db){
 		String eSql = "select count(*)count from device_info where DATE_FORMAT(create_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and os in (" + icons + ")";
 		String aPSql = "select count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and B.os in (" + icons + ")";
 		String pPSql = "select count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and C.os in (" + icons + ")";
@@ -78,7 +77,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 		return data;
 	}
 	//查询昨日,七日,三十日过往不变数据
-	public Map<String, String> queryBeforeData(String icons){
+	public Map<String, String> queryBeforeData(String icons, String db){
 		String eSql = "select count(*)count from device_info where DATE_FORMAT(create_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and os in (" + icons + ")";
 		String aPSql = "select count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and B.os in (" + icons + ")";
 		String pPSql = "select count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and C.os in (" + icons + ")";
@@ -133,7 +132,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 	 * 查询实时在线人数 online_count 
 	 * @param date 时间列表
 	 */
-	public Map<String, Object> queryRealtimePlayerCount(String[] date){
+	public Map<String, Object> queryRealtimePlayerCount(String[] date, String db){
 		String sql = "select sum(online_count)count,hour(online_datetime)hour from online_count where online_date = ? group by hour;";
 		Map<String, Object> data = new TreeMap<String, Object>(new Comparator<String>(){
 			@Override
@@ -161,7 +160,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 	}
 	
 	//查询实时设备
-	public Map<String, Object> queryRealtimeDevice(String icons, String[] date){
+	public Map<String, Object> queryRealtimeDevice(String icons, String[] date, String db){
 		String sql ="select count(*)count,hour(create_time)hour from device_info where DATE_FORMAT(create_time,'%Y-%m-%d')= ?  and os in (" + icons + ") group by hour(create_time)";
 		Map<String, Object> data = new TreeMap<String, Object>(new Comparator<String>(){
 			@Override
@@ -190,7 +189,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 	}
 	
 	//查询实时新增玩家
-	public Map<String, Object> queryRealtimeAddPlayers(String icons, String[] date){
+	public Map<String, Object> queryRealtimeAddPlayers(String icons, String[] date, String db){
 		String sql = "select count(*)count,hour(A.create_time)hour from create_role A join device_info B on A.openudid  = B.openudid where DATE_FORMAT(A.create_time,'%Y-%m-%d')= ? and B.os in (" + icons + ") group by hour(A.create_time)";
 		Map<String, Object> data = new TreeMap<String, Object>(new Comparator<String>(){
 			@Override
@@ -218,7 +217,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 		return data;
 	}
 	//查询实时收入金额
-	public Map<String, Object> queryRealtimeRevenue(String icons, String[] date){
+	public Map<String, Object> queryRealtimeRevenue(String icons, String[] date, String db){
 		String sql = "select sum(A.count)revenue,hour(A.timestamp)hour from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d')= ? and C.os in (" + icons + ") group by hour(A.timestamp)";
 		Map<String, Object> data = new TreeMap<String, Object>(new Comparator<String>(){
 			@Override

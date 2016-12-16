@@ -6,13 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
 import org.apache.log4j.Logger;
-
 import common.model.DeviceInfo;
 import common.model.RetainEquipment;
 import common.model.RetainUser;
-import common.mysql.DbSelector;
 import common.service.RetainPlayersService;
 
 /**
@@ -20,9 +17,8 @@ import common.service.RetainPlayersService;
  * @author chris
  *
  */
-public class RetainPlayersServiceImpl implements RetainPlayersService{
+public class RetainPlayersServiceImpl implements RetainPlayersService {
 	private static Logger logger = Logger.getLogger(RetainPlayersServiceImpl.class);
-	private String db = DbSelector.getDbName();
 	/**
 	 * 留存用户
 	 * @param categories 日期列表
@@ -30,7 +26,7 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 	 * @param startDate  所选起始时间
 	 * @param endDate  所选结束时间 
 	 */
-	public Map<String, Object> queryRetainUser(List<String> categories, String icons, String startDate, String endDate) {
+	public Map<String, Object> queryRetainUser(List<String> categories, String icons, String startDate, String endDate, String db) {
 		Map<String, Object> data = new HashMap<String, Object>();
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(add_user) add_user,sum(first_day)first_day,sum(second_day)second_day,sum(third_day)third_day,sum(forth_day)forth_day,sum(fifth_day)fifth_day,sum(sixth_day)sixth_day,sum(seven_day)seven_day,sum(eighth_day)eighth_day,sum(ninth_day)ninth_day,sum(tenth_day)tenth_day,sum(eleventh_day)eleventh_day,sum(twelfth_day)twelfth_day,sum(thirteenth_day)thirteenth_day,sum(fourteenth_day)fourteenth_day,sum(thirty_day)thirty_day from retain_user where date between ? and ? and os in ("+ icons +") group by date;";
 		String eSql = "select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(*) count from device_info where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and os in (" + icons + ") group by date";
@@ -305,7 +301,7 @@ public class RetainPlayersServiceImpl implements RetainPlayersService{
 	 * @param startDate  所选起始时间
 	 * @param endDate  所选结束时间 
 	 */
-	public Map<String, Object> queryRetainEquipment(List<String> categories, String icons, String startDate, String endDate){
+	public Map<String, Object> queryRetainEquipment(List<String> categories, String icons, String startDate, String endDate, String db){
 		Map<String, Object> data = new HashMap<String, Object>();
 		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,sum(add_equipment)add_equipment,sum(first_day)first_day,sum(second_day)second_day,sum(third_day)third_day,sum(forth_day)forth_day,sum(fifth_day)fifth_day,sum(sixth_day)sixth_day,sum(seven_day)seven_day,sum(fourteen_day)fourteen_day,sum(thirty_day)thirty_day from retain_equipment where date between ? and ? and os in (" + icons + ") group by date";
 		String eSql = "select DATE_FORMAT(create_time,'%Y-%m-%d') date,count(*) count from device_info where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and os in (" + icons + ") group by date";

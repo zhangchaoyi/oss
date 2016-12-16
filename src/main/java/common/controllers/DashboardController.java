@@ -1,5 +1,8 @@
 package common.controllers;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
@@ -36,7 +39,15 @@ public class DashboardController extends Controller {
 	@Before(POST.class)
 	@ActionKey("/api/dashboard")
 	public void queryDashboard() {
-		Map<String, String> data = ds.queryDashboardData();
+		Map<String, String> data = new HashMap<String, String>();
+		try {
+			String db = URLDecoder.decode(getCookie("server"), "GBK");
+			data = ds.queryDashboardData(db);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			logger.info("cookie decoder failed", e);
+		}
+		
 		logger.info("data:" + data);
 		renderJson(data);
 	}

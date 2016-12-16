@@ -4,13 +4,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.log4j.Logger;
 import common.model.DeviceInfo;
 import common.model.LogCharge;
 import common.model.Login;
 import common.model.Logout;
-import common.mysql.DbSelector;
 import common.service.AccdetailService;
 
 /**
@@ -18,9 +16,8 @@ import common.service.AccdetailService;
  * @author chris
  *
  */
-public class AccdetailServiceImpl implements AccdetailService{
+public class AccdetailServiceImpl implements AccdetailService {
 	private static Logger logger = Logger.getLogger(AccdetailServiceImpl.class);
-	private String db = DbSelector.getDbName();
 	/**
 	 * 根据帐号id获得 帐号的所有信息
 	 * @param accountId 帐号id
@@ -28,7 +25,7 @@ public class AccdetailServiceImpl implements AccdetailService{
 	 * 分多次sql 查询
 	 * @return Map<String, Object>
 	 */
-	public Map<String, Object> queryAccdetail(String accountId) {
+	public Map<String, Object> queryAccdetail(String accountId, String db) {
 		logger.info("params:{"+"accountId:"+accountId+"}");
 		Map<String, Object> data = new HashMap<String, Object>();
 		String deviceSql = "select B.model,B.resolution,B.os,B.os_version,B.country,B.province,B.carrier,B.net from (select distinct account,openudid  from login where account = ?) A join device_info B on A.openudid = B.openudid";
@@ -66,9 +63,10 @@ public class AccdetailServiceImpl implements AccdetailService{
 			detailList.add(l.getStr("firstLogin")==null? "-" : l.getStr("firstLogin"));
 			detailList.add(l.getStr("lastLogin")==null? "-" : l.getStr("lastLogin"));
 			detailList.add(l.getLong("loginDay")==0? "-" : l.getLong("loginDay").toString() + "天");
-			detailList.add(l.getLong("loginTimes")==0? "-" : l.getLong("loginTimes").toString() + "次");			
+			detailList.add(l.getLong("loginTimes")==0? "-" : l.getLong("loginTimes").toString() + "次");	
 		}
 		//总在线时长
+		System.out.println("+++"+logout);
 		for(Logout l : logout){
 			detailList.add(l.getBigDecimal("onlineSum")==null? "-" : l.getBigDecimal("onlineSum").toString());
 			detailList.add(l.getInt("max_level")==null? "-" : l.getInt("max_level").toString());

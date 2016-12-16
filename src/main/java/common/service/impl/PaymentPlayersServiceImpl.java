@@ -4,11 +4,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.apache.log4j.Logger;
-
 import common.model.LogCharge;
-import common.mysql.DbSelector;
 import common.service.PaymentPlayersService;
 
 /**
@@ -19,7 +16,6 @@ import common.service.PaymentPlayersService;
  */
 public class PaymentPlayersServiceImpl implements PaymentPlayersService {
 	private static Logger logger = Logger.getLogger(PaymentPlayersServiceImpl.class);
-	private String db = DbSelector.getDbName();
 	/**
 	 * 付费玩家列表 包括帐号 付费金额 时间
 	 * 
@@ -28,7 +24,7 @@ public class PaymentPlayersServiceImpl implements PaymentPlayersService {
 	 * @param icons
 	 * @return
 	 */
-	public List<List<String>> queryPLayersList(String startDate, String endDate, String icons) {
+	public List<List<String>> queryPLayersList(String startDate, String endDate, String icons, String db) {
 		String sql = "select A.account,A.count,A.currency,A.timestamp from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in ("
 				+ icons + ")";
 		List<LogCharge> players = LogCharge.dao.use(db).find(sql, startDate, endDate);
@@ -59,7 +55,7 @@ public class PaymentPlayersServiceImpl implements PaymentPlayersService {
 	 * @param account
 	 * @return
 	 */
-	public List<List<String>> queryPlayerByAccount(String account) {
+	public List<List<String>> queryPlayerByAccount(String account, String db) {
 		String sql = "select account,count,currency,timestamp from log_charge where account = ? and is_product = 1";
 		List<LogCharge> player = LogCharge.dao.use(db).find(sql, account);
 		List<List<String>> data = new ArrayList<List<String>>();

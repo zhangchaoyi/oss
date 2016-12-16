@@ -5,7 +5,7 @@ $(function(){
 })
 
 function loadData() {
-    loadFeedbackData(getServerFromIcon($("#btn-db").attr("data-info")));
+    loadFeedbackData(getServerFromIcon(getCookie("server")));
 }
 //访问用户列表接口
 function loadFeedbackData(server){

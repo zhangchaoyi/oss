@@ -13,7 +13,7 @@ function loadRecordData(){
 	$.post("/oss/api/operation/record/list", {
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value"),
-        icons:$("#btn-db").attr("data-info"),
+        icons:getCookie("server"),
         type:$("#btn-type").attr("data-info")
     },
     function(data, status) {

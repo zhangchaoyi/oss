@@ -1,5 +1,7 @@
 package common.controllers.payment;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,50 +24,68 @@ import common.utils.StringUtils;
 public class PaymentPlayersController extends Controller {
 	private static Logger logger = Logger.getLogger(PaymentPlayersController.class);
 	private PaymentPlayersService pps = new PaymentPlayersServiceImpl();
+
 	/**
 	 * 付费玩家情况
+	 * 
 	 * @author chris
 	 * @role vip
 	 */
-	@Before({GET.class, VipInterceptor.class})
+	@Before({ GET.class, VipInterceptor.class })
 	@ActionKey("/payment/players")
-	public void paymentPlayersIndex(){
+	public void paymentPlayersIndex() {
 		render("payment-players.html");
 	}
-	
+
 	/**
 	 * 付费玩家列表
+	 * 
 	 * @author chris
 	 * @role vip
 	 */
 	@Before(POST.class)
 	@ActionKey("/api/payment/players")
-	public void queryPlayersList(){
+	public void queryPlayersList() {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
-		logger.info("params:{"+"icons:"+icons+",startDate:"+startDate+",endDate:"+endDate+"}");
-		
-		List<List<String>> tableData = pps.queryPLayersList(startDate, endDate, icons);
-		Map<String,Object> data = new HashMap<String, Object>();
-		data.put("tableData", tableData);
-		renderJson(data);
+		logger.info("params:{" + "icons:" + icons + ",startDate:" + startDate + ",endDate:" + endDate + "}");
+
+		String db;
+		try {
+			db = URLDecoder.decode(getCookie("server"), "GBK");
+			List<List<String>> tableData = pps.queryPLayersList(startDate, endDate, icons, db);
+			Map<String, Object> data = new HashMap<String, Object>();
+			data.put("tableData", tableData);
+			renderJson(data);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			logger.info("cookie decoder failed", e);
+		}
 	}
-	
+
 	/**
 	 * 根据account查询付费玩家记录
+	 * 
 	 * @author chris
 	 * @role vip
 	 */
 	@Before(POST.class)
 	@ActionKey("/api/payment/player")
-	public void queryPlayerByAccount(){
+	public void queryPlayerByAccount() {
 		String account = getPara("account", "");
-		logger.info("params:{"+"account:"+account+"}");
-		List<List<String>> tableData = pps.queryPlayerByAccount(account);
-		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("tableData", tableData);
-		renderJson(data);
+		logger.info("params:{" + "account:" + account + "}");
+		String db;
+		try {
+			db = URLDecoder.decode(getCookie("server"), "GBK");
+			List<List<String>> tableData = pps.queryPlayerByAccount(account, db);
+			Map<String, Object> data = new HashMap<String, Object>();
+			data.put("tableData", tableData);
+			renderJson(data);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			logger.info("cookie decoder failed", e);
+		}
 	}
-	
+
 }

@@ -1,6 +1,7 @@
 package common.controllers;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
@@ -24,6 +25,7 @@ import common.service.AdminService;
 import common.service.impl.AdminServiceImpl;
 import common.utils.DateUtils;
 import common.utils.EncryptUtils;
+import common.utils.JsonToMap;
 
 @Clear
 public class LoginController extends Controller {
@@ -40,12 +42,6 @@ public class LoginController extends Controller {
 	@Before(GET.class)
 	public void index() {
 		render("login.html");
-	}
-
-	@Before(POST.class)
-	@ActionKey("/api/login/serverInfo")
-	public void loginServer() {
-		renderJson("dbs", DbSelector.getDbs());
 	}
 
 	/**
@@ -98,6 +94,8 @@ public class LoginController extends Controller {
 				setCookie("startDate", URLEncoder.encode(DateUtils.getSevenAgoDate(), "GBK"), -1, "/", false);
 				setCookie("endDate", URLEncoder.encode(DateUtils.getTodayDate(), "GBK"), -1, "/", false);
 				setCookie("login", username, -1, "/", true);
+				setCookie("server", URLEncoder.encode(DbSelector.getDbName(), "GBK"), -1, "/", false);
+				setCookie("serverList", URLEncoder.encode(DbSelector.getUserDbs().toString(), "GBK"), -1, "/", true);
 				logger.info("login successfully");
 				renderJson("{\"message\":\"success\"}");
 				return;
@@ -131,7 +129,7 @@ public class LoginController extends Controller {
 	}
 
 	/**
-	 * 得到cookie信息 --用户名 --用户具有的服务器列表
+	 * 得到cookie信息 --用户名 --用户具有的服务器列表  --用户当前的服务器
 	 * 不存放在cookie的主要原因在于需要获取服务器当前正使用的服
 	 * @author chris
 	 * @role data_guest
@@ -146,13 +144,24 @@ public class LoginController extends Controller {
 			username = cookie.getValue();
 			message = "true";
 		}
-		String db = DbSelector.getDbName();
 		Map<String, Object> data = new HashMap<String, Object>();
-		data.put("username", username);
-		data.put("db", db);
-		data.put("dbName", DbSelector.getDbName(db));
-		data.put("dbs", DbSelector.getUserDbs());
-		data.put("message", message);
+		try {
+			String dbs = URLDecoder.decode(getCookie("serverList"), "GBK");
+			String db = URLDecoder.decode(getCookie("server"), "GBK");
+			Map<String,Object> jsonMap = JsonToMap.toMap(dbs);
+			Map<String,String> dbsMap = new LinkedHashMap<String, String>();
+			for(Map.Entry<String, Object> entry : jsonMap.entrySet()){
+				dbsMap.put(entry.getKey(),entry.getValue().toString().replace("\"",""));
+			}
+			data.put("username", username);
+			data.put("db", db);
+			data.put("dbName", DbSelector.getDbName(db));
+			data.put("dbs", dbsMap);
+			data.put("message", message);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+		
 		logger.info("cookie info" + data);
 		renderJson(data);
 	}

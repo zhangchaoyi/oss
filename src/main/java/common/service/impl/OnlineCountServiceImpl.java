@@ -7,20 +7,17 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
 import common.model.OnlineCount;
-import common.mysql.DbSelector;
 import common.service.OnlineCountService;
 
 public class OnlineCountServiceImpl implements OnlineCountService {
-	private String db = DbSelector.getDbName();
 	/**
 	 * 根据时间区间查询所有 ccu
 	 * @author chris
 	 * @param startDate 起始时间
 	 * @param endDate 结束时间
 	 */
-	public Map<String, Object> queryCCU(String startDate, String endDate) {
+	public Map<String, Object> queryCCU(String startDate, String endDate, String db) {
 		String ccuSql = "select online_count,online_datetime from online_count where online_date between ? and ? order by online_datetime";
 		String maxPcuSql = "select max(online_count)max_pcu,max(case when online_date between ? and ? then online_count end)max_period_pcu from online_count";
 		
@@ -58,7 +55,7 @@ public class OnlineCountServiceImpl implements OnlineCountService {
 	 * @param endDate 结束时间
 	 * @return
 	 */
-	public Map<String, Object> queryPCU(List<String> categories, String startDate, String endDate) {
+	public Map<String, Object> queryPCU(List<String> categories, String startDate, String endDate, String db) {
 		String sql = "select max(online_count)pcu,online_date from online_count where online_date between ? and ? group by online_date";
 		List<OnlineCount> onlineCount = OnlineCount.dao.use(db).find(sql, startDate, endDate);
 		Map<String, Integer> sort = new LinkedHashMap<String, Integer>();

@@ -12,7 +12,6 @@ import org.apache.log4j.Logger;
 
 import common.model.LossUser;
 import common.model.ReturnUser;
-import common.mysql.DbSelector;
 import common.pojo.DayUser;
 import common.service.LossAnalysisService;
 import common.utils.StringUtils;
@@ -24,7 +23,7 @@ import common.utils.StringUtils;
  */
 public class LossAnalysisServiceImpl implements LossAnalysisService{
 	private Logger logger = Logger.getLogger(LossAnalysisServiceImpl.class);
-	private String db = DbSelector.getDbName();
+
 	/**
 	 * 每日流失接口
 	 * @param categories 日期列表 
@@ -33,7 +32,7 @@ public class LossAnalysisServiceImpl implements LossAnalysisService{
 	 * @param endDate  所选结束时间
 	 * @param type  玩家类型 --活跃/付费/非付费 
 	 */
-	public Map<String, Object> queryDayLoss(List<String> categories, String icons, String startDate, String endDate, String type) {
+	public Map<String, Object> queryDayLoss(List<String> categories, String icons, String startDate, String endDate, String type, String db) {
 		logger.info("params:{"+"type:"+type+"}");
 		String[] typeArray = {type};
 		type = StringUtils.arrayToQueryString(typeArray);
@@ -233,7 +232,7 @@ public class LossAnalysisServiceImpl implements LossAnalysisService{
 	 * @param endDate  所选结束时间
 	 * @param type  玩家类型 --活跃/付费/非付费 
 	 */
-	public Map<String, Object> queryDayReturn(List<String> categories, String icons, String startDate, String endDate, String type){
+	public Map<String, Object> queryDayReturn(List<String> categories, String icons, String startDate, String endDate, String type, String db){
 		logger.info("params:{"+"type:"+type+"}");
 		String[] typeArray = {type};
 		type = StringUtils.arrayToQueryString(typeArray);

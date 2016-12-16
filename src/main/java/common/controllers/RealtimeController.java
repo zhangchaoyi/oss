@@ -6,6 +6,8 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -53,10 +55,16 @@ public class RealtimeController extends Controller {
 	@ActionKey("/api/realtime/beforedata")
 	public void queryBeforeData() {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
-		logger.info("params: {icons:" + icons + "}");
-		Map<String, String> data = realtimeService.queryBeforeData(icons);
-		logger.info("data:" + data);
-		renderJson(data);
+		try {
+			String db = URLDecoder.decode(getCookie("server"), "GBK");
+			logger.info("params: {icons:" + icons + "}");
+			Map<String, String> data = realtimeService.queryBeforeData(icons, db);
+			logger.info("data:" + data);
+			renderJson(data);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			logger.info("cookie decoder failed",e);
+		}
 	}
 
 	/**
@@ -70,9 +78,15 @@ public class RealtimeController extends Controller {
 	public void queryRealtimeData() {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		logger.info("params: {icons:" + icons + "}");
-		Map<String, String> data = realtimeService.queryRealtimeData(icons);
-		logger.info("data:" + data);
-		renderJson(data);
+		try {
+			String db = URLDecoder.decode(getCookie("server"), "GBK");
+			Map<String, String> data = realtimeService.queryRealtimeData(icons, db);
+			logger.info("data:" + data);
+			renderJson(data);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			logger.info("cookie decoder failed",e);
+		}
 	}
 
 	/**
@@ -90,46 +104,56 @@ public class RealtimeController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String[] date = getParaValues("startDate[]");
 		logger.info("params: {" + "detailTag:" + detailTag + ",icons:" + icons + ",date[]" + date + "}");
-		Map<String, Object> data = new LinkedHashMap<String, Object>();
-		List<String> categories = Arrays.asList("00:00~01:00", "01:00~02:00", "02:00~03:00", "03:00~04:00",
-				"04:00~05:00", "05:00~06:00", "06:00~07:00", "07:00~08:00", "08:00~09:00", "09:00~10:00", "10:00~11:00",
-				"11:00~12:00", "12:00~13:00", "13:00~14:00", "14:00~15:00", "15:00~16:00", "16:00~17:00", "17:00~18:00",
-				"18:00~19:00", "19:00~20:00", "20:00~21:00", "21:00~22:00", "22:00~23:00", "23:00~24:00");
-		Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
-		Map<String, Object> seriesMap = new HashMap<String, Object>();
 
-		switch (detailTag) {
-		case "rto": {
-			for (String s : date) {
-				List<Long> list = new ArrayList<Long>();
-				for (int i = 0; i < 24; i++) {
-					list.add(0L);
+		String db;
+		try {
+			db = URLDecoder.decode(getCookie("server"), "GBK");
+
+			Map<String, Object> data = new LinkedHashMap<String, Object>();
+			List<String> categories = Arrays.asList("00:00~01:00", "01:00~02:00", "02:00~03:00", "03:00~04:00",
+					"04:00~05:00", "05:00~06:00", "06:00~07:00", "07:00~08:00", "08:00~09:00", "09:00~10:00",
+					"10:00~11:00", "11:00~12:00", "12:00~13:00", "13:00~14:00", "14:00~15:00", "15:00~16:00",
+					"16:00~17:00", "17:00~18:00", "18:00~19:00", "19:00~20:00", "20:00~21:00", "21:00~22:00",
+					"22:00~23:00", "23:00~24:00");
+			Map<String, List<String>> category = new LinkedHashMap<String, List<String>>();
+			Map<String, Object> seriesMap = new HashMap<String, Object>();
+
+			switch (detailTag) {
+			case "rto": {
+				for (String s : date) {
+					List<Long> list = new ArrayList<Long>();
+					for (int i = 0; i < 24; i++) {
+						list.add(0L);
+					}
+					seriesMap.put(s, list);
 				}
-				seriesMap.put(s, list);
+				break;
 			}
-			break;
-		}
-		case "equ": {
-			seriesMap = realtimeService.queryRealtimeDevice(icons, date);
-			break;
-		}
-		case "adp": {
-			seriesMap = realtimeService.queryRealtimeAddPlayers(icons, date);
-			break;
-		}
-		case "pay": {
-			seriesMap = realtimeService.queryRealtimeRevenue(icons, date);
-			break;
-		}
-		}
+			case "equ": {
+				seriesMap = realtimeService.queryRealtimeDevice(icons, date, db);
+				break;
+			}
+			case "adp": {
+				seriesMap = realtimeService.queryRealtimeAddPlayers(icons, date, db);
+				break;
+			}
+			case "pay": {
+				seriesMap = realtimeService.queryRealtimeRevenue(icons, date, db);
+				break;
+			}
+			}
 
-		Set<String> type = seriesMap.keySet();
+			Set<String> type = seriesMap.keySet();
 
-		category.put("时间段", categories);
-		data.put("category", category);
-		data.put("type", type.toArray());
-		data.put("data", seriesMap);
-		logger.info("data:" + data);
-		renderJson(data);
+			category.put("时间段", categories);
+			data.put("category", category);
+			data.put("type", type.toArray());
+			data.put("data", seriesMap);
+			logger.info("data:" + data);
+			renderJson(data);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+			logger.info("cookie decoder failed",e);
+		}
 	}
 }
