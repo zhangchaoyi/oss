@@ -1,4 +1,5 @@
 $(function(){
+	setNextUrl();
 	loadData();
 });
 
@@ -83,4 +84,124 @@ $(".set-icons").click(function(){
 function setCookie(c_name,value)
 {
     document.cookie=c_name+ "=" +escape(value)+";path=/";
+}
+
+//获取cookie 前提是可读
+function getCookie(name){
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+    if(arr=document.cookie.match(reg))
+        return unescape(arr[2]);
+    else
+        return null;
+}
+
+function setNextUrl(){
+	var nextUrl = "#";
+	var menuCookie = getCookie("menu");
+	var menu = "";
+    if(location.hostname=="localhost"){
+        menu = JSON.parse(String(menuCookie).substring(1,menuCookie.length-1));     
+    }else{
+        menu = JSON.parse(menuCookie);     
+    }
+    for(var m in menu){
+    	var value = menu[m];
+    	switch(m){
+    		case "realtime":
+    		nextUrl = "/oss/realtime/info";
+    		break;
+    		case "form":
+    		nextUrl = "#";
+    		break;
+    		case "playerAnalyse":
+	    		if(value.charAt(0)=='1'){
+	    			nextUrl = "/oss/players/add";
+	    		}else if(value.charAt(1)=='1'){
+	    			nextUrl = "/oss/players/active";
+	    		}else if(value.charAt(2)=='1'){
+	    			nextUrl = "/oss/players/retain";
+    			}else if(value.charAt(3)=='1'){
+    				nextUrl = "/oss/players/effective";
+	    		}else if(value.charAt(4)=='1'){
+	    			nextUrl = "/oss/players/equipment";
+	    		}else if(value.charAt(5)=='1'){
+	    			nextUrl = "/oss/players/accdetail";
+    			}
+    		break;
+    		case "paidAnalyse":
+    			if(value.charAt(0)=='1'){
+    				nextUrl = "/oss/payment/data";
+    			}else if(value.charAt(1)=='1'){
+    				nextUrl = "/oss/payment/behavior";
+    			}else if(value.charAt(2)=='1'){
+    				nextUrl = "/oss/payment/transform";
+    			}else if(value.charAt(3)=='1'){
+    				nextUrl = "/oss/payment/rank";
+    			}else if(value.charAt(4)=='1'){
+    				nextUrl = "/oss/payment/players";
+    			}
+    		break;
+    		case "loss":
+    		nextUrl = "/oss/loss";
+    		break;
+    		case "onlineAnalyse":
+    			if(value.charAt(0)=='1'){
+    				nextUrl = "/oss/online/analysis";
+    			}else if(value.charAt(1)=='1'){
+    				nextUrl = "/oss/online/habits";
+    			}else if(value.charAt(2)=='1'){
+    				nextUrl = "/oss/online/count";
+    			}
+    		break;
+    		case "channelAnalyse":
+    			nextUrl = "#";
+    		break;
+    		case "systemAnalyse":
+    			nextUrl = "#";
+    		break;
+    		case "versionAnalyse":
+    			nextUrl = "#";
+    		break;
+    		case "customEvent":
+    			nextUrl = "#";
+    		break;
+    		case "opSupport":
+    			if(value.charAt(0)=='1'){
+    				nextUrl = "/oss/operation/feedback";
+    			}else if(value.charAt(1)=='1'){
+    				nextUrl = "/oss/operation/record";
+    			}else if(value.charAt(2)=='1'){
+    				nextUrl = "/oss/operation/currency";
+    			}else if(value.charAt(3)=='1'){
+    				nextUrl = "/oss/operation/object";
+    			}else if(value.charAt(4)=='1'){
+    				nextUrl = "/oss/operation/playerInfo";
+    			}else if(value.charAt(5)=='1'){
+    				nextUrl = "/oss/operation/mailManagement";
+    			}else if(value.charAt(6)=='1'){
+    				nextUrl = "#";
+    			}
+    		break;
+    		case "dataDig":
+    			nextUrl = "#";
+    		break;
+    		case "marketAnalyse":
+    			nextUrl = "#";
+    		break;
+    		case "techSupport":
+    			nextUrl = "#";
+    		break;
+    		case "managementCenter":
+    			if(value.charAt(0)=='1'){
+    				nextUrl = "/oss/admin/createUser";
+    			}else if(value.charAt(1)=='1'){
+    				nextUrl = "/oss/admin/manageUsers";
+    			}
+    		break;
+    	}
+    	if(nextUrl!="#"){
+    		break;
+    	}	
+    }
+    $(".next-url").attr("href",nextUrl);
 }
