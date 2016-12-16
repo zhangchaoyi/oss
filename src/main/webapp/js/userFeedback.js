@@ -227,6 +227,8 @@ $("#btn-send").click(function(){
                 function(data, status) {
                     loadFeedbackData(getServerFromIcon($("#btn-db").attr("data-info")));
                 });
+            }else{
+               alert("发送失败"); 
             }
         },
     });
