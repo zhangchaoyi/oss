@@ -466,7 +466,13 @@ $("ul#select-account > li").click(function(){
     if(mailAccountInfo=="mail-server"){
         $("#reply-account").val(mailAccountTxt);
         $("#reply-account").attr("readonly","readonly");
+        $("#reply-account").attr("placeholder","全服邮件");
     }else{
+        if(mailAccountInfo=="muti-mail-account"){
+            $("#reply-account").attr("placeholder","多个帐号间使用逗号分隔");
+        }else{
+            $("#reply-account").attr("placeholder","输入8位帐号");
+        }
         $("#reply-account").val("");
         $("#reply-account").removeAttr("readonly");
     }
