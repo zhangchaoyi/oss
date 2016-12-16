@@ -15,6 +15,7 @@ import common.model.DeviceInfo;
 import common.model.LogCharge;
 import common.model.Login;
 import common.model.Logout;
+import common.model.OnlineCount;
 import common.mysql.DbSelector;
 import common.service.RealtimeService;
 import common.utils.DateUtils;
@@ -127,6 +128,37 @@ public class RealtimeServiceImpl implements RealtimeService{
 		logger.info("data:" + data);
 		return data;
 	} 
+	
+	/**
+	 * 查询实时在线人数 online_count 
+	 * @param date 时间列表
+	 */
+	public Map<String, Object> queryRealtimePlayerCount(String[] date){
+		String sql = "select sum(online_count)count,hour(online_datetime)hour from online_count where online_date = ? group by hour;";
+		Map<String, Object> data = new TreeMap<String, Object>(new Comparator<String>(){
+			@Override
+			public int compare(String o1, String o2) {
+				if("昨日".equals(o1)){
+					return 1;
+				}
+				return o2.compareTo(o1);
+			}});
+		for(String d : date){
+			List<OnlineCount> onlineCount = OnlineCount.dao.use(db).find(sql, d);
+			Map<Integer, Long> sort = new TreeMap<Integer, Long>();
+			for(int i=0;i<24;i++){
+				sort.put(i, 0L);
+			}
+			for(OnlineCount oc : onlineCount){
+				sort.put(oc.getInt("hour"), oc.getBigDecimal("count").longValue());
+			}
+			List<Long> al = new ArrayList<Long>();
+			al.addAll(sort.values());
+			d = DateUtils.convertDate(d);
+			data.put(d, al);
+		}
+		return data;
+	}
 	
 	//查询实时设备
 	public Map<String, Object> queryRealtimeDevice(String icons, String[] date){

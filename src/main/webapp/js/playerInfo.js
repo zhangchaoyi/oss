@@ -12,39 +12,41 @@ function loadData(){
 }
 
 function loadPlayerInfo(){
-	// var accountName = $("#input-account-name").val();
-	// if(accountName==""||accountName==null){
-	// 	return;
-	// }
-	// $.post("", {
- //        account:accountName
- //    },
- //    function(data, status) {
- //        configTable(data, dataTable);
- //    });
- 	var test = {
-		"account":20090101,
-		"roleName":"jack",
-		"uid":"abcdefghijklmn",
-		"level":10,
-		"lastLogin":"2016-12-13 20:00:01",
-		"lastPaid":"2016-12-12 10:20:11",
-		"gold":1000,
-		"rmb":199,
-		"heroList":[{"name":"guanyu","level":2},{"name":"huangzhong","level":3},{"name":"linchong","level":4}],
-		"objectList":[{"obj_id":"obj_1","num":2},{"obj_id":"obj_2","num":3}],
-		"arena":{"score":1234,"rank":4},
-		"ladder":{"score":1234,"rank":4},
-		"history":{"score":1234,"rank":3,"title":"蛋元人尊"},
-		"PVP":{"wins":9},
-		"friends":{"focus":100,"fans":101}	
+	var accountName = $("#input-account-name").val();
+	if(accountName==""||accountName==null){
+		configTable(null, roleCurrentInfoTable);
+		configTable(null, roleCurrentHeroTable);
+		configTable(null, roleCurrentObjTable);
+		return;
 	}
-	var dealData = dealJsonDataToTable(test);
-	var tableData = [];
-	tableData.push(dealData);
-	configTable(tableData, roleCurrentInfoTable);
-	configTable(getHeroInfo(test.heroList), roleCurrentHeroTable);
-	configTable(getObjInfo(test.objectList), roleCurrentObjTable);
+	var text = [];
+	text.push(accountName);
+	var payloadData = {
+    "cmd":"get_player_info",
+    "parms":text,
+    "account":"admin",
+    "password":"af03f87cca0a5e8838c3c8454f58605de41f77f5"
+    };
+
+    //请求游戏服务器
+    $.ajax({
+        type: "POST",
+        url: getAddressFromIcon($("#btn-db").attr("data-info")),
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(payloadData),
+        crossDomain: true,
+        dataType: "json",
+        success: function (data) {
+        	if(data.result=='1'){
+        		console.log(data.ret_data);
+        		configTable(dealJsonDataToTable(data.ret_data), roleCurrentInfoTable);
+				configTable(getHeroInfo(data.ret_data.hero_list), roleCurrentHeroTable);
+				configTable(getObjInfo(data.ret_data.knapsack), roleCurrentObjTable);
+        	}else{
+        		alert("failed");
+        	}
+        },
+    });
 }
 
 function configTable(data,dataTable) {
@@ -72,39 +74,51 @@ function configTable(data,dataTable) {
 //帐号-角色名-uid-等级-最后一次登录时间-最后一次充值时间-金币-钻石-仓库-PVP-历史排名
 function dealJsonDataToTable(data){
 	var tableData = [];
-	tableData.push(data.account);
-	tableData.push(data.roleName);
-	tableData.push(data.uid);
-	tableData.push(data.level);
-	tableData.push(data.lastLogin);
-	tableData.push(data.lastPaid);
-	tableData.push(data.gold);
-	tableData.push(data.rmb);
-	// tableData.push(getHeroInfo(data.heroList));
-	// tableData.push(getObjInfo(data.objectList));
-	tableData.push("积分:"+data.ladder.score+" 排名:"+data.ladder.rank);
-	tableData.push("积分:"+data.arena.score+" 排名:"+data.arena.rank);
-	tableData.push("积分:"+data.history.score+" 排名:"+data.history.rank+" 称号:"+data.history.title);
-	tableData.push("约战胜场:"+data.PVP.wins);
-	tableData.push("关注:"+data.friends.focus+" 粉丝:"+data.friends.fans);
+	var row = [];
+	row.push(data.account);
+	row.push(data.role_name);
+	row.push(data.uid==undefined?"-":data.uid);
+	row.push(data.level);
+	row.push(data.last_login=="null"?"-":data.last_login);
+	row.push(data.last_paid=="null"?"-":data.last_paid);
+	row.push(data.gold);
+	row.push(data.rmb);
+	row.push("积分:"+data.arena.score+" 排名:"+data.arena.rank);
+	row.push("积分:"+data.ladder.score+" 排名:"+data.ladder.rank);
+	row.push("积分:"+data.world_rank.score+" 排名:"+data.world_rank.rank+" 称号:"+data.world_rank.title);
+	row.push("约战胜场:"+data.invite.win);
+	row.push("关注:"+data.friend.follow+" 粉丝:"+data.friend.fans);
+	tableData.push(row);
 	return tableData;
 }
 
-//"heroList":[{"name":"guanyu","level":2},{"name":"huangzhong","level":3}]
+//"hero_list":[{"skill_level":4,"level":6,"feature_data":[{"feature_type":1,"level":7},{"feature_type":2,"level":3}],"name":"guanyu"}]
+//name-level-skillLevel-feature
 function getHeroInfo(heroList){
 	var heroesArray = [];
 	for(var i in heroList){
 		var name = heroList[i].name;
 		var level = heroList[i].level;
 		var heroname = contants["hero"][name];
+		var skillLevel = heroList[i].skill_level;
+		skillLevel = (skillLevel==undefined)?"-":skillLevel;
+		var feature = heroList[i].feature_data;
+		var featureStr = "";
+		for(var j in feature){
+			var featureType = contants["heroFeatureType"][feature[j].feature_type];
+			featureStr += featureType+"*"+feature[j].level+"级 ";
+		}
+
 		var heroArray = [];
 		heroArray.push(heroname==undefined?name:heroname);
 		heroArray.push(level);
+		heroArray.push(skillLevel);
+		heroArray.push(featureStr==""?"-":featureStr);
 		heroesArray.push(heroArray);
 	}
 	return heroesArray;
 }
-//"objectList":[{"obj_id":"obj_1","num":2},{"obj_id":"obj_2","num":3}]
+//"knapsack":[{"obj_id":"obj_1","num":2},{"obj_id":"obj_2","num":3}]
 function getObjInfo(objList){
 	var objsArray = [];
 	for(var i in objList){

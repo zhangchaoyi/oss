@@ -1,12 +1,3 @@
-var malaiAddress = "http://47.89.47.176:8002/gm";
-var ucAddress = "http://118.178.17.105:8002/gm";
-var iosAddress = "http://118.178.19.95:8002/gm";
-var testAddress = "http://120.25.209.140:8002/gm";
-var malaiServer = "egghk.koogame.cn";
-var ucServer = "egguccn2.koogame.cn";
-var iosServer = "egguccn.koogame.cn";
-var testServer = "eggactest.koogame.cn";
-
 $(function(){
     loadData();
     initSelectAll();
@@ -488,41 +479,3 @@ $("li.disabled > button.btn.btn-primary").attr('disabled',"true");
 $("#btn-dropdownIcon").one("click", function(){
     $('.btn-icons > a > div').iCheck('disable');
 });
-
-function getAddressFromIcon(icon){
-    var emailAddress = "";
-    switch(icon){
-        case "malai":
-        emailAddress = malaiAddress;
-        break;
-        case "uc":
-        emailAddress = ucAddress;
-        break;
-        case "ios":
-        emailAddress = iosAddress;
-        break;
-        case "test":
-        emailAddress = testAddress;
-        break;
-    }
-    return emailAddress;
-}
-
-function getServerFromIcon(icon){
-    var server = "";
-    switch(icon){
-        case "malai":
-        server = malaiServer;
-        break;
-        case "uc":
-        server = ucServer;
-        break;
-        case "ios":
-        server = iosServer;
-        break;
-        case "test":
-        server = testServer;
-        break;
-    }
-    return server;
-}
