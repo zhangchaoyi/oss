@@ -66,7 +66,6 @@ public class AccdetailServiceImpl implements AccdetailService {
 			detailList.add(l.getLong("loginTimes")==0? "-" : l.getLong("loginTimes").toString() + "次");	
 		}
 		//总在线时长
-		System.out.println("+++"+logout);
 		for(Logout l : logout){
 			detailList.add(l.getBigDecimal("onlineSum")==null? "-" : l.getBigDecimal("onlineSum").toString());
 			detailList.add(l.getInt("max_level")==null? "-" : l.getInt("max_level").toString());

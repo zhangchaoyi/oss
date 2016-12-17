@@ -5,7 +5,7 @@ $(function(){
 		"guanyu":"关羽",
 		"linchong":"林冲",
 		"zhangfei":"张飞",
-		"zhaoyu":"赵云",
+		"zhaoyun":"赵云",
 		"yuantiangang":"袁天罡",
 		"huangzhong":"黄忠",
 		"zhentianxingcun":"真田幸村",
@@ -32,7 +32,8 @@ $(function(){
 		"libai":"李白",
 		"huamulan":"花木兰",
 		"yangyouji":"养由基",
-		"jiangziya":"姜子牙"
+		"jiangziya":"姜子牙",
+		"nanguangfangtianhai":"天海"
 	};
 	contants["properties"]= {
 		"obj_1":"金币",	

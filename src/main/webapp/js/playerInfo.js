@@ -43,7 +43,10 @@ function loadPlayerInfo(){
 				configTable(getHeroInfo(data.ret_data.hero_list), roleCurrentHeroTable);
 				configTable(getObjInfo(data.ret_data.knapsack), roleCurrentObjTable);
         	}else{
-        		alert("failed");
+        		alert("帐号不存在");
+        		configTable(null, roleCurrentInfoTable);
+				configTable(null, roleCurrentHeroTable);
+				configTable(null, roleCurrentObjTable);
         	}
         },
     });
@@ -85,7 +88,7 @@ function dealJsonDataToTable(data){
 	row.push(data.rmb);
 	row.push("积分:"+data.arena.score+" 排名:"+data.arena.rank);
 	row.push("积分:"+data.ladder.score+" 排名:"+data.ladder.rank);
-	row.push("积分:"+data.world_rank.score+" 排名:"+data.world_rank.rank+" 称号:"+data.world_rank.title);
+	row.push("积分:"+data.world_rank.score+" 排名:"+data.world_rank.rank+" 称号:"+data.world_rank.title==undefined?"-":data.world_rank.title);
 	row.push("约战胜场:"+data.invite.win);
 	row.push("关注:"+data.friend.follow+" 粉丝:"+data.friend.fans);
 	tableData.push(row);
