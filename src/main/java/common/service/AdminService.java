@@ -12,13 +12,13 @@ public interface AdminService {
 	
 	public SecUser getUser(String username);
 
-	public boolean signupUser(String username, String password, String role, Map<String, String> map);
+	public boolean signupUser(String username, String password, String role, Map<String, String> map, String db);
 	
 	public boolean existUser(String username);
 	
 	public List<List<String>> queryUsers(String...queryUsername);
 	
-	public int deleteByUserName(String users);
+	public int deleteByUserName(String users, String db);
 	
-	public void changeRoles(String username, String[] queryRole, Map<String, String> map);
+	public void changeRoles(String username, String[] queryRole, Map<String, String> map, String db);
 }

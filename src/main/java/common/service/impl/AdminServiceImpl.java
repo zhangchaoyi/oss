@@ -102,8 +102,7 @@ public class AdminServiceImpl implements AdminService {
 	 *            角色(原文)
 	 * @return boolean
 	 */
-	public boolean signupUser(String username, String password, String role, Map<String, String> map) {
-		String db = DbSelector.getDbName();
+	public boolean signupUser(String username, String password, String role, Map<String, String> map, String db) {
 		logger.info(
 				"params:{" + "username:" + username + ",password:" + password + ",role:" + role + "}" + " db:" + db);
 		boolean succeed = false;
@@ -228,8 +227,7 @@ public class AdminServiceImpl implements AdminService {
 	 *            删除用户名
 	 * @return row id /0 表示失败
 	 */
-	public int deleteByUserName(String users) {
-		String db = DbSelector.getDbName();
+	public int deleteByUserName(String users, String db) {
 		logger.info("params:{" + "users:" + users + "}" + " db" + db);
 		int deleted = 0;
 		String qSql = "select user_id from sec_user where user_name in (" + users + ") ";
@@ -255,8 +253,7 @@ public class AdminServiceImpl implements AdminService {
 	 * @params queryRole 所选的角色
 	 */
 
-	public void changeRoles(String username, String[] queryRole, Map<String, String> map) {
-		String db = DbSelector.getDbName();
+	public void changeRoles(String username, String[] queryRole, Map<String, String> map, String db) {
 		logger.info("params:{" + "username:" + username + ",queryRole:" + queryRole + "map" + map + "}" + " db:" + db);
 		List<Integer> roles = new ArrayList<Integer>();
 		for (String s : queryRole) {

@@ -124,13 +124,10 @@ public class AdminController extends Controller {
 		logger.info("dbs:" + dbs);
 
 		// 对各个数据库同时进行用户管理,修改完成恢复原数据库
-		String originDb = DbSelector.getDbName();
 		boolean succeed = false;
 		for (String db : dbs) {
-			DbSelector.setDbName(db);
-			succeed = as.signupUser(username, password, role, sqlMap);
+			succeed = as.signupUser(username, password, role, sqlMap, db);
 		}
-		DbSelector.setDbName(originDb);
 
 		if (succeed == true) {
 			logger.info("signup successfully");
@@ -186,13 +183,10 @@ public class AdminController extends Controller {
 		logger.info("dbs:" + dbs);
 
 		// 对各个数据库同时进行用户管理,修改完成恢复原数据库
-		String originDb = DbSelector.getDbName();
 		int deleted = 0;
 		for (String db : dbs) {
-			DbSelector.setDbName(db);
-			deleted = as.deleteByUserName(users);
+			deleted = as.deleteByUserName(users, db);
 		}
-		DbSelector.setDbName(originDb);
 
 		Map<String, String> data = new HashMap<String, String>();
 		data.put("message", String.valueOf(deleted));
@@ -222,12 +216,9 @@ public class AdminController extends Controller {
 		Map<String, String> data = new HashMap<String, String>();
 
 		// 对各个数据库同时进行用户管理,修改完成恢复原数据库
-		String originDb = DbSelector.getDbName();
 		for (String db : dbs) {
-			DbSelector.setDbName(db);
-			as.changeRoles(username, queryRole, sqlMap);
+			as.changeRoles(username, queryRole, sqlMap, db);
 		}
-		DbSelector.setDbName(originDb);
 
 		data.put("message", "successfully");
 		logger.info("data:" + data);
