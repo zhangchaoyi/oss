@@ -38,7 +38,6 @@ function loadPlayerInfo(){
         dataType: "json",
         success: function (data) {
         	if(data.result=='1'){
-        		console.log(data.ret_data);
         		configTable(dealJsonDataToTable(data.ret_data), roleCurrentInfoTable);
 				configTable(getHeroInfo(data.ret_data.hero_list), roleCurrentHeroTable);
 				configTable(getObjInfo(data.ret_data.knapsack), roleCurrentObjTable);
