@@ -17,8 +17,9 @@ function loadMailInfo(){
 
     var text = [];
 	text.push(accountName);
-	// text.push($("input#startDate").attr("value"));
-	// text.push($("input#endDate").attr("value"));
+	text.push($("input#startDate").attr("value"));
+	text.push($("input#endDate").attr("value"));
+
 	var payloadData = {
     "cmd":"get_player_mail_list",
     "parms":text,
@@ -36,25 +37,36 @@ function loadMailInfo(){
         dataType: "json",
         success: function (data) {
         	if(data.result=='1'){
-        		console.log(data.ret_data);
-        		// dealMailList(data.ret_data);
+                configTable(dealMailList(data.ret_data), mailManagementTable);
         	}else{
         		alert("帐号不存在");
 				configTable(null, mailManagementTable);
         	}
         },
     });
-
-
 }
 
-//["{["state"]=1,["extracted"]=true,["obj_list"]={[1]={["param_list"]={[2]=3,[1]="liguang", },["obj_id"]="obj_11", ["num"]=1,},[2]={["param_list"]={[2]=4,[1]="mozi", },["obj_id"]="obj_11", ["num"]=1,},[3]={["num"]=1,["obj_id"]="obj_3001", },},["mail_title"]="个人邮件测试", ["mail_content"]="个人邮件测试", ["mail_date"]=1481701820,["account_id"]="系统", }"]
-//account-name-title-content-attachment-time
-function dealMailList(mailList){
+//mail_list:[{"state":1,"extracted":true,"mail_content":"个人邮件测试","mail_title":"个人邮件测试","mail_date":1481701820,"account_id":"系统","obj_list":[{"obj_id":"obj_11","num":1,"param_list":["liguang",3]},{"obj_id":"obj_11","num":1,"param_list":["mozi",4]},{"num":1,"obj_id":"obj_3001"}]}]
+//account-name-title-content-attachment-time-sender
+function dealMailList(retData){
 	var tableData = [];
+    var account = retData.account;
+    var roleName = retData.team_name;
+    var mailList = retData.mail_list;
 	for(var i in mailList){
 		var mailArray = [];
-		console.log("----"+mailList[i]);
+        var title = mailList[i].mail_title;
+        var content = mailList[i].mail_content;
+        var attachment = dealAttachment(mailList[i].obj_list);
+        var time = getDateFromTM(mailList[i].mail_date);
+        var sender = mailList[i].account_id;
+        mailArray.push(account);
+        mailArray.push(roleName);
+        mailArray.push(title);
+        mailArray.push(content);
+        mailArray.push(attachment);
+        mailArray.push(time);
+        mailArray.push(sender);
 		tableData.push(mailArray);
 	}
 	return tableData;
@@ -111,3 +123,18 @@ $("#menu-account-name > li").click(function(){
 $("#btn-account-name-query").click(function(){
 	loadMailInfo();
 });
+
+function getDateFromTM(tm){
+    var d = new Date(tm*1000);
+    var Y = d.getFullYear();
+    var M = d.getMonth()+1;
+    if (M >= 1 && M <= 9) {
+        M = "0" + M;
+    }
+    var D = d.getDate();
+    var h = d.getHours();
+    var m = d.getMinutes();
+    var s = d.getSeconds();
+
+    return Y+"-"+M+"-"+D+" "+h+":"+m+":"+s;
+}
