@@ -79,7 +79,7 @@ function dealJsonDataToTable(data){
 	var row = [];
 	row.push(data.account);
 	row.push(data.role_name);
-	row.push(data.uid==undefined?"-":data.uid);
+	row.push(data.udid==undefined?"-":data.udid);
 	row.push(data.level);
 	row.push(data.last_login=="null"?"-":data.last_login);
 	row.push(data.last_paid=="null"?"-":data.last_paid);
@@ -87,7 +87,7 @@ function dealJsonDataToTable(data){
 	row.push(data.rmb);
 	row.push("积分:"+data.arena.score+" 排名:"+data.arena.rank);
 	row.push("积分:"+data.ladder.score+" 排名:"+data.ladder.rank);
-	row.push("积分:"+data.world_rank.score+" 排名:"+data.world_rank.rank+" 称号:"+data.world_rank.title==undefined?"-":data.world_rank.title);
+	row.push("积分:"+data.world_rank.score+" 排名:"+data.world_rank.rank+" 称号:"+(data.world_rank.title==undefined?"-":data.world_rank.title));
 	row.push("约战胜场:"+data.invite.win);
 	row.push("关注:"+data.friend.follow+" 粉丝:"+data.friend.fans);
 	tableData.push(row);
