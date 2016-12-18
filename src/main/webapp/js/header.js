@@ -1,3 +1,4 @@
+var globalCurrency = "￥";
 //鼠标覆盖按钮自动下拉菜单
 $("#userAccount").on("mouseover", function() {
     if ($(this).parent().is(".open")) {
@@ -105,6 +106,9 @@ $(function(){
             }
             $("#db-menu").append(dbsDom);
             initDbMenu();
+         }else{
+            var pathname = location.pathname;
+            location.href = location.protocol + "//" + location.host + "/oss/login?from=" + pathname;
          }
     }); 
    

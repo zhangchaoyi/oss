@@ -5,6 +5,8 @@ import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.http.Cookie;
+
 import org.apache.log4j.Logger;
 
 import com.jfinal.aop.Before;
@@ -40,8 +42,13 @@ public class DashboardController extends Controller {
 	@ActionKey("/api/dashboard")
 	public void queryDashboard() {
 		Map<String, String> data = new HashMap<String, String>();
+		Cookie serverCookie = getCookieObject("server");
+		if(serverCookie==null){
+			renderText("cookie服务器不存在,请求非法");
+			return;
+		}
 		try {
-			String db = URLDecoder.decode(getCookie("server"), "GBK");
+			String db = URLDecoder.decode(serverCookie.getValue(), "GBK");
 			data = ds.queryDashboardData(db);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();

@@ -1,5 +1,6 @@
 var startDate = "";
 var endDate = "";
+
 //get today date for dateselector
 //获取某一天的日期,格式 yyyy-mm-dd,参数用于当前的日期相减的数
 function getFormatDate(day){

@@ -22,8 +22,15 @@ public class AdminInterceptor implements Interceptor {
 	public void intercept(Invocation invocation) {
 		Controller controller = invocation.getController();
 		Cookie cookie = controller.getCookieObject("login");
+		Cookie serverCookie = controller.getCookieObject("server");
 		String username = "";
 		boolean permission = false;
+		
+		if(serverCookie==null){
+			controller.redirect("/login");
+			logger.info("serverCookie is null");
+			return;
+		}
 		
 		if (cookie != null) {
 			username = cookie.getValue();
@@ -57,6 +64,7 @@ public class AdminInterceptor implements Interceptor {
 			logger.info("cookie is null,permission denied");
 			return;
 		}
+		
 		logger.info("cookie is not null,permission denied");
 		controller.redirect("/admin/authority/error?from=" + from);
 	}

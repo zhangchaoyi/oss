@@ -15,6 +15,7 @@ import common.model.Login;
 import common.model.PaymentDetail;
 import common.pojo.AreaARU;
 import common.service.PaymentDataService;
+import common.utils.Contants;
 
 /**
  * 查询处理付费数据页
@@ -23,6 +24,7 @@ import common.service.PaymentDataService;
  */
 public class PaymentDataServiceImpl implements PaymentDataService {
 	private static Logger logger = Logger.getLogger(PaymentDataServiceImpl.class);
+	private String currency = Contants.getCurrency();
 	/**
 	 * 计算付费金额
 	 * @param categories 日期列表
@@ -67,9 +69,9 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		ftPDSum = bgftPDSum.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		fdPDSum = bgfdPDSum.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
 		
-		sum.put("活跃", "$" + String.valueOf(pDSum));
-		sum.put("首次付费", "$" + String.valueOf(ftPDSum));
-		sum.put("首日付费", "$" + String.valueOf(fdPDSum));
+		sum.put("活跃", currency + String.valueOf(pDSum));
+		sum.put("首次付费", currency + String.valueOf(ftPDSum));
+		sum.put("首日付费", currency + String.valueOf(fdPDSum));
 		List<Double> paidList = new ArrayList<Double>();
 		List<Double> ftPaidList = new ArrayList<Double>();
 		List<Double> fdPaidList = new ArrayList<Double>();
@@ -78,9 +80,9 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		fdPaidList.addAll(fdPaid.values());
 		
 		Map<String, Map<String,Object>> data = new HashMap<String, Map<String, Object>>();
-		series.put("活跃玩家($)", paidList);
-		series.put("首次付费玩家($)", ftPaidList);
-		series.put("首日付费玩家($)", fdPaidList);
+		series.put("活跃玩家("+currency+")", paidList);
+		series.put("首次付费玩家("+currency+")", ftPaidList);
+		series.put("首日付费玩家("+currency+")", fdPaidList);
 		data.put("sum", sum);
 		data.put("series", series);
 		logger.info("data:" + data);
@@ -453,7 +455,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		List<List<Object>> data = new ArrayList<List<Object>>();
 		for(int i=0;i<categories.size();i++){
 			List<Object> per = new ArrayList<Object>();
-			per.add(categories.get(i) + "($)");
+			per.add(categories.get(i) + "("+currency+")");
 			per.add(day.get(i));
 			per.add(week.get(i));
 			per.add(month.get(i));
@@ -656,7 +658,7 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 	 * @param endDate  所选结束时间
 	 */
 	public List<LogCharge> queryCountryRevenue(String icons, String startDate, String endDate, String db) {
-		String sql = "select country,sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by country;";
+		String sql = "select C.country,sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by country;";
 		List<LogCharge> logCharge = LogCharge.dao.use(db).find(sql,startDate,endDate);
 		return logCharge;
 	}

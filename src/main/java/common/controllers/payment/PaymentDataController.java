@@ -19,6 +19,7 @@ import com.jfinal.ext.interceptor.POST;
 import common.model.LogCharge;
 import common.service.PaymentDataService;
 import common.service.impl.PaymentDataServiceImpl;
+import common.utils.Contants;
 import common.utils.DateUtils;
 import common.utils.StringUtils;
 import common.interceptor.VipInterceptor;
@@ -27,7 +28,7 @@ import common.interceptor.VipInterceptor;
 public class PaymentDataController extends Controller {
 	private static Logger logger = Logger.getLogger(PaymentDataController.class);
 	private PaymentDataService paymentDataService = new PaymentDataServiceImpl();
-
+	private String currency = Contants.getCurrency();
 	/**
 	 * 付费数据页
 	 * 
@@ -176,20 +177,20 @@ public class PaymentDataController extends Controller {
 							"501~1000", "1001~2000", ">2000");
 					List<Integer> queryPeriod = paymentDataService.queryDayPaymentMoney(categories, icons, startDate,
 							endDate, db);
-					categories = Arrays.asList("1($)", "2($)", "3($)", "4($)", "5($)", "6~10($)", "11~50($)",
-							"51~100($)", "101~500($)", "501~1000($)", "1001~2000($)", ">2000($)");
+					categories = Arrays.asList("1("+currency+")", "2("+currency+")", "3("+currency+")", "4("+currency+")", "5("+currency+")", "6~10("+currency+")", "11~50("+currency+")",
+							"51~100("+currency+")", "101~500("+currency+")", "501~1000("+currency+")", "1001~2000("+currency+")", ">2000("+currency+")");
 					category.put("付费金额区间", categories);
 					seriesMap.put("人数", queryPeriod);
 					break;
 				case "week":
-					categories = Arrays.asList("1($)", "2($)", "3($)", "4($)", "5($)", "6~10($)", "11~50($)",
-							"51~100($)", "101~500($)", "501~1000($)", "1001~2000($)", ">2000($)");
+					categories = Arrays.asList("1("+currency+")", "2("+currency+")", "3("+currency+")", "4("+currency+")", "5("+currency+")", "6~10("+currency+")", "11~50("+currency+")",
+							"51~100("+currency+")", "101~500("+currency+")", "501~1000("+currency+")", "1001~2000("+currency+")", ">2000("+currency+")");
 					category.put("付费金额区间", categories);
 					seriesMap.put("人数", Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
 					break;
 				case "month":
-					categories = Arrays.asList("1($)", "2($)", "3($)", "4($)", "5($)", "6~10($)", "11~50($)",
-							"51~100($)", "101~500($)", "501~1000($)", "1001~2000($)", ">2000($)");
+					categories = Arrays.asList("1("+currency+")", "2("+currency+")", "3("+currency+")", "4("+currency+")", "5("+currency+")", "6~10("+currency+")", "11~50("+currency+")",
+							"51~100("+currency+")", "101~500("+currency+")", "501~1000("+currency+")", "1001~2000("+currency+")", ">2000("+currency+")");
 					category.put("付费金额区间", categories);
 					seriesMap.put("人数", Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
 					break;

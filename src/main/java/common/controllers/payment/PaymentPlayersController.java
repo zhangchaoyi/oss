@@ -43,7 +43,7 @@ public class PaymentPlayersController extends Controller {
 	 * @author chris
 	 * @role vip
 	 */
-	@Before(POST.class)
+	@Before({POST.class,VipInterceptor.class})
 	@ActionKey("/api/payment/players")
 	public void queryPlayersList() {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
@@ -70,7 +70,7 @@ public class PaymentPlayersController extends Controller {
 	 * @author chris
 	 * @role vip
 	 */
-	@Before(POST.class)
+	@Before({POST.class,VipInterceptor.class})
 	@ActionKey("/api/payment/player")
 	public void queryPlayerByAccount() {
 		String account = getPara("account", "");

@@ -24,8 +24,16 @@ public class VipInterceptor implements Interceptor {
 	public void intercept(Invocation invocation) {
 		Controller controller = invocation.getController();
 		Cookie cookie = controller.getCookieObject("login");
+		Cookie serverCookie = controller.getCookieObject("server");
 		String username = "";
 		boolean permission = false;
+		
+		if(serverCookie==null){
+			controller.redirect("/login");
+			logger.info("serverCookie is null");
+			return;
+		}
+		
 		if (cookie != null) {
 			username = cookie.getValue();
 			// 获取role列表

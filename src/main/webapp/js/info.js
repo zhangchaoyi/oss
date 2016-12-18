@@ -2,6 +2,7 @@ var dateCollection=[];
 var realtimeDetailsChart = echarts.init(document.getElementById('realtime-details-chart'));
 
 function initialDateArray(){
+    $(".currency").text(globalCurrency);
     dateCollection=[];
     dateCollection.push(getFormatDate(0));
     dateCollection.push(getFormatDate(1));

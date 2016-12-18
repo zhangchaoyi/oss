@@ -6,13 +6,15 @@ import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 
+import common.interceptor.GmInterceptor;
+
 @Clear
 public class PlayerInfoController extends Controller {
 	/**
 	 * 角色当前信息页
 	 * @author chris
 	 */
-	@Before(GET.class)
+	@Before({GET.class,GmInterceptor.class})
 	@ActionKey("/operation/playerInfo")
 	public void objectIndex() {
 		render("playerInfo.html");

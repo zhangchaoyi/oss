@@ -10,6 +10,8 @@ import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
+
+import common.interceptor.GmInterceptor;
 import common.service.OperationObjectService;
 import common.service.impl.OperationObjectServiceImpl;
 
@@ -23,7 +25,7 @@ public class ObjectController extends Controller {
 	 * 
 	 * @author chris
 	 */
-	@Before(GET.class)
+	@Before({GET.class,GmInterceptor.class})
 	@ActionKey("/operation/object")
 	public void objectIndex() {
 		render("object-obtain-consume.html");
@@ -36,7 +38,7 @@ public class ObjectController extends Controller {
 	 *            查询帐号
 	 * @author chris
 	 */
-	@Before(POST.class)
+	@Before({POST.class,GmInterceptor.class})
 	@ActionKey("/api/operation/object/player")
 	public void querySingleCurrency() {
 		String account = getPara("account", "");

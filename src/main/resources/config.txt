@@ -7,3 +7,4 @@ password = Zcy@0826
 devMode = true
 jdbcList = malai:uc:test:ios
 jdbcDefault = ios
+currency = ￥

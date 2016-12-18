@@ -18,13 +18,14 @@ import com.jfinal.ext.interceptor.POST;
 import common.interceptor.VipInterceptor;
 import common.service.PaymentBehaviorService;
 import common.service.impl.PaymentBehaviorServiceImpl;
+import common.utils.Contants;
 import common.utils.StringUtils;
 
 @Clear
 public class PaymentBehaviorController extends Controller {
 	private static Logger logger = Logger.getLogger(PaymentBehaviorController.class);
 	private PaymentBehaviorService paymentBehaviorService = new PaymentBehaviorServiceImpl();
-
+	private String currency = Contants.getCurrency();
 	/**
 	 * 付费行为页
 	 * 
@@ -69,8 +70,8 @@ public class PaymentBehaviorController extends Controller {
 			case "rank-paymentBehavior-money":
 				Map<String, Object> rankMoney = paymentBehaviorService.queryRankMoney(icons, startDate, endDate, db);
 				category.put("付费等级", rankMoney.get("level"));
-				seriesMap.put("付费金额($)", rankMoney.get("revenue"));
-				header.addAll(Arrays.asList("付费等级", "付费金额($)"));
+				seriesMap.put("付费金额("+currency+")", rankMoney.get("revenue"));
+				header.addAll(Arrays.asList("付费等级", "付费金额("+currency+")"));
 				break;
 			case "rank-paymentBehavior-times":
 				Map<String, Object> rankTimes = paymentBehaviorService.queryRankTimes(icons, startDate, endDate, db);
@@ -301,13 +302,13 @@ public class PaymentBehaviorController extends Controller {
 
 	private Map<String, String> initPaidPeriod() {
 		Map<String, String> period = new LinkedHashMap<String, String>();
-		period.put("m1", "1~10 $");
-		period.put("m11", "11~50 $");
-		period.put("m51", "51~100 $");
-		period.put("m101", "101~200 $");
-		period.put("m201", "201~500 $");
-		period.put("m501", "501~1000 $");
-		period.put("m1000", ">1000 $");
+		period.put("m1", "1~10 "+currency);
+		period.put("m11", "11~50 "+currency);
+		period.put("m51", "51~100 "+currency);
+		period.put("m101", "101~200 "+currency);
+		period.put("m201", "201~500 "+currency);
+		period.put("m501", "501~1000 "+currency);
+		period.put("m1000", ">1000 "+currency);
 		return period;
 	}
 }

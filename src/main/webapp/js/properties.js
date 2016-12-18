@@ -182,7 +182,6 @@ $(function(){
 		"14":"法穿",
 		"15":"速度"
 	};
-
 })
 
 function getAddressFromIcon(icon){

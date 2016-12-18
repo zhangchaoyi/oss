@@ -11,8 +11,16 @@ public class Contants {
 	public static final String GOLDENBOXID = "obj_23";
 	public static final String BIGFRAGMENTBOXID = "obj_31";
 	public static final String FRAGMENTBOXID = "obj_37";
+	private static String currency;
 	private static final Map<String, String> propsMap = new HashMap<String, String>();
 
+	public static void setCurrency(String c){
+		currency = c;
+	}
+	public static String getCurrency(){
+		return currency;
+	}
+	
 	public static Map<String, String> getPropMap() {
 		return propsMap;
 	}

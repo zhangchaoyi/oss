@@ -9,42 +9,52 @@ function loadData(){
 }
 
 function loadMailInfo(){
-	// var accountName = $("#input-account-name").val();
-	// if(accountName==""||accountName==null){
-	// 	return;
-	// }
-	// $.post("", {
-			// startDate:$("input#startDate").attr("value"),
-   //      	endDate:$("input#endDate").attr("value"),
- //        account:accountName
- //    },
- //    function(data, status) {
- //        configTable(data, dataTable);
- //    });
- 		var test = [
-			{"account":"20090101","roleName":"jack","time":"2016-12-12 20:02:00","from":"系统","title":"标题1","content":"正文1","attachment":[{"obj_id":"obj_38","num":"1"}]},
-			{"account":"20090101","roleName":"jack","time":"2016-12-15 21:12:00","from":"系统","title":"标题2","content":"正文2","attachment":[{"obj_id":"obj_1","num":"2"}]},
-			{"account":"20090101","roleName":"jack","time":"2016-12-10 00:02:00","from":"系统","title":"标题3","content":"正文3","attachment":[{"obj_id":"obj_11","num":"1","param_list":["guanyu",5]}]},
-			{"account":"20090101","roleName":"jack","time":"2016-12-02 22:02:00","from":"系统","title":"标题4","content":"正文4"}
-		];
-		var tableData = dealMailList(test);
-		configTable(tableData,mailManagementTable);
+	var accountName = $("#input-account-name").val();
+	if(accountName==""||accountName==null){
+		configTable(null, mailManagementTable);
+		return;
+	}
+
+    var text = [];
+	text.push(accountName);
+	// text.push($("input#startDate").attr("value"));
+	// text.push($("input#endDate").attr("value"));
+	var payloadData = {
+    "cmd":"get_player_mail_list",
+    "parms":text,
+    "account":"admin",
+    "password":"af03f87cca0a5e8838c3c8454f58605de41f77f5"
+    };
+
+    //请求游戏服务器
+    $.ajax({
+        type: "POST",
+        url: getAddressFromIcon($("#btn-db").attr("data-info")),
+        contentType: "application/json; charset=utf-8",
+        data: JSON.stringify(payloadData),
+        crossDomain: true,
+        dataType: "json",
+        success: function (data) {
+        	if(data.result=='1'){
+        		console.log(data.ret_data);
+        		// dealMailList(data.ret_data);
+        	}else{
+        		alert("帐号不存在");
+				configTable(null, mailManagementTable);
+        	}
+        },
+    });
+
+
 }
 
+//["{["state"]=1,["extracted"]=true,["obj_list"]={[1]={["param_list"]={[2]=3,[1]="liguang", },["obj_id"]="obj_11", ["num"]=1,},[2]={["param_list"]={[2]=4,[1]="mozi", },["obj_id"]="obj_11", ["num"]=1,},[3]={["num"]=1,["obj_id"]="obj_3001", },},["mail_title"]="个人邮件测试", ["mail_content"]="个人邮件测试", ["mail_date"]=1481701820,["account_id"]="系统", }"]
+//account-name-title-content-attachment-time
 function dealMailList(mailList){
 	var tableData = [];
 	for(var i in mailList){
 		var mailArray = [];
-		mailArray.push(mailList[i].account);
-		mailArray.push(mailList[i].roleName);
-		mailArray.push(mailList[i].title);
-		mailArray.push(mailList[i].content);
-		if(mailList[i].hasOwnProperty("attachment")){
-			mailArray.push(dealAttachment(mailList[i].attachment));
-		}else{
-			mailArray.push("-");
-		}
-		mailArray.push(mailList[i].time);
+		console.log("----"+mailList[i]);
 		tableData.push(mailArray);
 	}
 	return tableData;
@@ -98,6 +108,6 @@ $("#menu-account-name > li").click(function(){
 	$("#btn-account-name").html(txt+"<span class='caret'><span>");
 });
 
-$("#btn-account-name").click(function(){
+$("#btn-account-name-query").click(function(){
 	loadMailInfo();
 });

@@ -65,6 +65,7 @@ public class BaseConfig extends JFinalConfig {
 	 */
 	public void configPlugin(Plugins me) {
 		PropKit.use("config.txt");
+		Contants.setCurrency(PropKit.get("currency"));
 		Contants.initPropMap();
 		DbSelector.initDbs();
 		Set<String> dbs = DbSelector.getDbs().keySet();

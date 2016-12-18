@@ -137,17 +137,28 @@ public class LoginController extends Controller {
 	@Before(POST.class)
 	@ActionKey("/api/cookie/info")
 	public void getCookieInfo() {
-		Cookie cookie = getCookieObject("login");
+		Cookie userCookie = getCookieObject("login");
+		Cookie serverCookie = getCookieObject("server");
+		Cookie serverListCookie = getCookieObject("serverList");
+
 		String username = "";
-		String message = "false";
-		if (cookie != null) {
-			username = cookie.getValue();
-			message = "true";
-		}
+		String server = "";
+		String serverList = "";
+		String message = "true";
+		
 		Map<String, Object> data = new HashMap<String, Object>();
+		if (userCookie==null || serverCookie==null || serverListCookie==null) {
+			message = "false";
+			data.put("message", message);
+			renderJson(data);
+			return;
+		}
+		username = userCookie.getValue();
+		server = serverCookie.getValue();
+		serverList = serverListCookie.getValue();
 		try {
-			String dbs = URLDecoder.decode(getCookie("serverList"), "GBK");
-			String db = URLDecoder.decode(getCookie("server"), "GBK");
+			String dbs = URLDecoder.decode(serverList, "GBK");
+			String db = URLDecoder.decode(server, "GBK");
 			Map<String,Object> jsonMap = JsonToMap.toMap(dbs);
 			Map<String,String> dbsMap = new LinkedHashMap<String, String>();
 			for(Map.Entry<String, Object> entry : jsonMap.entrySet()){

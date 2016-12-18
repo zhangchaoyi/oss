@@ -12,6 +12,7 @@ import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
+import common.interceptor.GmInterceptor;
 import common.service.OperationCurrencyService;
 import common.service.impl.OperationCurrencyServiceImpl;
 
@@ -25,7 +26,7 @@ public class CurrencyController extends Controller {
 	 * 
 	 * @author chris
 	 */
-	@Before(GET.class)
+	@Before({GET.class, GmInterceptor.class})
 	@ActionKey("/operation/currency")
 	public void currencyIndex() {
 		render("currency-obtain-consume.html");
@@ -38,7 +39,7 @@ public class CurrencyController extends Controller {
 	 * @getPara endDate
 	 * @author chris
 	 */
-	@Before(POST.class)
+	@Before({POST.class, GmInterceptor.class})
 	@ActionKey("/api/operation/currency/all")
 	public void queryAllServerCurrency() {
 		String startDate = getPara("startDate", "");
@@ -74,7 +75,7 @@ public class CurrencyController extends Controller {
 	 *            查询帐号
 	 * @author chris
 	 */
-	@Before(POST.class)
+	@Before({POST.class, GmInterceptor.class})
 	@ActionKey("/api/operation/currency/player")
 	public void querySingleCurrency() {
 		String account = getPara("account", "");
