@@ -200,8 +200,10 @@ public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 			break;
 		case "OpenFixedRewardChest":
 			reason = "开固定宝箱奖励";
+			break;
 		case "HandlerExReward":
 			reason = "额外奖励";
+			break;
 		}
 		return reason;
 	}
@@ -264,12 +266,16 @@ public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 			break;
 		case "CHONGZHI":
 			reason = "充值";
+			break;
 		case "NEW_RONDOM_NAME":
 			reason = "重新命名";
+			break;
 		case "HandlerExReward":
 			reason = "额外奖励";
+			break;
 		case "OpenFixedRewardChest":
 			reason = "开固定宝箱奖励";
+			break;
 		}
 		return reason;
 	}
