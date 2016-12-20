@@ -436,7 +436,7 @@ function initMenu(menu){
             menuHtml += '<li> <a href="/oss/operation/mailManagement"> <i class="fa fa-archive"></i>邮件管理</a> </li>';
         }
         if(opSupport.charAt(6)=='1'){
-            menuHtml += '<li> <a href="#"> <i class="fa fa-bell"></i>数据报警</a> </li>';
+            menuHtml += '<li> <a href="/oss/operation/announcement"> <i class="fa fa-bell"></i>公告和跑马灯</a> </li>';
         }
         menuHtml += '</ul> </li>';
     }

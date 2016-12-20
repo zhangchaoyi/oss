@@ -25,7 +25,7 @@ function configTable(data) {
     var _table = $('#data-table-user-management').dataTable({
         "destroy": true,
         "data": data==null?null:data,
-        "dom": '',
+        "dom": '<"top"f>rt<"left"lip>',
         'language': {
             'emptyTable': '没有数据',
             'loadingRecords': '加载中...',
@@ -390,7 +390,7 @@ function setPermission(data){
             $("[data-info='mail-management']").siblings("div").children("input").iCheck('check');
         }
         if(opSupport.charAt(6)=='1'){
-            $("[data-info='data-alert']").siblings("div").children("input").iCheck('check');
+            $("[data-info='announcement']").siblings("div").children("input").iCheck('check');
         }
     }
     if(data.dataDig!=undefined){

@@ -427,7 +427,7 @@ public class AdminController extends Controller {
 						case "mail-management":
 							ca[5] = '1';
 							break;
-						case "data-alert":
+						case "announcement":
 							ca[6] = '1';
 							break;
 						}

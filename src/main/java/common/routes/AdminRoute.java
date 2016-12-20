@@ -10,6 +10,7 @@ import common.controllers.loss.LossController;
 import common.controllers.online.AnalysisController;
 import common.controllers.online.CountController;
 import common.controllers.online.HabitsController;
+import common.controllers.operations.AnnouncementController;
 import common.controllers.operations.CurrencyController;
 import common.controllers.operations.FeedbackController;
 import common.controllers.operations.GmRecordController;
@@ -57,6 +58,7 @@ public class AdminRoute extends Routes {
 		add("/objectObtainConsume", ObjectController.class, "/WEB-INF/views/operation");
 		add("/mailManagement", MailManagementController.class, "/WEB-INF/views/operation");
 		add("/playerInfo", PlayerInfoController.class, "/WEB-INF/views/operation");
+		add("/announcement", AnnouncementController.class, "/WEB-INF/views/operation");
 	}
 
 }

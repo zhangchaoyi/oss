@@ -1041,3 +1041,9 @@ span.withoutIcon {
     color: white;
     font-size: 17px;
 }
+#btn-send-announcement {
+    float:right;
+}
+.without-datepicker {
+    margin-top: 40px;
+}
