@@ -131,10 +131,10 @@ function getDateFromTM(tm){
     if (M >= 1 && M <= 9) {
         M = "0" + M;
     }
-    var D = d.getDate();
-    var h = d.getHours();
-    var m = d.getMinutes();
-    var s = d.getSeconds();
+    var D = d.getDate() < 10?"0" + d.getDate():d.getDate();
+    var h = d.getHours() < 10?"0" + d.getHours():d.getHours();
+    var m = d.getMinutes() < 10?"0" + d.getMinutes():d.getMinutes();
+    var s = d.getSeconds() < 10?"0" + d.getSeconds():d.getSeconds();
 
     return Y+"-"+M+"-"+D+" "+h+":"+m+":"+s;
 }

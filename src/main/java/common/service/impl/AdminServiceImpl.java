@@ -130,7 +130,27 @@ public class AdminServiceImpl implements AdminService {
 		succeed = new SecUserRole().use(db).set("user_id", secUser.get("user_id")).set("role_id", roleId).save();
 		return succeed;
 	}
-
+	
+	/**
+	 * 用户修改密码
+	 * 
+	 */
+	public int changeUserPw(String username, String newPassword, String db){
+		int succeed = 0;
+		String sql = "update sec_user set password = ?,salt = ? where username = ?";
+		String salt = RandomUtil.getRandomString(6);
+		newPassword += newPassword + salt;
+		try {
+			newPassword = EncryptUtils.EncoderByMd5(newPassword);
+		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
+			e.printStackTrace();
+			logger.info("Exception:", e);
+		}
+		succeed = Db.use(db).update(sql, newPassword, salt, username);
+		return succeed;
+	}
+	
+	
 	/**
 	 * 用户名是否已经存在
 	 * 

@@ -249,7 +249,69 @@ public class AdminController extends Controller {
 		data = as.queryUsers(username);
 		renderJson(data);
 	}
-
+	
+	/**
+	 * 校验用户旧密码
+	 * @getPara account
+	 * @getPara oldPassword
+	 * @author chris
+	 */
+	@Before(POST.class)
+	@ActionKey("/api/admin/vertifyOldPw")
+	public void vertifyOldPw(){
+		String username = getPara("username", "");
+		String oldPassword = getPara("oldPassword", "");
+		String key = getPara("key", "");
+		logger.info("paras: {" + "username:" + username + ",password:" + oldPassword + ",key:" + key + "}");
+		try {
+			username = EncryptUtils.aesDecrypt(username, key);
+			oldPassword = EncryptUtils.aesDecrypt(oldPassword, key);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		logger.info("After decrypt:--" + "username:" + username + " password:" + oldPassword + " key:" + key);
+		SecUser secUser = as.getUser(username);
+		if (secUser == null) {
+			renderJson("{\"message\":\"failed\"}");
+			return;
+		}
+		String queryPasswd = secUser.getStr("password");
+		String salt = secUser.getStr("salt");
+		oldPassword += salt;
+		try {
+			if (EncryptUtils.checkpassword(oldPassword, queryPasswd)) {
+				//redirect / forward
+			}
+		}catch(Exception e){
+			logger.info("<vertifyOldPw> Exception:", e);
+			e.printStackTrace();
+		}
+	}
+	
+	/**
+	 * 用户个人修改密码
+	 * @author chris
+	 */
+	@Before(POST.class)
+	@ActionKey("/api/admin/changePassword")
+	public void changePassword(){
+		String username = getPara("username", "");
+		String newPassword = getPara("newPassword", "");
+		String key = getPara("key", "");
+		
+		try {
+			username = EncryptUtils.aesDecrypt(username, key);
+			newPassword = EncryptUtils.aesDecrypt(newPassword, key);
+			for(String db : dbs){
+				//int succeed = as.changeUserPw(username, newPassword, db);
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			logger.info("Exception:", e);
+		}
+	}
+	
 	/**
 	 * 解析获取的js数据map,返回插入mysql表的数据,Map<type,"000"> 0为无,1为有 按顺序一一对应 实时概况 -- 1 报表
 	 * -- 1 玩家分析---6 (新增 活跃 留存 有效 设备分析 生命轨迹) 付费分析---4 (付费数据 付费行为 付费转化 付费排行 付费玩家)
