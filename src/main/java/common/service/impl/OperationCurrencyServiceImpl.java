@@ -59,6 +59,9 @@ public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 				String count = lr.getInt("count").toString();
 				String getConsume = lr.getInt("get_or_consume")==1?"获取":"消耗";
 				String reason =  changeRMBReasonToChinese(lr.getStr("reason"));
+				if("购买物品".equals(reason)){
+					continue;
+				}
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				Date queryTimestamp = lr.getDate("timestamp");
 				String timestamp = sdf.format(queryTimestamp);
@@ -115,6 +118,9 @@ public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 				String count = lr.getInt("count").toString();
 				String getConsume = lr.getInt("get_or_consume")==1?"获取":"消耗";
 				String reason =  changeRMBReasonToChinese(lr.getStr("reason"));
+				if("购买物品".equals(reason)){
+					continue;
+				}
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String timestamp = sdf.format(lr.getDate("timestamp"));
 				List<String> subList = new ArrayList<String>();
