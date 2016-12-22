@@ -61,13 +61,13 @@ public class FeedbackController extends Controller{
 		String port = getPara("port", "");
 		logger.info("params:{ " + "account:" + account + " title:" + title + " content:" + content + " server:" + server + " port:" + port + "}");
 		if("".equals(account)){
-			renderText("提交成功");
+			renderText("帐号格式非法");
 			return;
 		}
 		boolean succeed = os.addFeedback(account, title, content, server, port);
 		if(succeed == true){
 			logger.info("return:" + "succeed");
-			renderText("提交成功");
+			redirect("/operation/feedback/players");
 		}
 	}
 	
