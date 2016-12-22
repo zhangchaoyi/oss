@@ -128,7 +128,7 @@ public class PaymentBehaviorServiceImpl implements PaymentBehaviorService{
 	 * @param endDate  所选结束时间
 	 */
 	public List<Integer> queryTTSPeriod(List<String> categories, String icons, String startDate, String endDate, String db) {
-		String sql = "select UNIX_TIMESTAMP(A.timestamp)second,UNIX_TIMESTAMP(B.timestamp)third from (select*from log_charge where is_product = 1 and DATE_FORMAT(timestamp,'%Y-%m-%d') between ? and ? and charge_times = 2) A left join (select*from log_charge where DATE_FORMAT(timestamp,'%Y-%m-%d') between ? and ? and charge_times = 3) B on A.account = B.account join create_role C on A.account = C.account join device_info D on C.openudid = D.openudid where B.account is not null and D.os in (" + icons + ");";
+		String sql = "select UNIX_TIMESTAMP(A.timestamp)second,UNIX_TIMESTAMP(B.timestamp)third from (select*from log_charge where is_product = 1 and DATE_FORMAT(timestamp,'%Y-%m-%d') between ? and ? and charge_times = 2) A left join (select*from log_charge where DATE_FORMAT(timestamp,'%Y-%m-%d') between ? and ? and charge_times = 3 and is_product = 1) B on A.account = B.account join create_role C on A.account = C.account join device_info D on C.openudid = D.openudid where B.account is not null and D.os in (" + icons + ");";
 		List<LogCharge> tTSPeriod = LogCharge.dao.use(db).find(sql, startDate, endDate, startDate, endDate);
 		
 		//inital

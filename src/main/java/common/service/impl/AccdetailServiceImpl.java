@@ -31,7 +31,7 @@ public class AccdetailServiceImpl implements AccdetailService {
 		String deviceSql = "select B.model,B.resolution,B.os,B.os_version,B.country,B.province,B.carrier,B.net from (select distinct account,openudid  from login where account = ?) A join device_info B on A.openudid = B.openudid";
 		String loginSql = "select DATE_FORMAT(min(login_time),'%Y-%m-%d')firstLogin,DATE_FORMAT(max(login_time),'%Y-%m-%d')lastLogin,count(distinct date)loginDay,count(*)loginTimes  from login where account = ?";
 		String onlineSql = "select A.onlineSum,B.max_level from (select account,sum(online_time)onlineSum from logout where account = ?) A join (select account,max(level)max_level from level_up where account = ?) B on A.account = B.account";
-		String paidSql = "select DATE_FORMAT(min(timestamp),'%Y-%m-%d')firstPaid,DATE_FORMAT(max(timestamp),'%Y-%m-%d')lastPaid,sum(count)paidSum from log_charge where account = ?";
+		String paidSql = "select DATE_FORMAT(min(timestamp),'%Y-%m-%d')firstPaid,DATE_FORMAT(max(timestamp),'%Y-%m-%d')lastPaid,sum(count)paidSum from log_charge where is_product = 1 and account = ?";
 		
 		List<DeviceInfo> device = DeviceInfo.dao.use(db).find(deviceSql, accountId);
 		List<Login> login = Login.dao.use(db).find(loginSql, accountId);
