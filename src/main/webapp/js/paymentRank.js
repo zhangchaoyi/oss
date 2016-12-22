@@ -72,7 +72,7 @@ function configTable(data) {
     var _table = $('#data-table-rank-paymentBehavior').dataTable({
         "destroy": true,
         "data": data==null?null:data.data,
-        "dom": '',
+        "dom": '<"top"f>rt<"left"lip>',
         "order": [[ 0, 'asc' ]],
         'language': {
             'emptyTable': '没有数据',
