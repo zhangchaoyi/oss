@@ -162,7 +162,7 @@ $(function(){
 	contants["servers"] = {
 		"malaiServer":"egghk.koogame.cn",
 		"ucServer":"egguccn2.koogame.cn",
-		"iosServer":"egguccn.koogame.cn",
+		"iosServer":"eggioscn.koogame.cn",
 		"testServer":"eggactest.koogame.cn"
 	};
 	contants["heroFeatureType"] = {

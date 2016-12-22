@@ -94,14 +94,20 @@ function configTable(data) {
          {
            "targets": 2,
            "render": function ( data, type, full, meta ) {
-                var weekday = getWeekdayFromDate(data);
+                var weekday = "";
+                if(data!=null){
+                        weekday = getWeekdayFromDate(data);
+                }
                 return '<span title='+weekday+'>'+data+'</span>';
            }
          },
          {
            "targets": 3,
            "render": function ( data, type, full, meta ) {
-                var weekday = getWeekdayFromDate(data);
+                var weekday = "";
+                if(data!=null){
+                        weekday = getWeekdayFromDate(data);
+                }
                 return '<span title='+weekday+'>'+data+'</span>';
            }
          } ]

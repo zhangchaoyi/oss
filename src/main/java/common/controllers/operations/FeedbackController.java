@@ -173,7 +173,7 @@ public class FeedbackController extends Controller{
 			emailServer = "egguccn2.koogame.cn";
 			break;
 		case "ios":
-			emailServer = "egguccn.koogame.cn";
+			emailServer = "eggioscn.koogame.cn";
 			break;
 		case "test":
 			emailServer = "eggactest.koogame.cn";

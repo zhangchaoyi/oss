@@ -28,7 +28,7 @@ function loadAnnouncementList(tagInfo){
  	//请求游戏服务器
     $.ajax({
         type: "POST",
-        url: getAddressFromIcon(getCookie("server")),
+        url: "http://192.168.0.213:8002/gm",
         contentType: "application/json; charset=utf-8",
         data: JSON.stringify(payloadData),
         crossDomain: true,
