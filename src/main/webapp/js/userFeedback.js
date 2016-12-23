@@ -77,6 +77,7 @@ function configTable(data) {
            }
          } 
      ],
+     "scrollX": true
 
     });
 }
