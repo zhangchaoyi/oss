@@ -28,7 +28,7 @@ function configTable(data) {
         // retrive:true,
         "data": data,
         "dom": '<"top"f>rt<"left"lip>',
-        "order": [[ 1, 'asc' ]],
+        "order": [[ 1, 'desc' ]],
         "lengthMenu": [[10,30,-1 ],[10,30,'全部']],
         'language': {
             'emptyTable': '没有数据',
@@ -41,6 +41,16 @@ function configTable(data) {
             'infoEmpty': '没有数据',
             'infoFiltered': '(过滤总件数 _MAX_ 条)'
         },
+        "columnDefs": [ {
+           "targets": 0,
+           "render": function ( data, type, full, meta ) {
+            if(data.length>15){
+                return "<span title="+ data +">"+data.substr(0,15) + '......'+"</span>";
+            }else{
+                return "<span>"+data+"</span>";
+            }
+          }
+         }],
         "scrollX": true
     });
 }

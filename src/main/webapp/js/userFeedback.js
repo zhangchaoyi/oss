@@ -27,6 +27,7 @@ function configTable(data) {
         "destroy": true,
         "data": data==null?null:data,
         "dom": '<"top"f>rt<"left"lip>',
+        "order": [[ 3, 'desc' ]],
         "lengthMenu": [[7,15,30,-1 ],[7,15,30,'全部']],
         'language': {
             'emptyTable': '没有数据',
