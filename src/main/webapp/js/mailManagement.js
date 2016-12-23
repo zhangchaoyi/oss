@@ -17,8 +17,8 @@ function loadMailInfo(){
 
     var text = [];
 	text.push(accountName);
-	text.push($("input#startDate").attr("value"));
-	text.push($("input#endDate").attr("value"));
+	text.push($("input#startDate").attr("value")+" 00:00:00");
+	text.push($("input#endDate").attr("value")+" 23:59:59");
 
 	var payloadData = {
     "cmd":"get_player_mail_list",

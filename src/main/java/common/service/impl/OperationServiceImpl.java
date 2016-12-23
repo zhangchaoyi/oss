@@ -139,7 +139,7 @@ public class OperationServiceImpl implements OperationService {
 				Map<String, String> emailDetail = getEmailDetail(operation);
 				if(emailDetail.containsKey("errCode")){
 					logger.info(emailDetail.get("errCode"));
-					return data;
+					continue;
 				}
 				List<String> subList = new ArrayList<String>();
 				//帐号-时间-标题-内容-附件--操作人
@@ -150,6 +150,7 @@ public class OperationServiceImpl implements OperationService {
 				subList.add(emailDetail.get("title"));
 				subList.add(emailDetail.get("content"));
 				subList.add(emailDetail.get("attachment"));
+				subList.add(emailDetail.get("level"));
 				subList.add(account);
 				data.add(subList);
 			}
@@ -170,7 +171,7 @@ public class OperationServiceImpl implements OperationService {
 		@SuppressWarnings("unchecked")
 		List<Object> objList = (List<Object>)map.get("parms");
 		//获取发送的帐号
-		if(objList.size()!=4){
+		if(objList.size()!=4&&objList.size()!=5){
 			data.put("errCode", "格式不满足要求");
 			return data;
 		}
@@ -191,6 +192,21 @@ public class OperationServiceImpl implements OperationService {
 				String attachment = getAttachment(props);
 				data.put("attachment", attachment);
 				break;
+			case 4:
+				Map<String, Object> level = JsonToMap.toMap(String.valueOf(objList.get(i)));
+				if(!level.isEmpty()){
+					@SuppressWarnings("unchecked")
+					List<Object> levelList = (List<Object>)level.get("parms");
+					String low = String.valueOf(levelList.get(0)).replace("\"", "");
+					String high = String.valueOf(levelList.get(1)).replace("\"", "");
+					data.put("level", low+"-"+high);
+				}else{
+					data.put("level", "-");
+				}
+				break;
+			}
+			if(!data.containsKey("level")){
+				data.put("level", "-");
 			}
 		}
 		return data;

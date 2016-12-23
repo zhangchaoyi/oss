@@ -101,6 +101,7 @@ $(document).on("click","#table-feedback-detail tbody tr td button.btn.btn-danger
     var id = $(this).attr("id-info");
     $("#reply-account").attr("id-info", id);
     $("#reply-account").attr("readonly","readonly");
+    $("#level-reply").empty();
 });
 //点击发送按钮 需要获取回复反馈的所有内容,包括附件信息,需要验证是否为空或者参数不符合要求
 $("#btn-send").click(function(){
@@ -135,8 +136,21 @@ $("#btn-send").click(function(){
         alert("正文内容不能为空");
         return;
     }
+
+    var levelParam = {};
     if(account=="全服邮件"&&accountInfo=="mail-server"){
         account = '*';
+        // var lowLevel = $("#low-level").val();
+        // var highLevel = $("#high-level").val();
+        // if(lowLevel==""||highLevel==""){
+        //     alert("全服邮件等级不能为空");
+        //     return;
+        // }
+        // levelParam["type"]="level";
+        // var level = [];
+        // level.push(lowLevel);
+        // level.push(highLevel);
+        // levelParam["parms"]=level;
     }
     
 
@@ -183,6 +197,7 @@ $("#btn-send").click(function(){
         }
     }
     text.push(objList);
+    text.push(levelParam);
     var payloadData = {
     "cmd":"send_custom_mail",
     "parms":text,
@@ -228,6 +243,7 @@ $("#btn-send").click(function(){
     //邮件发送完需要清空/还原
     $("#reply-account").val("");
     $("#reply-account").attr("data-info","mail-account");
+    $("#reply-account").attr("placeholder","输入8位帐号");
     $("#account-row").children("span").removeAttr("data-toggle");
     $("#account-row").children("span").text("帐号");
     $("#reply-title").val("");
@@ -235,12 +251,14 @@ $("#btn-send").click(function(){
     $("#btn-attachment").html("<i class='fa fa-plus nest' aria-hidden='true'></i>附件");
     $("div.attachment").empty();
     $("#attach-result").empty();
+    $("#level-reply").empty();
 });
 //点击关闭按钮 还原初始设置
 $("#btn-reply-close,#btn-fb-close").click(function(){
     //关闭邮件需要清空/还原
     $("#reply-account").val("");
     $("#reply-account").attr("data-info","mail-account");
+    $("#reply-account").attr("placeholder","输入8位帐号");
     $("#account-row").children("span").removeAttr("data-toggle");
     $("#account-row").children("span").text("帐号");
     $("#reply-title").val("");
@@ -248,6 +266,7 @@ $("#btn-reply-close,#btn-fb-close").click(function(){
     $("#btn-attachment").html("<i class='fa fa-plus nest' aria-hidden='true'></i>附件");
     $("div.attachment").empty();
     $("#attach-result").empty();
+    $("#level-reply").empty();
 });
 
 
@@ -265,6 +284,7 @@ $("#btn-reply").click(function(){
     $("#area").val("");
     //调整样式变形
     $("body").css("padding-right","0px");
+    $("#level-reply").empty();
 });
 
 //点击详情按钮
@@ -461,6 +481,7 @@ $("ul#select-account > li").click(function(){
         $("#reply-account").val(mailAccountTxt);
         $("#reply-account").attr("readonly","readonly");
         $("#reply-account").attr("placeholder","全服邮件");
+        $("#level-reply").html("<span class='input-group-addon' >等级</span><input type='text' id='low-level' style='width:60px'>---<input type='text' id='high-level' style='width:60px'>");
     }else{
         if(mailAccountInfo=="muti-mail-account"){
             $("#reply-account").attr("placeholder","多个帐号间使用逗号分隔");
@@ -469,6 +490,7 @@ $("ul#select-account > li").click(function(){
         }
         $("#reply-account").val("");
         $("#reply-account").removeAttr("readonly");
+        $("#level-reply").empty();
     }
 });
 

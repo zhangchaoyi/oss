@@ -45,6 +45,7 @@ function loadAnnouncementList(tagInfo){
 
 //公告和跑马灯切换 修改样式
 $("ul.nav.nav-tabs.announcement > li").click(function(){
+	$("#input-content").val("");
 	var info = $(this).children("a").attr("data-info");
 	switch(info){
 		case "rolling-content":
@@ -77,7 +78,7 @@ function dealTableData(retData, tagInfo){
 		case "rolling-content":
 		for(var i in retData){
 			var perData = [];
-			perData.push(retData[i].interval);
+			perData.push(retData[i].interval+'s');
 			perData.push(retData[i].max_count==undefined?"不限":retData[i].max_count);
 			perData.push(retData[i].msg);
 			perData.push(retData[i].id);
@@ -156,11 +157,15 @@ function initRollingContentHtml(){
 $("#btn-send-announcement").click(function(){
 	var info = $("ul.nav.nav-tabs.announcement > li.active > a").attr("data-info");
 	var content = $("#input-content").val();
+	if(content==""){
+		alert("内容不能为空");
+		return;
+	}
 	switch(info){
 		case "announcement":
 			var title = $("#input-title").val();
-			if(title==""||content==""){
-				alert("标题或内容不能为空");
+			if(title==""){
+				alert("标题不能为空");
 				return;
 			}
 			sendAnnouncement(title, content);
