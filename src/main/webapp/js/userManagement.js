@@ -392,6 +392,12 @@ function setPermission(data){
         if(opSupport.charAt(6)=='1'){
             $("[data-info='announcement']").siblings("div").children("input").iCheck('check');
         }
+        if(opSupport.charAt(7)=='1'){
+            $("[data-info='lock-account']").siblings("div").children("input").iCheck('check');
+        }
+        if(opSupport.charAt(8)=='1'){
+            $("[data-info='gag-offline']").siblings("div").children("input").iCheck('check');
+        }
     }
     if(data.dataDig!=undefined){
         var dataDig = data.dataDig;

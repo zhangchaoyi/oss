@@ -438,6 +438,12 @@ function initMenu(menu){
         if(opSupport.charAt(6)=='1'){
             menuHtml += '<li> <a href="/oss/operation/announcement"> <i class="fa fa-bell"></i>公告和跑马灯</a> </li>';
         }
+        if(opSupport.charAt(7)=='1'){
+            menuHtml += '<li> <a href="/oss/operation/lock"> <i class="fa fa-lock"></i>帐号锁定管理</a> </li>';
+        }
+        if(opSupport.charAt(8)=='1'){
+            menuHtml += '<li> <a href="/oss/operation/gagOffline"> <i class="fa fa-stop-circle"></i>禁言与强制下线</a> </li>';
+        }
         menuHtml += '</ul> </li>';
     }
     if(menu.dataDig!=undefined){

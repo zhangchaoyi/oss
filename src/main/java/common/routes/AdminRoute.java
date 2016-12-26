@@ -13,6 +13,8 @@ import common.controllers.online.HabitsController;
 import common.controllers.operations.AnnouncementController;
 import common.controllers.operations.CurrencyController;
 import common.controllers.operations.FeedbackController;
+import common.controllers.operations.GagOfflineController;
+import common.controllers.operations.GameAccountController;
 import common.controllers.operations.GmRecordController;
 import common.controllers.operations.MailManagementController;
 import common.controllers.operations.ObjectController;
@@ -59,6 +61,8 @@ public class AdminRoute extends Routes {
 		add("/mailManagement", MailManagementController.class, "/WEB-INF/views/operation");
 		add("/playerInfo", PlayerInfoController.class, "/WEB-INF/views/operation");
 		add("/announcement", AnnouncementController.class, "/WEB-INF/views/operation");
+		add("/gameAccount", GameAccountController.class, "/WEB-INF/views/operation");
+		add("/gagOffline", GagOfflineController.class, "/WEB-INF/views/operation");
 	}
 
 }
