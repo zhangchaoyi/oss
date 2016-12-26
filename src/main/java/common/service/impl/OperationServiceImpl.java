@@ -45,8 +45,8 @@ public class OperationServiceImpl implements OperationService {
 	 */
 	public List<List<String>> queryFeedback(String startDate, String endDate, String server) {
 		logger.info("params:{"+"server:"+server+"}");
-		String sql = "select * from user_feedback where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and server = ?";
-		List<UserFeedback> userFeedback = UserFeedback.dao.use("malai").find(sql, startDate, endDate, server);
+		String sql = "select * from user_feedback where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and server in ("+ server +")";
+		List<UserFeedback> userFeedback = UserFeedback.dao.use("malai").find(sql, startDate, endDate);
 		List<List<String>> data = new ArrayList<List<String>>();
 		for(UserFeedback uf : userFeedback){
 			String account = uf.getStr("account");

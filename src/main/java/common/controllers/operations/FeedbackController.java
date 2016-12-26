@@ -10,7 +10,6 @@ import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 import common.interceptor.GmInterceptor;
-import common.mysql.DbSelector;
 import common.service.OperationService;
 import common.service.impl.OperationServiceImpl;
 import common.utils.StringUtils;
@@ -82,11 +81,7 @@ public class FeedbackController extends Controller{
 	public void queryFeedback() {
 		String startDate = getPara("startDate", "");
 		String endDate = getPara("endDate", "");
-		String server = getPara("server", getEmailServerNameByServer(DbSelector.getDbName()));
-		
-		if("".equals(server)){
-			server = getEmailServerNameByServer(DbSelector.getDbName());
-		}
+		String server = StringUtils.arrayToQueryString(getParaValues("server[]"));
 		
 		logger.info("params {"+"startDate:"+startDate+",endDate:"+endDate+",server:"+server+"}");
 		List<List<String>> data = os.queryFeedback(startDate, endDate, server);
@@ -161,24 +156,5 @@ public class FeedbackController extends Controller{
 		logger.info("params:{"+"account:"+account+",operation:"+operation+",emailAddress:"+emailAddress+",type"+type+"}");
 		boolean succeed = os.insertGmRecord(account, operation, emailAddress, type);
 		renderText(String.valueOf(succeed));
-	}
-	
-	private String getEmailServerNameByServer(String server){
-		String emailServer = "";
-		switch(server){
-		case "malai":
-			emailServer = "egghk.koogame.cn";
-			break;
-		case "uc":
-			emailServer = "egguccn2.koogame.cn";
-			break;
-		case "ios":
-			emailServer = "eggioscn.koogame.cn";
-			break;
-		case "test":
-			emailServer = "eggactest.koogame.cn";
-			break;
-		}
-		return emailServer;
 	}
 }

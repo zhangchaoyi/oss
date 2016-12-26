@@ -160,10 +160,10 @@ $(function(){
 		"testAddress":"http://120.25.209.140:8002/gm"
 	};
 	contants["servers"] = {
-		"malaiServer":"egghk.koogame.cn",
-		"ucServer":"egguccn2.koogame.cn",
-		"iosServer":"eggioscn.koogame.cn",
-		"testServer":"eggactest.koogame.cn"
+		"malaiServer":["egghk.koogame.cn"],
+		"ucServer":["egguccn2.koogame.cn"],
+		"iosServer":["eggioscn.koogame.cn","eggioscn2.koogame.cn"],
+		"testServer":["eggactest.koogame.cn"]
 	};
 	contants["heroFeatureType"] = {
 		"1":"高血",
