@@ -102,6 +102,10 @@ $("#delete-feedback").click(function(){
 
 //点击某个用户的修改权限按钮 进入个人角色管理页
 $(document).on("click","#data-table-user-management tbody tr td a",function() {
+    //清空checkbox历史记录
+    $(".cu-select-options input").iCheck("uncheck");
+    $("#cu-select-all").iCheck("uncheck");
+
     var accountParam = $(this).attr("data-info");
     if(accountParam=="systemroot"){
         alert("无法修改最高用户权限");
@@ -397,6 +401,9 @@ function setPermission(data){
         }
         if(opSupport.charAt(8)=='1'){
             $("[data-info='gag-offline']").siblings("div").children("input").iCheck('check');
+        }
+        if(opSupport.charAt(9)=='1'){
+            $("[data-info='paid-recover']").siblings("div").children("input").iCheck('check');
         }
     }
     if(data.dataDig!=undefined){

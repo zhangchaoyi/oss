@@ -6,6 +6,8 @@ import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 
+import common.interceptor.GmInterceptor;
+
 @Clear
 public class GagOfflineController extends Controller {
 	/**
@@ -13,7 +15,7 @@ public class GagOfflineController extends Controller {
 	 * @author chris
 	 * @role 所有
 	 */
-	@Before(GET.class)
+	@Before({GET.class, GmInterceptor.class})
 	@ActionKey("/operation/gagOffline")
 	public void gagOffline() {
 		render("gag-offline.html");

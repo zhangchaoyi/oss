@@ -444,6 +444,9 @@ function initMenu(menu){
         if(opSupport.charAt(8)=='1'){
             menuHtml += '<li> <a href="/oss/operation/gagOffline"> <i class="fa fa-stop-circle"></i>禁言与强制下线</a> </li>';
         }
+        if(opSupport.charAt(9)=='1'){
+            menuHtml += '<li> <a href="/oss/operation/paidRecover"> <i class="fa fa-file-powerpoint-o"></i>异常订单恢复</a> </li>';
+        }
         menuHtml += '</ul> </li>';
     }
     if(menu.dataDig!=undefined){

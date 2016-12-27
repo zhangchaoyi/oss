@@ -18,6 +18,7 @@ import common.controllers.operations.GameAccountController;
 import common.controllers.operations.GmRecordController;
 import common.controllers.operations.MailManagementController;
 import common.controllers.operations.ObjectController;
+import common.controllers.operations.PaidRecoverController;
 import common.controllers.operations.PlayerInfoController;
 import common.controllers.payment.PaymentBehaviorController;
 import common.controllers.payment.PaymentDataController;
@@ -63,6 +64,7 @@ public class AdminRoute extends Routes {
 		add("/announcement", AnnouncementController.class, "/WEB-INF/views/operation");
 		add("/gameAccount", GameAccountController.class, "/WEB-INF/views/operation");
 		add("/gagOffline", GagOfflineController.class, "/WEB-INF/views/operation");
+		add("/paidRecover", PaidRecoverController.class, "/WEB-INF/views/operation");
 	}
 
 }

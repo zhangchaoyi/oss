@@ -4,19 +4,17 @@
   <meta charset="utf-8" /> 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" /> 
   <link rel="shortcut icon" type="image/x-icon" href="http://oss.koogame.cn/oss/images/koogame.ico" media="screen" /> 
-  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/dateselector/dateRange.css?v=0.2" /> 
-  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/dateselector/monthPicker.css?v=0.2" /> 
   <link href="http://oss.koogame.cn/oss/css/bootstrap.css?v=0.2" rel="stylesheet" /> 
   <link href="http://oss.koogame.cn/oss/css/font-awesome.css?v=0.2" rel="stylesheet" /> 
   <link href="http://oss.koogame.cn/oss/css/basic.css?v=0.2" rel="stylesheet" /> 
   <link href="http://oss.koogame.cn/oss/css/custom.css?v=0.2" rel="stylesheet" /> 
   <link href="http://oss.koogame.cn/oss/css/header.css?v=0.2" rel="stylesheet" /> 
-  <link href="http://oss.koogame.cn/oss/css/datatemplate.css?v=0.4" rel="stylesheet" /> 
+  <link href="http://oss.koogame.cn/oss/css/datatemplate.css?v=0.3" rel="stylesheet" /> 
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/default.css?v=0.2" /> 
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/component.css?v=0.2" /> 
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/animation.css?v=0.2" /> 
   <link href="http://oss.koogame.cn/oss/css/polaris/polaris.css?v=0.2" rel="stylesheet" /> 
-  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/jquery.dataTables.css?v=0.2" /> 
+  <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/jquery.dataTables.css?v=0.2" />
   <title>KooGame</title>
   <style type="text/css">
     .nav-tab.feedback {
@@ -90,50 +88,23 @@
    <!-- /. NAV SIDE --> 
    <div id="page-wrapper" style="overflow-x: hidden;overflow-y:hidden;min-height:825px"> 
     <div id="page-inner">
-     <!-- /. ROW --> 
      <div class="row without-datepicker" id="data-first"> 
       <div class="panel panel-default"> 
        <div class="panel-heading">
-        <span class="data-first-panel-heading" >游戏公告和跑马灯</span>
+        <span class="data-first-panel-heading" >异常订单恢复</span>
        </div> 
        <div class="panel-body">
-        <div class="tab-content">
-          <ul class="nav nav-tabs announcement">
-           <li class="active"> <a data-toggle="tab" data-info="announcement">公告</a></li> 
-           <li class=""> <a data-toggle="tab" data-info="rolling-content">跑马灯</a></li> 
-          </ul>
-          <div class="panel panel-info">
-            <div class="panel-body">
-                <form role="form">
-                  <div class="form-group announcement-tab">
-                    <label>标题</label><input class='form-control' type='text' id='input-title'>
-                  </div>
-                  <div class="form-group">
-                    <label>内容</label>
-                    <textarea class="form-control" rows="3" id="input-content" style="height:200px"></textarea>
-                  </div>
-                  <a class="btn btn-primary" id="btn-send-announcement">发送</a>
-                </form>
+        <div class="tab-content" style="margin-bottom:30px">
+          <div class="input-group">
+            <div class="input-group-btn">
+              <button type="button" class="btn btn-dafault">帐号</span></button>
             </div>
-          </div>
-          <div class="panel panel-default">
-            <div class="panel-heading" id="running-announcement-header">正在显示的公告</div>
-            <div class="panel-body">
-              <table id="table-announcement-list" class="hover stripe row-border"></table>
-            </div>
-            <div class="modal fade" id="delete-confirm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
-              <div class="modal-dialog"> 
-               <div class="modal-content"> 
-                 <div class="modal-body"> 
-                   <div class="panel-body" style="text-align:center">
-                    <div class="alert alert-danger">确认删除?</div>
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="delete-feedback">确认</button> 
-                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="delete-cancel">取消</button>
-                   </div>
-                 </div>             
-               </div> 
-              </div> 
-            </div>
+            <input type="text" class="form-control" id="input-recover-account" style="width:200px;margin-right:10px">
+            <button type="button" class="btn btn-dafault limit-time">订单号</span></button>
+            <input type="text" class="form-control" id="serial-number" style="width:300px;margin-right:10px">
+            <button type="button" class="btn btn-dafault limit-time">是否正式订单</span></button>
+            <input type="text" class="form-control" id="is-pro" placeholder="0 / 1" style="width:100px;margin-right:10px">
+            <a type="button" class="btn btn-info" id="btn-execute">执行</a>
           </div>
         </div> 
        </div> 
@@ -160,12 +131,12 @@
   <script src="http://oss.koogame.cn/oss/js/button/modernizr.custom.js?v=0.2"></script> 
   <script src="http://oss.koogame.cn/oss/js/button/classie.js?v=0.2"></script> 
   <script src="http://oss.koogame.cn/oss/js/echarts.min.js?v=0.2"></script> 
-  <script src="http://oss.koogame.cn/oss/js/filter/jcfilter.min.js?v=0.2"></script> 
+  <script src="http://oss.koogame.cn/oss/js/filter/jcfilter.min.js?v=0.2"></script>
   <script src="http://oss.koogame.cn/oss/js/dateselector/dateRange.js?v=0.2"></script> 
-  <script src="http://oss.koogame.cn/oss/js/dateselector/monthPicker.js?v=0.2"></script> 
+  <script src="http://oss.koogame.cn/oss/js/dateselector/monthPicker.js?v=0.2"></script>
   <script src="http://oss.koogame.cn/oss/js/checkbox/icheck.js?v=0.2"></script>
   <script src="http://oss.koogame.cn/oss/js/common.js?v=0.7"></script>
   <script src="http://oss.koogame.cn/oss/js/properties.js?v=0.5"></script>
-  <script src="http://oss.koogame.cn/oss/js/announcement.js?v=0.5"></script>
+  <script src="http://oss.koogame.cn/oss/js/paidRecover.js?v=0.7"></script>
  </body>
 </html>

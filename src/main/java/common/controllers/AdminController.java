@@ -498,6 +498,9 @@ public class AdminController extends Controller {
 						case "gag-offline":
 							ca[8] = '1';
 							break;
+						case "paid-recover":
+							ca[9] = '1';
+							break;
 						}
 					}
 					break;
