@@ -111,20 +111,6 @@ public class FeedbackController extends Controller{
 			logger.info("Exception:", e);
 		}
 	}
-	/**
-	 * 删除所选的feedback
-	 * @author chris
-	 * @getPara id[]  获取row id列表
-	 */
-	@Before({POST.class, GmInterceptor.class})
-	@ActionKey("/api/operation/feedback/user/delete")
-	public void deleteFeedbackUserReply() {
-		String ids = StringUtils.arrayToQueryString(getParaValues("ids[]"));
-		logger.info("params: {" + "ids:" + ids + "}");
-		int deleted = os.deleteFeedback(ids);
-		logger.info("return:" + deleted);
-		renderText(String.valueOf(deleted));
-	}
 	
 	/**
 	 * 根据某个row id 查询反馈信息

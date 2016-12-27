@@ -1,6 +1,5 @@
 $(function(){
     loadData();
-    initSelectAll();
     withoutIcon();
 })
 
@@ -27,7 +26,7 @@ function configTable(data) {
         "destroy": true,
         "data": data==null?null:data,
         "dom": '<"top"f>rt<"left"lip>',
-        "order": [[ 3, 'desc' ]],
+        "order": [[ 2, 'desc' ]],
         "lengthMenu": [[7,15,30,-1 ],[7,15,30,'全部']],
         'language': {
             'emptyTable': '没有数据',
@@ -43,7 +42,7 @@ function configTable(data) {
         "columnDefs": [ {
            "targets": -1,
            "render": function ( data, type, full, meta ) {
-            return '<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#feedback" account-info='+ full[1] +' id-info='+ data +'>回复</button>';
+            return '<button type="button" class="btn btn-danger" data-toggle="modal" data-target="#feedback" account-info='+ full[0] +' id-info='+ data +'>回复</button>';
            }
          },
          {
@@ -63,16 +62,7 @@ function configTable(data) {
            }
          },
          {
-           "targets": 0,
-           "render": function ( data, type, full, meta ) {
-            return function(){
-                return '<input type="checkbox" value='+data+'></input>';
-            }()
-
-           }
-         },
-         {
-           "targets": 2,
+           "targets": 1,
            "render": function ( data, type, full, meta ) {
                 return data.substr(0,15) + '......';
            }
@@ -300,45 +290,6 @@ $(document).on("click","#table-feedback-detail tbody tr td button.btn.btn-info",
         $("#btn-reply").attr("id-info",id);
     });
 });
-
-//删除按钮
-$("#delete-feedback").click(function(){
-    var checkboxs = $("#table-feedback-detail tbody tr td input");
-    var list = [];
-    for(var i=0;i<checkboxs.length;i++){
-        if($(checkboxs[i]).prop("checked")){
-            list.push($(checkboxs[i]).attr("value"));
-        }
-    }
-    if(list.length==0){
-        alert("请选择删除用户");
-        return;
-    }
-    $.post("/oss/api/operation/feedback/user/delete", {
-        ids:list
-    },
-    function(data, status) {
-        if(data=="0"){
-            alert("删除失败");
-        }else{
-            alert("删除成功");
-        }
-        loadFeedbackData(getServerFromIcon($("#btn-db").attr("data-info")));
-    });
-});
-
-//初始化 全选 点击事件
-function initSelectAll(){
-    $("#table-feedback-detail thead tr th div ins").click(function(){
-        var checked = $(this).parent().hasClass("checked");
-        if(checked==true) {
-            $("#table-feedback-detail tbody tr td input").prop("checked","checked");
-        }else{
-            $("#table-feedback-detail tbody tr td input").prop("checked","");
-        }
-    });
-    
-}
 
 //附件按钮 切换选项则清除覆盖前面选项
 $(".btn-group.btn-attachment > ul > li").click(function(){

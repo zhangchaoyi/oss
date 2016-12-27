@@ -54,7 +54,7 @@ public class OperationServiceImpl implements OperationService {
 			String createTime = uf.getDate("create_time").toString();
 			String reply = uf.getInt("reply").toString();
 			String id = uf.getInt("id").toString();
-			List<String> subList = new ArrayList<String>(Arrays.asList(id,account,content,createTime,id,reply,id));
+			List<String> subList = new ArrayList<String>(Arrays.asList(account,content,createTime,id,reply,id));
 			data.add(subList);
 		}
 		logger.info("data:" + data);
@@ -72,19 +72,6 @@ public class OperationServiceImpl implements OperationService {
 		int succeed = Db.use("malai").update(sql, id);
 		logger.info("return:" + succeed);
 		return succeed;
-	}
-	
-	/**
-	 * 删除所选的feedback记录
-	 * @para ids  所选的id
-	 * @return int  row id  / 0表示失败
-	 */
-	public int deleteFeedback(String ids) {
-		logger.info("params:{"+"ids"+ids+"}");
-		String sql = "delete from user_feedback where id in (" + ids +")";
-		int deleted = Db.use("malai").update(sql);
-		logger.info("return:" + deleted);
-		return deleted;
 	}
 	
 	/**
