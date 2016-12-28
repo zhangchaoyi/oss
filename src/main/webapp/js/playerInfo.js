@@ -52,34 +52,70 @@ function loadPlayerInfo(){
 }
 
 function configTable(data,dataTable) {
-    $(dataTable).dataTable().fnClearTable();  
-    $(dataTable).dataTable({
-        "destroy": true,
-        // retrive:true,
-        "data": data,
-        "order": [[ 1, 'asc' ]],
-        "dom": '<"top"f>rt<"left"lip>',
-        'language': {
-            'emptyTable': '没有数据',
-            'loadingRecords': '加载中...',
-            'processing': '查询中...',
-            'search': '查询:',
-            'lengthMenu': '每页显示 _MENU_ 条记录',
-            'zeroRecords': '没有数据',
-            "sInfo": "(共 _TOTAL_ 条记录)",
-            'infoEmpty': '没有数据',
-            'infoFiltered': '(过滤总件数 _MAX_ 条)'
-        }
-    });
+    $(dataTable).dataTable().fnClearTable();
+    if(dataTable=="#table-player-info"){
+    	$(dataTable).dataTable({
+	        "destroy": true,
+	        // retrive:true,
+	        "data": data,
+	        "order": [[ 1, 'asc' ]],
+	        "dom": '<"top"f>rt<"left"lip>',
+	        'language': {
+	            'emptyTable': '没有数据',
+	            'loadingRecords': '加载中...',
+	            'processing': '查询中...',
+	            'search': '查询:',
+	            'lengthMenu': '每页显示 _MENU_ 条记录',
+	            'zeroRecords': '没有数据',
+	            "sInfo": "(共 _TOTAL_ 条记录)",
+	            'infoEmpty': '没有数据',
+	            'infoFiltered': '(过滤总件数 _MAX_ 条)'
+	        },
+	        "columnDefs": [ {
+	           "targets": 2,
+	           "render": function ( data, type, full, meta ) {
+	            return '<input class="form-control" readonly="readonly" value='+data+' title='+data+'>';
+	           }
+	         },
+	         {
+	           "targets": 3,
+	           "render": function ( data, type, full, meta ) {
+	            return '<input class="form-control" readonly="readonly" value='+data+' title='+data+'>';
+	           }
+	         }],
+	        scrollX:true
+	    });
+    }else{
+	    $(dataTable).dataTable({
+	        "destroy": true,
+	        // retrive:true,
+	        "data": data,
+	        "order": [[ 1, 'asc' ]],
+	        "dom": '<"top"f>rt<"left"lip>',
+	        'language': {
+	            'emptyTable': '没有数据',
+	            'loadingRecords': '加载中...',
+	            'processing': '查询中...',
+	            'search': '查询:',
+	            'lengthMenu': '每页显示 _MENU_ 条记录',
+	            'zeroRecords': '没有数据',
+	            "sInfo": "(共 _TOTAL_ 条记录)",
+	            'infoEmpty': '没有数据',
+	            'infoFiltered': '(过滤总件数 _MAX_ 条)'
+	        },
+	        scrollX:true
+	    });
+    }
 }
 
-//帐号-角色名-uid-等级-最后一次登录时间-最后一次充值时间-金币-钻石-仓库-PVP-历史排名
+//帐号-角色名-uid-openudid-等级-最后一次登录时间-最后一次充值时间-金币-钻石-仓库-PVP-历史排名
 function dealJsonDataToTable(data){
 	var tableData = [];
 	var row = [];
 	row.push(data.account);
 	row.push(data.role_name);
 	row.push(data.udid==undefined?"-":data.udid);
+	row.push(data.openudid==undefined?"-":data.openudid);
 	row.push(data.level);
 	row.push(data.last_login=="null"?"-":data.last_login);
 	row.push(data.last_paid=="null"?"-":data.last_paid);
