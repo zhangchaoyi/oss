@@ -65,7 +65,7 @@ public class PaymentPlayersController extends Controller {
 	}
 
 	/**
-	 * 根据account查询付费玩家记录
+	 * 根据account或者roleName查询付费玩家记录
 	 * 
 	 * @author chris
 	 * @role vip
@@ -78,7 +78,7 @@ public class PaymentPlayersController extends Controller {
 		String db;
 		try {
 			db = URLDecoder.decode(getCookie("server"), "GBK");
-			List<List<String>> tableData = pps.queryPlayerByAccount(account, db);
+			List<List<String>> tableData = pps.queryPlayerByAccount(account.trim(), db);
 			Map<String, Object> data = new HashMap<String, Object>();
 			data.put("tableData", tableData);
 			renderJson(data);

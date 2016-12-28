@@ -2,16 +2,16 @@ var paymentPlayerListTable = "#data-table-paymentPlayers-list";
 var paymentPlayerTable = "#data-table-paymentPlayer";
 
 $(function(){
-	loadData();
+    loadData();
 })
 
 function loadData(){
-	loadPlayersList();
-	loadPlayerByAccount();
+    loadPlayersList();
+    loadPlayerByAccount();
 }
 
 function loadPlayersList(){
-	$.post("/oss/api/payment/players", {
+    $.post("/oss/api/payment/players", {
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
@@ -22,12 +22,12 @@ function loadPlayersList(){
 }
 
 function loadPlayerByAccount(){
-	var account = $("#account").val();
-	if(account == ""){
-		configTable(null, paymentPlayerTable);
-		return;
-	}
-	$.post("/oss/api/payment/player", {
+    var account = $("#account").val();
+    if(account == ""){
+        configTable(null, paymentPlayerTable);
+        return;
+    }
+    $.post("/oss/api/payment/player", {
         account:account
     },
     function(data, status) {
@@ -58,5 +58,5 @@ function configTable(data,dataTable) {
 }
 
 $("#btn-queryAccount").click(function(){
-	loadPlayerByAccount();
+    loadPlayerByAccount();
 });

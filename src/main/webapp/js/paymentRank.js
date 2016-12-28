@@ -92,7 +92,7 @@ function configTable(data) {
            }
          },
          {
-           "targets": 2,
+           "targets": 3,
            "render": function ( data, type, full, meta ) {
                 var weekday = "";
                 if(data!=null){
@@ -102,7 +102,7 @@ function configTable(data) {
            }
          },
          {
-           "targets": 3,
+           "targets": 4,
            "render": function ( data, type, full, meta ) {
                 var weekday = "";
                 if(data!=null){

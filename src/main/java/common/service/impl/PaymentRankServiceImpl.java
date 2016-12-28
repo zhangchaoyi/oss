@@ -52,18 +52,19 @@ public class PaymentRankServiceImpl implements PaymentRankService {
 		}
 		//得到剩余信息
 		String queryAccounts = StringUtils.arrayToQueryString(accounts.toArray(new String[accounts.size()]));
-		String dSql = "select A.*,B.level,DATE_FORMAT(C.create_time,'%Y-%m-%d')create_time from (select account,sum(online_time)online_time,count(*)times,count(distinct date)online_days from logout group by account) A join (select account,max(level)level from level_up group by account) B on A.account = B.account join create_role C on A.account = C.account where A.account in ("+ queryAccounts +")";
+		String dSql = "select A.*,B.level,DATE_FORMAT(C.create_time,'%Y-%m-%d')create_time,C.team_name from (select account,sum(online_time)online_time,count(*)times,count(distinct date)online_days from logout group by account) A join (select account,max(level)level from level_up group by account) B on A.account = B.account join create_role C on A.account = C.account where A.account in ("+ queryAccounts +")";
 		
 		List<Logout> logout = Logout.dao.use(db).find(dSql);
 		for(Logout l : logout){
 			String account = l.getStr("account");
 			long oT = l.getBigDecimal("online_time").longValue();
 			PaymentRank pr = sort.get(account);
-			pr.setOnlineTimes(DateUtils.getTimeFromSecond(oT));
+			pr.setOnlineTime(DateUtils.getTimeFromSecond(oT));
 			pr.setGameTimes(l.getLong("times"));
 			pr.setOnlineDays(l.getLong("online_days"));
 			pr.setCreateTime(l.getStr("create_time"));
 			pr.setLevel(l.getInt("level"));
+			pr.setRoleName(l.getStr("team_name")==null?"-":l.getStr("team_name"));
 			sort.put(account, pr);
 		}
 		int num = 1;
@@ -72,6 +73,7 @@ public class PaymentRankServiceImpl implements PaymentRankService {
 			List<String> per = new ArrayList<String>();
 			per.add(String.valueOf(num));
 			per.add(entry.getKey());
+			per.add(pr.getRoleName());
 			per.add(pr.getCreateTime());
 			per.add(pr.getFirstPaidTime());
 			per.add(String.valueOf(pr.getRevenue()));

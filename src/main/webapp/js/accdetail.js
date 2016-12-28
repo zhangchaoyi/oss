@@ -1,39 +1,41 @@
-function checkInput(){
-   var result = document.getElementById("account-id").value;
-   
-   if(result == ""  ){
-     alert("帐号ID不能为空");
-     return false;
-   }
-}
-
 $(function(){
   withoutIcon();
   loadData();
 })
 
 function loadData(){
-  var param = GetQueryString("account-id");
-  $("#account-id").attr("value",param);
-  if(param != null && param.toString().length>1){
-      $.post("/oss/api/players/accdetail", {
-        accountId:param
-      },
-      function(data, status) {
-        if(data.code==1){
-          $("#account-not-exist").css("display", "block");
-          setTimeout('$("#account-not-exist").css("display", "none")', 5000);
-          configTable(null);
-          return;   
-        }
-        configTable(data)
-      });
+  var accountName = $("#account-id").val();
+  if(accountName != null && accountName.toString().length>1){
+      loadAccDetail(accountName);
   }else{
       //初始化表头
       configTable(null);
-    }
+  }
 }
 
+function loadAccDetail(accountName){
+  $.post("/oss/api/players/accdetail", {
+    accountId:accountName
+  },
+  function(data, status) {
+    if(data.code==1){
+      $("#account-not-exist").css("display", "block");
+      setTimeout('$("#account-not-exist").css("display", "none")', 5000);
+      configTable(null);
+      return;   
+    }
+    configTable(data)
+  });
+}
+
+$("#btn-query").click(function(){
+    var accountName = $("#account-id").val();
+    if(accountName==null||accountName==""){
+        alert("输入不能为空");
+        return;
+    }
+    loadAccDetail(accountName);
+});
 
 function configTable(data) {
     $('#data-table-detail-first').dataTable().fnClearTable();
@@ -71,14 +73,14 @@ function configTable(data) {
             'infoFiltered': '(过滤总件数 _MAX_ 条)'
         },
         "columnDefs": [ {
-           "targets": 0,
+           "targets": 2,
            "render": function ( data, type, full, meta ) {
                 var weekday = getWeekdayFromDate(data);
                 return '<span title='+weekday+'>'+data+'</span>';
             }
          },
          {
-           "targets": 1,
+           "targets": 3,
            "render": function ( data, type, full, meta ) {
                 var weekday = getWeekdayFromDate(data);
                 return '<span title='+weekday+'>'+data+'</span>';

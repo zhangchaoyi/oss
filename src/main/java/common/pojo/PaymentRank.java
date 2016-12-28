@@ -9,6 +9,7 @@ public class PaymentRank {
 	private String onlineTime;
 	private long gameTimes;
 	private int level;
+	private String roleName;
 	
 	public String getCreateTime() {
 		return createTime;
@@ -54,8 +55,16 @@ public class PaymentRank {
 		return onlineTime;
 	}
 
-	public void setOnlineTimes(String onlineTime) {
+	public void setOnlineTime(String onlineTime) {
 		this.onlineTime = onlineTime;
+	}
+
+	public String getRoleName() {
+		return roleName;
+	}
+
+	public void setRoleName(String roleName) {
+		this.roleName = roleName;
 	}
 
 	public long getGameTimes() {

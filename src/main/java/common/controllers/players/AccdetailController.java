@@ -47,7 +47,7 @@ public class AccdetailController extends Controller {
 		logger.info("params:{" + "accountId" + accountId + "}");
 		try {
 			String db = URLDecoder.decode(getCookie("server"), "GBK");
-			Map<String, Object> data = accdetailService.queryAccdetail(accountId, db);
+			Map<String, Object> data = accdetailService.queryAccdetail(accountId.trim(), db);
 			logger.info("data:" + data);
 			renderJson(data);
 		} catch (UnsupportedEncodingException e) {
