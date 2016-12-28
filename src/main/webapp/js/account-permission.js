@@ -1,5 +1,6 @@
 $(function(){
 	loadData();
+    withoutIcon();
 });
 
 function loadData(){

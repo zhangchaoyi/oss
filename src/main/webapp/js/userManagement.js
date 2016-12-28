@@ -5,6 +5,7 @@ $(function(){
     loadData();
     initSelectAll();
     initSelectMenu();
+    withoutIcon();
 })
 //可以供 header.js 的图标按钮调用
 function loadData() {
