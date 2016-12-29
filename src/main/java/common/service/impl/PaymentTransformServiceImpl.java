@@ -118,7 +118,7 @@ public class PaymentTransformServiceImpl implements PaymentTransformService {
 		List<Login> active = Login.dao.use(db).find(aSql, startDate, endDate);
 		
 		//init 
-		Map<String, PaidRate> sort = new HashMap<String, PaidRate>();
+		Map<String, PaidRate> sort = new LinkedHashMap<String, PaidRate>();
 		for(String date : categories){
 			PaidRate pr = new PaidRate();
 			sort.put(date, pr);
