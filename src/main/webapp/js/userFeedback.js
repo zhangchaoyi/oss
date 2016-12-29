@@ -131,17 +131,17 @@ $("#btn-send").click(function(){
     var levelParam = {};
     if(account=="全服邮件"&&accountInfo=="mail-server"){
         account = '*';
-        // var lowLevel = $("#low-level").val();
-        // var highLevel = $("#high-level").val();
-        // if(lowLevel==""||highLevel==""){
-        //     alert("全服邮件等级不能为空");
-        //     return;
-        // }
-        // levelParam["type"]="level";
-        // var level = [];
-        // level.push(lowLevel);
-        // level.push(highLevel);
-        // levelParam["parms"]=level;
+        var lowLevel = $("#low-level").val();
+        var highLevel = $("#high-level").val();
+        if(lowLevel==""||highLevel==""){
+            alert("全服邮件等级不能为空");
+            return;
+        }
+        levelParam["type"]="level";
+        var level = [];
+        level.push(lowLevel);
+        level.push(highLevel);
+        levelParam["parms"]=level;
     }
     
 
