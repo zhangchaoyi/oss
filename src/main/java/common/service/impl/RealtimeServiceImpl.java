@@ -133,7 +133,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 	 * @param date 时间列表
 	 */
 	public Map<String, Object> queryRealtimePlayerCount(String[] date, String db){
-		String sql = "select sum(online_count)count,hour(online_datetime)hour from online_count where online_date = ? group by hour;";
+		String sql = "select sum(online_count)sum,hour(online_datetime)hour,count(*)count from online_count where online_date = ? group by hour";
 		Map<String, Object> data = new TreeMap<String, Object>(new Comparator<String>(){
 			@Override
 			public int compare(String o1, String o2) {
@@ -148,8 +148,15 @@ public class RealtimeServiceImpl implements RealtimeService{
 			for(int i=0;i<24;i++){
 				sort.put(i, 0L);
 			}
+			//每小时的总在线人数sum/次数count 代表该时段均值
 			for(OnlineCount oc : onlineCount){
-				sort.put(oc.getInt("hour"), oc.getBigDecimal("count").longValue());
+				long count = oc.getLong("count");
+				long sum = oc.getBigDecimal("sum").longValue();
+				double result = (double)sum / (double)count;
+				BigDecimal bg = new BigDecimal(result);
+				result = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				long avg = (long)Math.ceil(result);
+				sort.put(oc.getInt("hour"), avg);
 			}
 			List<Long> al = new ArrayList<Long>();
 			al.addAll(sort.values());

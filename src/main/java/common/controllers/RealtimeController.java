@@ -8,7 +8,6 @@ import org.apache.log4j.Logger;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -120,13 +119,7 @@ public class RealtimeController extends Controller {
 
 			switch (detailTag) {
 			case "rto": {
-				for (String s : date) {
-					List<Long> list = new ArrayList<Long>();
-					for (int i = 0; i < 24; i++) {
-						list.add(0L);
-					}
-					seriesMap.put(s, list);
-				}
+				seriesMap = realtimeService.queryRealtimePlayerCount(date, db);
 				break;
 			}
 			case "equ": {

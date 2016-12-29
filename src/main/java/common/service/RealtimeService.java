@@ -12,4 +12,6 @@ public interface RealtimeService {
 	public Map<String, Object> queryRealtimeAddPlayers(String icons, String[] date, String db);
 	
 	public Map<String, Object> queryRealtimeRevenue(String icons, String[] date, String db);
+	
+	public Map<String, Object> queryRealtimePlayerCount(String[] date, String db);
 }
