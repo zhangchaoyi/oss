@@ -49,8 +49,6 @@ public class AccdetailServiceImpl implements AccdetailService {
 		}else{
 			roleName = accountId;
 			sql = "select account from create_role where team_name = ?";
-			System.out.println(roleName);
-			System.out.println("--------------------------------------");
 			CreateRole cr = CreateRole.dao.use(db).findFirst(sql, roleName);
 			if(cr==null){
 				data.put("code", 1);
