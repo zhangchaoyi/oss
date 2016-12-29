@@ -28,7 +28,7 @@ setInterval(function() {
 setInterval(function(){
     loadRealtimeTableData(false);
     $("div.contrast-data").find("em").show();
-}, 10*1000);
+}, 60*1000);
 
 //explain up and down button 
 $("#btn-explain-up").click(function(){
@@ -146,7 +146,7 @@ function configRealtimeTable(data){
     $("#totalActive").text(data["aP"]);
     $("#payPlayers").text(data["pP"]);
     $("#incomeToday").text(data["rT"]);
-    $("#gameNums").text(data["gT"]);
+    $("#firstPp").text(data["firstPp"]);
     $("#players").text(data["nP"]);
     $("#oldPlayers").text(data["oP"]);
     $("#payNums").text(data["pT"]);
@@ -167,9 +167,9 @@ function configBeforeTable(data){
     $("#incomeTodayDays1").text(data["r1"]);
     $("#incomeTodayDays7").text(data["r7"]);
     $("#incomeTodayDays30").text(data["r30"]);
-    $("#gameNumsDays1").text(data["gT1"]);
-    $("#gameNumsDays7").text(data["gT7"]);
-    $("#gameNumsDays30").text(data["gT30"]);
+    $("#firstPpDays1").text(data["firstPp1"]);
+    $("#firstPpDays7").text(data["firstPp7"]);
+    $("#firstPpDays30").text(data["firstPp30"]);
     $("#playersDays1").text(data["nP1"]);
     $("#playersDays7").text(data["nP7"]);
     $("#playersDays30").text(data["nP30"]);
@@ -194,7 +194,7 @@ function dealRealtimeData(data){
     var aP = $("#totalActive").text();
     var pP = $("#payPlayers").text();
     var rT = $("#incomeToday").text();
-    var gT = $("#gameNums").text();
+    var firstPp = $("#firstPp").text();
     var nP = $("#players").text();
     var oP = $("#oldPlayers").text();
     var pT = $("#payNums").text();
@@ -205,7 +205,7 @@ function dealRealtimeData(data){
     var aPDif = parseInt(data["aP"])-parseInt(aP);
     var pPDif = parseInt(data["pP"])-parseInt(pP);
     var rTDif = parseInt(data["rT"])-parseInt(rT);
-    var gTDif = parseInt(data["gT"])-parseInt(gT);
+    var firstPpDif = parseInt(data["firstPp"])-parseInt(firstPp);
     var nPDif = parseInt(data["nP"])-parseInt(nP);
     var oPDif = parseInt(data["oP"])-parseInt(oP);
     var pTDif = parseInt(data["pT"])-parseInt(pT);
@@ -216,7 +216,7 @@ function dealRealtimeData(data){
     $("#totalActiveEm").text("+" + aPDif);
     $("#payPlayersEm").text("+" + pPDif);
     $("#incomeTodayEm").text("+" + rTDif);
-    $("#gameNumsEm").text("+" + gTDif);
+    $("#firstPpEm").text("+" + firstPpDif);
     $("#playersEm").text("+" + nPDif);
     $("#oldPlayersEm").text("+" + oPDif);
     $("#payNumsEm").text("+" + pTDif);
@@ -236,8 +236,8 @@ function showRealtimeArrowData(){
     var pP1 = $("#payPlayersDays1").text();
     var rT = $("#incomeToday").text();
     var rT1 = $("#incomeTodayDays1").text();
-    var gT = $("#gameNums").text();
-    var gT1 = $("#gameNumsDays1").text();
+    var firstPp = $("#firstPp").text();
+    var firstPp1 = $("#firstPpDays1").text();
     var nP = $("#players").text();
     var nP1 = $("#playersDays1").text();
     var oP = $("#oldPlayers").text();
@@ -253,7 +253,7 @@ function showRealtimeArrowData(){
     var pAP1 = calArrowData(aP,aP1);
     var pPP1 = calArrowData(pP,pP1); 
     var pRT1 = calArrowData(rT,rT1);
-    var pGT1 = calArrowData(gT,gT1);
+    var pfirstPp1 = calArrowData(firstPp,firstPp1);
     var pNP1 = calArrowData(nP,nP1);
     var pOP1 = calArrowData(oP,oP1);
     var pPT1 = calArrowData(pT,pT1);
@@ -264,7 +264,7 @@ function showRealtimeArrowData(){
     showArrow("#totalActiveEmDays1",pAP1);
     showArrow("#payPlayersEmDays1",pPP1);
     showArrow("#incomeTodayEmDays1",pRT1);
-    showArrow("#gameNumsDaysEm1",pGT1);
+    showArrow("#firstPpEmDays1",pfirstPp1);
     showArrow("#playersEmDays1",pNP1);
     showArrow("#oldPlayersEmDays1",pOP1);
     showArrow("#payNumsEmDays1",pPT1);
@@ -286,9 +286,9 @@ function showBeforeArrowData(){
     var rT1 = $("#incomeTodayDays1").text();
     var rT7 = $("#incomeTodayDays7").text();
     var rT30 = $("#incomeTodayDays30").text();
-    var gT1 = $("#gameNumsDays1").text();
-    var gT7 = $("#gameNumsDays7").text();
-    var gT30 = $("#gameNumsDays30").text();
+    var firstPp1 = $("#firstPpDays1").text();
+    var firstPp7 = $("#firstPpDays7").text();
+    var firstPp30 = $("#firstPpDays30").text();
     var nP1 = $("#playersDays1").text();
     var nP7 = $("#playersDays7").text();
     var nP30 = $("#playersDays30").text();
@@ -313,8 +313,8 @@ function showBeforeArrowData(){
     var pPP7 = calArrowData(pP1,pP7);
     var pRT30 = calArrowData(rT7,rT30);
     var pRT7 = calArrowData(rT1,rT7);
-    var pGT30 = calArrowData(gT7,gT30);
-    var pGT7 = calArrowData(gT1,gT7);
+    var pfirstPp30 = calArrowData(firstPp7,firstPp30);
+    var pfirstPp7 = calArrowData(firstPp1,firstPp7);
     var pNP30 = calArrowData(nP7,nP30);
     var pNP7 = calArrowData(nP1,nP7);
     var pOP30 = calArrowData(oP7,oP30);
@@ -334,8 +334,8 @@ function showBeforeArrowData(){
     showArrow("#payPlayersEmDays7",pPP7);
     showArrow("#incomeTodayEmDays30",pRT30);
     showArrow("#incomeTodayEmDays7",pRT7);
-    showArrow("#gameNumsDaysEm30",pGT30);
-    showArrow("#gameNumsDaysEm7",pGT7);
+    showArrow("#firstPpEmDays30",pfirstPp30);
+    showArrow("#firstPpEmDays7",pfirstPp7);
     showArrow("#playersEmDays30",pNP30);
     showArrow("#playersEmDays7",pNP7);
     showArrow("#oldPlayersEmDays30",pOP30);

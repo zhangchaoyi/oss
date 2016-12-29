@@ -22,7 +22,7 @@ import common.utils.DateUtils;
 /**
  * 查询实时数据页 --包括上方表格 和 下方echart
  * 指标说明
- * eT=equipmentToday   aPT=activePlayersToday  pPT=paidPlayersToday  rT=revenueToday        gTT=gameTimesToday
+ * eT=equipmentToday   aPT=activePlayersToday  pPT=paidPlayersToday  rT=revenueToday   (gTT=gameTimesToday)==>(firstPp=firstPaidPlayers)
  * nPT=newPlayersToday  oPT=oldPlayersToday    pTT=paidTimesToday    rSum=revenueSum   lGPT=loginGamePeriodToday    
  * @author chris
  *
@@ -36,7 +36,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 		String aPSql = "select count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and B.os in (" + icons + ")";
 		String pPSql = "select count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and C.os in (" + icons + ")";
 		String rTSql = "select sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and C.os in (" + icons + ")";
-		String gTSql = "select count(*)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and B.os in (" + icons + ")";
+		String firstPpSql = "select count(*)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and A.charge_times=1 and A.is_product=1 and C.os in ("+icons+")";
 		String nPSql = "select count(*)count from create_role A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.create_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and B.os in (" + icons + ")";
 		String oPSql = "select count(*)count from (select distinct C.account from login C join device_info D on C.openudid = D.openudid where D.os in (" + icons + ") and DATE_FORMAT(C.login_time, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')) A left join (select E.account from create_role E join device_info F on E.openudid = F.openudid where F.os in (" + icons + ") and DATE_FORMAT(E.create_time,'%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')) B on A.account = B.account where B.account is null";
 		String pTSql = "select count(*)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and C.os in (" + icons + ") and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d')";
@@ -47,7 +47,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 		List<Login> aP = Login.dao.use(db).find(aPSql);
 		List<LogCharge> pP = LogCharge.dao.use(db).find(pPSql);
 		List<LogCharge> rT = LogCharge.dao.use(db).find(rTSql);
-		List<Login> gT = Login.dao.use(db).find(gTSql);
+		List<LogCharge> firstPp = LogCharge.dao.use(db).find(firstPpSql);
 		List<CreateRole> nP = CreateRole.dao.use(db).find(nPSql);
 		List<Login> oP = Login.dao.use(db).find(oPSql);
 		List<LogCharge> pT = LogCharge.dao.use(db).find(pTSql);
@@ -59,7 +59,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 		data.put("aP", aP.get(0).getLong("count").toString());
 		data.put("pP", pP.get(0).getLong("count").toString());
 		data.put("rT", rT.get(0).getDouble("revenue")==null?"0.0":rT.get(0).getDouble("revenue").toString());
-		data.put("gT", gT.get(0).getLong("count").toString());
+		data.put("firstPp", firstPp.get(0).getLong("count").toString());
 		data.put("nP", nP.get(0).getLong("count").toString());
 		data.put("oP", oP.get(0).getLong("count").toString());
 		data.put("pT", pT.get(0).getLong("count").toString());
@@ -82,7 +82,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 		String aPSql = "select count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and B.os in (" + icons + ")";
 		String pPSql = "select count(distinct A.account)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and C.os in (" + icons + ")";
 		String rSql = "select sum(A.count)revenue from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and C.os in (" + icons + ")";
-		String gTSql = "select count(*)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and B.os in (" + icons + ")";
+		String firstPpSql = "select count(*)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and A.charge_times=1 and A.is_product=1 and C.os in ("+icons+")";
 		String nPSql = "select count(*)count from create_role A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.create_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and B.os in (" + icons + ")";
 		String oPSql = "select count(*)count from (select distinct C.account from login C join device_info D on C.openudid = D.openudid where D.os in (" + icons + ") and DATE_FORMAT(C.login_time, '%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day), '%Y-%m-%d')) A left join (select E.account from create_role E join device_info F on E.openudid = F.openudid where F.os in (" + icons + ") and DATE_FORMAT(E.create_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day), '%Y-%m-%d')) B on A.account = B.account where B.account is null";
 		String pTSql = "select count(*)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and C.os in (" + icons + ")";
@@ -98,7 +98,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 			List<Login> aP = Login.dao.use(db).find(aPSql, d);
 			List<LogCharge> pP = LogCharge.dao.use(db).find(pPSql, d);
 			List<LogCharge> r = LogCharge.dao.use(db).find(rSql, d);
-			List<Login> gT = Login.dao.use(db).find(gTSql, d);
+			List<LogCharge> firstPp = LogCharge.dao.use(db).find(firstPpSql, d);
 			List<CreateRole> nP = CreateRole.dao.use(db).find(nPSql, d);
 			List<Login> oP = Login.dao.use(db).find(oPSql, d, d);
 			List<LogCharge> pT = LogCharge.dao.use(db).find(pTSql, d);
@@ -109,7 +109,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 			data.put("aP"+d, aP.get(0).getLong("count").toString());
 			data.put("pP"+d, pP.get(0).getLong("count").toString());
 			data.put("r"+d, r.get(0).getDouble("revenue")==null?"0.0":r.get(0).getDouble("revenue").toString());
-			data.put("gT"+d, gT.get(0).getLong("count").toString());
+			data.put("firstPp"+d, firstPp.get(0).getLong("count").toString());
 			data.put("nP"+d, nP.get(0).getLong("count").toString());
 			data.put("oP"+d, oP.get(0).getLong("count").toString());
 			data.put("pT"+d, pT.get(0).getLong("count").toString());
