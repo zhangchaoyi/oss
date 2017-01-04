@@ -67,6 +67,7 @@ public class CountController extends Controller {
 			data.put("data", seriesMap);
 			data.put("periodPcu", queryData.get("periodPcu"));
 			data.put("historyPcu", queryData.get("historyPcu"));
+			data.put("latestCcu", queryData.get("latestCcu"));
 			logger.info("data:" + data);
 			renderJson(data);
 		} catch (UnsupportedEncodingException e) {

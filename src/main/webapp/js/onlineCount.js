@@ -20,6 +20,7 @@ function loadCcuData(){
         configChart(data, ccuChart);
         $("#period-pcu").text(data.periodPcu);
 		$("#history-pcu").text(data.historyPcu);
+        $("#latest-ccu").text(data.latestCcu);
     });
 }
 

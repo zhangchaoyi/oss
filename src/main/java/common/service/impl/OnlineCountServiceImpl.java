@@ -34,16 +34,19 @@ public class OnlineCountServiceImpl implements OnlineCountService {
 			ccu.add(count);
 			onlineDatetime.add(sdf.format(datetime));
 		}
-		
+	
 		long periodPcu = 0;
 		long historyPcu = 0;
+		long latestCcu = 0;
 		periodPcu = pcu.getLong("max_period_pcu")==null?0:pcu.getLong("max_period_pcu");
 		historyPcu = pcu.getInt("max_pcu")==null?0:pcu.getInt("max_pcu");
+		latestCcu = ccu.get(ccu.size()-1);
 		
 		data.put("ccu", ccu);
 		data.put("onlineDatetime", onlineDatetime);
 		data.put("periodPcu", periodPcu);
 		data.put("historyPcu", historyPcu);
+		data.put("latestCcu", latestCcu);
 		
 		return data;
 	}
