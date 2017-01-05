@@ -4,11 +4,17 @@ $(function(){
 });
 
 function loadData(){
+	var account = $("#input-query-account").val();
+	if(account==null||account==""){
+		configTable(null);
+		return;
+	}
+	queryOrderInfo(account);
 }
 
 $("#btn-execute").click(function(){
 	var account = $("#input-recover-account").val();
-	var serialNumber = $("#serial-number").val();
+	var serialNumber = $("#serial-number").val().trim();
 	var isPro = $("#is-pro").val();
 	if(account==null||account==""){
 		alert("帐号不能为空");
@@ -43,12 +49,56 @@ $("#btn-execute").click(function(){
         	if(data.result=='1'){
         		alert("处理成功");
         	}else{
-        		alert("处理失败");
+        		alert("处理失败,原因:"+data.ret_data);
         	}
         }
     });
 });
 
+$("#btn-query").click(function(){
+	var account = $("#input-query-account").val().trim();
+	if(account==null||account==""){
+		alert("帐号不能为空");
+		return;
+	}
+	queryOrderInfo(account);
+});
+
+function queryOrderInfo(account){
+	$.post("/oss/api/operation/order", {
+		account:account
+    },
+    function(data, status) {
+    	if(data.result=='0'){
+    		alert("记录不存在");
+    		configTable(null);
+    		return;
+    	}
+    	configTable(data.tableData);
+    });
+}
+
+function configTable(tableData){
+    $('#table-order-query').dataTable().fnClearTable();  
+    $('#table-order-query').dataTable({
+        "destroy": true,
+        // retrive:true,
+        "data": tableData,
+        "dom": '<"top"f>rt<"left"lip>',
+        "order": [[ 5, 'desc' ]],
+        'language': {
+            'emptyTable': '没有数据',
+            'loadingRecords': '加载中...',
+            'processing': '查询中...',
+            'search': '查询:',
+            'lengthMenu': '每页显示 _MENU_ 条记录',
+            'zeroRecords': '没有数据',
+            "sInfo": "(共 _TOTAL_ 条记录)",
+            'infoEmpty': '没有数据',
+            'infoFiltered': '(过滤总件数 _MAX_ 条)'
+        }
+    });
+}
 
 //锁死图标选择下拉菜单 清除按钮
 $("button.btn.btn-default.btn-circle").attr('disabled',"true");

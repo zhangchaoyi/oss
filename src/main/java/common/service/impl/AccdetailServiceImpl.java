@@ -122,7 +122,7 @@ public class AccdetailServiceImpl implements AccdetailService {
 		return data;
 	}
 
-	public boolean isNumeric(String str){ 
+	private boolean isNumeric(String str){ 
 		Pattern pattern = Pattern.compile("[0-9]*"); 
 		Matcher isNum = pattern.matcher(str);
 		if( !isNum.matches() ){

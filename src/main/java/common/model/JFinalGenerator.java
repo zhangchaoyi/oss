@@ -37,7 +37,7 @@ public class JFinalGenerator {
 		gernerator.addExcludedTable("log_battle");
 		gernerator.addExcludedTable("refresh_arena_exp_count");
 		gernerator.addExcludedTable("client_view_hero_mp4");
-		
+		gernerator.addExcludedTable("game_gm_cmd");
 		
 		// 设置是否在 Model 中生成 dao 对象
 		gernerator.setGenerateDaoInModel(true);

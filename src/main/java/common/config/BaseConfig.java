@@ -130,6 +130,6 @@ public class BaseConfig extends JFinalConfig {
 	//用于jfinal Generator 中重新生成表model
 	public static C3p0Plugin createC3p0Plugin() {
 		PropKit.use("config.txt");
-		return new C3p0Plugin(PropKit.get("malaiUrl"), PropKit.get("user"), PropKit.get("password").trim());
+		return new C3p0Plugin(PropKit.get("ucUrl"), PropKit.get("user"), PropKit.get("password").trim());
 	}
 }
