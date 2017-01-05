@@ -48,6 +48,7 @@ $("#btn-execute").click(function(){
         success: function (data) {
         	if(data.result=='1'){
         		alert("处理成功");
+        		loadData();
         	}else{
         		alert("处理失败,原因:"+data.ret_data);
         	}
