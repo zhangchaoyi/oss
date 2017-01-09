@@ -770,7 +770,6 @@ div.realtime-data span {
 }
 @media screen and (max-width: 1749px){
     div.realtime-data span {font-size: 30px;}
-    span#dPaidRate {margin-left: -20px;}
 }
 @media screen and (max-width: 1659px){
     div.realtime-data span {font-size: 22px;}
