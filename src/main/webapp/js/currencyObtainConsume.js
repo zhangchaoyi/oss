@@ -85,7 +85,7 @@ function configTable(data,dataTable) {
         "destroy": true,
         // retrive:true,
         "data": data,
-        "order": [[ 1, 'asc' ]],
+        "order": [[ 1, 'desc' ]],
         "dom": '<"top"f>rt<"left"lip>',
         'language': {
             'emptyTable': '没有数据',

@@ -761,10 +761,24 @@ div.realtime-data h3 {
     font-size: 14px;
     font-weight: normal;
 }
+
 div.realtime-data span {
     padding: 0 0 0px 30px;
-    font-size: 30px;
 }
+@media screen and (min-width: 1750px){
+    div.realtime-data span {font-size: 30px;}
+}
+@media screen and (max-width: 1749px){
+    div.realtime-data span {font-size: 30px;}
+    span#dPaidRate {margin-left: -20px;}
+}
+@media screen and (max-width: 1659px){
+    div.realtime-data span {font-size: 22px;}
+}
+@media screen and (max-width: 1310px){
+    div.realtime-data span {font-size: 14px;}
+}
+
 div.realtime-data em {
     font-size: 16px;
     color: #67a600;

@@ -135,11 +135,11 @@ function loadRealtimeTableData(initial){
 function configRealtimeTable(data){
     $("#dActivateDev-dNewAccount").text(data["dActivateDev"]+" / "+data["dNewAccount"]);
     $("#dau-dauOld").text(data["dau"]+" / "+data["dauOld"]);
-    $("#dPaidRate").text(data["dnewPaidRate"]+" / "+data["dPaidRate"]+" / "+data["allPaidRate"]);
+    $("#dPaidRate").text(data["dnewPaidRate"]+" / "+data["allPaidRate"]);
     $("#dr-allr").text(data["dRevenue"]+" / "+data["allRevenue"]);
     $("#dfirstPp-dPp").text(data["dFirstPaid"]+" / "+data["dPaidDev"]);
     $("#allActivateDev-allNewAccount").text(data["allActivateDev"]+" / "+data["allNewAccount"]);
-    $("#DAU-ARPU").text(data["dDAUARPU"]+" / ");
+    $("#DAU-ARPU").text(data["dDAUARPU"]+" / "+data["dPaidRate"]);
     $("#ARPU-ARPPU").text(data["ARPU"]+" / "+data["ARPPU"]);
     $("#avgPaidTimes").text(data["dAvgPaidTimes"]+" / "+data["allAvgPaidTimes"]);
     $("#dAvgLoginTimes").text(data["dAvgSinglePeriod"]+" / "+data["dAvgLoginTimes"]);
@@ -150,11 +150,11 @@ function configBeforeTable(data){
     for(var i in arr){
         $("#dActivateDev-dNewAccount-Days"+arr[i]).text(data["dActivateDev"+arr[i]]+" / "+data["dNewAccount"+arr[i]]);
         $("#dau-dauOld-Days"+arr[i]).text(data["dau"+arr[i]]+" / "+data["dauOld"+arr[i]]);
-        $("#dPaidRate-Days"+arr[i]).text(data["dnewPaidRate"+arr[i]]+" / "+data["dPaidRate"+arr[i]]+data["allPaidRate"+arr[i]]);
+        $("#dPaidRate-Days"+arr[i]).text(data["dnewPaidRate"+arr[i]]+" / "+data["allPaidRate"+arr[i]]);
         $("#dr-allr-Days"+arr[i]).text(data["dRevenue"+arr[i]]+" / "+data["allRevenue"+arr[i]]);
         $("#dfirstPp-dPp-Days"+arr[i]).text(data["dFirstPaid"+arr[i]]+" / "+data["dPaidDev"+arr[i]]);
         $("#allActivateDev-allNewAccount-Days"+arr[i]).text(data["allActivateDev"+arr[i]]+" / "+data["allNewAccount"+arr[i]]);
-        $("#DAU-ARPU-Days"+arr[i]).text(data["dDAUARPU"+arr[i]]+" / ");
+        $("#DAU-ARPU-Days"+arr[i]).text(data["dDAUARPU"+arr[i]]+" / "+data["dPaidRate"+arr[i]]);
         $("#ARPU-ARPPU-Days"+arr[i]).text(data["ARPU"+arr[i]]+" / "+data["ARPPU"+arr[i]]);
         $("#avgPaidTimes-Days"+arr[i]).text(data["dAvgPaidTimes"+arr[i]]+" / "+data["allAvgPaidTimes"+arr[i]]);
         $("#dAvgLoginTimes-Days"+arr[i]).text(data["dAvgSinglePeriod"+arr[i]]+" / "+data["dAvgLoginTimes"+arr[i]]);
