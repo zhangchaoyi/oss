@@ -41,7 +41,7 @@ function configTable(data,dataTable) {
         "destroy": true,
         // retrive:true,
         "data": data==null?null:data.tableData,
-        "order": [[ 1, 'desc' ]],
+        "order": [[ 3, 'desc' ]],
         "dom": '<"top"f>rt<"left"lip>',
         "lengthMenu": [[10,30,-1 ],[10,30,'全部']],
         'language': {

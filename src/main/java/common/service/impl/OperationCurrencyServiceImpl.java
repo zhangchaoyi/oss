@@ -97,12 +97,19 @@ public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 	 * @return tableData
 	 * @DESC 对于个人的钻石查询，由于reason=OBJ和reason=CHONGZHI 存在重复，因此需要去除OBJ中的CHONGZHI
 	 */
-	public List<List<String>> querySingleCurrency(String startDate, String endDate, String currency, String account, String db) {
+	public Map<String, Object> querySingleCurrency(String startDate, String endDate, String currency, String account, String db) {
 		String goldSql = "select account,count,get_or_consume,reason,timestamp from log_gold where date between ? and ? and account = ?";
 		String RMBSql = "select account,count,get_or_consume,reason,timestamp from log_RMB where date between ? and ? and account = ?";
+		String goldGetConsumeSql = "select sum(case when get_or_consume=1 then count else 0 end)getSum,sum(case when get_or_consume=0 then count else 0 end)consumeSum from log_gold where account = ? and date between ? and ?";
+		String RMBGetConsumeSql = "select sum(case when get_or_consume=1 and reason!='CHONGZHI' then count else 0 end)getSum,sum(case when get_or_consume=0 then count else 0 end)consumeSum from log_RMB where account = ? and date between ? and ?";
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		List<List<String>> data = new ArrayList<List<String>>();
+		
 		if(currency.equals("gold")){
 			List<LogGold> logGold = LogGold.dao.use(db).find(goldSql, startDate, endDate, account);
+			LogGold goldGetConsume = LogGold.dao.use(db).findFirst(goldGetConsumeSql, account, startDate, endDate);
+			//个人流水金币日志
 			for(LogGold lg : logGold){
 				String count = lg.getInt("count").toString();
 				String getConsume = lg.getInt("get_or_consume")==1?"获取":"消耗";
@@ -118,8 +125,15 @@ public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 				subList.add(getConsume);
 				data.add(subList);
 			}
+			//个人总消耗获得
+			long goldGet = goldGetConsume.getBigDecimal("getSum")==null?0:goldGetConsume.getBigDecimal("getSum").longValue();
+			long goldConsume = goldGetConsume.getBigDecimal("consumeSum")==null?0:goldGetConsume.getBigDecimal("consumeSum").longValue();
+			dataMap.put("tableData", data);
+			dataMap.put("get", goldGet);
+			dataMap.put("consume", goldConsume);
 		}else{
 			List<LogRmb> logRmb = LogRmb.dao.use(db).find(RMBSql, startDate, endDate, account);
+			LogRmb RmbGetConsume = LogRmb.dao.use(db).findFirst(RMBGetConsumeSql, account, startDate, endDate);
 			//Map<count,Map<timestamp,CurrencyRmb>>
 			Map<Integer,Map<Long,CurrencyRmb>> objMap = new HashMap<Integer,Map<Long,CurrencyRmb>>();
 			//获取objMap
@@ -199,8 +213,14 @@ public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 					data.add(subList);
 				}
 			}
+			//个人钻石总消耗获得
+			long RmbGet = RmbGetConsume.getBigDecimal("getSum")==null?0:RmbGetConsume.getBigDecimal("getSum").longValue();
+			long RmbConsume = RmbGetConsume.getBigDecimal("consumeSum")==null?0:RmbGetConsume.getBigDecimal("consumeSum").longValue();
+			dataMap.put("tableData", data);
+			dataMap.put("get", RmbGet);
+			dataMap.put("consume", RmbConsume);
 		}
-		return data;
+		return dataMap;
 	} 
 	
 	private String changeGoldReasonToChinese(String reason){

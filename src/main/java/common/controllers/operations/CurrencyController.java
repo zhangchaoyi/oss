@@ -3,7 +3,6 @@ package common.controllers.operations;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
 import com.jfinal.aop.Before;
@@ -87,8 +86,7 @@ public class CurrencyController extends Controller {
 		String db;
 		try {
 			db = URLDecoder.decode(getCookie("server"), "GBK");
-
-			List<List<String>> queryData = ocs.querySingleCurrency(startDate, endDate, currency, account, db);
+			Map<String, Object> queryData = ocs.querySingleCurrency(startDate, endDate, currency, account, db);
 			renderJson(queryData);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();

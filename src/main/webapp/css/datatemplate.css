@@ -1066,3 +1066,15 @@ span.withoutIcon {
 button.btn.btn-dafault.limit-time {
     float: left;
 }
+em.all-get-consume {
+    margin-left: 25px;
+}
+div#all-get-consume {
+    font-size: x-large;
+    margin: 3px 10px 0px 0px;
+    float: left;
+}
+.single-num{
+    color: #e25856;
+    font-weight: bold;
+}
