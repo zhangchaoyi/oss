@@ -11,7 +11,7 @@
   <link href="http://oss.koogame.cn/oss/css/basic.css?v=0.2" rel="stylesheet" /> 
   <link href="http://oss.koogame.cn/oss/css/custom.css?v=0.2" rel="stylesheet" /> 
   <link href="http://oss.koogame.cn/oss/css/header.css?v=0.2" rel="stylesheet" /> 
-  <link href="http://oss.koogame.cn/oss/css/datatemplate.css?v=0.3" rel="stylesheet" /> 
+  <link href="http://oss.koogame.cn/oss/css/datatemplate.css?v=0.5" rel="stylesheet" /> 
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/default.css?v=0.2" /> 
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/component.css?v=0.2" /> 
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/animation.css?v=0.2" /> 
@@ -321,240 +321,190 @@
       <div class="realtimeInfo">
         <div class="realtime-title">
           <div class="realtime-data">
-            <h3>设备激活(含重复安装):</h3>
-            <span id="equipment">0</span>
-            <em id="equipmentEm"></em>
+            <h3>今日新增 设备/帐号:</h3>
+            <span id="dActivateDev-dNewAccount">0</span>
           </div>
           <div class="realtime-data">
-            <h3>总活跃:</h3>
-            <span id="totalActive">0</span>
-            <em id="totalActiveEm"></em>
+            <h3>DAU/DAU-老玩家:</h3>
+            <span id="dau-dauOld">0</span>
           </div>
           <div class="realtime-data">
-            <h3>付费玩家:</h3>
-            <span id="payPlayers">0</span>
-            <em id="payPlayersEm"></em>
+            <h3>付费率 新增/总计</h3>
+            <span id="dPaidRate">0</span>
           </div>
           <div class="realtime-data">
-            <h3>今日收入:</h3>
-            <span id="incomeToday">0</span>
-            <em id="incomeTodayEm"></em>
+            <h3>收入 今日/总计:</h3>
+            <span id="dr-allr">0</span>
           </div>
           <div class="realtime-data">
-            <h3>首付玩家:</h3>
-            <span id="firstPp">0</span>
-            <em id="firstPpEm">0</em>
+            <h3>今日 首付人数/付费人数:</h3>
+            <span id="dfirstPp-dPp">0</span>
           </div>
         </div>
         <div class="realtime-content up">
           <div class="contrast-data">
             <p>
              <b>昨日:</b>
-             <span class="contrastval" id="equipmentDays1">0</span>
-             <em id="equipmentEmDays1" class="red"><i class="fa fa-arrow-down" aria-hidden="true"></i>0</em>
+             <span class="contrastval" id="dActivateDev-dNewAccount-Days1">0</span>
             </p>
             <p>
              <b>7日前:</b>
-             <span class="contrastval" id="equipmentDays7">0</span>
-             <em id="equipmentEmDays7" class="red"></em>
+             <span class="contrastval" id="dActivateDev-dNewAccount-Days7">0</span>
             </p>
             <p>
              <b>30日前:</b>
-             <span class="contrastval" id="equipmentDays30">0</span>
-             <em id="equipmentEmDays30" class="red"></em>
+             <span class="contrastval" id="dActivateDev-dNewAccount-Days30">0</span>
             </p>
           </div>
           <div class="contrast-data">
             <p>
              <b>昨日:</b>
-             <span class="contrastval" id="totalActiveDays1">0</span>
-             <em id="totalActiveEmDays1" class="red"></em>
+             <span class="contrastval" id="dau-dauOld-Days1">0</span>
             </p>
             <p>
              <b>7日前:</b>
-             <span class="contrastval" id="totalActiveDays7">0</span>
-             <em id="totalActiveEmDays7" class="red"></em>
+             <span class="contrastval" id="dau-dauOld-Days7">0</span>
             </p>
             <p>
              <b>30日前:</b>
-             <span class="contrastval" id="totalActiveDays30">0</span>
-             <em id="totalActiveEmDays30" class="red"></em>
+             <span class="contrastval" id="dau-dauOld-Days30">0</span>
             </p>
           </div>
           <div class="contrast-data">
             <p>
              <b>昨日:</b>
-             <span class="contrastval" id="payPlayersDays1">0</span>
-             <em id="payPlayersEmDays1" class="red"><i class="fa fa-arrow-down" aria-hidden="true"></i>0</em>
+             <span class="contrastval" id="dPaidRate-Days1">0</span>
             </p>
             <p>
              <b>7日前:</b>
-             <span class="contrastval" id="payPlayersDays7">0</span>
-             <em id="payPlayersEmDays7" class="red"></em>
+             <span class="contrastval" id="dPaidRate-Days7">0</span>
             </p>
             <p>
              <b>30日前:</b>
-             <span class="contrastval" id="payPlayersDays30">0</span>
-             <em id="payPlayersEmDays30" class="red"></em>
+             <span class="contrastval" id="dPaidRate-Days30">0</span>
             </p>
           </div>
           <div class="contrast-data">
             <p>
              <b>昨日:</b>
-             <span class="currency">$</span>
-             <span class="contrastval" id="incomeTodayDays1">0</span>
-             <em id="incomeTodayEmDays1" class="red"><i class="fa fa-arrow-down" aria-hidden="true"></i>0</em>
+             <span class="contrastval" id="dr-allr-Days1">0</span>
             </p>
             <p>
              <b>7日前:</b>
-             <span class="currency">$</span>
-             <span class="contrastval" id="incomeTodayDays7">0</span>
-             <em id="incomeTodayEmDays7" class="red"></em>
+             <span class="contrastval" id="dr-allr-Days7">0</span>
             </p>
             <p>
              <b>30日前:</b>
-             <span class="currency">$</span>
-             <span class="contrastval" id="incomeTodayDays30">0</span>
-             <em id="incomeTodayEmDays30" class="red"></em>
+             <span class="contrastval" id="dr-allr-Days30">0</span>
             </p>
           </div>
           <div class="contrast-data">
             <p>
              <b>昨日:</b>
-             <span class="contrastval" id="firstPpDays1">0</span>
-             <em id="firstPpEmDays1" class="red"></em>
+             <span class="contrastval" id="dfirstPp-dPp-Days1">0</span>
             </p>
             <p>
              <b>7日前:</b>
-             <span class="contrastval" id="firstPpDays7">0</span>
-             <em id="firstPpEmDays7" class="red"></em>
+             <span class="contrastval" id="dfirstPp-dPp-Days7">0</span>
             </p>
             <p>
              <b>30日前:</b>
-             <span class="contrastval" id="firstPpDays30">0</span>
-             <em id="firstPpEmDays30" class="red"></em>
+             <span class="contrastval" id="dfirstPp-dPp-Days30">0</span>
             </p>
           </div>
         </div>
 
         <div class="realtime-title">
           <div class="realtime-data">
-            <h3>新增玩家:</h3>
-            <span id="players">0</span>
-            <em id="playersEm"></em>
+            <h3>总计新增 设备/帐号:</h3>
+            <span id="allActivateDev-allNewAccount">0</span>
           </div>
           <div class="realtime-data">
-            <h3>老玩家:</h3>
-            <span id="oldPlayers">0</span>
-            <em id="oldPlayersEm"></em>
+            <h3>DAU ARPU 今日/今日付费率:</h3>
+            <span id="DAU-ARPU">0</span>
           </div>
           <div class="realtime-data">
-            <h3>付费次数:</h3>
-            <span id="payNums">0</span>
-            <em id="payNumsEm"></em>
+            <h3>付费 ARPU/ARPPU:</h3>
+            <span id="ARPU-ARPPU">0</span>
           </div>
           <div class="realtime-data">
-            <h3>累计收入:</h3>
-            <span id="incomeAccumulative">0</span>
-            <em id="incomeAccumulativeEm"></em>
+            <h3>人均付费次数 今日/总均:</h3>
+            <span id="avgPaidTimes">0</span>
           </div>
           <div class="realtime-data">
-            <h3>平均每次游戏时长:</h3>
-            <span id="gameTimes">0</span>
-            <font>秒</font>
-            <em id="gameTimesEm"></em>
+            <h3>今日 平均单次时长/人均登录次数:</h3>
+            <span id="dAvgLoginTimes">0</span>
           </div>
         </div>
         <div class="realtime-content down">
           <div class="contrast-data">
             <p>
              <b>昨日:</b>
-             <span class="contrastval" id="playersDays1">0</span>
-             <em id="playersEmDays1" class="red"><i class="fa fa-arrow-down" aria-hidden="true"></i>0</em>
+             <span class="contrastval" id="allActivateDev-allNewAccount-Days1">0</span>
             </p>
             <p>
              <b>7日前:</b>
-             <span class="contrastval" id="playersDays7">0</span>
-             <em id="playersEmDays7" class="red"></em>
+             <span class="contrastval" id="allActivateDev-allNewAccount-Days7">0</span>
             </p>
             <p>
              <b>30日前:</b>
-             <span class="contrastval" id="playersDays30">0</span>
-             <em id="playersEmDays30" class="red"></em>
+             <span class="contrastval" id="allActivateDev-allNewAccount-Days30">0</span>
             </p>
           </div>
           <div class="contrast-data">
             <p>
              <b>昨日:</b>
-             <span class="contrastval" id="oldPlayersDays1">0</span>
-             <em id="oldPlayersEmDays1" class="red"><i class="fa fa-arrow-down" aria-hidden="true"></i>0</em>
+             <span class="contrastval" id="DAU-ARPU-Days1">0</span>
             </p>
             <p>
              <b>7日前:</b>
-             <span class="contrastval" id="oldPlayersDays7">0</span>
-             <em id="oldPlayersEmDays7" class="red"></em>
+             <span class="contrastval" id="DAU-ARPU-Days7">0</span>
             </p>
             <p>
              <b>30日前:</b>
-             <span class="contrastval" id="oldPlayersDays30">0</span>
-             <em id="oldPlayersEmDays30" class="red"></em>
+             <span class="contrastval" id="DAU-ARPU-Days30">0</span>
             </p>
           </div>
           <div class="contrast-data">
             <p>
              <b>昨日:</b>
-             <span class="contrastval" id="payNumsDays1">0</span>
-             <em id="payNumsEmDays1" class="red"><i class="fa fa-arrow-down" aria-hidden="true"></i>0</em>
+             <span class="contrastval" id="ARPU-ARPPU-Days1">0</span>
             </p>
             <p>
              <b>7日前:</b>
-             <span class="contrastval" id="payNumsDays7">0</span>
-             <em id="payNumsEmDays7" class="red"></em>
+             <span class="contrastval" id="ARPU-ARPPU-Days7">0</span>
             </p>
             <p>
              <b>30日前:</b>
-             <span class="contrastval" id="payNumsDays30">0</span>
-             <em id="payNumsEmDays30" class="red"></em>
+             <span class="contrastval" id="ARPU-ARPPU-Days30">0</span>
             </p>
           </div>
           <div class="contrast-data">
             <p>
              <b>昨日:</b>
-             <span class="currency">$</span>
-             <span class="contrastval" id="incomeAccumulativeDays1">0</span>
-             <em id="incomeAccumulativeEmDays1" class="red"><i class="fa fa-arrow-down" aria-hidden="true"></i>0</em>
+             <span class="contrastval" id="avgPaidTimes-Days1">0</span>
             </p>
             <p>
              <b>7日前:</b>
-             <span class="currency">$</span>
-             <span class="contrastval" id="incomeAccumulativeDays7">0</span>
-             <em id="incomeAccumulativeEmDays7" class="red"></em>
+             <span class="contrastval" id="avgPaidTimes-Days7">0</span>
             </p>
             <p>
              <b>30日前:</b>
-             <span class="currency">$</span>
-             <span class="contrastval" id="incomeAccumulativeDays30">0</span>
-             <em id="incomeAccumulativeEmDays30" class="red"></em>
+             <span class="contrastval" id="avgPaidTimes-Days30">0</span>
             </p>
           </div>
           <div class="contrast-data">
             <p>
              <b>昨日:</b>
-             <span class="contrastval" id="gameTimesDays1">0</span>
-             <font>秒</font>
-             <em id="gameTimesEmDays1" class="red"></em>
+             <span class="contrastval" id="dAvgLoginTimes-Days1">0</span>
             </p>
             <p>
              <b>7日前:</b>
-             <span class="contrastval" id="gameTimesDays7">0</span>
-             <font>秒</font>
-             <em id="gameTimesEmDays7" class="red"></em>
+             <span class="contrastval" id="dAvgLoginTimes-Days7">0</span>
             </p>
             <p>
              <b>30日前:</b>
-             <span class="contrastval" id="gameTimesDays30">0</span>
-             <font>秒</font>
-             <em id="gameTimesEmDays30" class="red"></em>
+             <span class="contrastval" id="dAvgLoginTimes-Days30">0</span>
             </p>
           </div>
         </div>  
@@ -622,7 +572,7 @@
   <script src="http://oss.koogame.cn/oss/js/dateselector/monthPicker.js?v=0.2"></script> 
   <script src="http://oss.koogame.cn/oss/js/checkbox/icheck.js?v=0.2"></script>
   <script src="http://oss.koogame.cn/oss/js/common.js?v=0.7"></script>
-  <script src="http://oss.koogame.cn/oss/js/info.js?v=0.3"></script>
+  <script src="http://oss.koogame.cn/oss/js/info.js?v=0.5"></script>
   <script src="http://oss.koogame.cn/oss/js/jquery.metisMenu.js?v=0.2"></script>
  </body>
 </html>

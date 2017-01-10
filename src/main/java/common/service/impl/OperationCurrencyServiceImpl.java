@@ -1,13 +1,18 @@
 package common.service.impl;
 
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+
 import common.model.LogGold;
 import common.model.LogRmb;
+import common.pojo.CurrencyRmb;
 import common.service.OperationCurrencyService;
 
 public class OperationCurrencyServiceImpl implements OperationCurrencyService {
@@ -58,8 +63,8 @@ public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 				String account = lr.getStr("account");
 				String count = lr.getInt("count").toString();
 				String getConsume = lr.getInt("get_or_consume")==1?"获取":"消耗";
-				String reason =  changeRMBReasonToChinese(lr.getStr("reason"));
-				if("购买物品".equals(reason)){
+				String reason =  lr.getStr("reason");
+				if("OBJ".equals(reason)){
 					continue;
 				}
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -68,7 +73,7 @@ public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 				List<String> subList = new ArrayList<String>();
 				subList.add(account);
 				subList.add(timestamp);
-				subList.add(reason);
+				subList.add(changeRMBReasonToChinese(reason));
 				subList.add("钻石");
 				subList.add(count);
 				subList.add(getConsume);
@@ -90,13 +95,21 @@ public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 	 * @format 帐号-时间-途径-物品类型-数量-操作
 	 * @author chris
 	 * @return tableData
+	 * @DESC 对于个人的钻石查询，由于reason=OBJ和reason=CHONGZHI 存在重复，因此需要去除OBJ中的CHONGZHI
 	 */
-	public List<List<String>> querySingleCurrency(String startDate, String endDate, String currency, String account, String db) {
+	public Map<String, Object> querySingleCurrency(String startDate, String endDate, String currency, String account, String db) {
 		String goldSql = "select account,count,get_or_consume,reason,timestamp from log_gold where date between ? and ? and account = ?";
 		String RMBSql = "select account,count,get_or_consume,reason,timestamp from log_RMB where date between ? and ? and account = ?";
+		String goldGetConsumeSql = "select sum(case when get_or_consume=1 then count else 0 end)getSum,sum(case when get_or_consume=0 then count else 0 end)consumeSum from log_gold where account = ? and date between ? and ?";
+		String RMBGetConsumeSql = "select sum(case when get_or_consume=1 and reason!='CHONGZHI' then count else 0 end)getSum,sum(case when get_or_consume=0 then count else 0 end)consumeSum from log_RMB where account = ? and date between ? and ?";
+		
+		Map<String, Object> dataMap = new HashMap<String, Object>();
 		List<List<String>> data = new ArrayList<List<String>>();
+		
 		if(currency.equals("gold")){
 			List<LogGold> logGold = LogGold.dao.use(db).find(goldSql, startDate, endDate, account);
+			LogGold goldGetConsume = LogGold.dao.use(db).findFirst(goldGetConsumeSql, account, startDate, endDate);
+			//个人流水金币日志
 			for(LogGold lg : logGold){
 				String count = lg.getInt("count").toString();
 				String getConsume = lg.getInt("get_or_consume")==1?"获取":"消耗";
@@ -112,28 +125,102 @@ public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 				subList.add(getConsume);
 				data.add(subList);
 			}
+			//个人总消耗获得
+			long goldGet = goldGetConsume.getBigDecimal("getSum")==null?0:goldGetConsume.getBigDecimal("getSum").longValue();
+			long goldConsume = goldGetConsume.getBigDecimal("consumeSum")==null?0:goldGetConsume.getBigDecimal("consumeSum").longValue();
+			dataMap.put("tableData", data);
+			dataMap.put("get", goldGet);
+			dataMap.put("consume", goldConsume);
 		}else{
 			List<LogRmb> logRmb = LogRmb.dao.use(db).find(RMBSql, startDate, endDate, account);
+			LogRmb RmbGetConsume = LogRmb.dao.use(db).findFirst(RMBGetConsumeSql, account, startDate, endDate);
+			//Map<count,Map<timestamp,CurrencyRmb>>
+			Map<Integer,Map<Long,CurrencyRmb>> objMap = new HashMap<Integer,Map<Long,CurrencyRmb>>();
+			//获取objMap
 			for(LogRmb lr : logRmb){
-				String count = lr.getInt("count").toString();
-				String getConsume = lr.getInt("get_or_consume")==1?"获取":"消耗";
-				String reason =  changeRMBReasonToChinese(lr.getStr("reason"));
-				if("购买物品".equals(reason)){
+				String reason =  lr.getStr("reason");
+				if(!"OBJ".equals(reason)){
 					continue;
 				}
+				int count = lr.getInt("count");
+				String getConsume = lr.getInt("get_or_consume")==1?"获取":"消耗";
+				Date queryTimestamp = lr.getDate("timestamp");
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				String timestamp = sdf.format(queryTimestamp);
+				Timestamp ts = Timestamp.valueOf(timestamp);
+				
+				CurrencyRmb cr = new CurrencyRmb();
+				cr.setAccount(account);
+				cr.setCount(count);
+				cr.setGetOrConsume(getConsume);
+				cr.setReason(reason);
+				cr.setTimestamp(timestamp);
+				if(objMap.containsKey(count)){
+					Map<Long, CurrencyRmb> subMap = objMap.get(count);
+					subMap.put(ts.getTime()/1000, cr);
+					objMap.put(count, subMap);
+				}else{
+					Map<Long, CurrencyRmb> subMap = new TreeMap<Long, CurrencyRmb>();
+					subMap.put(ts.getTime()/1000, cr);
+					objMap.put(count, subMap);
+				}
+			}
+			for(LogRmb lr : logRmb){
+				int count = lr.getInt("count");
+				String getConsume = lr.getInt("get_or_consume")==1?"获取":"消耗";
+				String reason =  lr.getStr("reason");
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 				String timestamp = sdf.format(lr.getDate("timestamp"));
+				Timestamp ts = Timestamp.valueOf(timestamp);
+				long t = ts.getTime()/1000;
+				if("OBJ".equals(reason)){
+					continue;
+				}
+				if("CHONGZHI".equals(reason)){
+					Map<Long, CurrencyRmb> subMap = objMap.get(count);
+					try{
+						Set<Long> keySet = subMap.keySet();
+						for(long l:keySet ){
+							if((t>l-15)&&(t<l+15)){
+								subMap.remove(l);
+								break;
+							}
+						}
+					}catch(Exception e){
+						e.printStackTrace();
+					}
+				}
+				
 				List<String> subList = new ArrayList<String>();
 				subList.add(account);
 				subList.add(timestamp);
-				subList.add(reason);
+				subList.add(changeRMBReasonToChinese(reason));
 				subList.add("钻石");
-				subList.add(count);
+				subList.add(String.valueOf(count));
 				subList.add(getConsume);
 				data.add(subList);
 			}
+			for(Map.Entry<Integer, Map<Long, CurrencyRmb>> entry:objMap.entrySet()){
+				for(Map.Entry<Long, CurrencyRmb>subEntry:entry.getValue().entrySet()){
+					CurrencyRmb cr = subEntry.getValue();
+					List<String> subList = new ArrayList<String>();
+					subList.add(account);
+					subList.add(cr.getTimestamp());
+					subList.add(changeRMBReasonToChinese(cr.getReason()));
+					subList.add("钻石");
+					subList.add(String.valueOf(cr.getCount()));
+					subList.add(cr.getGetOrConsume());
+					data.add(subList);
+				}
+			}
+			//个人钻石总消耗获得
+			long RmbGet = RmbGetConsume.getBigDecimal("getSum")==null?0:RmbGetConsume.getBigDecimal("getSum").longValue();
+			long RmbConsume = RmbGetConsume.getBigDecimal("consumeSum")==null?0:RmbGetConsume.getBigDecimal("consumeSum").longValue();
+			dataMap.put("tableData", data);
+			dataMap.put("get", RmbGet);
+			dataMap.put("consume", RmbConsume);
 		}
-		return data;
+		return dataMap;
 	} 
 	
 	private String changeGoldReasonToChinese(String reason){
@@ -223,7 +310,7 @@ public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 			reason = "聊天花费";
 			break;
 		case "OBJ":
-			reason = "购买物品";
+			reason = "邮件附件/充值返利";
 			break;
 		case "TaskGetDailyPersentReward":
 			reason = "日常任务奖励";
@@ -285,4 +372,5 @@ public class OperationCurrencyServiceImpl implements OperationCurrencyService {
 		}
 		return reason;
 	}
+	
 }

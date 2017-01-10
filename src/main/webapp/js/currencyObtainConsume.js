@@ -75,17 +75,31 @@ function loadSingleCurrency(currency, account, dataTable){
         account:account
     },
     function(data, status) {
-        configTable(data, dataTable);
+        configTable(data.tableData, dataTable);
+        configNote(data, currency);
     });
 }
 
-function configTable(data,dataTable) {
+function configNote(data, currency){
+	switch(currency){
+		case "gold":
+		$("#single-gold-get").text(data.get);
+		$("#single-gold-consume").text(data.consume);
+		break;
+		case "rmb":
+		$("#single-rmb-get").text(data.get);
+		$("#single-rmb-consume").text(data.consume);
+		break;
+	}
+}
+
+function configTable(tableData,dataTable) {
     $(dataTable).dataTable().fnClearTable();  
     $(dataTable).dataTable({
         "destroy": true,
         // retrive:true,
-        "data": data,
-        "order": [[ 1, 'asc' ]],
+        "data": tableData,
+        "order": [[ 1, 'desc' ]],
         "dom": '<"top"f>rt<"left"lip>',
         'language': {
             'emptyTable': '没有数据',
@@ -112,6 +126,8 @@ $(".nav-tab.sub-op-gold > ul > li").click(function(){
 		$(".tab-content.gold-single-player").show();
 		$(".tab-content.gold-all-server").hide();
 		$(".tab-content.gold-single-player").css("float","left");
+		$("#single-gold-get").text("");
+		$("#single-gold-consume").text("");
 		configTable(null, goldSingleTable);
 	}else{
 		$(".tab-content.gold-single-player").hide();
@@ -130,6 +146,8 @@ $(".nav-tab.sub-op-rmb > ul > li").click(function(){
 		$(".tab-content.rmb-single-player").show();
 		$(".tab-content.rmb-all-server").hide();
 		$(".tab-content.rmb-single-player").css("float","left");
+		$("#single-rmb-get").text("");
+		$("#single-rmb-consume").text("");
 		configTable(null, rmbSingleTable);
 	}else{
 		$(".tab-content.rmb-single-player").hide();

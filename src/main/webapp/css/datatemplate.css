@@ -761,10 +761,23 @@ div.realtime-data h3 {
     font-size: 14px;
     font-weight: normal;
 }
+
 div.realtime-data span {
     padding: 0 0 0px 30px;
-    font-size: 30px;
 }
+@media screen and (min-width: 1750px){
+    div.realtime-data span {font-size: 30px;}
+}
+@media screen and (max-width: 1749px){
+    div.realtime-data span {font-size: 30px;}
+}
+@media screen and (max-width: 1659px){
+    div.realtime-data span {font-size: 22px;}
+}
+@media screen and (max-width: 1310px){
+    div.realtime-data span {font-size: 14px;}
+}
+
 div.realtime-data em {
     font-size: 16px;
     color: #67a600;
@@ -1052,4 +1065,16 @@ span.withoutIcon {
 }
 button.btn.btn-dafault.limit-time {
     float: left;
+}
+em.all-get-consume {
+    margin-left: 25px;
+}
+div#all-get-consume {
+    font-size: x-large;
+    margin: 3px 10px 0px 0px;
+    float: left;
+}
+.single-num{
+    color: #e25856;
+    font-weight: bold;
 }

@@ -56,7 +56,7 @@ public class RealtimeController extends Controller {
 		try {
 			String db = URLDecoder.decode(getCookie("server"), "GBK");
 			logger.info("params: {icons:" + icons + "}");
-			Map<String, String> data = realtimeService.queryBeforeData(icons, db);
+			Map<String, String> data = realtimeService.beforeData(icons, db);
 			logger.info("data:" + data);
 			renderJson(data);
 		} catch (UnsupportedEncodingException e) {
@@ -78,7 +78,7 @@ public class RealtimeController extends Controller {
 		logger.info("params: {icons:" + icons + "}");
 		try {
 			String db = URLDecoder.decode(getCookie("server"), "GBK");
-			Map<String, String> data = realtimeService.queryRealtimeData(icons, db);
+			Map<String, String> data = realtimeService.realtimeData(icons, db);
 			logger.info("data:" + data);
 			renderJson(data);
 		} catch (UnsupportedEncodingException e) {
