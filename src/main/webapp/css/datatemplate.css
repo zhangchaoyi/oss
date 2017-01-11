@@ -767,15 +767,22 @@ div.realtime-data span {
 }
 @media screen and (min-width: 1750px){
     div.realtime-data span {font-size: 30px;}
+    nav.navbar-default.navbar-side{height: 900px;}
 }
 @media screen and (max-width: 1749px){
     div.realtime-data span {font-size: 30px;}
+    nav.navbar-default.navbar-side{height: 900px;}
 }
 @media screen and (max-width: 1659px){
     div.realtime-data span {font-size: 22px;}
+    nav.navbar-default.navbar-side{height: 800px;}
 }
 @media screen and (max-width: 1310px){
     div.realtime-data span {font-size: 14px;}
+    nav.navbar-default.navbar-side{height: 600px;}
+}
+nav.navbar-default.navbar-side {
+    overflow: auto;
 }
 
 div.realtime-data em {
