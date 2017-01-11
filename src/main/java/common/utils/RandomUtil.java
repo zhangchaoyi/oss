@@ -19,6 +19,9 @@ public class RandomUtil {
 		}
 		return sb.toString();
 	}
+	
+	//避免被实例化
+	private RandomUtil(){}
 
 	public static void main(String[] args) {
 		System.out.println(getRandomString(8));

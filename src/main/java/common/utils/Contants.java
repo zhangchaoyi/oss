@@ -14,6 +14,9 @@ public class Contants {
 	private static String currency;
 	private static final Map<String, String> propsMap = new HashMap<String, String>();
 
+	//避免被实例化
+	private Contants(){}
+	
 	public static void setCurrency(String c){
 		currency = c;
 	}

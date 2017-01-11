@@ -15,6 +15,8 @@ import com.google.gson.JsonParser;
 
 public class JsonToMap {
 	
+	//避免被实例化
+	private JsonToMap(){}
 	/**
 	 * 获取JsonObject
 	 * @param json

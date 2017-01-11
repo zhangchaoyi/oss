@@ -15,6 +15,9 @@ public class StringUtils {
 		return str;
 	}
 	
+	//避免被实例化
+	private StringUtils(){}
+	
 	public static void main(String args[]){
 		String[] aa= {"a","b","c","e","d"};
 		System.out.println(arrayToQueryString(aa));

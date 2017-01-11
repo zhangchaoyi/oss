@@ -24,6 +24,9 @@ public class EncryptUtils {
 	 * 算法
 	 */
 	private static final String ALGORITHMSTR = "AES/ECB/PKCS5Padding";
+	
+	//避免被实例化
+	private EncryptUtils(){}
 
 	public static void main(String[] args) throws Exception {
 //		String content = "asdf75003";

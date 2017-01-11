@@ -15,6 +15,10 @@ import org.apache.log4j.Logger;
 public class DateUtils {
 
 	private static Logger logger = Logger.getLogger(DateUtils.class);
+	
+	//避免被实例化
+	private DateUtils(){}
+	
 	public static Date strToDate(String dateString){
 		Date date = null;
 		SimpleDateFormat sdf;
