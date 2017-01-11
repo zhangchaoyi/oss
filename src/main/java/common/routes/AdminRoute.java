@@ -3,6 +3,7 @@ package common.routes;
 import com.jfinal.config.Routes;
 
 import common.controllers.AdminController;
+import common.controllers.ApiController;
 import common.controllers.DashboardController;
 import common.controllers.LoginController;
 import common.controllers.RealtimeController;
@@ -65,6 +66,7 @@ public class AdminRoute extends Routes {
 		add("/gameAccount", GameAccountController.class, "/WEB-INF/views/operation");
 		add("/gagOffline", GagOfflineController.class, "/WEB-INF/views/operation");
 		add("/paidRecover", PaidRecoverController.class, "/WEB-INF/views/operation");
+		add("/channels", ApiController.class);
 	}
 
 }
