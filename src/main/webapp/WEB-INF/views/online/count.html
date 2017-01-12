@@ -11,7 +11,7 @@
   <link href="http://oss.koogame.cn/oss/css/basic.css?v=0.2" rel="stylesheet" /> 
   <link href="http://oss.koogame.cn/oss/css/custom.css?v=0.2" rel="stylesheet" /> 
   <link href="http://oss.koogame.cn/oss/css/header.css?v=0.2" rel="stylesheet" /> 
-  <link href="http://oss.koogame.cn/oss/css/datatemplate.css?v=1.0" rel="stylesheet" /> 
+  <link href="http://oss.koogame.cn/oss/css/datatemplate.css?v=1.1" rel="stylesheet" /> 
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/default.css?v=0.2" /> 
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/component.css?v=0.2" /> 
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/animation.css?v=0.2" /> 
@@ -83,7 +83,7 @@
    <div id="page-wrapper" style="overflow-x: hidden;overflow-y:hidden;"> 
     <div id="page-inner"> 
      <div class="row" id="top-row"> 
-      <div class="filter-tool"> 
+      <div class="filter-tool" style="height:110px"> 
        <div class="date-bar"> 
         <div class="calender-bar"> 
          <div class="ta_date"> 
@@ -98,88 +98,6 @@
          <a id="aRecent7Days" onclick="dateSelected(this)" class="selected">近7日</a> 
          <a id="aRecent30Days" onclick="dateSelected(this)">近30日</a> 
          <a id="aRecent90Days" onclick="dateSelected(this)">近90日</a> 
-        </div> 
-       </div> 
-       <div class="filter-bar"> 
-        <div class="row" id="notification"> 
-         <button class="btn btn-primary btn-lg btn-notify" data-toggle="modal" data-target="#myModal"> <span class="glyphicon glyphicon-filter" aria-hidden="true"></span> <i>筛选</i> </button> 
-         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
-          <div class="modal-dialog"> 
-           <div class="modal-content"> 
-            <div class="modal-header"> 
-             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
-             <h4 class="modal-title" id="myModalLabel"><i>筛选</i></h4> 
-            </div> 
-            <div class="modal-body"> 
-             <div class="panel panel-default">
-              <div class="panel-body"> 
-               <div class="filter-header"> 
-                <ul class="nav nav-pills"> 
-                 <li class="active"><a href="#version-pills" data-toggle="tab">版本</a></li> 
-                 <li class=""><a href="#approach-pills" data-toggle="tab">渠道</a> </li> 
-                 <li class=""><a href="#servers-pills" data-toggle="tab">区服</a> </li> 
-                </ul> 
-                <span class="input-group input-filter"> <input name="filter" id="filter" type="text" class="form-control" placeholder="Search for..." /> <span class="glyphicon glyphicon-search"> </span> </span> 
-               </div> 
-               <div class="choose option"> 
-                <i>常用选择</i> 
-                <button type="button" class="btn btn-primary" id="btn-selall">全选</button> 
-                <button type="button" class="btn btn-primary" id="btn-selreverse">反选</button> 
-               </div> 
-               <div class="tab-content"> 
-                <table class="tab-pane fade active in" id="version-pills"> 
-                 <tbody> 
-                  <tr> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> v1.0 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> v2.0 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> v3.0 </span> </td> 
-                  </tr> 
-                  <tr> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> v4.0 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> v5.0 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> v6.0 </span> </td> 
-                  </tr> 
-                 </tbody> 
-                </table> 
-                <table class="tab-pane fade" id="approach-pills"> 
-                 <tbody> 
-                  <tr> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 渠道1 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 渠道2 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 渠道3 </span> </td> 
-                  </tr> 
-                  <tr> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 渠道4 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 渠道5 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 渠道6 </span> </td> 
-                  </tr> 
-                 </tbody> 
-                </table> 
-                <table class="tab-pane fade" id="servers-pills"> 
-                 <tbody> 
-                  <tr> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 区服1 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 区服2 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 区服3 </span> </td> 
-                  </tr> 
-                  <tr> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 区服4 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 区服5 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 区服6 </span> </td> 
-                  </tr> 
-                 </tbody> 
-                </table> 
-               </div> 
-              </div> 
-             </div> 
-            </div> 
-            <div class="modal-footer"> 
-             <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn-filtersave">保存</button> 
-             <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button> 
-            </div> 
-           </div> 
-          </div> 
-         </div> 
         </div> 
        </div> 
       </div> 
@@ -303,7 +221,7 @@
   <script src="http://oss.koogame.cn/oss/js/dateselector/dateRange.js?v=0.2"></script> 
   <script src="http://oss.koogame.cn/oss/js/dateselector/monthPicker.js?v=0.2"></script> 
   <script src="http://oss.koogame.cn/oss/js/checkbox/icheck.js?v=0.2"></script>
-  <script src="http://oss.koogame.cn/oss/js/common.js?v=0.7"></script> 
+  <script src="http://oss.koogame.cn/oss/js/common.js?v=0.8"></script> 
   <script src="http://oss.koogame.cn/oss/js/onlineCount.js?v=0.3"></script>
  </body>
 </html>

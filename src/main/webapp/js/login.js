@@ -6,10 +6,7 @@ function login(){
 		alert("请输入用户名或密码！");
 		return;
 	}
-
-
 	var key = randomWord(false,16,16);
-
 	$.post("/oss/api/login", {
 		username:Encrypt(username, key),
 		password:Encrypt(password, key),
@@ -17,14 +14,20 @@ function login(){
     },
     function(data, status) {
     	if(data.message == "success"){
-			var href = window.location.href;
-			if(href.indexOf("from=") != -1) {
-				var from = href.split("from=")[1];
-				location.href = location.protocol + "//" + location.host + from;
-				return;
-			}
-
-			location.href = location.protocol + "//" + location.host + "/oss/dashboard";
+    		$.get("/oss/api/prop/channels", {},
+		    function(data, status) {
+		    	for(var key in data){
+		    		localStorage.setItem(key+"Channels", JSON.stringify(data[key]));
+		    		localStorage.setItem(key+"SelectChannels", JSON.stringify(data[key]));
+		    	}
+		    	var href = window.location.href;
+				if(href.indexOf("from=") != -1) {
+					var from = href.split("from=")[1];
+					location.href = location.protocol + "//" + location.host + from;
+					return;
+				}
+				location.href = location.protocol + "//" + location.host + "/oss/dashboard";
+		    });
 		}else{
 			alert("用户名或密码错误");
 		}

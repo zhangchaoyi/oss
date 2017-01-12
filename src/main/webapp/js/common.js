@@ -74,7 +74,7 @@ function dateSelected(obj) {
     $(obj).addClass("selected");
 }
 
-//control the filter button
+//control the filter button 控制当前栏，将其余栏清空
 $("#btn-selall").click(function(){
     $("table.tab-pane.fade.active.in").find("div").iCheck("check");
     $("table[class='tab-pane fade']").find("div").iCheck("uncheck");
@@ -84,15 +84,30 @@ $("#btn-selreverse").click(function(){
     $("table.tab-pane.fade.active.in").find("div").iCheck("toggle");
 });
 
-//save the filter chioce
+//save the filter chioce 保存到localStorage
 $("#btn-filtersave").click(function(){
     var filterCheckBoxs = $("table.tab-pane.fade.active.in").find("div");
+    var selectChannels = {};
     for(var i=0;i<filterCheckBoxs.length;i++) { 
         if($(filterCheckBoxs[i]).hasClass("checked")){
-            //extend
-            console.log($(filterCheckBoxs[i]).siblings("span").text());
+            var chId = $(filterCheckBoxs[i]).siblings("span").attr("data-info");
+            var channelName = $(filterCheckBoxs[i]).siblings("span").text();
+            selectChannels[chId] = channelName;
         }
     }
+    if(isEmptyObject(selectChannels)){
+        alert("请选择渠道");
+        return;
+    }
+    var currentServer = getCookie("server");
+    localStorage.setItem(currentServer+"SelectChannels", JSON.stringify(selectChannels));
+    if(window.location.pathname=="/oss/realtime/info"){
+        initSelectChannelsTag();
+    }
+});
+//点击筛选按钮进行初始化selectChannels
+$(".btn.btn-primary.btn-lg.btn-notify").click(function(){
+    initSelectChannels();
 });
 
 //部分页面不区分终端 ul显示全选 文字显示不区分
@@ -505,3 +520,53 @@ function initMenu(menu){
         }
     });
 }
+//动态生成channels列表
+function initChannels(){
+    var currentServer = getCookie("server");
+    var storage = localStorage;
+    if(storage[currentServer+"Channels"]==undefined){
+        alert("渠道列表不存在");
+        return;
+    }
+    var channels = JSON.parse(storage[currentServer+"Channels"]);
+    var htmlStr = "<tbody><tr>";
+    var counter = 0;
+    for(var key in channels){
+        htmlStr += "<td class='jcorgFilterTextParent'><input type='checkbox' /> <span class='jcorgFilterTextChild' data-info="+key+">"+channels[key]+"</span> </td>";
+        if((counter+1)%4==0){
+            htmlStr += "</tr><tr>" 
+        }
+        counter++;
+    }
+    if(counter%4==0){
+        htmlStr.substring(0,htmlStr.lastIndexOf("<tr>"));
+    }else{
+        htmlStr += "</tr>";
+    }
+    htmlStr += "</tbody>"
+
+    $("#approach-pills").html(htmlStr);
+    $('input').iCheck({
+        checkboxClass: 'icheckbox_polaris'
+    });
+    initSelectChannels();
+}
+//选择当前的渠道
+function initSelectChannels(){
+    var currentServer = getCookie("server");
+    var storage = localStorage;
+    if(storage[currentServer+"SelectChannels"]==undefined){
+        alert("当前选择渠道列表不存在");
+        return;
+    }
+    var selectChannels = JSON.parse(storage[currentServer+"SelectChannels"]);
+    for(var key in selectChannels){
+        $("[data-info="+key+"]").siblings("div").iCheck("check");
+    }
+}
+function isEmptyObject(e) {  
+    var t;  
+    for (t in e)  
+        return !1;  
+    return !0  
+}  

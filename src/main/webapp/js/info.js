@@ -97,6 +97,8 @@ $(function(){
 });
 
 function loadData(){
+    initChannels();
+    initSelectChannelsTag();
     loadInfoData($("#data-info-details > ul > li.active > a").attr("data-info"));
     loadBeforeTableData();
     loadRealtimeTableData(true);
@@ -281,3 +283,36 @@ $("a#switch-down").click(function(){
 		$("div.realtime-content.down").hide();
 	}
 });
+//从localStorage生成当前渠道tag
+function initSelectChannelsTag(){
+    var currentServer = getCookie("server");
+    var storage = localStorage;
+    if(storage[currentStr+"SelectChannels"]==undefined){
+        alert("当前选择渠道列表不存在");
+        return;
+    }
+    var channels = JSON.parse(storage[currentServer+"Channels"]);
+    var selectChannels = JSON.parse(storage[currentServer+"SelectChannels"]);
+    var htmlStr = "";
+    for(var key in selectChannels){
+        htmlStr += "<span class='alert alert-dismissable channel-tag' data-dismiss='alert'><strong data-info="+key+">" + selectChannels[key] + "</strong></span>";
+    }
+    $(".channel-result").html(htmlStr);
+    $(".channel-result > span").click(function(){
+        ////判断渠道是否最后一个
+        var chResult = $(".channel-result");
+        var len = $(chResult).children("span").length;
+        if(len==1){
+            $(chResult).children("span").removeAttr("data-dismiss");
+            return;
+        }else{
+            $(".channel-result").find("span:first-child").attr("data-dismiss","alert");
+        }
+
+        var sc = JSON.parse(localStorage[currentServer+"SelectChannels"]);
+        var chId = $(this).children("strong").attr("data-info");
+        delete sc[chId];
+        $("[data-info="+chId+"]").siblings("div").iCheck("uncheck");
+        localStorage.setItem(currentServer+"SelectChannels", JSON.stringify(sc));
+    });
+}

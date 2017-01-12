@@ -711,11 +711,23 @@ div.channel {
     display: inline;
     position: relative;
     bottom:30px;
+    border-top:1px solid silver;
+    height: 50px;
+    padding-top: 2px;
+    padding-left: 15px;
+    overflow: auto;
 }
 div.channel > em {
     position: relative;
-    left:30px;
-
+}
+.channel-result {
+    display: inline;
+}
+span.alert.alert-dismissable.channel-tag {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 2px;
+    margin-right: 5px;
 }
 span.time-true {
     background: #5cb95e;
@@ -768,18 +780,25 @@ div.realtime-data span {
 @media screen and (min-width: 1750px){
     div.realtime-data span {font-size: 30px;}
     nav.navbar-default.navbar-side{height: 880px;}
+    button.btn.btn-primary.btn-lg.btn-notify{left:70px}
+    div.channel {width:1573px;}
 }
 @media screen and (max-width: 1749px){
     div.realtime-data span {font-size: 30px;}
     nav.navbar-default.navbar-side{height: 880px;}
+    button.btn.btn-primary.btn-lg.btn-notify{left:-30px}
+    div.channel {width:1380px;}
 }
 @media screen and (max-width: 1659px){
     div.realtime-data span {font-size: 22px;}
     nav.navbar-default.navbar-side{height: 750px;}
+    button.btn.btn-primary.btn-lg.btn-notify{left:-324px}
+    div.channel {width:1075px;}
 }
 @media screen and (max-width: 1310px){
     div.realtime-data span {font-size: 14px;}
     nav.navbar-default.navbar-side{height: 550px;}
+    button.btn.btn-primary.btn-lg.btn-notify{left:-500px}
 }
 nav.navbar-default.navbar-side {
     overflow: auto;
@@ -1084,4 +1103,8 @@ div#all-get-consume {
 .single-num{
     color: #e25856;
     font-weight: bold;
+}
+#myModal > div > div.modal-content {
+    position: relative;
+    bottom: 250px;
 }

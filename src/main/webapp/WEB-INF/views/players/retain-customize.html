@@ -11,7 +11,7 @@
   <link href="http://oss.koogame.cn/oss/css/basic.css?v=0.2" rel="stylesheet" /> 
   <link href="http://oss.koogame.cn/oss/css/custom.css?v=0.2" rel="stylesheet" /> 
   <link href="http://oss.koogame.cn/oss/css/header.css?v=0.2" rel="stylesheet" /> 
-  <link href="http://oss.koogame.cn/oss/css/datatemplate.css?v=1.0" rel="stylesheet" /> 
+  <link href="http://oss.koogame.cn/oss/css/datatemplate.css?v=1.1" rel="stylesheet" /> 
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/default.css?v=0.2" /> 
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/component.css?v=0.2" /> 
   <link rel="stylesheet" type="text/css" href="http://oss.koogame.cn/oss/css/button/animation.css?v=0.2" /> 
@@ -115,9 +115,8 @@
               <div class="panel-body"> 
                <div class="filter-header"> 
                 <ul class="nav nav-pills"> 
-                 <li class="active"><a href="#version-pills" data-toggle="tab">版本</a></li> 
-                 <li class=""><a href="#approach-pills" data-toggle="tab">渠道</a> </li> 
-                 <li class=""><a href="#servers-pills" data-toggle="tab">区服</a> </li> 
+                 <li class=""><a href="#version-pills" data-toggle="tab">版本</a></li> 
+                 <li class="active"><a href="#approach-pills" data-toggle="tab">渠道</a> </li> 
                 </ul> 
                 <span class="input-group input-filter"> <input name="filter" id="filter" type="text" class="form-control" placeholder="Search for..." /> <span class="glyphicon glyphicon-search"> </span> </span> 
                </div> 
@@ -126,49 +125,9 @@
                 <button type="button" class="btn btn-primary" id="btn-selall">全选</button> 
                 <button type="button" class="btn btn-primary" id="btn-selreverse">反选</button> 
                </div> 
-               <div class="tab-content"> 
-                <table class="tab-pane fade active in" id="version-pills"> 
-                 <tbody> 
-                  <tr> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> v1.0 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> v2.0 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> v3.0 </span> </td> 
-                  </tr> 
-                  <tr> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> v4.0 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> v5.0 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> v6.0 </span> </td> 
-                  </tr> 
-                 </tbody> 
-                </table> 
-                <table class="tab-pane fade" id="approach-pills"> 
-                 <tbody> 
-                  <tr> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 渠道1 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 渠道2 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 渠道3 </span> </td> 
-                  </tr> 
-                  <tr> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 渠道4 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 渠道5 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 渠道6 </span> </td> 
-                  </tr> 
-                 </tbody> 
-                </table> 
-                <table class="tab-pane fade" id="servers-pills"> 
-                 <tbody> 
-                  <tr> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 区服1 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 区服2 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 区服3 </span> </td> 
-                  </tr> 
-                  <tr> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 区服4 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 区服5 </span> </td> 
-                   <td class="jcorgFilterTextParent"> <input type="checkbox" /> <span class="jcorgFilterTextChild"> 区服6 </span> </td> 
-                  </tr> 
-                 </tbody> 
-                </table> 
+               <div class="tab-content" style="height:300px;overflow:auto"> 
+                <table class="tab-pane fade" id="version-pills"></table> 
+                <table class="tab-pane fade active in" id="approach-pills"></table> 
                </div> 
               </div> 
              </div> 
@@ -303,7 +262,7 @@
   <script src="http://oss.koogame.cn/oss/js/dateselector/dateRange.js?v=0.2"></script> 
   <script src="http://oss.koogame.cn/oss/js/dateselector/monthPicker.js?v=0.2"></script> 
   <script src="http://oss.koogame.cn/oss/js/checkbox/icheck.js?v=0.2"></script> 
-  <script src="http://oss.koogame.cn/oss/js/common.js?v=0.7"></script> 
+  <script src="http://oss.koogame.cn/oss/js/common.js?v=0.8"></script> 
   <script src="http://oss.koogame.cn/oss/js/customizeRetain.js?v=0.2"></script> 
  </body>
 </html>
