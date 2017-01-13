@@ -115,6 +115,7 @@ $("#btn-filtersave").click(function(){
             initSelectChannelsTag();
         }
     }
+    loadData();
 });
 //点击筛选按钮进行初始化selectChannels
 $(".btn.btn-primary.btn-lg.btn-notify").click(function(){
@@ -624,4 +625,28 @@ function initSelectVersions(){
     for(var key in selectVersions){
         $("[data-info="+selectVersions[key]+"]").siblings("div").iCheck("check");
     }
+}
+//获取当前版本号
+function getCurrentVersions(){
+    var cs = getCookie("server");
+    var storage = localStorage;
+    var list = [];
+    if(storage[cs+"SelectVersions"]==undefined){
+        return list;
+    }
+    return JSON.parse(storage[cs+"SelectVersions"]);
+}
+//获取当前渠道
+function getCurrentChannels(){
+    var cs = getCookie("server");
+    var storage = localStorage;
+    var list = [];
+    if(storage[cs+"SelectChannels"]==undefined){
+        return list;
+    }
+    var chs = JSON.parse(storage[cs+"SelectChannels"]);
+    for(var key in chs){
+        list.push(key);
+    }
+    return list;   
 }

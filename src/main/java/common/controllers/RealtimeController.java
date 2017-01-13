@@ -53,10 +53,12 @@ public class RealtimeController extends Controller {
 	@ActionKey("/api/realtime/beforedata")
 	public void queryBeforeData() {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		try {
 			String db = URLDecoder.decode(getCookie("server"), "GBK");
 			logger.info("params: {icons:" + icons + "}");
-			Map<String, String> data = realtimeService.beforeData(icons, db);
+			Map<String, String> data = realtimeService.beforeData(icons, db, versions, chId);
 			logger.info("data:" + data);
 			renderJson(data);
 		} catch (UnsupportedEncodingException e) {
@@ -75,10 +77,12 @@ public class RealtimeController extends Controller {
 	@ActionKey("/api/realtime/realtimedata")
 	public void queryRealtimeData() {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		logger.info("params: {icons:" + icons + "}");
 		try {
 			String db = URLDecoder.decode(getCookie("server"), "GBK");
-			Map<String, String> data = realtimeService.realtimeData(icons, db);
+			Map<String, String> data = realtimeService.realtimeData(icons, db, versions, chId);
 			logger.info("data:" + data);
 			renderJson(data);
 		} catch (UnsupportedEncodingException e) {
@@ -100,6 +104,8 @@ public class RealtimeController extends Controller {
 	public void queryRealtimeInfo() {
 		String detailTag = getPara("detailTag", "rto");
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		String[] date = getParaValues("startDate[]");
 		logger.info("params: {" + "detailTag:" + detailTag + ",icons:" + icons + ",date[]" + date + "}");
 
@@ -122,15 +128,15 @@ public class RealtimeController extends Controller {
 				break;
 			}
 			case "equ": {
-				seriesMap = realtimeService.queryRealtimeDevice(icons, date, db);
+				seriesMap = realtimeService.queryRealtimeDevice(icons, date, db, versions, chId);
 				break;
 			}
 			case "adp": {
-				seriesMap = realtimeService.queryRealtimeAddPlayers(icons, date, db);
+				seriesMap = realtimeService.queryRealtimeAddPlayers(icons, date, db, versions, chId);
 				break;
 			}
 			case "pay": {
-				seriesMap = realtimeService.queryRealtimeRevenue(icons, date, db);
+				seriesMap = realtimeService.queryRealtimeRevenue(icons, date, db, versions, chId);
 				break;
 			}
 			}

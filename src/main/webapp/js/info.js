@@ -109,6 +109,8 @@ function loadInfoData(detailTag) {
 	$.post("/oss/api/realtime/info", {
     	detailTag:detailTag,
         icon:getIcons(),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels(),
         startDate:dateCollection
     },
     function(data, status) {
@@ -118,7 +120,9 @@ function loadInfoData(detailTag) {
 
 function loadBeforeTableData(){
     $.post("/oss/api/realtime/beforedata", {
-        icon:getIcons()
+        icon:getIcons(),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels()
     },
     function(data, status) {
         configBeforeTable(data);
@@ -127,7 +131,9 @@ function loadBeforeTableData(){
 
 function loadRealtimeTableData(initial){
     $.post("/oss/api/realtime/realtimedata", {
-        icon:getIcons()
+        icon:getIcons(),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels()
     },
     function(data, status) {
         configRealtimeTable(data);

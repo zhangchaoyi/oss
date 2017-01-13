@@ -55,17 +55,17 @@ public class RealtimeServiceImpl implements RealtimeService{
 	 * 今日平均单次时长 dAvgSinglePeriod = dOnlineTime/dLoginTimes
 	 * 今日人均登录次数 dAvgLoginTimes= dLoginTimes/dau
 	 */
-	public Map<String, String> realtimeData(String icons, String db) {
-		String activateDevSql = "select count(*)all_count,count(case when DATE_FORMAT(create_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') then openudid end)t_count from device_info where os in ("+icons+")"; 
-		String newAccountSql = "select count(*)all_count,count(case when DATE_FORMAT(A.create_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') then A.account end)count from create_role A join device_info B on A.openudid = B.openudid where B.os in ("+icons+")";
-		String dauSql = "select count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and B.os in (" + icons + ")";
-		String dauOldSql = "select count(*)count from (select distinct C.account from login C join device_info D on C.openudid = D.openudid where D.os in (" + icons + ") and DATE_FORMAT(C.login_time, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')) A left join (select E.account from create_role E join device_info F on E.openudid = F.openudid where F.os in (" + icons + ") and DATE_FORMAT(E.create_time,'%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')) B on A.account = B.account where B.account is null";
-		String newPaidDevSql = "select count(distinct A.openudid)count from (select openudid from device_info where DATE_FORMAT(create_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and os in (" + icons + "))A join create_role B on A.openudid = B.openudid join log_charge C on B.account = C.account where DATE_FORMAT(C.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and C.is_product=1";
-		String dActiveDevSql = "select count(*)count from (select distinct openudid from login where date = DATE_FORMAT(now(),'%Y-%m-%d')) A join device_info B on A.openudid = B.openudid where B.os in ("+ icons +")";
-		String allActiveDevSql = "select count(*)count from (select distinct openudid from login) A join device_info B on A.openudid = B.openudid where B.os in ("+ icons +");";
-		String revenueSql = "select sum(A.count)allRevenue,sum(case when DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') then A.count else 0 end)t_r from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and C.os in ("+ icons +")";
-		String paidDetailSql = "select count(distinct case when DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') then C.openudid end)paidDevice,count(distinct case when A.charge_times=1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') then C.openudid end)firstPaidD,count(case when DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') then A.account end)t_times,count(distinct C.openudid)allPaidDevice,count(A.account)allPaidTimes from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and C.os in ("+ icons +")";
-		String onlineLoginTimesSql = "select sum(case when A.online_time<86400 then A.online_time else 86400 end)online_time,count(A.account)count from logout A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.date=DATE_FORMAT(now(),'%Y-%m-%d') and C.os in (" + icons + ")";
+	public Map<String, String> realtimeData(String icons, String db, String versions, String chId) {
+		String activateDevSql = "select count(*)all_count,count(case when DATE_FORMAT(create_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') then openudid end)t_count from device_info where os in ("+icons+") and script_version in ("+versions+") and ch_id in ("+chId+");";
+		String newAccountSql = "select count(*)all_count,count(case when DATE_FORMAT(A.create_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') then A.account end)count from create_role A join device_info B on A.openudid = B.openudid where B.os in ("+icons+") and B.script_version in ("+versions+") and B.ch_id in ("+chId+");";
+		String dauSql = "select count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and B.os in (" + icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+");";
+		String dauOldSql = "select count(*)count from (select distinct C.account from login C join device_info D on C.openudid = D.openudid where D.os in (" + icons + ") and D.script_version in ("+versions+") and D.ch_id in ("+chId+") and DATE_FORMAT(C.login_time, '%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')) A left join (select E.account from create_role E join device_info F on E.openudid = F.openudid where F.os in (" + icons + ") and F.script_version in ("+versions+") and F.ch_id in ("+chId+") and DATE_FORMAT(E.create_time,'%Y-%m-%d')=DATE_FORMAT(now(), '%Y-%m-%d')) B on A.account = B.account where B.account is null;";
+		String newPaidDevSql = "select count(distinct A.openudid)count from (select openudid from device_info where DATE_FORMAT(create_time,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and os in (" + icons + ") and script_version in ("+versions+") and ch_id in ("+chId+"))A join create_role B on A.openudid = B.openudid join log_charge C on B.account = C.account where DATE_FORMAT(C.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') and C.is_product=1;";
+		String dActiveDevSql = "select count(*)count from (select distinct openudid from login where date = DATE_FORMAT(now(),'%Y-%m-%d')) A join device_info B on A.openudid = B.openudid where B.os in ("+ icons +") and B.script_version in ("+versions+") and B.ch_id in ("+chId+");";
+		String allActiveDevSql = "select count(*)count from (select distinct openudid from login) A join device_info B on A.openudid = B.openudid where B.os in ("+ icons +") and B.script_version in ("+versions+") and B.ch_id in ("+chId+");";
+		String revenueSql = "select sum(A.count)allRevenue,sum(case when DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') then A.count else 0 end)t_r from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and C.os in ("+ icons +") and C.script_version in ("+versions+") and C.ch_id in ("+chId+");";
+		String paidDetailSql = "select count(distinct case when DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') then C.openudid end)paidDevice,count(distinct case when A.charge_times=1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') then C.openudid end)firstPaidD,count(case when DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(now(),'%Y-%m-%d') then A.account end)t_times,count(distinct C.openudid)allPaidDevice,count(A.account)allPaidTimes from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and C.os in ("+ icons +") and C.script_version in ("+versions+") and C.ch_id in ("+chId+");";
+		String onlineLoginTimesSql = "select sum(case when A.online_time<86400 then A.online_time else 86400 end)online_time,count(A.account)count from logout A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.date=DATE_FORMAT(now(),'%Y-%m-%d') and C.os in (" + icons + ") and C.script_version in ("+versions+") and C.ch_id in ("+chId+");";
 		
 		DeviceInfo activateDevDao = DeviceInfo.dao.use(db).findFirst(activateDevSql);
 		CreateRole newAccountDao = CreateRole.dao.use(db).findFirst(newAccountSql);
@@ -188,18 +188,17 @@ public class RealtimeServiceImpl implements RealtimeService{
 	/**
 	 * 查询过往1 7 30日 数据
 	 */
-	public Map<String, String> beforeData(String icons, String db){
-		String activateDevSql = "select count(*)all_count,count(case when DATE_FORMAT(create_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') then openudid end)count from device_info where DATE_FORMAT(create_time,'%Y-%m-%d')<=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and os in ("+ icons +")";
-		String newAccountSql = "select count(*)all_count,count(case when DATE_FORMAT(A.create_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') then A.account end)count from create_role A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.create_time,'%Y-%m-%d')<=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and B.os in ("+ icons +")";
-		String dauSql = "select count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and B.os in (" + icons + ")";
-		String dauOldSql = "select count(*)count from (select distinct C.account from login C join device_info D on C.openudid = D.openudid where D.os in (" + icons + ") and DATE_FORMAT(C.login_time, '%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day), '%Y-%m-%d')) A left join (select E.account from create_role E join device_info F on E.openudid = F.openudid where F.os in (" + icons + ") and DATE_FORMAT(E.create_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day), '%Y-%m-%d')) B on A.account = B.account where B.account is null";
-		String newPaidDevSql = "select count(distinct A.openudid)count from (select openudid from device_info where DATE_FORMAT(create_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and os in (" + icons + "))A join create_role B on A.openudid = B.openudid join log_charge C on B.account = C.account where DATE_FORMAT(C.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and C.is_product=1; ";
-		String dActiveDevSql = "select count(*)count from (select distinct openudid from login where date = DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d')) A join device_info B on A.openudid = B.openudid where B.os in ("+ icons +")";
-		String allActiveDevSql = "select count(*)count from (select distinct openudid from login where date<=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d')) A join device_info B on A.openudid = B.openudid where B.os in ("+ icons +")";
-		String revenueSql = "select sum(A.count)revenue,sum(case when DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') then A.count else 0 end)y_r from (select * from log_charge where DATE_FORMAT(timestamp,'%Y-%m-%d')<=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d')) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and C.os in ("+icons+");";
-		String paidDetailSql = "select count(distinct case when DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') then C.openudid end)paidDevice,count(distinct case when A.charge_times=1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') then C.openudid end)firstPaidD,count(case when DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') then A.account end)times,count(distinct C.openudid)allPaidDevice,count(A.account)allTimes from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and C.os in ("+ icons +") and DATE_FORMAT(A.timestamp,'%Y-%m-%d')<=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d')";
-		String onlineLoginTimesSql = "select sum(case when A.online_time<86400 then A.online_time else 86400 end)online_time,count(A.account)count from logout A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.date=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and C.os in ("+ icons + ")";
-		
+	public Map<String, String> beforeData(String icons, String db, String versions, String chId){
+		String activateDevSql = "select count(*)all_count,count(case when DATE_FORMAT(create_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') then openudid end)count from device_info where DATE_FORMAT(create_time,'%Y-%m-%d')<=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and os in ("+ icons +") and script_version in ("+versions+") and ch_id in ("+chId+");";
+		String newAccountSql = "select count(*)all_count,count(case when DATE_FORMAT(A.create_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') then A.account end)count from create_role A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.create_time,'%Y-%m-%d')<=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and B.os in ("+ icons +") and B.script_version in ("+versions+") and B.ch_id in ("+chId+");";
+		String dauSql = "select count(distinct A.account)count from login A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.login_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and B.os in (" + icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+");";
+		String dauOldSql = "select count(*)count from (select distinct C.account from login C join device_info D on C.openudid = D.openudid where D.os in (" + icons + ") and D.script_version in ("+versions+") and D.ch_id in ("+chId+") and DATE_FORMAT(C.login_time, '%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day), '%Y-%m-%d')) A left join (select E.account from create_role E join device_info F on E.openudid = F.openudid where F.os in (" + icons + ") and F.script_version in ("+versions+") and F.ch_id in ("+chId+") and DATE_FORMAT(E.create_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day), '%Y-%m-%d')) B on A.account = B.account where B.account is null;";
+		String newPaidDevSql = "select count(distinct A.openudid)count from (select openudid from device_info where DATE_FORMAT(create_time,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and os in (" + icons + ") and script_version in ("+versions+") and ch_id in ("+chId+"))A join create_role B on A.openudid = B.openudid join log_charge C on B.account = C.account where DATE_FORMAT(C.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and C.is_product=1;";
+		String dActiveDevSql = "select count(*)count from (select distinct openudid from login where date = DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d')) A join device_info B on A.openudid = B.openudid where B.os in ("+ icons +") and B.script_version in ("+versions+") and B.ch_id in ("+chId+");";
+		String allActiveDevSql = "select count(*)count from (select distinct openudid from login where date<=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d')) A join device_info B on A.openudid = B.openudid where B.os in ("+ icons +") and B.script_version in ("+versions+") and B.ch_id in ("+chId+");";
+		String revenueSql = "select sum(A.count)revenue,sum(case when DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') then A.count else 0 end)y_r from (select * from log_charge where DATE_FORMAT(timestamp,'%Y-%m-%d')<=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d')) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and C.os in ("+icons+") and C.script_version in ("+versions+") and C.ch_id in ("+chId+");";
+		String paidDetailSql = "select count(distinct case when DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') then C.openudid end)paidDevice,count(distinct case when A.charge_times=1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') then C.openudid end)firstPaidD,count(case when DATE_FORMAT(A.timestamp,'%Y-%m-%d')=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') then A.account end)times,count(distinct C.openudid)allPaidDevice,count(A.account)allTimes from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and C.os in ("+ icons +") and C.script_version in ("+versions+") and C.ch_id in ("+chId+") and DATE_FORMAT(A.timestamp,'%Y-%m-%d')<=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d');";
+		String onlineLoginTimesSql = "select sum(case when A.online_time<86400 then A.online_time else 86400 end)online_time,count(A.account)count from logout A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.date=DATE_FORMAT(date_sub(now(),interval ? day),'%Y-%m-%d') and C.os in ("+ icons + ") and C.script_version in ("+versions+") and C.ch_id in ("+chId+");";
 		Map<String, String> data = new LinkedHashMap<String, String>();
 		int[] day = {1,7,30};
 		//分别处理 昨日 七日 三十日
@@ -321,7 +320,7 @@ public class RealtimeServiceImpl implements RealtimeService{
 	}
 	
 	/**
-	 * 查询实时在线人数 online_count 
+	 * 查询实时在线人数 online_count 没有icons,version,chId
 	 * @param date 时间列表
 	 */
 	public Map<String, Object> queryRealtimePlayerCount(String[] date, String db){
@@ -359,8 +358,8 @@ public class RealtimeServiceImpl implements RealtimeService{
 	}
 	
 	//查询实时设备
-	public Map<String, Object> queryRealtimeDevice(String icons, String[] date, String db){
-		String sql ="select count(*)count,hour(create_time)hour from device_info where DATE_FORMAT(create_time,'%Y-%m-%d')= ?  and os in (" + icons + ") group by hour(create_time)";
+	public Map<String, Object> queryRealtimeDevice(String icons, String[] date, String db, String versions, String chId){
+		String sql = "select count(*)count,hour(create_time)hour from device_info where DATE_FORMAT(create_time,'%Y-%m-%d')= ?  and os in (" + icons + ") and script_version in ("+versions+") and ch_id in ("+chId+") group by hour(create_time);";
 		Map<String, Object> data = new TreeMap<String, Object>(new Comparator<String>(){
 			@Override
 			public int compare(String o1, String o2) {
@@ -388,8 +387,8 @@ public class RealtimeServiceImpl implements RealtimeService{
 	}
 	
 	//查询实时新增玩家
-	public Map<String, Object> queryRealtimeAddPlayers(String icons, String[] date, String db){
-		String sql = "select count(*)count,hour(A.create_time)hour from create_role A join device_info B on A.openudid  = B.openudid where DATE_FORMAT(A.create_time,'%Y-%m-%d')= ? and B.os in (" + icons + ") group by hour(A.create_time)";
+	public Map<String, Object> queryRealtimeAddPlayers(String icons, String[] date, String db, String versions, String chId){
+		String sql = "select count(*)count,hour(A.create_time)hour from create_role A join device_info B on A.openudid  = B.openudid where DATE_FORMAT(A.create_time,'%Y-%m-%d')= ? and B.os in (" + icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+") group by hour(A.create_time);";
 		Map<String, Object> data = new TreeMap<String, Object>(new Comparator<String>(){
 			@Override
 			public int compare(String o1, String o2) {
@@ -416,8 +415,8 @@ public class RealtimeServiceImpl implements RealtimeService{
 		return data;
 	}
 	//查询实时收入金额
-	public Map<String, Object> queryRealtimeRevenue(String icons, String[] date, String db){
-		String sql = "select sum(A.count)revenue,hour(A.timestamp)hour from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d')= ? and C.os in (" + icons + ") group by hour(A.timestamp)";
+	public Map<String, Object> queryRealtimeRevenue(String icons, String[] date, String db, String versions, String chId){
+		String sql = "select sum(A.count)revenue,hour(A.timestamp)hour from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d')= ? and C.os in (" + icons + ") and C.script_version in ("+versions+") and C.ch_id in ("+chId+") group by hour(A.timestamp);";
 		Map<String, Object> data = new TreeMap<String, Object>(new Comparator<String>(){
 			@Override
 			public int compare(String o1, String o2) {
