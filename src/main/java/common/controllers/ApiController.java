@@ -17,16 +17,14 @@ public class ApiController extends Controller{
 	private ApiService as = new ApiServiceImpl();
 	
 	@Before(GET.class)
-	@ActionKey("/api/prop/channels")
+	@ActionKey("/api/prop/chver")
 	public void channels(){
-		Map<String, Object> serverChannels = new HashMap<String, Object>();
+		Map<String, Object> serverChVer = new HashMap<String, Object>();
 		Set<String> dbs = DbSelector.getDbs().keySet();
 		for(String db : dbs){
-			Map<String, String> qc = as.queryChannels(db);
-			if(!qc.isEmpty()){
-				serverChannels.put(db, qc);
-			}
+			Map<String, Object> qd = as.queryChannelsVersions(db);
+			serverChVer.put(db, qd);
 		}
-		renderJson(serverChannels);
-	}
+		renderJson(serverChVer);
+	}	
 }

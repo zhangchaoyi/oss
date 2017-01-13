@@ -88,26 +88,38 @@ $("#btn-selreverse").click(function(){
 $("#btn-filtersave").click(function(){
     var filterCheckBoxs = $("table.tab-pane.fade.active.in").find("div");
     var selectChannels = {};
+    var selectVersions = [];
+    var tag = $("ul.nav.nav-pills > li.active > a").attr("href");
     for(var i=0;i<filterCheckBoxs.length;i++) { 
         if($(filterCheckBoxs[i]).hasClass("checked")){
-            var chId = $(filterCheckBoxs[i]).siblings("span").attr("data-info");
-            var channelName = $(filterCheckBoxs[i]).siblings("span").text();
-            selectChannels[chId] = channelName;
+            if(tag=="#version-pills"){
+                var v = $(filterCheckBoxs[i]).siblings("span").attr("data-info");
+                selectVersions.push(v);
+            }else{
+                var chId = $(filterCheckBoxs[i]).siblings("span").attr("data-info");
+                var channelName = $(filterCheckBoxs[i]).siblings("span").text();
+                selectChannels[chId] = channelName;
+            }
         }
     }
-    if(isEmptyObject(selectChannels)){
-        alert("请选择渠道");
+    if(isEmptyObject(selectChannels)&&isEmptyObject(selectVersions)){
+        alert("请至少选择一项");
         return;
     }
     var currentServer = getCookie("server");
-    localStorage.setItem(currentServer+"SelectChannels", JSON.stringify(selectChannels));
-    if(window.location.pathname=="/oss/realtime/info"){
-        initSelectChannelsTag();
+    if(tag=="#version-pills"){
+        localStorage.setItem(currentServer+"SelectVersions", JSON.stringify(selectVersions));
+    }else{
+        localStorage.setItem(currentServer+"SelectChannels", JSON.stringify(selectChannels));
+        if(window.location.pathname=="/oss/realtime/info"){
+            initSelectChannelsTag();
+        }
     }
 });
 //点击筛选按钮进行初始化selectChannels
 $(".btn.btn-primary.btn-lg.btn-notify").click(function(){
     initSelectChannels();
+    initSelectVersions();
 });
 
 //部分页面不区分终端 ul显示全选 文字显示不区分
@@ -569,4 +581,47 @@ function isEmptyObject(e) {
     for (t in e)  
         return !1;  
     return !0  
-}  
+}
+//动态生成版本号
+function initVersions(){
+    var currentServer = getCookie("server");
+    var storage = localStorage;
+    if(storage[currentServer+"Versions"]==undefined){
+        alert("版本号列表不存在");
+        return;
+    }
+    var versions = JSON.parse(storage[currentServer+"Versions"]);
+    var htmlStr = "<tbody><tr>";
+    var counter = 0;
+    for(var key in versions){
+        htmlStr += "<td class='jcorgFilterTextParent'><input type='checkbox' /> <span class='jcorgFilterTextChild' data-info="+versions[key]+">"+versions[key]+"</span> </td>";
+        if((counter+1)%4==0){
+            htmlStr += "</tr><tr>" 
+        }
+        counter++;
+    }
+    if(counter%4==0){
+        htmlStr.substring(0,htmlStr.lastIndexOf("<tr>"));
+    }else{
+        htmlStr += "</tr>";
+    }
+    htmlStr += "</tbody>"
+    $("#version-pills").html(htmlStr);
+    $('input').iCheck({
+        checkboxClass: 'icheckbox_polaris'
+    });
+    initSelectVersions();
+}
+//选择当前的版本号
+function initSelectVersions(){
+    var currentServer = getCookie("server");
+    var storage = localStorage;
+    if(storage[currentServer+"SelectVersions"]==undefined){
+        alert("当前选择渠道列表不存在");
+        return;
+    }
+    var selectVersions = JSON.parse(storage[currentServer+"SelectVersions"]);
+    for(var key in selectVersions){
+        $("[data-info="+selectVersions[key]+"]").siblings("div").iCheck("check");
+    }
+}

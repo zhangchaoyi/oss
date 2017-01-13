@@ -14,16 +14,20 @@ function login(){
     },
     function(data, status) {
     	if(data.message == "success"){
-    		$.get("/oss/api/prop/channels", {},
+    		$.get("/oss/api/prop/chver", {},
 		    function(data, status) {
 		    	for(var key in data){
-		    		var value = data[key];
-		    		localStorage.setItem(key+"Channels", JSON.stringify(value));
+		    		var chver = data[key];
+		    		var ch = chver["channels"];
+		    		var ver = chver["versions"];
+		    		localStorage.setItem(key+"Channels", JSON.stringify(ch));
 		    		//当前选择渠道去除测试
-		    		if(value["0"]!=undefined){
-		    			delete value["0"];
+		    		if(ch["0"]!=undefined){
+		    			delete ch["0"];
 		    		}
-		    		localStorage.setItem(key+"SelectChannels", JSON.stringify(value));
+		    		localStorage.setItem(key+"SelectChannels", JSON.stringify(ch));
+		    		localStorage.setItem(key+"Versions", JSON.stringify(ver));
+		    		localStorage.setItem(key+"SelectVersions", JSON.stringify(ver));
 		    	}
 		    	var href = window.location.href;
 				if(href.indexOf("from=") != -1) {

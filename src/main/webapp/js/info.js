@@ -99,6 +99,7 @@ $(function(){
 function loadData(){
     initChannels();
     initSelectChannelsTag();
+    initVersions();
     loadInfoData($("#data-info-details > ul > li.active > a").attr("data-info"));
     loadBeforeTableData();
     loadRealtimeTableData(true);
@@ -287,7 +288,7 @@ $("a#switch-down").click(function(){
 function initSelectChannelsTag(){
     var currentServer = getCookie("server");
     var storage = localStorage;
-    if(storage[currentStr+"SelectChannels"]==undefined){
+    if(storage[currentServer+"SelectChannels"]==undefined){
         alert("当前选择渠道列表不存在");
         return;
     }
