@@ -17,8 +17,13 @@ function login(){
     		$.get("/oss/api/prop/channels", {},
 		    function(data, status) {
 		    	for(var key in data){
-		    		localStorage.setItem(key+"Channels", JSON.stringify(data[key]));
-		    		localStorage.setItem(key+"SelectChannels", JSON.stringify(data[key]));
+		    		var value = data[key];
+		    		localStorage.setItem(key+"Channels", JSON.stringify(value));
+		    		//当前选择渠道去除测试
+		    		if(value["0"]!=undefined){
+		    			delete value["0"];
+		    		}
+		    		localStorage.setItem(key+"SelectChannels", JSON.stringify(value));
 		    	}
 		    	var href = window.location.href;
 				if(href.indexOf("from=") != -1) {
