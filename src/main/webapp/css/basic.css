@@ -259,7 +259,7 @@ nav.navbar.navbar-default.navbar-cls-top {position: relative;}
     MEDIA QUERIES     
     =============================================*/
 
-@media (min-width:768px) {
+@media (min-width:1000px) {
     #page-wrapper {
         margin: 20px 0 0 260px;
         padding: 15px 30px;
@@ -277,6 +277,25 @@ nav.navbar.navbar-default.navbar-cls-top {position: relative;}
     .navbar {
         border-radius: 0px;
     }
+}
+@media (max-width:999px){
+    #page-wrapper {
+        margin: 20px 0 0 125px;
+        padding: 15px 30px;
+        min-height: 1200px;
+        top: 15px;
+    }
+    .navbar-side {
+        position: fixed;
+        width: 125px;
+        top: 103px;
+    }
+    .collapse {
+        display: block;
+    }
+    .nav>li>a {padding:5px 5px!important;}
+    .nav-second-level li a {padding-left:5px!important;}
+    .arrow{float:inherit!important}
 }
 
 #main-menu li a i {

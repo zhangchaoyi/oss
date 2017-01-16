@@ -120,3 +120,7 @@ a:active {text-decoration:underline;}
 ul#dropdownSubMenu {
     margin-top: 25px;
 }
+
+@media screen and (max-width: 1000px){
+	div.grid-gamename.inline-block{left:0px;}
+}

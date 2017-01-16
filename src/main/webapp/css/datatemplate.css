@@ -800,6 +800,16 @@ div.realtime-data span {
     nav.navbar-default.navbar-side{height: 550px;}
     button.btn.btn-primary.btn-lg.btn-notify{left:-500px}
 }
+@media screen and (max-width: 1000px){
+    button.btn.btn-primary.btn-lg.btn-notify {left:-850px;}
+    div.realtime-data h3 {font-size: 10px!important;padding-left: 0px!important}
+    div.realtime-data span {font-size: 10px;padding: 0 0 0 0;}
+    div.contrast-data {padding-left: 0px!important}
+    div.contrast-data b {width: 35px!important;}
+    div.date-bar{left:35px!important;}
+    div.time-title{left:186px!important;}
+    div.time-title > a{margin-left:0px!important}
+}
 nav.navbar-default.navbar-side {
     overflow: auto;
 }
