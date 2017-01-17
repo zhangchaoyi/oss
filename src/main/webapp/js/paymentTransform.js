@@ -18,18 +18,21 @@ function loadData(){
 }
 
 function loadApaData() {
+    apaChart.showLoading();
     $.post("/oss/api/payment/transform/paidAnalyze", {
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
+        apaChart.hideLoading();
         configChart(data, apaChart, "apaChart");
         configTable(data, apaTable);
     });
 }
 
 function loadRateData(tag) {
+    rateChart.showLoading();
     $.post("/oss/api/payment/transform/rate", {
         tag:tag,
         icon:getIcons(),
@@ -37,6 +40,7 @@ function loadRateData(tag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
+        rateChart.hideLoading();
         configChart(data, rateChart, "rateChart");
         configTable(data, rateTable);
         $("#avg-pt-rate > span > font").text(dealAvg(data));
@@ -44,6 +48,7 @@ function loadRateData(tag) {
 }
 
 function loadDetailData(tag) {
+    detailChart.showLoading();
     $.post("/oss/api/payment/transform/detail", {
         tag:tag,
         icon:getIcons(),
@@ -51,6 +56,7 @@ function loadDetailData(tag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
+        detailChart.hideLoading();
         configChart(data, detailChart, "detailChart");
         configTable(data, detailTable);
         $("#avg-pt-detail > span > font").text(dealAvg(data));

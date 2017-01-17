@@ -13,7 +13,7 @@ function loadData(){
 };
 
 function loadActivePlayerData(playerTag) {
-
+    activeChart.showLoading();
     $.post("/oss/api/players/active", {
     	playerTag:playerTag,
         icon:getIcons(),
@@ -23,12 +23,14 @@ function loadActivePlayerData(playerTag) {
         chId:getCurrentChannels()
     },
     function(data, status) {
+        activeChart.hideLoading();
         configPlayerChart(data);
         configPlayerTable(data);   
     });
 }
 
 function loadActiveDetailData(detailTagInfo) {
+    detailChart.showLoading();
 	$.post("/oss/api/players/active/details", {
     	detailTagInfo:detailTagInfo,
         icon:getIcons(),
@@ -38,6 +40,7 @@ function loadActiveDetailData(detailTagInfo) {
         chId:getCurrentChannels()
     },
     function(data, status) {
+        detailChart.hideLoading();
         configDetailChart(data);
         configDetailTable(data);   
     });

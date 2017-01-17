@@ -6,7 +6,7 @@ $(function(){
 });
 
 function loadData() {
-
+    retainChart.showLoading();
     $.post("/oss/api/players/retain", {
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
@@ -14,6 +14,7 @@ function loadData() {
     },
     function(data, status) {
         showPlayerNote(data);
+        retainChart.hideLoading();
         configChart(data);
         configTable(data);
     });

@@ -15,7 +15,7 @@ function loadData(){
 };
 
 function loadDataPayment(tag) {
-
+    dataPaymentChart.showLoading();
     $.post("/oss/api/payment/data", {
         tag:tag,
         icon:getIcons(),
@@ -24,6 +24,7 @@ function loadDataPayment(tag) {
     },
     function(data, status) {
         showPaidNote(data);
+        dataPaymentChart.hideLoading();
         configDataPaymentChart(data);
     });
 }
@@ -40,7 +41,7 @@ function loadDataPaymentTable() {
 }
 
 function loadAnalyzePayment(tag,subTag) {
-
+    analysePaymentChart.showLoading();
     $.post("/oss/api/payment/analyze", {
         tag:tag,
         subTag:subTag,
@@ -49,6 +50,7 @@ function loadAnalyzePayment(tag,subTag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
+        analysePaymentChart.hideLoading();
         configAnalyzePaymentChart(data);
     });
 }
@@ -343,6 +345,7 @@ function configDataPaymentTable(data) {
 }
 
 function loadDetailPayment(tag,subTag){
+    detailPaymentChart.showLoading();
     $.post("/oss/api/payment/detail", {
         tag:tag,
         subTag:subTag,
@@ -351,6 +354,7 @@ function loadDetailPayment(tag,subTag){
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
+        detailPaymentChart.hideLoading();
         configDetailChart(data);
         configDetailTable(data);   
     });

@@ -6,13 +6,14 @@ $(function(){
 });
 
 function loadData() {
-
+    retainEquipmentChart.showLoading();
     $.post("/oss/api/players/retain-equipment/rate", {
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
         endDate:validateDate($("input#endDate").attr("value"))
     },
     function(data, status) {
+        retainEquipmentChart.hideLoading();
         configChart(data);
         configTable(data);
     });

@@ -106,6 +106,7 @@ function loadData(){
 }
 
 function loadInfoData(detailTag) {
+    realtimeDetailsChart.showLoading();
 	$.post("/oss/api/realtime/info", {
     	detailTag:detailTag,
         icon:getIcons(),
@@ -114,6 +115,7 @@ function loadInfoData(detailTag) {
         startDate:dateCollection
     },
     function(data, status) {
+        realtimeDetailsChart.hideLoading();
     	configChart(data);
     });
 }

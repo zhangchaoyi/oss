@@ -30,6 +30,7 @@ function loadRankData() {
 }
 
 function loadRankAccountDetail(account){
+    rDPChart.showLoading();
     $.post("/oss/api/payment/rank/account/detail", {
         account:account,
         icon:getIcons(),
@@ -37,6 +38,7 @@ function loadRankAccountDetail(account){
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
+        rDPChart.hideLoading();
         queryData = data;
         configDetailChart(data,$("ul.nav.nav-tabs.rank-detail-payment-tab > li.active > a").attr("data-info"));
         configDetailTable(data);

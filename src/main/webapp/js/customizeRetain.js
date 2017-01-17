@@ -1,12 +1,10 @@
 $(function(){
 	initTimeSelector();
-
 	var periodInfo = $(".nav.nav-pills.customize-period-selected > li.active").children("a").attr("data-info");
 	var addPlayerInfo = $("#customize-retain-players").attr("data-info");
 	var startGameInfo = $("#customize-retain-game-type").attr("data-info");
 	var timesInfo = $("#customize-retain-times").attr("data-info");
 	var retentionInfo = $("#customize-retain-type").attr("data-info");
-	
 	loadData(periodInfo, addPlayerInfo, startGameInfo, timesInfo, retentionInfo);
 })
 

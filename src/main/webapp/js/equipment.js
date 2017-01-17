@@ -11,7 +11,7 @@ function loadData(){
 }
 
 function loadEquipmentData(playerTagInfo) {
-
+    equipmentChart.showLoading();
     $.post("/oss/api/players/equipment", {
         playerTagInfo:playerTagInfo,
         icon:getIcons(),
@@ -19,12 +19,14 @@ function loadEquipmentData(playerTagInfo) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
+        equipmentChart.hideLoading();
         configEquipmentChart(data);
         configEquipmentTable(data);   
     });
 }
 
 function loadEquipmentDetailsData(playerTagInfo, detailTagInfo) {
+    equipmentDetailChart.showLoading();
     $.post("/oss/api/players/equipment/details", {
         playerTagInfo:playerTagInfo,
         detailTagInfo:detailTagInfo,
@@ -33,6 +35,7 @@ function loadEquipmentDetailsData(playerTagInfo, detailTagInfo) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
+        equipmentDetailChart.hideLoading();
         configDetailChart(data);
         configDetailTable(data);   
     });

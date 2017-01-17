@@ -17,6 +17,7 @@ function loadData() {
 }
 
 function loadRankData(tag) {
+    rankChart.showLoading();
     $.post("/oss/api/payment/behavior/rank", {
         tag:tag,
         icon:getIcons(),
@@ -24,12 +25,14 @@ function loadRankData(tag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
+        rankChart.hideLoading();
         configChart(data, rankChart, "rankChart");
         configTable(data, rankTable);
     });
 }
 
 function loadPeriodData(tag) {
+    periodChart.showLoading();
     $.post("/oss/api/payment/behavior/period", {
         tag:tag,
         icon:getIcons(),
@@ -37,12 +40,14 @@ function loadPeriodData(tag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
+        periodChart.hideLoading();
         configChart(data, periodChart, "periodChart");
         configTable(data, periodTable);
     });
 }
 
 function loadFdData(tag, subTag) {
+    fpDetailsChart.showLoading();
     $.post("/oss/api/payment/behavior/fp/detail", {
         tag:tag,
         subTag:subTag,
@@ -51,6 +56,7 @@ function loadFdData(tag, subTag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
+        fpDetailsChart.hideLoading();
         configChart(data, fpDetailsChart, "fpDetailsChart");
         configTable(data, fpDetailTable);
     });

@@ -12,11 +12,13 @@ function loadData(){
 }
 
 function loadCcuData(){
+    ccuChart.showLoading();
 	$.post("/oss/api/online/count/ccu", {
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
+        ccuChart.hideLoading();
         configChart(data, ccuChart);
         $("#period-pcu").text(data.periodPcu);
 		$("#history-pcu").text(data.historyPcu);
@@ -25,11 +27,13 @@ function loadCcuData(){
 }
 
 function loadPcuData(){
+    pcuChart.showLoading();
 	$.post("/oss/api/online/count/pcu", {
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
+        pcuChart.hideLoading();
         configChart(data, pcuChart);
         configTable(data);
     });

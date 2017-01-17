@@ -15,6 +15,7 @@ function loadData() {
 
 function loadAddPlayerData(addTagInfo) {
     showNote = (addTagInfo=='new-activate'?true:false);
+    addChart.showLoading();
     $.post("/oss/api/players/add", {
         addTagInfo:addTagInfo,
         icon:getIcons(),
@@ -25,12 +26,14 @@ function loadAddPlayerData(addTagInfo) {
     },
     function(data, status) {
         showPlayerNote(data);
+        addChart.hideLoading();
         configPlayerChart(data);
         configPlayerTable(data)
     });
 }
 
 function loadAddDetailData(addDetailTagInfo) {
+    detailChart.showLoading();
     $.post("/oss/api/players/add/detail", {
         addDetailTagInfo:addDetailTagInfo,
         icon:getIcons(),
@@ -40,6 +43,7 @@ function loadAddDetailData(addDetailTagInfo) {
         chId:getCurrentChannels()
     },
     function(data, status) {
+        detailChart.hideLoading();
         configDetailChart(data);
         configDetailTable(data);   
     });

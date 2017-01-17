@@ -17,6 +17,7 @@ function loadData() {
 }
 
 function loadAvgGamePeriodData(playerTag,tag) {
+    aptChart.showLoading();
     $.post("/oss/api/online/habits/avgGP", {
         playerTag:playerTag,
         tag:tag,
@@ -25,6 +26,7 @@ function loadAvgGamePeriodData(playerTag,tag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
+        aptChart.hideLoading();
         configChart(data, aptChart, "aptChart");
         configTable(data, aptTable, false);
         dealAvgNote(tag, data);
@@ -37,6 +39,7 @@ function loadGameDetailData(playerTag,tag) {
         $(fDTable).dataTable().fnClearTable(); 
         return;
     }
+    fDChart.showLoading();
     $.post("/oss/api/online/habits/detail", {
         playerTag:playerTag,
         tag:tag,
@@ -45,6 +48,7 @@ function loadGameDetailData(playerTag,tag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
+        fDChart.hideLoading();
         configChart(data, fDChart, "fDChart");
         configTable(data, fDTable, true);
     });

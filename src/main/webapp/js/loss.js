@@ -11,6 +11,7 @@ function loadData(){
 }
 
 function loadLossData(playerTag,tag){
+    lcChart.showLoading();
     $.post("/oss/api/loss", {
         playerTag:playerTag,
         tag:tag,
@@ -19,6 +20,7 @@ function loadLossData(playerTag,tag){
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
+        lcChart.hideLoading();
         configChart(data, lcChart, "lcChart");
         configTable(data, lcTable);
     });

@@ -13,6 +13,7 @@ function loadData() {
 }
 
 function loadStartTimesData(tag) {
+    staChart.showLoading();
     $.post("/oss/api/online/analysis/startTimes", {
         tag:tag,
         icon:getIcons(),
@@ -20,17 +21,20 @@ function loadStartTimesData(tag) {
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
+        staChart.hideLoading();
         configChart(data, staChart, "staChart");
     });
 }
 
 function loadNeightborPeriodData() {
+    spChart.showLoading();
     $.post("/oss/api/online/analysis/neightbor", {
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
     },
     function(data, status) {
+        spChart.hideLoading();
         configChart(data, spChart, "spChart");
         configTable(data, spTable);
     });
