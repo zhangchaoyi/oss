@@ -6,6 +6,8 @@ $(function(){
 });
 
 function loadData(){
+    initChannels();
+    initVersions();
     loadActivePlayerData($("ul.nav.nav-tabs.activeplayer > li.active").children("a").attr("data-info"));
     loadActiveDetailData($("ul.nav.nav-tabs.active-details > li.active > a").attr("data-info"));
 };
@@ -16,7 +18,9 @@ function loadActivePlayerData(playerTag) {
     	playerTag:playerTag,
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
-        endDate:$("input#endDate").attr("value")
+        endDate:$("input#endDate").attr("value"),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels()
     },
     function(data, status) {
         configPlayerChart(data);
@@ -29,7 +33,9 @@ function loadActiveDetailData(detailTagInfo) {
     	detailTagInfo:detailTagInfo,
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
-        endDate:$("input#endDate").attr("value")
+        endDate:$("input#endDate").attr("value"),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels()
     },
     function(data, status) {
         configDetailChart(data);

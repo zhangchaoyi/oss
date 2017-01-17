@@ -15,7 +15,6 @@ import com.jfinal.core.ActionKey;
 import com.jfinal.core.Controller;
 import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
-
 import common.interceptor.DataGuestInterceptor;
 import common.service.ActivePlayersService;
 import common.service.AddPlayersService;
@@ -58,6 +57,8 @@ public class ActiveController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		logger.info("params:{" + "playerTag:" + playerTag + ",icons:" + icons + ",startDate:" + startDate + ",endDate:"
 				+ endDate + "}");
 
@@ -75,10 +76,10 @@ public class ActiveController extends Controller {
 			switch (playerTag) {
 			case "dau": {
 				List<Long> addPlayers = addPlayersService.queryAddPlayersData(categories, icons, startDate, endDate,
-						db);
-				List<Long> dau = activePlayersService.queryDau(categories, icons, startDate, endDate, db);
+						db, versions, chId);
+				List<Long> dau = activePlayersService.queryDau(categories, icons, startDate, endDate, db, versions, chId);
 				Map<String, List<Long>> dataMap = activePlayersService.queryPaidInActiveUser(categories, icons,
-						startDate, endDate, db);
+						startDate, endDate, db, versions, chId);
 				List<Long> paid = dataMap.get("paid");
 				List<Long> notpaid = dataMap.get("notpaid");
 
@@ -90,12 +91,11 @@ public class ActiveController extends Controller {
 				break;
 			}
 			case "dauwaumau": {
-				seriesMap = activePlayersService.queryActivePlayersInfo(categories, icons, startDate, endDate, db);
+				seriesMap = activePlayersService.queryDAUWAUMAU(categories, icons, db, versions, chId);
 				break;
 			}
 			case "daumau": {
-				List<Double> dauMauRate = activePlayersService.queryActivePlayersDauMauRate(categories, icons,
-						startDate, endDate, db);
+				List<Double> dauMauRate = activePlayersService.queryActivePlayersDauMauRate(categories, icons, db, versions, chId);
 				seriesMap.put("DAU/MAU", dauMauRate);
 				break;
 			}
@@ -132,6 +132,8 @@ public class ActiveController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		startDate = startDate + " 00:00:00";
 		endDate = endDate + " 23:59:59";
 		logger.info("params:{" + "detailTagfInfo:" + ",icons:" + icons + ",startDate:" + startDate + ",endDate:"
@@ -149,13 +151,13 @@ public class ActiveController extends Controller {
 			case "played-days": {
 				List<String> playedDays = Arrays.asList("1 天", "2~3 天", "4~7 天", "8~14 天", "15~30 天", "31~90 天",
 						"91~180 天", "181~365 天", "365+ 天");
-				List<Long> peopleCount = activePlayersService.queryPlayDays(playedDays, icons, startDate, endDate, db);
+				List<Long> peopleCount = activePlayersService.queryPlayDays(playedDays, icons, startDate, endDate, db, versions, chId);
 				seriesMap.put("活跃玩家", peopleCount);
 				category.put("已玩天数", playedDays);
 				break;
 			}
 			case "rank": {
-				Map<Integer, Long> map = activePlayersService.queryRank(icons, startDate, endDate, db);
+				Map<Integer, Long> map = activePlayersService.queryRank(icons, startDate, endDate, db, versions, chId);
 				List<Integer> rankPeriod = new ArrayList<Integer>(map.keySet());
 				List<Long> peopleCount = new ArrayList<Long>(map.values());
 				List<String> rankPeriodString = new ArrayList<String>();
@@ -167,19 +169,19 @@ public class ActiveController extends Controller {
 				break;
 			}
 			case "area": {
-				Map<String, Object> map = activePlayersService.queryArea(icons, startDate, endDate, db);
+				Map<String, Object> map = activePlayersService.queryArea(icons, startDate, endDate, db, versions, chId);
 				seriesMap.put("活跃玩家", map.get("activePlayer"));
 				category.put("地区", (List<String>) map.get("area"));
 				break;
 			}
 			case "country": {
-				Map<String, Object> map = activePlayersService.queryCountry(icons, startDate, endDate, db);
+				Map<String, Object> map = activePlayersService.queryCountry(icons, startDate, endDate, db, versions, chId);
 				seriesMap.put("活跃玩家", map.get("activePlayer"));
 				category.put("国家", (List<String>) map.get("country"));
 				break;
 			}
 			case "account": {
-				Map<String, Object> map = activePlayersService.queryAccountType(icons, startDate, endDate, db);
+				Map<String, Object> map = activePlayersService.queryAccountType(icons, startDate, endDate, db, versions, chId);
 				seriesMap.put("活跃玩家", map.get("activePlayer"));
 				category.put("账户类型", (List<String>) map.get("accountType"));
 				break;

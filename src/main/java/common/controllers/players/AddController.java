@@ -56,6 +56,8 @@ public class AddController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		startDate = startDate + " 00:00:00";
 		endDate = endDate + " 23:59:59";
 		logger.info("params:{" + "addTagInfo:" + addTagInfo + ",icons:" + icons + ",startDate:" + startDate
@@ -73,11 +75,11 @@ public class AddController extends Controller {
 			switch (addTagInfo) {
 			case "new-activate": {
 				List<Long> addPlayers = addPlayersService.queryAddPlayersData(categories, icons, startDate, endDate,
-						db);
+						db, versions, chId);
 				List<Long> activateEquipment = addPlayersService.queryDeviceInfoData(categories, icons, startDate,
-						endDate, db);
+						endDate, db, versions, chId);
 				List<Long> addEquipment = addPlayersService.queryAddEquipmentData(categories, icons, startDate, endDate,
-						db);
+						db, versions, chId);
 
 				seriesMap.put("新增账户", addPlayers);
 				seriesMap.put("设备激活", activateEquipment);
@@ -86,11 +88,11 @@ public class AddController extends Controller {
 			}
 			case "players-change-rate": {
 				List<Long> activateEquipment = addPlayersService.queryDeviceInfoData(categories, icons, startDate,
-						endDate, db);
+						endDate, db, versions, chId);
 				List<Long> addEquipment = addPlayersService.queryAddEquipmentData(categories, icons, startDate, endDate,
-						db);
+						db, versions, chId);
 				List<Long> playersChangeRate = addPlayersService.dealQueryPlayersChangeRate(activateEquipment,
-						addEquipment, db);
+						addEquipment);
 
 				seriesMap.put("玩家转化率", playersChangeRate);
 				break;
@@ -125,6 +127,8 @@ public class AddController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		startDate = startDate + " 00:00:00";
 		endDate = endDate + " 23:59:59";
 
@@ -140,7 +144,7 @@ public class AddController extends Controller {
 				List<String> gamePeriod = Arrays.asList("1~4 s", "5~10 s", "11~30 s", "31~60 s", "1~3 min", "3~10 min",
 						"10~30 min", "30~60 min", ">60 min");
 				List<Long> peopleCount = addPlayersService.queryFirstGamePeriod(gamePeriod, icons, startDate, endDate,
-						db);
+						db, versions, chId);
 
 				seriesMap.put("玩家数", peopleCount);
 				category.put("首次游戏时长", gamePeriod);
@@ -149,14 +153,14 @@ public class AddController extends Controller {
 			case "subsidiary-account-analyze": {
 				List<String> accountPeriod = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8~10", ">10");
 				List<Long> equipmentCount = addPlayersService.querySubsidiaryAccount(accountPeriod, icons, startDate,
-						endDate, db);
+						endDate, db, versions, chId);
 
 				seriesMap.put("设备数", equipmentCount);
 				category.put("小号分析", accountPeriod);
 				break;
 			}
 			case "area": {
-				List<CreateRole> queryData = addPlayersService.queryArea(icons, startDate, endDate, db);
+				List<CreateRole> queryData = addPlayersService.queryArea(icons, startDate, endDate, db, versions, chId);
 				List<String> provinces = new ArrayList<String>();
 				List<Long> provinceCount = new ArrayList<Long>();
 				for (CreateRole cr : queryData) {
@@ -168,7 +172,7 @@ public class AddController extends Controller {
 				break;
 			}
 			case "country": {
-				List<CreateRole> queryData = addPlayersService.queryCountry(icons, startDate, endDate, db);
+				List<CreateRole> queryData = addPlayersService.queryCountry(icons, startDate, endDate, db, versions, chId);
 				List<String> countries = new ArrayList<String>();
 				List<Long> countryCount = new ArrayList<Long>();
 				for (CreateRole cr : queryData) {
@@ -180,7 +184,7 @@ public class AddController extends Controller {
 				break;
 			}
 			case "account": {
-				List<CreateRole> queryData = addPlayersService.queryAccountType(icons, startDate, endDate, db);
+				List<CreateRole> queryData = addPlayersService.queryAccountType(icons, startDate, endDate, db, versions, chId);
 				List<String> accountType = new ArrayList<String>();
 				List<Long> accountTypeCount = new ArrayList<Long>();
 				for (CreateRole cr : queryData) {

@@ -7,6 +7,8 @@ $(function(){
 })
 
 function loadData() {
+    initChannels();
+    initVersions();
     loadAddPlayerData($("ul.nav.nav-tabs.add-players > li.active > a").attr("data-info"));
     loadAddDetailData($("ul.nav.nav-tabs.add-details > li.active > a").attr("data-info"));
 }
@@ -17,7 +19,9 @@ function loadAddPlayerData(addTagInfo) {
         addTagInfo:addTagInfo,
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
-        endDate:$("input#endDate").attr("value")
+        endDate:$("input#endDate").attr("value"),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels()
     },
     function(data, status) {
         showPlayerNote(data);
@@ -31,7 +35,9 @@ function loadAddDetailData(addDetailTagInfo) {
         addDetailTagInfo:addDetailTagInfo,
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
-        endDate:$("input#endDate").attr("value")
+        endDate:$("input#endDate").attr("value"),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels()
     },
     function(data, status) {
         configDetailChart(data);
