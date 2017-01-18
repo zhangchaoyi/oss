@@ -6,6 +6,8 @@ $(function(){
 });
 
 function loadData(){
+    initChannels();
+    initVersions();
     loadEquipmentData($("div.nav-tab.equipment > ul > li.active > a").attr("data-info"));
     loadEquipmentDetailsData($("div.nav-tab.equipment > ul > li.active > a").attr("data-info"), $("ul.nav.nav-tabs.equipment-details > li.active > a").attr("data-info"));
 }
@@ -15,6 +17,8 @@ function loadEquipmentData(playerTagInfo) {
     $.post("/oss/api/players/equipment", {
         playerTagInfo:playerTagInfo,
         icon:getIcons(),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
     },
@@ -31,6 +35,8 @@ function loadEquipmentDetailsData(playerTagInfo, detailTagInfo) {
         playerTagInfo:playerTagInfo,
         detailTagInfo:detailTagInfo,
         icon:getIcons(),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
     },

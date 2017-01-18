@@ -54,6 +54,8 @@ public class EquipmentController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		startDate = startDate + " 00:00:00";
 		endDate = endDate + " 23:59:59";
 		logger.info("params:{" + "playerTagInfo:" + playerTagInfo + ",icons:" + icons + ",startDate:" + startDate
@@ -71,7 +73,7 @@ public class EquipmentController extends Controller {
 			case "add-players": {
 				List<Long> equipmentsCount = new ArrayList<Long>();
 				List<DeviceInfo> addPlayersEquipment = equipmentAnalyzeService.queryAddPlayersEquipment(icons,
-						startDate, endDate, db);
+						startDate, endDate, db, versions, chId);
 				for (DeviceInfo di : addPlayersEquipment) {
 					String model = di.getStr("model");
 					Long count = di.getLong("count");
@@ -85,7 +87,7 @@ public class EquipmentController extends Controller {
 			case "active-players": {
 				List<Long> equipmentsCount = new ArrayList<Long>();
 				List<DeviceInfo> activePlayersEquipment = equipmentAnalyzeService.queryActivePlayersEquipment(icons,
-						startDate, endDate, db);
+						startDate, endDate, db, versions, chId);
 				for (DeviceInfo di : activePlayersEquipment) {
 					String model = di.getStr("model");
 					Long count = di.getLong("count");
@@ -99,7 +101,7 @@ public class EquipmentController extends Controller {
 			case "paid-players": {
 				List<Long> equipmentsCount = new ArrayList<Long>();
 				List<DeviceInfo> paidPlayersEquipment = equipmentAnalyzeService.queryPaidPlayersEquipment(icons,
-						startDate, endDate, db);
+						startDate, endDate, db, versions, chId);
 
 				for (DeviceInfo di : paidPlayersEquipment) {
 					String model = di.getStr("model");
@@ -139,6 +141,8 @@ public class EquipmentController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		startDate = startDate + " 00:00:00";
 		endDate = endDate + " 23:59:59";
 		logger.info("params:{" + "playerTagInfo:" + playerTagInfo + ",detailTagInfo:" + detailTagInfo + ",icons:"
@@ -160,7 +164,7 @@ public class EquipmentController extends Controller {
 				switch (detailTagInfo) {
 				case "resolution": {
 					List<DeviceInfo> resolution = equipmentAnalyzeService.queryAddPlayersEquipmentResolution(icons,
-							startDate, endDate, db);
+							startDate, endDate, db, versions, chId);
 					List<String> categories = new ArrayList<String>();
 					List<Long> peopleCount = new ArrayList<Long>();
 					for (DeviceInfo di : resolution) {
@@ -175,7 +179,7 @@ public class EquipmentController extends Controller {
 				}
 				case "operating-system": {
 					List<DeviceInfo> os = equipmentAnalyzeService.queryAddPlayersEquipmentOsVersion(icons, startDate,
-							endDate, db);
+							endDate, db, versions, chId);
 					List<String> categories = new ArrayList<String>();
 					List<Long> peopleCount = new ArrayList<Long>();
 					for (DeviceInfo di : os) {
@@ -190,7 +194,7 @@ public class EquipmentController extends Controller {
 				}
 				case "network-mode": {
 					List<DeviceInfo> net = equipmentAnalyzeService.queryAddPlayersEquipmentNet(icons, startDate,
-							endDate, db);
+							endDate, db, versions, chId);
 					List<String> categories = new ArrayList<String>();
 					List<Long> peopleCount = new ArrayList<Long>();
 					for (DeviceInfo di : net) {
@@ -205,7 +209,7 @@ public class EquipmentController extends Controller {
 				}
 				case "band-operator": {
 					List<DeviceInfo> bandOperator = equipmentAnalyzeService.queryAddPlayersEquipmentBandOperator(icons,
-							startDate, endDate, db);
+							startDate, endDate, db, versions, chId);
 					List<String> categories = new ArrayList<String>();
 					List<Long> peopleCount = new ArrayList<Long>();
 					for (DeviceInfo di : bandOperator) {
@@ -226,7 +230,7 @@ public class EquipmentController extends Controller {
 				switch (detailTagInfo) {
 				case "resolution": {
 					List<DeviceInfo> resolution = equipmentAnalyzeService.queryActivePlayersEquipmentResolution(icons,
-							startDate, endDate, db);
+							startDate, endDate, db, versions, chId);
 					List<String> categories = new ArrayList<String>();
 					List<Long> peopleCount = new ArrayList<Long>();
 					for (DeviceInfo di : resolution) {
@@ -241,7 +245,7 @@ public class EquipmentController extends Controller {
 				}
 				case "operating-system": {
 					List<DeviceInfo> os = equipmentAnalyzeService.queryActivePlayersEquipmentOsVersion(icons, startDate,
-							endDate, db);
+							endDate, db, versions, chId);
 					List<String> categories = new ArrayList<String>();
 					List<Long> peopleCount = new ArrayList<Long>();
 					for (DeviceInfo di : os) {
@@ -256,7 +260,7 @@ public class EquipmentController extends Controller {
 				}
 				case "network-mode": {
 					List<DeviceInfo> net = equipmentAnalyzeService.queryActivePlayersEquipmentNet(icons, startDate,
-							endDate, db);
+							endDate, db, versions, chId);
 					List<String> categories = new ArrayList<String>();
 					List<Long> peopleCount = new ArrayList<Long>();
 					for (DeviceInfo di : net) {
@@ -271,7 +275,7 @@ public class EquipmentController extends Controller {
 				}
 				case "band-operator": {
 					List<DeviceInfo> bandOperator = equipmentAnalyzeService
-							.queryActivePlayersEquipmentBandOperator(icons, startDate, endDate, db);
+							.queryActivePlayersEquipmentBandOperator(icons, startDate, endDate, db, versions, chId);
 					List<String> categories = new ArrayList<String>();
 					List<Long> peopleCount = new ArrayList<Long>();
 					for (DeviceInfo di : bandOperator) {
@@ -292,7 +296,7 @@ public class EquipmentController extends Controller {
 				switch (detailTagInfo) {
 				case "resolution": {
 					List<DeviceInfo> resolution = equipmentAnalyzeService.queryPaidPlayersEquipmentResolution(icons,
-							startDate, endDate, db);
+							startDate, endDate, db, versions, chId);
 					List<String> categories = new ArrayList<String>();
 					List<Long> peopleCount = new ArrayList<Long>();
 					for (DeviceInfo di : resolution) {
@@ -307,7 +311,7 @@ public class EquipmentController extends Controller {
 				}
 				case "operating-system": {
 					List<DeviceInfo> os = equipmentAnalyzeService.queryPaidPlayersEquipmentOsVersion(icons, startDate,
-							endDate, db);
+							endDate, db, versions, chId);
 					List<String> categories = new ArrayList<String>();
 					List<Long> peopleCount = new ArrayList<Long>();
 					for (DeviceInfo di : os) {
@@ -322,7 +326,7 @@ public class EquipmentController extends Controller {
 				}
 				case "network-mode": {
 					List<DeviceInfo> net = equipmentAnalyzeService.queryPaidPlayersEquipmentNet(icons, startDate,
-							endDate, db);
+							endDate, db, versions, chId);
 					List<String> categories = new ArrayList<String>();
 					List<Long> peopleCount = new ArrayList<Long>();
 					for (DeviceInfo di : net) {
@@ -337,7 +341,7 @@ public class EquipmentController extends Controller {
 				}
 				case "band-operator": {
 					List<DeviceInfo> bandOperator = equipmentAnalyzeService.queryPaidPlayersEquipmentBandOperator(icons,
-							startDate, endDate, db);
+							startDate, endDate, db, versions, chId);
 					List<String> categories = new ArrayList<String>();
 					List<Long> peopleCount = new ArrayList<Long>();
 					for (DeviceInfo di : bandOperator) {
