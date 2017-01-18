@@ -27,10 +27,9 @@ public class OnlineAnalysisServiceImpl implements OnlineAnalysisService {
 	 * @param startDate  所选起始时间
 	 * @param endDate  所选结束时间
 	 */
-	public List<Long> queryPeriodDistribution(int days, String icons, String startDate, String endDate, String db) {
+	public List<Long> queryPeriodDistribution(int days, String icons, String startDate, String endDate, String db, String versions, String chId) {
 		logger.info("params:{"+"days:"+days+"}");
-		String sql = "select hour(A.login_time)hour,count(*)count from (select openudid,login_time from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("
-				+ icons + ") group by hour";
+		String sql = "select hour(A.login_time)hour,count(*)count from (select openudid,login_time from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("+ icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+") group by hour";
 		List<Login> distribution = Login.dao.use(db).find(sql, startDate, endDate);
 		// init
 		Map<Integer, Long> sort = new LinkedHashMap<Integer, Long>();
@@ -56,9 +55,8 @@ public class OnlineAnalysisServiceImpl implements OnlineAnalysisService {
 	 * @param startDate  所选起始时间
 	 * @param endDate  所选结束时间  
 	 */
-	public List<Long> queryStartTimes(List<String> categories, String icons, String startDate, String endDate, String db) {
-		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,count(*)count from (select openudid,date from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("
-				+ icons + ") group by date";
+	public List<Long> queryStartTimes(List<String> categories, String icons, String startDate, String endDate, String db, String versions, String chId) {
+		String sql = "select DATE_FORMAT(date,'%Y-%m-%d')date,count(*)count from (select openudid,date from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("+ icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+") group by date";
 		List<Login> startTimes = Login.dao.use(db).find(sql, startDate, endDate);
 		// init
 		Map<String, Long> sort = new LinkedHashMap<String, Long>();
@@ -81,9 +79,8 @@ public class OnlineAnalysisServiceImpl implements OnlineAnalysisService {
 	 * @param endDate  所选结束时间  
 	 */
 	public Map<String, Object> queryNeighborStartPeriod(List<String> categories, String icons, String startDate,
-			String endDate, String db) {
-		String sql = "select A.account,A.timestamp from (select account,UNIX_TIMESTAMP(login_time)timestamp,openudid from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("
-				+ icons + ") order by A.timestamp";
+			String endDate, String db, String versions, String chId) {
+		String sql = "select A.account,A.timestamp from (select account,UNIX_TIMESTAMP(login_time)timestamp,openudid from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("+ icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+") order by A.timestamp";
 		List<Login> nsp = Login.dao.use(db).find(sql, startDate, endDate);
 		// Map<account, List<timestamp>>
 		Map<String, List<Long>> sort = new HashMap<String, List<Long>>();

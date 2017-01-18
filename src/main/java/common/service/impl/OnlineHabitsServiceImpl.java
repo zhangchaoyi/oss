@@ -30,11 +30,9 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	 * @param endDate  所选结束时间 
 	 */
 	public Map<String, Object> queryAddpDayAvgGP(List<String> categories, String icons, String startDate,
-			String endDate, String db) {
-		String timesSql = "select DATE_FORMAT(A.date_time,'%Y-%m-%d')date,count(*)count,count(distinct A.account)ap from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("
-				+ icons + ")) A join login B on A.account = B.account and A.date_time = B.date group by A.date_time";
-		String timeSql = "select DATE_FORMAT(A.date_time,'%Y-%m-%d')date,sum(B.online_time)online_time,count(distinct A.account)ap from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("
-				+ icons + ")) A join logout B on A.account = B.account and A.date_time = B.date group by A.date_time;";
+			String endDate, String db, String versions, String chId) {
+		String timesSql = "select DATE_FORMAT(A.date_time,'%Y-%m-%d')date,count(*)count,count(distinct A.account)ap from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("+ icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+")) A join login B on A.account = B.account and A.date_time = B.date group by A.date_time";
+		String timeSql = "select DATE_FORMAT(A.date_time,'%Y-%m-%d')date,sum(B.online_time)online_time,count(distinct A.account)ap from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("+ icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+")) A join logout B on A.account = B.account and A.date_time = B.date group by A.date_time;";
 
 		List<Login> qTimes = Login.dao.use(db).find(timesSql, startDate, endDate);
 		List<Logout> qTime = Logout.dao.use(db).find(timeSql, startDate, endDate);
@@ -112,12 +110,10 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	 * @param startDate  所选起始时间
 	 * @param endDate  所选结束时间  
 	 */
-	public Map<String, Object> queryAddpWeekAvgGP(String icons, String startDate, String endDate, String db) {
+	public Map<String, Object> queryAddpWeekAvgGP(String icons, String startDate, String endDate, String db, String versions, String chId) {
 		Map<String, String> week = DateUtils.divideDateToWeek(startDate, endDate);
-		String timesSql = "select count(*)count,count(distinct A.account)ap from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("
-				+ icons + ")) A join login B on A.account = B.account and A.date_time = B.date";
-		String timeSql = "select sum(B.online_time)online_time,count(distinct A.account)ap from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("
-				+ icons + ")) A join logout B on A.account = B.account and A.date_time = B.date;";
+		String timesSql = "select count(*)count,count(distinct A.account)ap from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("+ icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+")) A join login B on A.account = B.account and A.date_time = B.date";
+		String timeSql = "select sum(B.online_time)online_time,count(distinct A.account)ap from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("+ icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+")) A join logout B on A.account = B.account and A.date_time = B.date;";
 
 		Map<String, Map<String, Double>> sort = new LinkedHashMap<String, Map<String, Double>>();
 
@@ -199,14 +195,12 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	 * @param endDate  所选结束时间  
 	 */
 	public Map<String, Object> queryAddpMonthAvgGP(List<String> categories, String icons, String startDate,
-			String endDate, String db) {
+			String endDate, String db, String versions, String chId) {
 		String start = DateUtils.monthToStr(DateUtils.strToDate(startDate));
 		String end = DateUtils.monthToStr(DateUtils.strToDate(endDate));
 
-		String timesSql = "select DATE_FORMAT(A.date_time,'%Y-%m')month,count(*)count,count(distinct A.account)ap from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.date_time,'%Y-%m') between ? and ? and B.os in ("
-				+ icons + ")) A join login B on A.account = B.account and A.date_time = B.date group by month;";
-		String timeSql = "select DATE_FORMAT(A.date_time,'%Y-%m')month,sum(B.online_time)online_time,count(distinct A.account)ap from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.date_time,'%Y-%m') between ? and ? and B.os in ("
-				+ icons + ")) A join logout B on A.account = B.account and A.date_time = B.date group by month;";
+		String timesSql = "select DATE_FORMAT(A.date_time,'%Y-%m')month,count(*)count,count(distinct A.account)ap from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.date_time,'%Y-%m') between ? and ? and B.os in ("+ icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+")) A join login B on A.account = B.account and A.date_time = B.date group by month;";
+		String timeSql = "select DATE_FORMAT(A.date_time,'%Y-%m')month,sum(B.online_time)online_time,count(distinct A.account)ap from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where DATE_FORMAT(A.date_time,'%Y-%m') between ? and ? and B.os in ("+ icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+")) A join logout B on A.account = B.account and A.date_time = B.date group by month;";
 
 		List<Login> qTimes = Login.dao.use(db).find(timesSql, start, end);
 		List<Logout> qTime = Logout.dao.use(db).find(timeSql, start, end);
@@ -285,11 +279,9 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	 * @param endDate  所选结束时间 
 	 */
 	public Map<String, Object> queryActivepDayAvgGP(List<String> categories, String icons, String startDate,
-			String endDate, String db) {
-		String timesSql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,count(*)count,count(distinct A.account)ap from (select account,openudid,date from login where date between ? and ? ) A join device_info B on A.openudid = B.openudid where B.os in ("
-				+ icons + ") group by A.date";
-		String timeSql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,sum(A.online_time)online_time,count(distinct A.account)ap from (select account,online_time,date from logout where date between ? and ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("
-				+ icons + ") group by A.date";
+			String endDate, String db, String versions, String chId) {
+		String timesSql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,count(*)count,count(distinct A.account)ap from (select account,openudid,date from login where date between ? and ? ) A join device_info B on A.openudid = B.openudid where B.os in ("+ icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+") group by A.date";
+		String timeSql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,sum(A.online_time)online_time,count(distinct A.account)ap from (select account,online_time,date from logout where date between ? and ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("+ icons + ") and C.script_version in ("+versions+") and C.ch_id in ("+chId+") group by A.date";
 
 		List<Login> qTimes = Login.dao.use(db).find(timesSql, startDate, endDate);
 		List<Logout> qTime = Logout.dao.use(db).find(timeSql, startDate, endDate);
@@ -366,12 +358,10 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	 * @param startDate  所选起始时间
 	 * @param endDate  所选结束时间
 	 */
-	public Map<String, Object> queryActivepWeekAvgGP(String icons, String startDate, String endDate, String db) {
+	public Map<String, Object> queryActivepWeekAvgGP(String icons, String startDate, String endDate, String db, String versions, String chId) {
 		Map<String, String> week = DateUtils.divideDateToWeek(startDate, endDate);
-		String timesSql = "select count(*)count,count(distinct A.account)ap from (select account,openudid,date from login where date between ? and ? ) A join device_info B on A.openudid = B.openudid where B.os in ("
-				+ icons + ")";
-		String timeSql = "select sum(A.online_time)online_time,count(distinct A.account)ap from (select account,online_time,date from logout where date between ? and ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("
-				+ icons + ")";
+		String timesSql = "select count(*)count,count(distinct A.account)ap from (select account,openudid,date from login where date between ? and ? ) A join device_info B on A.openudid = B.openudid where B.os in ("+ icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+")";
+		String timeSql = "select sum(A.online_time)online_time,count(distinct A.account)ap from (select account,online_time,date from logout where date between ? and ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("+ icons + ") and C.script_version in ("+versions+") and C.ch_id in ("+chId+")";
 
 		Map<String, Map<String, Double>> sort = new LinkedHashMap<String, Map<String, Double>>();
 
@@ -453,14 +443,12 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	 * @param endDate  所选结束时间 
 	 */
 	public Map<String, Object> queryActivepMonthAvgGP(List<String> categories, String icons, String startDate,
-			String endDate, String db) {
+			String endDate, String db, String versions, String chId) {
 		String start = DateUtils.monthToStr(DateUtils.strToDate(startDate));
 		String end = DateUtils.monthToStr(DateUtils.strToDate(endDate));
 
-		String timesSql = "select A.month,count(*)count,count(distinct A.account)ap from (select account,openudid,DATE_FORMAT(date,'%Y-%m')month from login where DATE_FORMAT(date,'%Y-%m') between ? and ? ) A join device_info B on A.openudid = B.openudid where B.os in ("
-				+ icons + ") group by A.month;";
-		String timeSql = "select A.month,sum(A.online_time)online_time,count(distinct A.account)ap from (select account,online_time,DATE_FORMAT(date,'%Y-%m')month from logout where DATE_FORMAT(date,'%Y-%m') between ? and ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("
-				+ icons + ") group by A.month;";
+		String timesSql = "select A.month,count(*)count,count(distinct A.account)ap from (select account,openudid,DATE_FORMAT(date,'%Y-%m')month from login where DATE_FORMAT(date,'%Y-%m') between ? and ? ) A join device_info B on A.openudid = B.openudid where B.os in ("+ icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+") group by A.month;";
+		String timeSql = "select A.month,sum(A.online_time)online_time,count(distinct A.account)ap from (select account,online_time,DATE_FORMAT(date,'%Y-%m')month from logout where DATE_FORMAT(date,'%Y-%m') between ? and ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("+ icons + ") and C.script_version in ("+versions+") and C.ch_id in ("+chId+") group by A.month;";
 
 		List<Login> qTimes = Login.dao.use(db).find(timesSql, start, end);
 		List<Logout> qTime = Logout.dao.use(db).find(timeSql, start, end);
@@ -539,11 +527,9 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	 * @param endDate  所选结束时间
 	 */
 	public Map<String, Object> queryPpDayAvgGP(List<String> categories, String icons, String startDate,
-			String endDate, String db) {
-		String timesSql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,count(*)count,count(distinct A.account)pp from (select distinct A.account,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in ("
-				+ icons + ")) A join login B on A.account = B.account and A.date = B.date group by A.date";
-		String timeSql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,sum(B.online_time)online_time,count(distinct A.account)pp from (select distinct A.account,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in ("
-				+ icons + ")) A join logout B on A.account = B.account and A.date = B.date group by A.date;";
+			String endDate, String db, String versions, String chId) {
+		String timesSql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,count(*)count,count(distinct A.account)pp from (select distinct A.account,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in ("+ icons + ") and C.script_version in ("+versions+") and C.ch_id in ("+chId+")) A join login B on A.account = B.account and A.date = B.date group by A.date";
+		String timeSql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,sum(B.online_time)online_time,count(distinct A.account)pp from (select distinct A.account,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in ("+ icons + ") and C.script_version in ("+versions+") and C.ch_id in ("+chId+")) A join logout B on A.account = B.account and A.date = B.date group by A.date;";
 
 		List<Login> qTimes = Login.dao.use(db).find(timesSql, startDate, endDate);
 		List<Logout> qTime = Logout.dao.use(db).find(timeSql, startDate, endDate);
@@ -620,12 +606,10 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	 * @param startDate  所选起始时间
 	 * @param endDate  所选结束时间
 	 */
-	public Map<String, Object> queryPpWeekAvgGP(String icons, String startDate, String endDate, String db) {
+	public Map<String, Object> queryPpWeekAvgGP(String icons, String startDate, String endDate, String db, String versions, String chId) {
 		Map<String, String> week = DateUtils.divideDateToWeek(startDate, endDate);
-		String timesSql = "select count(*)count,count(distinct A.account)pp from (select distinct A.account,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in ("
-				+ icons + ")) A join login B on A.account = B.account and A.date = B.date";
-		String timeSql = "select sum(B.online_time)online_time,count(distinct A.account)pp from (select distinct A.account,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in ("
-				+ icons + ")) A join logout B on A.account = B.account and A.date = B.date;";
+		String timesSql = "select count(*)count,count(distinct A.account)pp from (select distinct A.account,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in ("+ icons + ") and C.script_version in ("+versions+") and C.ch_id in ("+chId+")) A join login B on A.account = B.account and A.date = B.date";
+		String timeSql = "select sum(B.online_time)online_time,count(distinct A.account)pp from (select distinct A.account,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in ("+ icons + ") and C.script_version in ("+versions+") and C.ch_id in ("+chId+")) A join logout B on A.account = B.account and A.date = B.date;";
 
 		Map<String, Map<String, Double>> sort = new LinkedHashMap<String, Map<String, Double>>();
 
@@ -707,14 +691,12 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	 * @param endDate  所选结束时间
 	 */
 	public Map<String, Object> queryPpMonthAvgGP(List<String> categories, String icons, String startDate,
-			String endDate, String db) {
+			String endDate, String db, String versions, String chId) {
 		String start = DateUtils.monthToStr(DateUtils.strToDate(startDate));
 		String end = DateUtils.monthToStr(DateUtils.strToDate(endDate));
 
-		String timesSql = "select DATE_FORMAT(A.date,'%Y-%m')month,count(*)count,count(distinct A.account)pp from (select distinct A.account,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m') between ? and ? and C.os in ("
-				+ icons + ")) A join login B on A.account = B.account and A.date = B.date group by month";
-		String timeSql = "select DATE_FORMAT(A.date,'%Y-%m')month,sum(B.online_time)online_time,count(distinct A.account)pp from (select distinct A.account,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m') between ? and ? and C.os in ("
-				+ icons + ")) A join logout B on A.account = B.account and A.date = B.date group by month;";
+		String timesSql = "select DATE_FORMAT(A.date,'%Y-%m')month,count(*)count,count(distinct A.account)pp from (select distinct A.account,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m') between ? and ? and C.os in ("+ icons + ") and C.script_version in ("+versions+") and C.ch_id in ("+chId+")) A join login B on A.account = B.account and A.date = B.date group by month";
+		String timeSql = "select DATE_FORMAT(A.date,'%Y-%m')month,sum(B.online_time)online_time,count(distinct A.account)pp from (select distinct A.account,DATE_FORMAT(A.timestamp,'%Y-%m-%d')date from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m') between ? and ? and C.os in ("+ icons + ") and C.script_version in ("+versions+") and C.ch_id in ("+chId+")) A join logout B on A.account = B.account and A.date = B.date group by month;";
 
 		List<Login> qTimes = Login.dao.use(db).find(timesSql, start, end);
 		List<Logout> qTime = Logout.dao.use(db).find(timeSql, start, end);
@@ -793,9 +775,8 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	 * @param startDate  所选起始时间
 	 * @param endDate  所选结束时间
 	 */
-	public List<Integer> queryAddDayGameTimes(List<String> categories, String icons, String startDate, String endDate, String db) {
-		String sql = "select count(*)count from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("
-				+ icons + ")) A join login B on A.account = B.account and A.date_time = B.date group by A.account";
+	public List<Integer> queryAddDayGameTimes(List<String> categories, String icons, String startDate, String endDate, String db, String versions, String chId) {
+		String sql = "select count(*)count from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("+ icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+")) A join login B on A.account = B.account and A.date_time = B.date group by A.account";
 		List<CreateRole> dGT = CreateRole.dao.use(db).find(sql, startDate, endDate);
 		// init
 		Map<String, Integer> sort = new LinkedHashMap<String, Integer>();
@@ -833,9 +814,8 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	 * @param startDate  所选起始时间
 	 * @param endDate  所选结束时间
 	 */
-	public List<Integer> queryAddDayGameTime(List<String> categories, String icons, String startDate, String endDate, String db) {
-		String sql = "select sum(B.online_time)online_time from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("
-				+ icons + ")) A join logout B on A.account = B.account and A.date_time = B.date group by A.account";
+	public List<Integer> queryAddDayGameTime(List<String> categories, String icons, String startDate, String endDate, String db, String versions, String chId) {
+		String sql = "select sum(B.online_time)online_time from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("+ icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+")) A join logout B on A.account = B.account and A.date_time = B.date group by A.account";
 		List<Logout> dGT = Logout.dao.use(db).find(sql, startDate, endDate);
 		// init
 		Map<String, Integer> sort = new LinkedHashMap<String, Integer>();
@@ -882,9 +862,8 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	 * @param endDate  所选结束时间
 	 */
 	public Map<String, List<Integer>> queryAddDaySinglePeriod(List<String> categories, String icons, String startDate,
-			String endDate, String db) {
-		String sql = "select sum(B.online_time)online_time,count(*)count from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("
-				+ icons + ")) A join logout B on A.account = B.account and A.date_time = B.date group by A.account";
+			String endDate, String db, String versions, String chId) {
+		String sql = "select sum(B.online_time)online_time,count(*)count from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in ("+ icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+")) A join logout B on A.account = B.account and A.date_time = B.date group by A.account";
 		List<Logout> dSP = Logout.dao.use(db).find(sql, startDate, endDate);
 		// init
 		Map<String, Integer> sort = new LinkedHashMap<String, Integer>();
@@ -951,8 +930,8 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 
 	//新增玩家游戏时段
 	public List<Integer> queryAddDayPeriod(String icons, String startDate,
-			String endDate, String db){
-		String sql = "select hour(B.login_time)hour,count(*)count from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in (" + icons + ")) A join login B on A.account = B.account and A.date_time = B.date group by hour";
+			String endDate, String db, String versions, String chId){
+		String sql = "select hour(B.login_time)hour,count(*)count from (select A.account,A.date_time from create_role A join device_info B on A.openudid = B.openudid where A.date_time between ? and ? and B.os in (" + icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+")) A join login B on A.account = B.account and A.date_time = B.date group by hour";
 		List<Login> aDP = Login.dao.use(db).find(sql, startDate, endDate);
 		//init
 		Map<Integer, Integer> sort = new LinkedHashMap<Integer, Integer>();
@@ -978,9 +957,8 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	 * @param endDate  所选结束时间
 	 */
 	public List<Integer> queryActiveDayGameTimes(List<String> categories, String icons, String startDate,
-			String endDate, String db) {
-		String sql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,count(*)count from (select account,openudid,date from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("
-				+ icons + ") group by A.account,A.date;";
+			String endDate, String db, String versions, String chId) {
+		String sql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,count(*)count from (select account,openudid,date from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("+ icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+") group by A.account,A.date;";
 		List<Login> dGT = Login.dao.use(db).find(sql, startDate, endDate);
 		// Map<date,Map<categories, Integer>>
 		Map<String, Map<String, Integer>> sort = new LinkedHashMap<String, Map<String, Integer>>();
@@ -1071,10 +1049,9 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	 * @param endDate  所选结束时间
 	 */
 	public List<Integer> queryActiveWeekGameTimes(List<String> categories, String icons, String startDate,
-			String endDate, String db) {
+			String endDate, String db, String versions, String chId) {
 		Map<String, String> week = DateUtils.divideDateToWeek(startDate, endDate);
-		String sql = "select count(*)count from (select account,openudid,date from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("
-				+ icons + ") group by A.account;";
+		String sql = "select count(*)count from (select account,openudid,date from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("+ icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+") group by A.account";
 
 		// init & load
 		Map<String, Map<String, Integer>> sort = new LinkedHashMap<String, Map<String, Integer>>();
@@ -1163,10 +1140,9 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	 * @param endDate  所选结束时间
 	 */
 	public List<Integer> queryActiveWeekGameDays(List<String> categories, String icons, String startDate,
-			String endDate, String db) {
+			String endDate, String db, String versions, String chId) {
 		Map<String, String> week = DateUtils.divideDateToWeek(startDate, endDate);
-		String sql = "select count(distinct A.date)count from (select account,openudid,date from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("
-				+ icons + ") group by A.account;";
+		String sql = "select count(distinct A.date)count from (select account,openudid,date from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("+ icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+") group by A.account;";
 
 		// init & load
 		// Map<week,Map<type,Integer>>
@@ -1266,12 +1242,11 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	 * @param endDate  所选结束时间
 	 */
 	public List<Integer> queryActiveMonthGameDays(List<String> categories, String icons, String startDate,
-			String endDate, String db) {
+			String endDate, String db, String versions, String chId) {
 		List<String> monthList = DateUtils.getMonthList(startDate, endDate);
 		String start = DateUtils.monthToStr(DateUtils.strToDate(startDate));
 		String end = DateUtils.monthToStr(DateUtils.strToDate(endDate));
-		String sql = "select DATE_FORMAT(A.date,'%Y-%m')month,count(distinct A.date)count from (select account,openudid,date from login where DATE_FORMAT(date,'%Y-%m') between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("
-				+ icons + ") group by A.account,month";
+		String sql = "select DATE_FORMAT(A.date,'%Y-%m')month,count(distinct A.date)count from (select account,openudid,date from login where DATE_FORMAT(date,'%Y-%m') between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("+ icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+") group by A.account,month";
 
 		// init
 		// Map<month, Map<type,Integer>>
@@ -1392,9 +1367,8 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	 * @param endDate  所选结束时间
 	 */
 	public List<Integer> queryActiveDayGameTime(List<String> categories, String icons, String startDate,
-			String endDate, String db) {
-		String sql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,sum(A.online_time)online_time from (select account,online_time,date from logout where date between ? and ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("
-				+ icons + ") group by A.account,A.date";
+			String endDate, String db, String versions, String chId) {
+		String sql = "select DATE_FORMAT(A.date,'%Y-%m-%d')date,sum(A.online_time)online_time from (select account,online_time,date from logout where date between ? and ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("+ icons + ") and C.script_version in ("+versions+") and C.ch_id in ("+chId+") group by A.account,A.date";
 		List<Logout> dGT = Logout.dao.use(db).find(sql, startDate, endDate);
 		// init
 		// Map<date, Map<type,Integer>>
@@ -1498,10 +1472,9 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	 * @param endDate  所选结束时间
 	 */
 	public List<Integer> queryActiveWeekGameTime(List<String> categories, String icons, String startDate,
-			String endDate, String db) {
+			String endDate, String db, String versions, String chId) {
 		Map<String, String> week = DateUtils.divideDateToWeek(startDate, endDate);
-		String sql = "select sum(A.online_time)online_time from (select account,online_time,date from logout where date between ? and ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("
-				+ icons + ") group by A.account";
+		String sql = "select sum(A.online_time)online_time from (select account,online_time,date from logout where date between ? and ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("+ icons + ") and C.script_version in ("+versions+") and C.ch_id in ("+chId+") group by A.account";
 		// init & load
 		// Map<date, Map<week,Integer>>
 		Map<String, Map<String, Integer>> sort = new LinkedHashMap<String, Map<String, Integer>>();
@@ -1617,9 +1590,8 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	 * @param endDate  所选结束时间
 	 */
 	public Map<String, List<Integer>> queryActiveDaySinglePeriod(List<String> categories, String icons,
-			String startDate, String endDate, String db) {
-		String sql = "select sum(A.online_time)online_time,count(*)count from (select account,online_time from logout where date between ? and ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("
-				+ icons + ") group by A.account;";
+			String startDate, String endDate, String db, String versions, String chId) {
+		String sql = "select sum(A.online_time)online_time,count(*)count from (select account,online_time from logout where date between ? and ?) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("+ icons + ") and C.script_version in ("+versions+") and C.ch_id in ("+chId+") group by A.account;";
 		List<Logout> dSP = Logout.dao.use(db).find(sql, startDate, endDate);
 		// init
 		Map<String, Integer> sort = new LinkedHashMap<String, Integer>();
@@ -1691,8 +1663,8 @@ public class OnlineHabitsServiceImpl implements OnlineHabitsService {
 	 * @param startDate  所选起始时间
 	 * @param endDate  所选结束时间
 	 */
-	public List<Integer> queryActiveDayPeriod(String icons, String startDate, String endDate, String db) {
-		String sql = "select hour(A.login_time)hour,count(*)count from (select account,openudid,login_time from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in (" + icons + ") group by hour";
+	public List<Integer> queryActiveDayPeriod(String icons, String startDate, String endDate, String db, String versions, String chId) {
+		String sql = "select hour(A.login_time)hour,count(*)count from (select account,openudid,login_time from login where date between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in (" + icons + ") and B.script_version in ("+versions+") and B.ch_id in ("+chId+") group by hour";
 		List<Login> aDP = Login.dao.use(db).find(sql, startDate, endDate);
 		//init
 		Map<Integer, Integer> sort = new LinkedHashMap<Integer, Integer>();

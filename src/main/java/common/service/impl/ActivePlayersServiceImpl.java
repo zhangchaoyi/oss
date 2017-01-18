@@ -36,7 +36,7 @@ public class ActivePlayersServiceImpl implements ActivePlayersService {
 	
 	public List<Long> queryDau(List<String> categories, String icons, String startDate, String endDate, String db, String versions, String chId) {
 		List<Long> data = new ArrayList<Long>();
-		String sql = "select count(*)dau,DATE_FORMAT(A.date,'%Y-%m-%d')date from (select account,date from login where date between ? and ? group by date,account) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("+icons+") and C.script_version in ("+versions+") and B.ch_id in ("+chId+") group by A.date; ";
+		String sql = "select count(*)dau,DATE_FORMAT(A.date,'%Y-%m-%d')date from (select account,date from login where date between ? and ? group by date,account) A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where C.os in ("+icons+") and C.script_version in ("+versions+") and C.ch_id in ("+chId+") group by A.date; ";
 		List<ActiveUser> dau = ActiveUser.dao.use(db).find(sql, startDate, endDate);
 
 		Map<String, Long> sort = new TreeMap<String, Long>();

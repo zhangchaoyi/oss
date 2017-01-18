@@ -9,6 +9,8 @@ $(function(){
 })
 
 function loadData() {
+    initChannels();
+    initVersions();
     loadAvgGamePeriodData($("div.nav-tab.habits > ul > li.active > a").attr("data-info"), $("ul.nav.nav-tabs.avg-period-times-tab > li.active > a").attr("data-info"));
     loadGameDetailData($("div.nav-tab.habits > ul > li.active > a").attr("data-info"), function(){
             var info = $("div.nav-tab.paid-detail-subtab > ul > li.active > a > span").attr("data-info");
@@ -22,6 +24,8 @@ function loadAvgGamePeriodData(playerTag,tag) {
         playerTag:playerTag,
         tag:tag,
         icon:getIcons(),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
     },
@@ -44,6 +48,8 @@ function loadGameDetailData(playerTag,tag) {
         playerTag:playerTag,
         tag:tag,
         icon:getIcons(),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
     },

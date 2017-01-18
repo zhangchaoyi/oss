@@ -57,6 +57,8 @@ public class AnalysisController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		logger.info("params: {" + "tag:" + tag + ",icons:" + icons + ",startDate:" + startDate + ",endDate:" + endDate
 				+ "}");
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
@@ -77,12 +79,12 @@ public class AnalysisController extends Controller {
 						"17:00~18:00", "18:00~19:00", "19:00~20:00", "20:00~21:00", "21:00~22:00", "22:00~23:00",
 						"23:00~24:00");
 				category.put("时间段", categories);
-				List<Long> dp = onlineService.queryPeriodDistribution(days, icons, startDate, endDate, db);
+				List<Long> dp = onlineService.queryPeriodDistribution(days, icons, startDate, endDate, db, versions, chId);
 				seriesMap.put("启动次数", dp);
 				break;
 			case "start-times":
 				category.put("日期", categories);
-				List<Long> st = onlineService.queryStartTimes(categories, icons, startDate, endDate, db);
+				List<Long> st = onlineService.queryStartTimes(categories, icons, startDate, endDate, db, versions, chId);
 				seriesMap.put("启动次数", st);
 				break;
 			}
@@ -119,6 +121,8 @@ public class AnalysisController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		logger.info("params: {" + "icons:" + icons + ",startDate:" + startDate + ",endDate:" + endDate + "}");
 
 		Map<String, Object> data = new LinkedHashMap<String, Object>();
@@ -135,7 +139,7 @@ public class AnalysisController extends Controller {
 		try {
 			String db = URLDecoder.decode(getCookie("server"), "GBK");
 
-			Map<String, Object> nbp = onlineService.queryNeighborStartPeriod(categories, icons, startDate, endDate, db);
+			Map<String, Object> nbp = onlineService.queryNeighborStartPeriod(categories, icons, startDate, endDate, db, versions, chId);
 			seriesMap.put("次数", nbp.get("count"));
 			seriesMap.put("人数", nbp.get("people"));
 

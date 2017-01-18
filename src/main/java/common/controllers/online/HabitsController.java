@@ -63,6 +63,8 @@ public class HabitsController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		logger.info("params:{" + "playerTag:" + playerTag + ",tag:" + tag + ",icons:" + icons + ",startDate:"
 				+ startDate + ",endDate:" + endDate + "}");
 
@@ -81,12 +83,12 @@ public class HabitsController extends Controller {
 			case "add-players":
 				switch (tag) {
 				case "day":
-					Map<String, Object> addpAvgD = ohs.queryAddpDayAvgGP(categories, icons, startDate, endDate, db);
+					Map<String, Object> addpAvgD = ohs.queryAddpDayAvgGP(categories, icons, startDate, endDate, db, versions, chId);
 					seriesMap.put("每玩家游戏次数", addpAvgD.get("times"));
 					seriesMap.put("每玩家游戏时长(分钟)", addpAvgD.get("time"));
 					break;
 				case "week":
-					Map<String, Object> addpAvgW = ohs.queryAddpWeekAvgGP(icons, startDate, endDate, db);
+					Map<String, Object> addpAvgW = ohs.queryAddpWeekAvgGP(icons, startDate, endDate, db, versions, chId);
 					seriesMap.put("每玩家游戏次数", addpAvgW.get("times"));
 					seriesMap.put("每玩家游戏时长(分钟)", addpAvgW.get("time"));
 					categories.clear();
@@ -94,7 +96,7 @@ public class HabitsController extends Controller {
 					break;
 				case "month":
 					categories = DateUtils.getMonthList(startDate, endDate);
-					Map<String, Object> addAvgM = ohs.queryAddpMonthAvgGP(categories, icons, startDate, endDate, db);
+					Map<String, Object> addAvgM = ohs.queryAddpMonthAvgGP(categories, icons, startDate, endDate, db, versions, chId);
 					seriesMap.put("每玩家游戏次数", addAvgM.get("times"));
 					seriesMap.put("每玩家游戏时长(分钟)", addAvgM.get("time"));
 					break;
@@ -103,13 +105,12 @@ public class HabitsController extends Controller {
 			case "active-players":
 				switch (tag) {
 				case "day":
-					Map<String, Object> activepAvgD = ohs.queryActivepDayAvgGP(categories, icons, startDate, endDate,
-							db);
+					Map<String, Object> activepAvgD = ohs.queryActivepDayAvgGP(categories, icons, startDate, endDate, db, versions, chId);
 					seriesMap.put("每玩家游戏次数", activepAvgD.get("times"));
 					seriesMap.put("每玩家游戏时长(分钟)", activepAvgD.get("time"));
 					break;
 				case "week":
-					Map<String, Object> activepAvgW = ohs.queryActivepWeekAvgGP(icons, startDate, endDate, db);
+					Map<String, Object> activepAvgW = ohs.queryActivepWeekAvgGP(icons, startDate, endDate, db, versions, chId);
 					seriesMap.put("每玩家游戏次数", activepAvgW.get("times"));
 					seriesMap.put("每玩家游戏时长(分钟)", activepAvgW.get("time"));
 					categories.clear();
@@ -117,8 +118,7 @@ public class HabitsController extends Controller {
 					break;
 				case "month":
 					categories = DateUtils.getMonthList(startDate, endDate);
-					Map<String, Object> activeAvgM = ohs.queryActivepMonthAvgGP(categories, icons, startDate, endDate,
-							db);
+					Map<String, Object> activeAvgM = ohs.queryActivepMonthAvgGP(categories, icons, startDate, endDate, db, versions, chId);
 					seriesMap.put("每玩家游戏次数", activeAvgM.get("times"));
 					seriesMap.put("每玩家游戏时长(分钟)", activeAvgM.get("time"));
 					break;
@@ -127,12 +127,12 @@ public class HabitsController extends Controller {
 			case "paid-players":
 				switch (tag) {
 				case "day":
-					Map<String, Object> ppAvgD = ohs.queryPpDayAvgGP(categories, icons, startDate, endDate, db);
+					Map<String, Object> ppAvgD = ohs.queryPpDayAvgGP(categories, icons, startDate, endDate, db, versions, chId);
 					seriesMap.put("每玩家游戏次数", ppAvgD.get("times"));
 					seriesMap.put("每玩家游戏时长(分钟)", ppAvgD.get("time"));
 					break;
 				case "week":
-					Map<String, Object> ppAvgW = ohs.queryActivepWeekAvgGP(icons, startDate, endDate, db);
+					Map<String, Object> ppAvgW = ohs.queryActivepWeekAvgGP(icons, startDate, endDate, db, versions, chId);
 					seriesMap.put("每玩家游戏次数", ppAvgW.get("times"));
 					seriesMap.put("每玩家游戏时长(分钟)", ppAvgW.get("time"));
 					categories.clear();
@@ -140,7 +140,7 @@ public class HabitsController extends Controller {
 					break;
 				case "month":
 					categories = DateUtils.getMonthList(startDate, endDate);
-					Map<String, Object> ppAvgM = ohs.queryPpMonthAvgGP(categories, icons, startDate, endDate, db);
+					Map<String, Object> ppAvgM = ohs.queryPpMonthAvgGP(categories, icons, startDate, endDate, db, versions, chId);
 					seriesMap.put("每玩家游戏次数", ppAvgM.get("times"));
 					seriesMap.put("每玩家游戏时长(分钟)", ppAvgM.get("time"));
 					break;
@@ -184,6 +184,8 @@ public class HabitsController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		logger.info("params:{" + "playerTag:" + playerTag + ",tag:" + tag + ",icons:" + icons + ",startDate:"
 				+ startDate + ",endDate:" + endDate + "}");
 
@@ -204,14 +206,14 @@ public class HabitsController extends Controller {
 					categories.addAll(Arrays.asList("1", "2~3", "4~5", "6~10", "11~20", "21~50", "50+"));
 					category.put("日游戏次数", categories);
 					header.addAll(Arrays.asList("日游戏次数", "玩家数量", "百分比"));
-					players = ohs.queryAddDayGameTimes(categories, icons, startDate, endDate, db);
+					players = ohs.queryAddDayGameTimes(categories, icons, startDate, endDate, db, versions, chId);
 					break;
 				case "day-time":
 					categories.addAll(Arrays.asList("<10 s", "10~60 s", "1~3 min", "3~10 min", "10~30 min", "30~60 min",
 							"1~2 h", "2~4 h", ">4 h"));
 					category.put("日游戏时长", categories);
 					header.addAll(Arrays.asList("日游戏时长", "玩家数量", "百分比"));
-					players = ohs.queryAddDayGameTime(categories, icons, startDate, endDate, db);
+					players = ohs.queryAddDayGameTime(categories, icons, startDate, endDate, db, versions, chId);
 					break;
 				case "single-time":
 					categories.addAll(Arrays.asList("1~4 s", "5~10 s", "11~30 s", "31~60 s", "1~3 min", "3~10 min",
@@ -219,7 +221,7 @@ public class HabitsController extends Controller {
 					category.put("单次游戏时长", categories);
 					header.addAll(Arrays.asList("单次游戏时长", "玩家数量", "百分比", "游戏次数", "百分比"));
 					Map<String, List<Integer>> queryData = ohs.queryAddDaySinglePeriod(categories, icons, startDate,
-							endDate, db);
+							endDate, db, versions, chId);
 					players = queryData.get("players");
 					data.put("times", queryData.get("times"));
 					break;
@@ -231,7 +233,7 @@ public class HabitsController extends Controller {
 							"23:00~23:59"));
 					category.put("游戏时段", categories);
 					header.addAll(Arrays.asList("游戏时段", "玩家数量", "百分比"));
-					players = ohs.queryAddDayPeriod(icons, startDate, endDate, db);
+					players = ohs.queryAddDayPeriod(icons, startDate, endDate, db, versions, chId);
 					break;
 				}
 				seriesMap.put("新增玩家", players);
@@ -242,39 +244,39 @@ public class HabitsController extends Controller {
 					categories.addAll(Arrays.asList("1", "2~3", "4~5", "6~10", "11~20", "21~50", "50+"));
 					category.put("日游戏次数", categories);
 					header.addAll(Arrays.asList("日游戏次数", "玩家数量", "百分比"));
-					players = ohs.queryActiveDayGameTimes(categories, icons, startDate, endDate, db);
+					players = ohs.queryActiveDayGameTimes(categories, icons, startDate, endDate, db, versions, chId);
 					break;
 				case "week-times":
 					categories.addAll(Arrays.asList("1", "2~3", "4~5", "6~10", "11~20", "21~50", "50+"));
 					category.put("周游戏次数", categories);
 					header.addAll(Arrays.asList("周游戏次数", "玩家数量", "百分比"));
-					players = ohs.queryActiveWeekGameTimes(categories, icons, startDate, endDate, db);
+					players = ohs.queryActiveWeekGameTimes(categories, icons, startDate, endDate, db, versions, chId);
 					break;
 				case "week-days":
 					categories.addAll(Arrays.asList("1", "2", "3", "4", "5", "6", "7"));
 					category.put("周游戏天数", categories);
 					header.addAll(Arrays.asList("周游戏天数", "玩家数量", "百分比"));
-					players = ohs.queryActiveWeekGameDays(categories, icons, startDate, endDate, db);
+					players = ohs.queryActiveWeekGameDays(categories, icons, startDate, endDate, db, versions, chId);
 					break;
 				case "month-days":
 					categories.addAll(Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8~14", "15~21", "22~31"));
 					category.put("月游戏天数", categories);
 					header.addAll(Arrays.asList("月游戏天数", "玩家数量", "百分比"));
-					players = ohs.queryActiveMonthGameDays(categories, icons, startDate, endDate, db);
+					players = ohs.queryActiveMonthGameDays(categories, icons, startDate, endDate, db, versions, chId);
 					break;
 				case "day-time":
 					categories.addAll(Arrays.asList("<10 s", "10~60 s", "1~3 min", "3~10 min", "10~30 min", "30~60 min",
 							"1~2 h", "2~4 h", ">4 h"));
 					category.put("日游戏时长", categories);
 					header.addAll(Arrays.asList("日游戏时长", "玩家数量", "百分比"));
-					players = ohs.queryActiveDayGameTime(categories, icons, startDate, endDate, db);
+					players = ohs.queryActiveDayGameTime(categories, icons, startDate, endDate, db, versions, chId);
 					break;
 				case "week-time":
 					categories.addAll(Arrays.asList("0~60 s", "1~3 min", "3~10 min", "10~60 min", "1~2 h", "2~4 h",
 							"4~6 h", "6~10 h", "10~15 h", "15~20 h", ">20 h"));
 					category.put("周游戏时长", categories);
 					header.addAll(Arrays.asList("周游戏时长", "玩家数量", "百分比"));
-					players = ohs.queryActiveWeekGameTime(categories, icons, startDate, endDate, db);
+					players = ohs.queryActiveWeekGameTime(categories, icons, startDate, endDate, db, versions, chId);
 					break;
 				case "single-time":
 					categories.addAll(Arrays.asList("1~4 s", "5~10 s", "11~30 s", "31~60 s", "1~3 min", "3~10 min",
@@ -282,7 +284,7 @@ public class HabitsController extends Controller {
 					category.put("单次游戏时长", categories);
 					header.addAll(Arrays.asList("单次游戏时长", "玩家数量", "百分比", "游戏次数", "百分比"));
 					Map<String, List<Integer>> queryData = ohs.queryActiveDaySinglePeriod(categories, icons, startDate,
-							endDate, db);
+							endDate, db, versions, chId);
 					players = queryData.get("players");
 					data.put("times", queryData.get("times"));
 					break;
@@ -294,7 +296,7 @@ public class HabitsController extends Controller {
 							"23:00~23:59"));
 					category.put("游戏时段", categories);
 					header.addAll(Arrays.asList("游戏时段", "玩家数量", "百分比"));
-					players = ohs.queryActiveDayPeriod(icons, startDate, endDate, db);
+					players = ohs.queryActiveDayPeriod(icons, startDate, endDate, db, versions, chId);
 					break;
 				}
 				seriesMap.put("活跃玩家", players);

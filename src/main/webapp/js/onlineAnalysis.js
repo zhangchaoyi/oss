@@ -8,6 +8,8 @@ $(function(){
 })
 
 function loadData() {
+    initChannels();
+    initVersions();
     loadStartTimesData($("ul.nav.nav-tabs.start-times-analysis-tab > li.active > a").attr("data-info"));
     loadNeightborPeriodData();
 }
@@ -17,6 +19,8 @@ function loadStartTimesData(tag) {
     $.post("/oss/api/online/analysis/startTimes", {
         tag:tag,
         icon:getIcons(),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
     },
@@ -30,6 +34,8 @@ function loadNeightborPeriodData() {
     spChart.showLoading();
     $.post("/oss/api/online/analysis/neightbor", {
         icon:getIcons(),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
     },
