@@ -11,6 +11,8 @@ $(function(){
 })
 
 function loadData() {
+    initChannels();
+    initVersions();
     loadRankData($("ul.nav.nav-tabs.rank-payment-tab > li.active > a").attr("data-info"));
     loadPeriodData($("ul.nav.nav-tabs.period-payment-tab > li.actice > a").attr("data-info"));
     loadFdData($("ul.nav.nav-tabs.paid-details > li.active > a").attr("data-info"),$("div.nav-tab.paid-detail-subtab > ul > li.active > a > span").attr("data-info"));
@@ -22,7 +24,9 @@ function loadRankData(tag) {
         tag:tag,
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
-        endDate:$("input#endDate").attr("value")
+        endDate:$("input#endDate").attr("value"),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels()
     },
     function(data, status) {
         rankChart.hideLoading();
@@ -37,7 +41,9 @@ function loadPeriodData(tag) {
         tag:tag,
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
-        endDate:$("input#endDate").attr("value")
+        endDate:$("input#endDate").attr("value"),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels()
     },
     function(data, status) {
         periodChart.hideLoading();
@@ -53,7 +59,9 @@ function loadFdData(tag, subTag) {
         subTag:subTag,
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
-        endDate:$("input#endDate").attr("value")
+        endDate:$("input#endDate").attr("value"),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels()
     },
     function(data, status) {
         fpDetailsChart.hideLoading();

@@ -55,6 +55,8 @@ public class PaymentBehaviorController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		logger.info("params: {" + "tag:" + tag + ",icons:" + icons + ",startDate:" + startDate + ",endDate:" + endDate
 				+ "}");
 
@@ -68,13 +70,13 @@ public class PaymentBehaviorController extends Controller {
 
 			switch (tag) {
 			case "rank-paymentBehavior-money":
-				Map<String, Object> rankMoney = paymentBehaviorService.queryRankMoney(icons, startDate, endDate, db);
+				Map<String, Object> rankMoney = paymentBehaviorService.queryRankMoney(icons, startDate, endDate, db, versions, chId);
 				category.put("付费等级", rankMoney.get("level"));
 				seriesMap.put("付费金额("+currency+")", rankMoney.get("revenue"));
 				header.addAll(Arrays.asList("付费等级", "付费金额("+currency+")"));
 				break;
 			case "rank-paymentBehavior-times":
-				Map<String, Object> rankTimes = paymentBehaviorService.queryRankTimes(icons, startDate, endDate, db);
+				Map<String, Object> rankTimes = paymentBehaviorService.queryRankTimes(icons, startDate, endDate, db, versions, chId);
 				category.put("付费等级", rankTimes.get("level"));
 				seriesMap.put("付费次数", rankTimes.get("count"));
 				header.addAll(Arrays.asList("付费等级", "付费次数"));
@@ -112,6 +114,8 @@ public class PaymentBehaviorController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		logger.info("params:{" + "tag:" + tag + ",icons:" + icons + ",startDate:" + startDate + ",endDate:" + endDate
 				+ "}");
 
@@ -130,8 +134,7 @@ public class PaymentBehaviorController extends Controller {
 
 			switch (tag) {
 			case "fp-period":
-				List<Integer> fpCount = paymentBehaviorService.queryFirstPeriod(categories, icons, startDate, endDate,
-						db);
+				List<Integer> fpCount = paymentBehaviorService.queryFirstPeriod(categories, icons, startDate, endDate, db, versions, chId);
 				categories.clear();
 				categories.addAll(period.values());
 				category.put("首充时间", categories);
@@ -139,8 +142,7 @@ public class PaymentBehaviorController extends Controller {
 				header.addAll(Arrays.asList("首充时间", "人数", "百分比"));
 				break;
 			case "stfp-period":
-				List<Integer> stfCount = paymentBehaviorService.querySTFPeriod(categories, icons, startDate, endDate,
-						db);
+				List<Integer> stfCount = paymentBehaviorService.querySTFPeriod(categories, icons, startDate, endDate, db, versions, chId);
 				categories.clear();
 				categories.addAll(period.values());
 				category.put("二充到首充时间", categories);
@@ -148,8 +150,7 @@ public class PaymentBehaviorController extends Controller {
 				header.addAll(Arrays.asList("二充到首充时间", "人数", "百分比"));
 				break;
 			case "ttsp-period":
-				List<Integer> ttsCount = paymentBehaviorService.queryTTSPeriod(categories, icons, startDate, endDate,
-						db);
+				List<Integer> ttsCount = paymentBehaviorService.queryTTSPeriod(categories, icons, startDate, endDate, db, versions, chId);
 				categories.clear();
 				categories.addAll(period.values());
 				category.put("三充到二充时间", categories);
@@ -190,6 +191,8 @@ public class PaymentBehaviorController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		logger.info("params:{" + "tag:" + tag + ",subTag:" + subTag + ",icons:" + icons + ",startDate:" + startDate
 				+ ",endDate:" + endDate + "}");
 
@@ -211,7 +214,7 @@ public class PaymentBehaviorController extends Controller {
 					period = initGameDaysMap();
 					categories.addAll(period.keySet());
 					List<Integer> gdCount = paymentBehaviorService.queryFpGameDays(categories, icons, startDate,
-							endDate, db);
+							endDate, db, versions, chId);
 					categories.clear();
 					categories.addAll(period.values());
 					category.put("游戏天数", categories);
@@ -222,7 +225,7 @@ public class PaymentBehaviorController extends Controller {
 					period = initGamePeriodMap();
 					categories.addAll(period.keySet());
 					List<Integer> gpCount = paymentBehaviorService.queryFpGamePeriod(categories, icons, startDate,
-							endDate, db);
+							endDate, db, versions, chId);
 					categories.clear();
 					categories.addAll(period.values());
 					category.put("累计游戏时长", categories);
@@ -232,7 +235,7 @@ public class PaymentBehaviorController extends Controller {
 				}
 				break;
 			case "fp-rank":
-				Map<String, Object> fpRank = paymentBehaviorService.queryFpRank(icons, startDate, endDate, db);
+				Map<String, Object> fpRank = paymentBehaviorService.queryFpRank(icons, startDate, endDate, db, versions, chId);
 				category.put("玩家首付等级", fpRank.get("level"));
 				seriesMap.put("付费玩家", fpRank.get("count"));
 				header.addAll(Arrays.asList("玩家首付等级", "付费玩家", "百分比"));
@@ -241,7 +244,7 @@ public class PaymentBehaviorController extends Controller {
 			case "fp-money":
 				period = initPaidPeriod();
 				categories.addAll(period.keySet());
-				List<Integer> mCount = paymentBehaviorService.queryFpMoney(categories, icons, startDate, endDate, db);
+				List<Integer> mCount = paymentBehaviorService.queryFpMoney(categories, icons, startDate, endDate, db, versions, chId);
 				categories.clear();
 				categories.addAll(period.values());
 				category.put("玩家首付金额", categories);
