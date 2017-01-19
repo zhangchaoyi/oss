@@ -55,12 +55,14 @@ public class PaymentRankController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		logger.info("params:{" + "icons:" + icons + ",startDate:" + startDate + ",endDate:" + endDate + "}");
 
 		try {
 			String db = URLDecoder.decode(getCookie("server"), "GBK");
 			Map<String, Object> data = new LinkedHashMap<String, Object>();
-			List<List<String>> queryData = paymentRankService.queryRank(icons, startDate, endDate, db);
+			List<List<String>> queryData = paymentRankService.queryRank(icons, startDate, endDate, db, versions, chId);
 			data.put("data", queryData);
 			logger.info("data:" + data);
 			renderJson(data);

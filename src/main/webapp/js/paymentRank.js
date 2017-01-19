@@ -11,6 +11,8 @@ $(function(){
 })
 
 function loadData() {
+    initChannels();
+    initVersions();
     if(detail==false){
         loadRankData();
     }else if(detail==true && accountParam!=""){
@@ -22,7 +24,9 @@ function loadRankData() {
     $.post("/oss/api/payment/rank/players", {
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
-        endDate:$("input#endDate").attr("value")
+        endDate:$("input#endDate").attr("value"),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels()
     },
     function(data, status) {
         configTable(data);
@@ -44,29 +48,6 @@ function loadRankAccountDetail(account){
         configDetailTable(data);
     });
 }
-
-//充值玩家选择栏
-$("ul.nav.nav-tabs.rank-payment-tab > li").click(function(){
-	var info = $(this).children("a").attr("data-info");
-	var txt = '';	
-	switch(info){
-        case "whaleRegion":
-    	txt += '<li><a href="#">全部</a></li><li><a href="#">区服1</a></li><li><a href="#">区服2</a></li><li><a href="#">区服3</a></li>';
-    	$("#rank-menu").text("");
-       	$("#rank-menu").append(txt);
-        break;
-        case "whaleVersion":
-        txt += '<li><a href="#">全部</a></li><li><a href="#">版本1</a></li><li><a href="#">版本2</a></li><li><a href="#">版本3</a></li>';
-    	$("#rank-menu").text("");
-       	$("#rank-menu").append(txt);
-        break;
-        case "whaleChannel":
-        txt += '<li><a href="#">全部</a></li><li><a href="#">渠道1</a></li><li><a href="#">渠道2</a></li><li><a href="#">渠道3</a></li>';
-    	$("#rank-menu").text("");
-       	$("#rank-menu").append(txt);
-        break;
-    }
-});
 
 function configTable(data) {
     $('#data-table-rank-paymentBehavior').dataTable().fnClearTable();
@@ -200,6 +181,7 @@ function configDetailTable(data) {
         "destroy": true,
         "data": data==null?null:data.tableData,
         "dom": '<"top"f>rt<"left"lip>',
+        "order": [[ 0, 'desc' ]],
         'language': {
             'emptyTable': '没有数据',
             'loadingRecords': '加载中...',

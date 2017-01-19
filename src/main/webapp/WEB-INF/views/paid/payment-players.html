@@ -83,7 +83,7 @@
    <div id="page-wrapper" style="overflow-x: hidden;overflow-y:hidden;"> 
     <div id="page-inner"> 
      <div class="row" id="top-row"> 
-      <div class="filter-tool"> 
+      <div class="filter-tool" style="height:110px"> 
        <div class="date-bar"> 
         <div class="calender-bar"> 
          <div class="ta_date"> 
@@ -98,47 +98,6 @@
          <a id="aRecent7Days" onclick="dateSelected(this)" class="selected">近7日</a> 
          <a id="aRecent30Days" onclick="dateSelected(this)">近30日</a> 
          <a id="aRecent90Days" onclick="dateSelected(this)">近90日</a> 
-        </div> 
-       </div> 
-       <div class="filter-bar"> 
-        <div class="row" id="notification"> 
-         <button class="btn btn-primary btn-lg btn-notify" data-toggle="modal" data-target="#myModal"> <span class="glyphicon glyphicon-filter" aria-hidden="true"></span> <i>筛选</i> </button> 
-         <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
-          <div class="modal-dialog"> 
-           <div class="modal-content"> 
-            <div class="modal-header"> 
-             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
-             <h4 class="modal-title" id="myModalLabel"><i>筛选</i></h4> 
-            </div> 
-            <div class="modal-body"> 
-             <div class="panel panel-default">
-              <div class="panel-body"> 
-               <div class="filter-header"> 
-                <ul class="nav nav-pills"> 
-                 <li class=""><a href="#version-pills" data-toggle="tab">版本</a></li> 
-                 <li class="active"><a href="#approach-pills" data-toggle="tab">渠道</a> </li> 
-                </ul> 
-                <span class="input-group input-filter"> <input name="filter" id="filter" type="text" class="form-control" placeholder="Search for..." /> <span class="glyphicon glyphicon-search"> </span> </span> 
-               </div> 
-               <div class="choose option"> 
-                <i>常用选择</i> 
-                <button type="button" class="btn btn-primary" id="btn-selall">全选</button> 
-                <button type="button" class="btn btn-primary" id="btn-selreverse">反选</button> 
-               </div> 
-               <div class="tab-content" style="height:300px;overflow:auto"> 
-                <table class="tab-pane fade" id="version-pills"></table> 
-                <table class="tab-pane fade active in" id="approach-pills"></table> 
-               </div> 
-              </div> 
-             </div> 
-            </div> 
-            <div class="modal-footer"> 
-             <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn-filtersave">保存</button> 
-             <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button> 
-            </div> 
-           </div> 
-          </div> 
-         </div> 
         </div> 
        </div> 
       </div> 

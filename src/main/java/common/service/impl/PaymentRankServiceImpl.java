@@ -29,9 +29,9 @@ public class PaymentRankServiceImpl implements PaymentRankService {
 	 * @param startDate  所选起始时间
 	 * @param endDate  所选结束时间
 	 */
-	public List<List<String>> queryRank(String icons, String startDate, String endDate, String db) {
+	public List<List<String>> queryRank(String icons, String startDate, String endDate, String db, String versions, String chId) {
 		//得到付费排行等信息
-		String pSql = "select A.*,DATE_FORMAT(B.timestamp,'%Y-%m-%d')fpt from (select A.account, sum(A.count)revenue, count(*)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") group by A.account) A join log_charge B on A.account = B.account where B.charge_times=1 and B.is_product = 1 order by revenue desc";
+		String pSql = "select A.*,DATE_FORMAT(B.timestamp,'%Y-%m-%d')fpt from (select A.account, sum(A.count)revenue, count(*)count from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product = 1 and DATE_FORMAT(A.timestamp,'%Y-%m-%d') between ? and ? and C.os in (" + icons + ") and C.script_version in ("+versions+") and C.ch_id in ("+chId+") group by A.account) A join log_charge B on A.account = B.account where B.charge_times=1 and B.is_product = 1 order by revenue desc";
 		//Map<account, PaymentRank>
 		Map<String, PaymentRank> sort = new LinkedHashMap<String, PaymentRank>();
 		List<LogCharge> logCharge = LogCharge.dao.use(db).find(pSql, startDate, endDate);
