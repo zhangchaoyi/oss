@@ -7,6 +7,8 @@ $(function(){
 });
 
 function loadData(){
+    initChannels();
+    initVersions();
     loadDataPayment($("ul.nav.nav-tabs.payment-tab > li.active").children("a").attr("data-info"));
     loadDataPaymentTable();
     loadAnalyzePayment($("ul.nav.nav-tabs.analyze-payment-tab > li.active > a").attr("data-info"),$("div.nav-tab.paid-analyze-tab > ul > li.active > a > span").attr("data-info"));
@@ -19,6 +21,8 @@ function loadDataPayment(tag) {
     $.post("/oss/api/payment/data", {
         tag:tag,
         icon:getIcons(),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
     },
@@ -32,6 +36,8 @@ function loadDataPayment(tag) {
 function loadDataPaymentTable() {
     $.post("/oss/api/payment/data/table", {
         icon:getIcons(),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
     },
@@ -46,6 +52,8 @@ function loadAnalyzePayment(tag,subTag) {
         tag:tag,
         subTag:subTag,
         icon:getIcons(),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
     },
@@ -60,6 +68,8 @@ function loadAnalyzePaymentTable(tag, subTag){
         icon:getIcons(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value"),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels(),
         tag:tag,
         subTag:subTag
     },
@@ -350,6 +360,8 @@ function loadDetailPayment(tag,subTag){
         tag:tag,
         subTag:subTag,
         icon:getIcons(),
+        versions:getCurrentVersions(),
+        chId:getCurrentChannels(),
         startDate:$("input#startDate").attr("value"),
         endDate:$("input#endDate").attr("value")
     },

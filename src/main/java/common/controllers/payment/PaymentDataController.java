@@ -61,6 +61,8 @@ public class PaymentDataController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		logger.info(
 				"params:{" + "tag" + tag + ",icons:" + icons + ",startDate:" + startDate + ",endDate:" + endDate + "}");
 
@@ -76,17 +78,17 @@ public class PaymentDataController extends Controller {
 			String db = URLDecoder.decode(getCookie("server"), "GBK");
 			switch (tag) {
 			case "data-payment-money":
-				recData = paymentDataService.queryMoneyPayment(categories, startDate, endDate, icons, db);
+				recData = paymentDataService.queryMoneyPayment(categories, startDate, endDate, icons, db, versions, chId);
 				sum = recData.get("sum");
 				seriesMap = recData.get("series");
 				break;
 			case "data-payment-people":
-				recData = paymentDataService.queryPeoplePayment(categories, startDate, endDate, icons, db);
+				recData = paymentDataService.queryPeoplePayment(categories, startDate, endDate, icons, db, versions, chId);
 				sum = recData.get("sum");
 				seriesMap = recData.get("series");
 				break;
 			case "data-payment-times":
-				recData = paymentDataService.queryNumPayment(categories, startDate, endDate, icons, db);
+				recData = paymentDataService.queryNumPayment(categories, startDate, endDate, icons, db, versions, chId);
 				sum = recData.get("sum");
 				seriesMap = recData.get("series");
 				break;
@@ -122,13 +124,15 @@ public class PaymentDataController extends Controller {
 		String icons = StringUtils.arrayToQueryString(getParaValues("icon[]"));
 		String startDate = getPara("startDate");
 		String endDate = getPara("endDate");
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		logger.info("params:{" + "icons:" + icons + ",startDate:" + startDate + ",endDate:" + endDate + "}");
 		List<String> categories = DateUtils.getDateList(startDate, endDate);
 
 		try {
 			String db = URLDecoder.decode(getCookie("server"), "GBK");
 			List<List<Object>> paymentDetail = paymentDataService.queryDataPayment(categories, startDate, endDate,
-					icons, db);
+					icons, db, versions, chId);
 			logger.info("data:" + paymentDetail);
 			renderJson(paymentDetail);
 		} catch (UnsupportedEncodingException e) {
@@ -159,6 +163,8 @@ public class PaymentDataController extends Controller {
 		String endDate = getPara("endDate");
 		String tag = getPara("tag");
 		String subTag = getPara("subTag");
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		logger.info("params:{" + "tag:" + tag + ",subTag:" + subTag + ",icons:" + icons + ",startDate:" + startDate
 				+ ",endDate:" + endDate + "}");
 
@@ -176,7 +182,7 @@ public class PaymentDataController extends Controller {
 					categories = Arrays.asList("1", "2", "3", "4", "5", "6~10", "11~50", "51~100", "101~500",
 							"501~1000", "1001~2000", ">2000");
 					List<Integer> queryPeriod = paymentDataService.queryDayPaymentMoney(categories, icons, startDate,
-							endDate, db);
+							endDate, db, versions, chId);
 					categories = Arrays.asList("1("+currency+")", "2("+currency+")", "3("+currency+")", "4("+currency+")", "5("+currency+")", "6~10("+currency+")", "11~50("+currency+")",
 							"51~100("+currency+")", "101~500("+currency+")", "501~1000("+currency+")", "1001~2000("+currency+")", ">2000("+currency+")");
 					category.put("付费金额区间", categories);
@@ -203,7 +209,7 @@ public class PaymentDataController extends Controller {
 							"31~40", "41~50", "51~100", ">100");
 					category.put("付费次数区间", categories);
 					List<Integer> queryPeriod = paymentDataService.queryDayPaymentTimes(categories, icons, startDate,
-							endDate, db);
+							endDate, db, versions, chId);
 					seriesMap.put("人数", queryPeriod);
 					break;
 				case "week":
@@ -226,7 +232,7 @@ public class PaymentDataController extends Controller {
 				category.put("日期", categories);
 				switch (subTag) {
 				case "ARPU-D":
-					List<Double> AD = paymentDataService.queryDayARPU(categories, icons, startDate, endDate, db);
+					List<Double> AD = paymentDataService.queryDayARPU(categories, icons, startDate, endDate, db, versions, chId);
 					seriesMap.put("ARPU(日)", AD);
 					break;
 				case "ARPU-M":
@@ -237,7 +243,7 @@ public class PaymentDataController extends Controller {
 					seriesMap.put("ARPU(月)", list);
 					break;
 				case "ARPPU-D":
-					List<Double> ARD = paymentDataService.queryDayARPPU(categories, icons, startDate, endDate, db);
+					List<Double> ARD = paymentDataService.queryDayARPPU(categories, icons, startDate, endDate, db,versions,chId);
 					seriesMap.put("ARPPU(日)", ARD);
 					break;
 				case "ARPPU-M":
@@ -285,6 +291,8 @@ public class PaymentDataController extends Controller {
 		String endDate = getPara("endDate");
 		String tag = getPara("tag");
 		String subTag = getPara("subTag", "");
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		logger.info("params:{" + "tag:" + tag + ",subTag" + subTag + ",icons:" + icons + ",startDate:" + startDate
 				+ ",endDate:" + endDate + "}");
 
@@ -300,20 +308,20 @@ public class PaymentDataController extends Controller {
 				header.addAll(Arrays.asList("付费金额区间", "每日付费玩家", "每周付费玩家", "每月付费玩家"));
 				categories = Arrays.asList("1", "2", "3", "4", "5", "6~10", "11~50", "51~100", "101~500", "501~1000",
 						"1001~2000", ">2000");
-				queryData = paymentDataService.queryAllPaymentMoney(categories, icons, startDate, endDate, db);
+				queryData = paymentDataService.queryAllPaymentMoney(categories, icons, startDate, endDate, db, versions, chId);
 				break;
 			case "analyze-payment-times":
 				header.addAll(Arrays.asList("付费次数区间", "每日付费玩家", "每周付费玩家", "每月付费玩家"));
 				categories = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11~20", "21~30", "31~40",
 						"41~50", "51~100", ">100");
-				queryData = paymentDataService.queryAllPaymentTimes(categories, icons, startDate, endDate, db);
+				queryData = paymentDataService.queryAllPaymentTimes(categories, icons, startDate, endDate, db, versions, chId);
 				break;
 			case "analyze-payment-arpu":
 				header.addAll(Arrays.asList("日期", subTag));
 				categories = DateUtils.getDateList(startDate, endDate);
 				switch (subTag) {
 				case "ARPU-D":
-					queryData = paymentDataService.queryArpu(categories, icons, startDate, endDate, db);
+					queryData = paymentDataService.queryArpu(categories, icons, startDate, endDate, db, versions, chId);
 					break;
 				case "ARPU-M":
 					List<List<Object>> d = new ArrayList<List<Object>>();
@@ -326,7 +334,7 @@ public class PaymentDataController extends Controller {
 					queryData = d;
 					break;
 				case "ARPPU-D":
-					queryData = paymentDataService.queryArppu(categories, icons, startDate, endDate, db);
+					queryData = paymentDataService.queryArppu(categories, icons, startDate, endDate, db, versions, chId);
 					break;
 				case "ARPPU-M":
 					List<List<Object>> e = new ArrayList<List<Object>>();
@@ -373,6 +381,8 @@ public class PaymentDataController extends Controller {
 		String endDate = getPara("endDate");
 		String tag = getPara("tag");
 		String subTag = getPara("subTag", "");
+		String versions = StringUtils.arrayToQueryString(getParaValues("versions[]"));
+		String chId = StringUtils.arrayToQueryString(getParaValues("chId[]"));
 		logger.info("params:{" + "tag:" + tag + ",subTag:" + subTag + ",icons:" + icons + ",startDate:" + startDate
 				+ ",endDate:" + endDate + "}");
 
@@ -390,7 +400,7 @@ public class PaymentDataController extends Controller {
 				case "revenue":
 					List<String> provinces = new ArrayList<String>();
 					List<Double> revenue = new ArrayList<Double>();
-					List<LogCharge> logCharge = paymentDataService.queryAreaRevenue(icons, startDate, endDate, db);
+					List<LogCharge> logCharge = paymentDataService.queryAreaRevenue(icons, startDate, endDate, db, versions, chId);
 					for (LogCharge lc : logCharge) {
 						provinces.add(lc.getStr("province"));
 						revenue.add(lc.getDouble("revenue"));
@@ -400,13 +410,13 @@ public class PaymentDataController extends Controller {
 					seriesMap.put("付费金额", revenue);
 					break;
 				case "avg-arpu":
-					Map<String, Object> arpu = paymentDataService.queryAreaARPU(icons, startDate, endDate, db);
+					Map<String, Object> arpu = paymentDataService.queryAreaARPU(icons, startDate, endDate, db, versions, chId);
 					header.addAll(Arrays.asList("地区", "日均ARPU", "百分比"));
 					category.put("地区", arpu.get("area"));
 					seriesMap.put("日均ARPU", arpu.get("data"));
 					break;
 				case "avg-arppu":
-					Map<String, Object> arppu = paymentDataService.queryAreaARPPU(icons, startDate, endDate, db);
+					Map<String, Object> arppu = paymentDataService.queryAreaARPPU(icons, startDate, endDate, db, versions, chId);
 					header.addAll(Arrays.asList("地区", "日均ARPPU", "百分比"));
 					category.put("地区", arppu.get("area"));
 					seriesMap.put("日均ARPPU", arppu.get("data"));
@@ -418,7 +428,7 @@ public class PaymentDataController extends Controller {
 				case "revenue":
 					List<String> countries = new ArrayList<String>();
 					List<Double> revenue = new ArrayList<Double>();
-					List<LogCharge> logCharge = paymentDataService.queryCountryRevenue(icons, startDate, endDate, db);
+					List<LogCharge> logCharge = paymentDataService.queryCountryRevenue(icons, startDate, endDate, db, versions, chId);
 					for (LogCharge lc : logCharge) {
 						countries.add(lc.getStr("country"));
 						revenue.add(lc.getDouble("revenue"));
@@ -428,13 +438,13 @@ public class PaymentDataController extends Controller {
 					seriesMap.put("付费金额", revenue);
 					break;
 				case "avg-arpu":
-					Map<String, Object> arpu = paymentDataService.queryCountryARPU(icons, startDate, endDate, db);
+					Map<String, Object> arpu = paymentDataService.queryCountryARPU(icons, startDate, endDate, db, versions, chId);
 					header.addAll(Arrays.asList("国家", "日均ARPU", "百分比"));
 					category.put("国家", arpu.get("country"));
 					seriesMap.put("日均ARPU", arpu.get("data"));
 					break;
 				case "avg-arppu":
-					Map<String, Object> arppu = paymentDataService.queryCountryARPPU(icons, startDate, endDate, db);
+					Map<String, Object> arppu = paymentDataService.queryCountryARPPU(icons, startDate, endDate, db, versions, chId);
 					header.addAll(Arrays.asList("国家", "日均ARPPU", "百分比"));
 					category.put("国家", arppu.get("country"));
 					seriesMap.put("日均ARPPU", arppu.get("data"));
@@ -444,7 +454,7 @@ public class PaymentDataController extends Controller {
 			case "mobileoperator":
 				List<String> carrier = new ArrayList<String>();
 				List<Double> revenue = new ArrayList<Double>();
-				List<LogCharge> logCharge = paymentDataService.queryMobile(icons, startDate, endDate, db);
+				List<LogCharge> logCharge = paymentDataService.queryMobile(icons, startDate, endDate, db, versions, chId);
 				for (LogCharge lc : logCharge) {
 					carrier.add(lc.getStr("carrier"));
 					revenue.add(lc.getDouble("revenue"));
