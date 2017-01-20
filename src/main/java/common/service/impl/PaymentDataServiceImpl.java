@@ -2,7 +2,6 @@ package common.service.impl;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -16,6 +15,7 @@ import common.model.PaymentDetail;
 import common.pojo.AreaARU;
 import common.service.PaymentDataService;
 import common.utils.Contants;
+import common.utils.DateUtils;
 
 /**
  * 查询处理付费数据页
@@ -442,6 +442,89 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 	}
 	
 	/**
+	 * 查询月ARPU = 当自然月充值总额度/当月活跃玩家数量
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 * @param db  
+	 * @param versions  版本号
+	 * @param chId  渠道号
+	 */
+	public List<Double> queryMonthARPU(String icons, String startDate, String endDate, String db, String versions, String chId) {
+		String arpuSql = "select DATE_FORMAT(A.timestamp,'%Y-%m')month,sum(A.count)sum from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product=1 and DATE_FORMAT(A.timestamp,'%Y-%m') between ? and ? and C.os in ("+icons+") and C.script_version in ("+versions+") and C.ch_Id in ("+chId+") group by month;";
+		String actSql = "select DATE_FORMAT(A.date,'%Y-%m')month,count(distinct A.account)act_count from (select*from login where DATE_FORMAT(date,'%Y-%m') between ? and ?) A join device_info B on A.openudid = B.openudid where B.os in ("+icons+") and B.script_version in ("+versions+") and B.ch_Id in ("+chId+") group by month;";
+		List<String> monthList = DateUtils.getMonthList(startDate, endDate);
+		String start = DateUtils.monthToStr(DateUtils.strToDate(startDate));
+		String end = DateUtils.monthToStr(DateUtils.strToDate(endDate));
+		List<LogCharge> logCharge = LogCharge.dao.use(db).find(arpuSql, start, end);
+		List<LogCharge> active = LogCharge.dao.use(db).find(actSql, start, end);
+		//init
+		Map<String, Double> lcMap = new LinkedHashMap<String, Double>();
+		Map<String, Long> aPMap = new LinkedHashMap<String, Long>();
+		for(String m:monthList){
+			lcMap.put(m, 0.0);
+			aPMap.put(m, 0L);
+		}
+		for(LogCharge lc : logCharge){
+			String m = lc.getStr("month");
+			double r = lc.getDouble("sum")==null?0.0:lc.getDouble("sum");
+			lcMap.put(m, r);
+		}
+		for(LogCharge lc : active){
+			String m = lc.getStr("month");
+			long aP = lc.getLong("act_count");
+			aPMap.put(m, aP);
+		}
+		List<Double> arpuM = new ArrayList<Double>();
+		for(String m : monthList){
+			double revenue = lcMap.get(m);
+			long act = aPMap.get(m);
+			double r = 0.0;
+			if(act!=0){
+				r = revenue/act;
+				BigDecimal bg = new BigDecimal(r);
+				r = bg.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue(); 
+			}
+			arpuM.add(r);
+		}
+		return arpuM;
+	}
+	
+	/**
+	 * 查询月ARPPU = 当自然月充值总额度/当月付费玩家数量
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 * @param db  
+	 * @param versions  版本号
+	 * @param chId  渠道号 
+	 */
+	public List<Double> queryMonthARPPU(String icons, String startDate, String endDate, String db, String versions, String chId) {
+		String sql = "select DATE_FORMAT(A.timestamp,'%Y-%m')month,sum(A.count)sum,count(distinct A.account)pp from log_charge A join create_role B on A.account = B.account join device_info C on B.openudid = C.openudid where A.is_product=1 and DATE_FORMAT(A.timestamp,'%Y-%m') between ? and ? and C.os in ("+icons+") and C.script_version in ("+versions+") and C.ch_Id in ("+chId+") group by month;";
+		List<String> monthList = DateUtils.getMonthList(startDate, endDate);
+		String start = DateUtils.monthToStr(DateUtils.strToDate(startDate));
+		String end = DateUtils.monthToStr(DateUtils.strToDate(endDate));
+		List<LogCharge> logCharge = LogCharge.dao.use(db).find(sql, start, end);
+		Map<String, Double> sort = new LinkedHashMap<String, Double>();
+		for(String m : monthList){
+			sort.put(m, 0.0);
+		}
+		for(LogCharge lc : logCharge){
+			String m = lc.getStr("month");
+			double revenue = lc.getDouble("sum").doubleValue();
+			long pp = lc.getLong("pp");
+			if(pp!=0){
+				double r = revenue/pp;
+				BigDecimal bg = new BigDecimal(r);
+				r = bg.setScale(2,BigDecimal.ROUND_HALF_UP).doubleValue();
+				sort.put(m, r);
+			}
+		}
+		List<Double> data = new ArrayList<Double>(sort.values());
+		return data;
+	}
+	
+	/**
 	 * 查询所有付费金额 --表格
 	 * @param categories 日期列表
 	 * @param icons  当前的icon   ---apple/android/windows
@@ -450,15 +533,11 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 	 */
 	public List<List<Object>> queryAllPaymentMoney(List<String> categories, String icons, String startDate, String endDate, String db, String versions, String chId){
 		List<Integer> day = queryDayPaymentMoney(categories,icons,startDate,endDate, db, versions, chId);
-		List<Integer> week = Arrays.asList(0,0,0,0,0,0,0,0,0,0,0,0);
-		List<Integer> month = Arrays.asList(0,0,0,0,0,0,0,0,0,0,0,0);
 		List<List<Object>> data = new ArrayList<List<Object>>();
 		for(int i=0;i<categories.size();i++){
 			List<Object> per = new ArrayList<Object>();
 			per.add(categories.get(i) + "("+currency+")");
 			per.add(day.get(i));
-			per.add(week.get(i));
-			per.add(month.get(i));
 			data.add(per);
 		}
 		return data;
@@ -473,15 +552,11 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 	 */
 	public List<List<Object>> queryAllPaymentTimes(List<String> categories, String icons, String startDate, String endDate, String db, String versions, String chId){
 		List<Integer> day = queryDayPaymentTimes(categories,icons,startDate,endDate,db,versions,chId);
-		List<Integer> week = Arrays.asList(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
-		List<Integer> month = Arrays.asList(0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0);
 		List<List<Object>> data = new ArrayList<List<Object>>();
 		for(int i=0;i<categories.size();i++){
 			List<Object> per = new ArrayList<Object>();
 			per.add(categories.get(i));
 			per.add(day.get(i));
-			per.add(week.get(i));
-			per.add(month.get(i));
 			data.add(per);
 		}
 		return data;
@@ -522,7 +597,48 @@ public class PaymentDataServiceImpl implements PaymentDataService {
 		}
 		return data;
 	}
-	
+	/**
+	 * 查询arpuM --表格
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 * @param db  
+	 * @param versions  版本号
+	 * @param chId  渠道号  
+	 */
+	public List<List<Object>> queryMonthArpuTable(String icons, String startDate, String endDate, String db, String versions, String chId) {
+		List<String> monthList = DateUtils.getMonthList(startDate, endDate);
+		List<Double> arpuM = queryMonthARPU(icons, startDate, endDate, db, versions, chId);
+		List<List<Object>> data = new ArrayList<List<Object>>();
+		for(int i=0;i<monthList.size();i++){
+			List<Object> per = new ArrayList<Object>();
+			per.add(monthList.get(i));
+			per.add(arpuM.get(i));
+			data.add(per);
+		}
+		return data;
+	}
+	/**
+	 * 查询arppu --表格
+	 * @param icons  当前的icon   ---apple/android/windows
+	 * @param startDate  所选起始时间
+	 * @param endDate  所选结束时间
+	 * @param db  
+	 * @param versions  版本号
+	 * @param chId  渠道号  
+	 */
+	public List<List<Object>> queryMonthArppuTable(String icons, String startDate, String endDate, String db, String versions, String chId){
+		List<String> monthList = DateUtils.getMonthList(startDate, endDate);
+		List<Double> arppuM = queryMonthARPPU(icons, startDate, endDate, db, versions, chId);
+		List<List<Object>> data = new ArrayList<List<Object>>();
+		for(int i=0;i<monthList.size();i++){
+			List<Object> per = new ArrayList<Object>();
+			per.add(monthList.get(i));
+			per.add(arppuM.get(i));
+			data.add(per);
+		}
+		return data;
+	}
 	/**
 	 * 查询地区收入
 	 * @param icons  当前的icon   ---apple/android/windows

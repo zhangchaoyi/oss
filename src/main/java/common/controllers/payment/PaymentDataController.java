@@ -179,26 +179,13 @@ public class PaymentDataController extends Controller {
 			case "analyze-payment-money":
 				switch (subTag) {
 				case "day":
-					categories = Arrays.asList("1", "2", "3", "4", "5", "6~10", "11~50", "51~100", "101~500",
-							"501~1000", "1001~2000", ">2000");
+					categories = Arrays.asList("1", "2", "3", "4", "5", "6~10", "11~50", "51~100", "101~500", "501~1000", "1001~2000", ">2000");
 					List<Integer> queryPeriod = paymentDataService.queryDayPaymentMoney(categories, icons, startDate,
 							endDate, db, versions, chId);
 					categories = Arrays.asList("1("+currency+")", "2("+currency+")", "3("+currency+")", "4("+currency+")", "5("+currency+")", "6~10("+currency+")", "11~50("+currency+")",
 							"51~100("+currency+")", "101~500("+currency+")", "501~1000("+currency+")", "1001~2000("+currency+")", ">2000("+currency+")");
 					category.put("付费金额区间", categories);
 					seriesMap.put("人数", queryPeriod);
-					break;
-				case "week":
-					categories = Arrays.asList("1("+currency+")", "2("+currency+")", "3("+currency+")", "4("+currency+")", "5("+currency+")", "6~10("+currency+")", "11~50("+currency+")",
-							"51~100("+currency+")", "101~500("+currency+")", "501~1000("+currency+")", "1001~2000("+currency+")", ">2000("+currency+")");
-					category.put("付费金额区间", categories);
-					seriesMap.put("人数", Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
-					break;
-				case "month":
-					categories = Arrays.asList("1("+currency+")", "2("+currency+")", "3("+currency+")", "4("+currency+")", "5("+currency+")", "6~10("+currency+")", "11~50("+currency+")",
-							"51~100("+currency+")", "101~500("+currency+")", "501~1000("+currency+")", "1001~2000("+currency+")", ">2000("+currency+")");
-					category.put("付费金额区间", categories);
-					seriesMap.put("人数", Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
 					break;
 				}
 				break;
@@ -212,51 +199,35 @@ public class PaymentDataController extends Controller {
 							endDate, db, versions, chId);
 					seriesMap.put("人数", queryPeriod);
 					break;
-				case "week":
-					categories = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11~20", "21~30",
-							"31~40", "41~50", "51~100", ">100");
-					category.put("付费次数区间", categories);
-					seriesMap.put("人数", Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
-					break;
-				case "month":
-					categories = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11~20", "21~30",
-							"31~40", "41~50", "51~100", ">100");
-					category.put("付费次数区间", categories);
-					seriesMap.put("人数", Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0));
-					break;
 				}
 				break;
 			case "analyze-payment-arpu":
 				data.put("chartType", "line");
-				categories = DateUtils.getDateList(startDate, endDate);
-				category.put("日期", categories);
 				switch (subTag) {
 				case "ARPU-D":
+					categories = DateUtils.getDateList(startDate, endDate);
 					List<Double> AD = paymentDataService.queryDayARPU(categories, icons, startDate, endDate, db, versions, chId);
 					seriesMap.put("ARPU(日)", AD);
 					break;
 				case "ARPU-M":
-					List<Double> list = new ArrayList<Double>();
-					for (String date : categories) {
-						list.add(0.0);
-					}
-					seriesMap.put("ARPU(月)", list);
+					categories = DateUtils.getMonthList(startDate, endDate);
+					List<Double> AM = paymentDataService.queryMonthARPU(icons, startDate, endDate, db, versions, chId);
+					seriesMap.put("ARPU(月)", AM);
 					break;
 				case "ARPPU-D":
+					categories = DateUtils.getDateList(startDate, endDate);
 					List<Double> ARD = paymentDataService.queryDayARPPU(categories, icons, startDate, endDate, db,versions,chId);
 					seriesMap.put("ARPPU(日)", ARD);
 					break;
 				case "ARPPU-M":
-					List<Double> lista = new ArrayList<Double>();
-					for (String date : categories) {
-						lista.add(0.0);
-					}
-					seriesMap.put("ARPPU(月)", lista);
+					categories = DateUtils.getMonthList(startDate, endDate);
+					List<Double> ARM = paymentDataService.queryMonthARPPU(icons, startDate, endDate, db, versions, chId);
+					seriesMap.put("ARPPU(月)", ARM);
 					break;
 				}
 				break;
 			}
-
+			category.put("日期", categories);
 			Set<String> type = seriesMap.keySet();
 			data.put("type", type.toArray());
 			data.put("category", category);
@@ -305,13 +276,13 @@ public class PaymentDataController extends Controller {
 			String db = URLDecoder.decode(getCookie("server"), "GBK");
 			switch (tag) {
 			case "analyze-payment-money":
-				header.addAll(Arrays.asList("付费金额区间", "每日付费玩家", "每周付费玩家", "每月付费玩家"));
+				header.addAll(Arrays.asList("付费金额区间", "每日付费玩家"));
 				categories = Arrays.asList("1", "2", "3", "4", "5", "6~10", "11~50", "51~100", "101~500", "501~1000",
 						"1001~2000", ">2000");
 				queryData = paymentDataService.queryAllPaymentMoney(categories, icons, startDate, endDate, db, versions, chId);
 				break;
 			case "analyze-payment-times":
-				header.addAll(Arrays.asList("付费次数区间", "每日付费玩家", "每周付费玩家", "每月付费玩家"));
+				header.addAll(Arrays.asList("付费次数区间", "每日付费玩家"));
 				categories = Arrays.asList("1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11~20", "21~30", "31~40",
 						"41~50", "51~100", ">100");
 				queryData = paymentDataService.queryAllPaymentTimes(categories, icons, startDate, endDate, db, versions, chId);
@@ -324,27 +295,13 @@ public class PaymentDataController extends Controller {
 					queryData = paymentDataService.queryArpu(categories, icons, startDate, endDate, db, versions, chId);
 					break;
 				case "ARPU-M":
-					List<List<Object>> d = new ArrayList<List<Object>>();
-					for (String date : categories) {
-						List<Object> dd = new ArrayList<Object>();
-						dd.add(date);
-						dd.add(0);
-						d.add(dd);
-					}
-					queryData = d;
+					queryData = paymentDataService.queryMonthArpuTable(icons, startDate, endDate, db, versions, chId);
 					break;
 				case "ARPPU-D":
 					queryData = paymentDataService.queryArppu(categories, icons, startDate, endDate, db, versions, chId);
 					break;
 				case "ARPPU-M":
-					List<List<Object>> e = new ArrayList<List<Object>>();
-					for (String date : categories) {
-						List<Object> dd = new ArrayList<Object>();
-						dd.add(date);
-						dd.add(0);
-						e.add(dd);
-					}
-					queryData = e;
+					queryData = paymentDataService.queryMonthArppuTable(icons, startDate, endDate, db, versions, chId);
 					break;
 				}
 				break;
@@ -462,14 +419,6 @@ public class PaymentDataController extends Controller {
 				header.addAll(Arrays.asList("移动运营商", "收入", "百分比"));
 				category.put("移动运营商", carrier);
 				seriesMap.put("付费金额", revenue);
-				break;
-			case "comsume-package":
-				switch (subTag) {
-				case "revenue":
-					break;
-				case "recharge-people":
-					break;
-				}
 				break;
 			}
 			Set<String> type = seriesMap.keySet();

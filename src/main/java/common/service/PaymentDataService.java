@@ -24,6 +24,10 @@ public interface PaymentDataService {
 	
 	public List<Double> queryDayARPPU(List<String> categories, String icons, String startDate, String endDate, String db, String versions, String chId);
 	
+	public List<Double> queryMonthARPU(String icons, String startDate, String endDate, String db, String versions, String chId);
+	
+	public List<Double> queryMonthARPPU(String icons, String startDate, String endDate, String db, String versions, String chId);
+	
 	public List<List<Object>> queryAllPaymentMoney(List<String> categories, String icons, String startDate, String endDate, String db, String versions, String chId);
 
 	public List<List<Object>> queryAllPaymentTimes(List<String> categories, String icons, String startDate, String endDate, String db, String versions, String chId);
@@ -31,6 +35,10 @@ public interface PaymentDataService {
 	public List<List<Object>> queryArpu(List<String> categories, String icons, String startDate, String endDate, String db, String versions, String chId);
 	
 	public List<List<Object>> queryArppu(List<String> categories, String icons, String startDate, String endDate, String db, String versions, String chId);
+	
+	public List<List<Object>> queryMonthArpuTable(String icons, String startDate, String endDate, String db, String versions, String chId);
+
+	public List<List<Object>> queryMonthArppuTable(String icons, String startDate, String endDate, String db, String versions, String chId);
 	
 	public List<LogCharge> queryAreaRevenue(String icons, String startDate, String endDate, String db, String versions, String chId);
 	

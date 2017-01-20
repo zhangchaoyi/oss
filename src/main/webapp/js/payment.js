@@ -12,7 +12,7 @@ function loadData(){
     loadDataPayment($("ul.nav.nav-tabs.payment-tab > li.active").children("a").attr("data-info"));
     loadDataPaymentTable();
     loadAnalyzePayment($("ul.nav.nav-tabs.analyze-payment-tab > li.active > a").attr("data-info"),$("div.nav-tab.paid-analyze-tab > ul > li.active > a > span").attr("data-info"));
-    loadAnalyzePaymentTable($("ul.nav.nav-tabs.analyze-payment-tab > li.active > a").attr("data-info"),"");
+    loadAnalyzePaymentTable($("ul.nav.nav-tabs.analyze-payment-tab > li.active > a").attr("data-info"),$("div.nav-tab.paid-analyze-arp-tab > ul > li.active > a > span").attr("data-info"));
     loadDetailPayment($("ul.nav.nav-tabs.paid-details > li.active > a").attr("data-info"), $("div.nav-tab.paid-detail-subtab > ul > li.active > a > span").attr("data-info"));
 };
 
@@ -603,24 +603,21 @@ $("ul.nav.nav-tabs.paid-details > li").click(function(){
         case "area":
         case "country":
         $("div.nav-tab.paid-detail-subtab").show();
-        $("div.nav-tab.paid-detail-consumepackage").hide();
         loadDetailPayment(info, $("div.nav-tab.paid-detail-subtab > ul > li.active > a > span").attr("data-info"));
         break;
         case "mobileoperator":
         $("div.nav-tab.paid-detail-subtab").hide();
-        $("div.nav-tab.paid-detail-consumepackage").hide();
         loadDetailPayment(info, "");
         break;
         case "comsume-package":
         $("div.nav-tab.paid-detail-subtab").hide();
-        $("div.nav-tab.paid-detail-consumepackage").show();
         alert("暂无数据");
         break;
     }
 });
 
 //details sub tag
-$("div.nav-tab.paid-detail-subtab > ul > li, div.nav-tab.paid-detail-consumepackage > ul > li, div.nav-tab.paid-analyze-arp-tab > ul > li, div.nav-tab.paid-analyze-tab > ul > li").click(function(){
+$("div.nav-tab.paid-detail-subtab > ul > li, div.nav-tab.paid-analyze-arp-tab > ul > li, div.nav-tab.paid-analyze-tab > ul > li").click(function(){
     $(this).siblings("li.active").toggleClass("active");
     $(this).addClass("active");
 });
