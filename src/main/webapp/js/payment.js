@@ -11,7 +11,7 @@ function loadData(){
     initVersions();
     loadDataPayment($("ul.nav.nav-tabs.payment-tab > li.active").children("a").attr("data-info"));
     loadDataPaymentTable();
-    loadAnalyzePayment($("ul.nav.nav-tabs.analyze-payment-tab > li.active > a").attr("data-info"),$("div.nav-tab.paid-analyze-tab > ul > li.active > a > span").attr("data-info"));
+    loadAnalyzePayment($("ul.nav.nav-tabs.analyze-payment-tab > li.active > a").attr("data-info"));
     loadAnalyzePaymentTable($("ul.nav.nav-tabs.analyze-payment-tab > li.active > a").attr("data-info"),$("div.nav-tab.paid-analyze-arp-tab > ul > li.active > a > span").attr("data-info"));
     loadDetailPayment($("ul.nav.nav-tabs.paid-details > li.active > a").attr("data-info"), $("div.nav-tab.paid-detail-subtab > ul > li.active > a > span").attr("data-info"));
 };
@@ -46,8 +46,14 @@ function loadDataPaymentTable() {
     });
 }
 
-function loadAnalyzePayment(tag,subTag) {
+function loadAnalyzePayment(tag) {
     analysePaymentChart.showLoading();
+    var subTag = "";
+    if(tag=="analyze-payment-arpu"){
+        subTag = $("div.nav-tab.paid-analyze-arp-tab > ul > li.active > a > span").attr("data-info");
+    }else{
+        subTag = $("div.nav-tab.paid-analyze-tab > ul > li.active > a > span").attr("data-info");
+    }
     $.post("/oss/api/payment/analyze", {
         tag:tag,
         subTag:subTag,
@@ -586,13 +592,13 @@ $("ul.nav.nav-tabs.analyze-payment-tab > li").click(function(){
     if(info=="analyze-payment-arpu"){
         $("div.nav-tab.paid-analyze-tab").hide();
         $("div.arpu-block").show();
-        loadAnalyzePayment(info,$("div.nav-tab.paid-analyze-arp-tab > ul > li.active > a > span").attr("data-info"));
+        loadAnalyzePayment(info);
         loadAnalyzePaymentTable(info,$("div.nav-tab.paid-analyze-arp-tab > ul > li.active > a > span").attr("data-info"));
         return;
     }
     $("div.nav-tab.paid-analyze-tab").show();
     $("div.arpu-block").hide();
-    loadAnalyzePayment(info,$("div.nav-tab.paid-analyze-tab > ul > li.active > a > span").attr("data-info"));
+    loadAnalyzePayment(info);
     loadAnalyzePaymentTable(info, "");
 });
 
@@ -627,11 +633,11 @@ $("ul.nav.nav-tabs.payment-tab > li").click(function(){
 });
 
 $("div.nav-tab.paid-analyze-tab > ul > li").click(function(){
-    loadAnalyzePayment($("ul.nav.nav-tabs.analyze-payment-tab > li.active > a").attr("data-info"),$(this).find("span").attr("data-info"));
+    loadAnalyzePayment($("ul.nav.nav-tabs.analyze-payment-tab > li.active > a").attr("data-info"));
 });
 
 $("div.nav-tab.paid-analyze-arp-tab > ul > li").click(function(){
-    loadAnalyzePayment("analyze-payment-arpu",$(this).find("span").attr("data-info"));
+    loadAnalyzePayment("analyze-payment-arpu");
     loadAnalyzePaymentTable("analyze-payment-arpu", $(this).find("span").attr("data-info"));
 });
 
