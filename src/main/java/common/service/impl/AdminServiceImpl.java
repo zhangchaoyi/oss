@@ -137,9 +137,9 @@ public class AdminServiceImpl implements AdminService {
 	 */
 	public int changeUserPw(String username, String newPassword, String db){
 		int succeed = 0;
-		String sql = "update sec_user set password = ?,salt = ? where username = ?";
+		String sql = "update sec_user set password = ?,salt = ? where user_name = ?";
 		String salt = RandomUtil.getRandomString(6);
-		newPassword += newPassword + salt;
+		newPassword +=  salt;
 		try {
 			newPassword = EncryptUtils.EncoderByMd5(newPassword);
 		} catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
@@ -232,8 +232,8 @@ public class AdminServiceImpl implements AdminService {
 			// 用户管理页 <删除> <修改权限>列
 			if (userManagePage == true) {
 				subList.add(0, entry.getKey());
-				subList.add(entry.getKey());
 			}
+			subList.add(entry.getKey());
 			data.add(subList);
 		}
 		logger.info("data:" + data);

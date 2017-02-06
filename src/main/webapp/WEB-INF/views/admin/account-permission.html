@@ -99,9 +99,40 @@
                 <th>用户名</th>
                 <th>角色</th>
                 <th>创建时间</th>
+                <th>修改密码</th>
               </tr>
              </thead>
           </table>
+          <div class="modal fade" id="change-pwd" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"> 
+           <div class="modal-dialog"> 
+            <div class="modal-content"> 
+             <div class="modal-header"> 
+               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> 
+               <h4 class="modal-title" id="myModalLabel"><i>修改密码</i></h4> 
+             </div> 
+             <div class="modal-body"> 
+               <form role="form">        
+                <div class="form-group">
+                  <label>输入旧密码</label>
+                  <input class="form-control" id="old-pwd" type="password">
+                </div>
+                <div class="form-group">
+                  <label>输入新密码</label>
+                  <input class="form-control" id="new-pwd" type="password">
+                </div>
+                <div class="form-group">
+                  <label>确认新密码</label>
+                  <input class="form-control" id="re-new-pwd" type="password">
+                </div>                            
+              </form>
+             </div> 
+             <div class="modal-footer">
+               <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn-confirm">确认</button> 
+               <button type="button" class="btn btn-primary" data-dismiss="modal" id="btn-close">关闭</button>
+             </div> 
+            </div> 
+           </div> 
+          </div>
         </div> 
        </div> 
       </div> 
@@ -132,6 +163,8 @@
   <script src="http://oss.koogame.cn/oss/js/dateselector/monthPicker.js?v=0.2"></script> 
   <script src="http://oss.koogame.cn/oss/js/checkbox/icheck.js?v=0.2"></script>
   <script src="http://oss.koogame.cn/oss/js/common.js?v=0.8"></script>
-  <script src="http://oss.koogame.cn/oss/js/account-permission.js?v=0.2"></script>
+  <script src="http://oss.koogame.cn/oss/js/aes.js?v=0.2"></script>
+  <script src="http://oss.koogame.cn/oss/js/mode-ecb.js?v=0.2"></script>
+  <script src="http://oss.koogame.cn/oss/js/account-permission.js?v=0.4"></script>
  </body>
 </html>

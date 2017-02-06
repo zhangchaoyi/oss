@@ -235,7 +235,7 @@ public class AdminController extends Controller {
 	@ActionKey("/api/admin/account")
 	public void accountPermission() {
 		Cookie cookie = getCookieObject("login");
-		String username = "chris";
+		String username = "admin";
 		if (cookie != null) {
 			username = cookie.getValue();
 		}
@@ -251,44 +251,6 @@ public class AdminController extends Controller {
 	}
 	
 	/**
-	 * 校验用户旧密码
-	 * @getPara account
-	 * @getPara oldPassword
-	 * @author chris
-	 */
-	@Before(POST.class)
-	@ActionKey("/api/admin/vertifyOldPw")
-	public void vertifyOldPw(){
-		String username = getPara("username", "");
-		String oldPassword = getPara("oldPassword", "");
-		String key = getPara("key", "");
-		logger.info("paras: {" + "username:" + username + ",password:" + oldPassword + ",key:" + key + "}");
-		try {
-			username = EncryptUtils.aesDecrypt(username, key);
-			oldPassword = EncryptUtils.aesDecrypt(oldPassword, key);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		logger.info("After decrypt:--" + "username:" + username + " password:" + oldPassword + " key:" + key);
-		SecUser secUser = as.getUser(username);
-		if (secUser == null) {
-			renderJson("{\"message\":\"failed\"}");
-			return;
-		}
-		String queryPasswd = secUser.getStr("password");
-		String salt = secUser.getStr("salt");
-		oldPassword += salt;
-		try {
-			if (EncryptUtils.checkpassword(oldPassword, queryPasswd)) {
-				//redirect / forward
-			}
-		}catch(Exception e){
-			logger.info("<vertifyOldPw> Exception:", e);
-			e.printStackTrace();
-		}
-	}
-	
-	/**
 	 * 用户个人修改密码
 	 * @author chris
 	 */
@@ -296,16 +258,32 @@ public class AdminController extends Controller {
 	@ActionKey("/api/admin/changePassword")
 	public void changePassword(){
 		String username = getPara("username", "");
-		String newPassword = getPara("newPassword", "");
+		String oldPassword = getPara("oldPwd", "");
+		String newPassword = getPara("newPwd", "");
 		String key = getPara("key", "");
 		
 		try {
 			username = EncryptUtils.aesDecrypt(username, key);
+			oldPassword = EncryptUtils.aesDecrypt(oldPassword, key);
 			newPassword = EncryptUtils.aesDecrypt(newPassword, key);
-			for(String db : dbs){
-				//int succeed = as.changeUserPw(username, newPassword, db);
+			//校验旧密码
+			SecUser secUser = as.getUser(username);
+			if (secUser == null) {
+				renderJson("{\"message\":\"failed\"}");
+				return;
 			}
-			
+			String queryPasswd = secUser.getStr("password");
+			String salt = secUser.getStr("salt");
+			oldPassword += salt;
+			if (!EncryptUtils.checkpassword(oldPassword, queryPasswd)){
+				renderJson("{\"message\":\"旧密码错误\"}");
+				return;
+			}
+			//校验通过，对所有数据库修改密码
+			for(String db : dbs){
+				as.changeUserPw(username, newPassword, db);
+			}
+			renderJson("{\"message\":\"success\"}");
 		} catch (Exception e) {
 			e.printStackTrace();
 			logger.info("Exception:", e);

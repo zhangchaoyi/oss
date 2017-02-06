@@ -21,4 +21,6 @@ public interface AdminService {
 	public int deleteByUserName(String users, String db);
 	
 	public void changeRoles(String username, String[] queryRole, Map<String, String> map, String db);
+	
+	public int changeUserPw(String username, String newPassword, String db);
 }
