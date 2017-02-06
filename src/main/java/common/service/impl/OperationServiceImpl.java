@@ -17,13 +17,13 @@ import common.utils.JsonToMap;
 
 /**
  * 用户运营页接口
- * 表存放在马来服上
+ * 表存放在uc服务器上
  * @author chris
  */
 public class OperationServiceImpl implements OperationService {
 	private static Logger logger = Logger.getLogger(OperationServiceImpl.class);
 	/**
-	 * 接收玩家反馈,并将其插入到mysql中 使用马来服接受反馈
+	 * 接收玩家反馈,并将其插入到mysql中 使用uc服接受反馈
 	 * @param account 帐号id
 	 * @param title 标题
 	 * @param content 内容
@@ -34,19 +34,19 @@ public class OperationServiceImpl implements OperationService {
 	public boolean addFeedback(String account, String title, String content, String server, String port) {
 		logger.info("params:{"+"account:"+account+",title:"+title+",content:"+content+",server:"+server+",port:"+port+"}");
 		boolean succeed = false;
-		succeed  = new UserFeedback().use("malai").set("account", account).set("title", title).set("content", content).set("server", server).set("port", port).set("create_time", new Date()).set("reply",0).save();
+		succeed  = new UserFeedback().use("uc").set("account", account).set("title", title).set("content", content).set("server", server).set("port", port).set("create_time", new Date()).set("reply",0).save();
 		logger.info("return:" + succeed);
 		return succeed;
 	}
 	
 	/**
-	 * 查询用户反馈列表 查询马来服上的反馈数据
+	 * 查询用户反馈列表 查询uc服上的反馈数据
 	 * @return List<List<String>> 直接填充datatable
 	 */
 	public List<List<String>> queryFeedback(String startDate, String endDate, String server) {
 		logger.info("params:{"+"server:"+server+"}");
 		String sql = "select * from user_feedback where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and server in ("+ server +")";
-		List<UserFeedback> userFeedback = UserFeedback.dao.use("malai").find(sql, startDate, endDate);
+		List<UserFeedback> userFeedback = UserFeedback.dao.use("uc").find(sql, startDate, endDate);
 		List<List<String>> data = new ArrayList<List<String>>();
 		for(UserFeedback uf : userFeedback){
 			String account = uf.getStr("account");
@@ -69,7 +69,7 @@ public class OperationServiceImpl implements OperationService {
 	public int completeReply(int id) {
 		logger.info("params:{"+"id"+id+"}");
 		String sql = "update user_feedback set reply = 1 where id = ?";
-		int succeed = Db.use("malai").update(sql, id);
+		int succeed = Db.use("uc").update(sql, id);
 		logger.info("return:" + succeed);
 		return succeed;
 	}
@@ -81,7 +81,7 @@ public class OperationServiceImpl implements OperationService {
 	public Map<String, String> queryFeedbackById(String id) {
 		logger.info("params:{"+"id:"+id+"}");
 		String sql = "select * from user_feedback where id = ?";
-		UserFeedback uf = UserFeedback.dao.use("malai").findFirst(sql, id);
+		UserFeedback uf = UserFeedback.dao.use("uc").findFirst(sql, id);
 		Map<String, String> data = new HashMap<String, String>();
 		if(uf==null){
 			data.put("message", "failed");
@@ -103,7 +103,7 @@ public class OperationServiceImpl implements OperationService {
 	 */
 	public boolean insertGmRecord(String account, String operation, String emailAddress, String type){
 		logger.info("params:{"+"account:"+account+",operation:"+operation+",address:"+emailAddress+",type:"+type+"}");
-		boolean succeed = new GmRecord().use("malai").set("account", account).set("operation", operation).set("create_time", new Date()).set("address", emailAddress).set("type",type).save();
+		boolean succeed = new GmRecord().use("uc").set("account", account).set("operation", operation).set("create_time", new Date()).set("address", emailAddress).set("type",type).save();
 		return succeed;
 	}
 	
@@ -115,7 +115,7 @@ public class OperationServiceImpl implements OperationService {
 	 */
 	public List<List<String>> queryGmRecord(String startDate, String endDate, String type, String address) {
 		String sql = "select account,operation,create_time from gm_record where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and type = ? and address = ?";
-		List<GmRecord> gmRecord = GmRecord.dao.use("malai").find(sql, startDate, endDate, type, address);
+		List<GmRecord> gmRecord = GmRecord.dao.use("uc").find(sql, startDate, endDate, type, address);
 		List<List<String>> data = new ArrayList<List<String>>();
 		try{
 			for(GmRecord gr : gmRecord){
