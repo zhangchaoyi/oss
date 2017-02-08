@@ -116,15 +116,31 @@ function dealJsonDataToTable(data){
 	row.push(data.role_name);
 	row.push(data.udid==undefined?"-":data.udid);
 	row.push(data.openudid==undefined?"-":data.openudid);
+	row.push(data.create_time==undefined?"-":data.create_time);
+	row.push(data.phone_model==undefined?"-":data.phone_model);
 	row.push(data.level);
 	row.push(data.last_login=="null"?"-":data.last_login);
 	row.push(data.last_paid=="null"?"-":data.last_paid);
-	row.push(data.gold);
-	row.push(data.rmb);
-	row.push("积分:"+data.arena.score+" 排名:"+data.arena.rank);
-	row.push("积分:"+data.ladder.score+" 排名:"+data.ladder.rank);
-	row.push("积分:"+data.world_rank.score+" 排名:"+data.world_rank.rank+" 称号:"+(data.world_rank.title==undefined?"-":data.world_rank.title));
-	row.push("约战胜场:"+data.invite.win);
+	row.push(function(){
+		var charge = data.charge_record;
+		if(charge==undefined||charge.length==0){
+			return "-";
+		}
+		var currency = "";
+		switch(charge[0].currency){
+			case "RMB":
+			currency = "￥";
+			break;
+			case "dollars":
+			currency = "$";
+			break;
+		}
+		return currency + charge[0].num;
+	});
+	row.push(data.rmb+' / '+data.gold);
+	row.push("#"+data.arena.rank+"# "+data.arena.score);
+	row.push("#"+data.ladder.rank+"# "+data.ladder.score);
+	row.push("胜 "+data.invite.win);
 	row.push("关注:"+data.friend.follow+" 粉丝:"+data.friend.fans);
 	tableData.push(row);
 	return tableData;
