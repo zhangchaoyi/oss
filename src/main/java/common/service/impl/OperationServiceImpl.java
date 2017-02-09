@@ -73,6 +73,17 @@ public class OperationServiceImpl implements OperationService {
 		logger.info("return:" + succeed);
 		return succeed;
 	}
+	/**
+	 * 置邮件发送后的操作记录状态为成功
+	 * @param rowId --mysql row id
+	 * @return row Id   /0表示失败
+	 */
+	public int setGmRecordMailToSucceed(int rowId){
+		logger.info("params:{"+"id"+rowId+"}");
+		String sql = "update gm_record set is_mail_send = 1 where id = ?";
+		int succeed = Db.use("uc").update(sql, rowId);
+		return succeed;
+	}
 	
 	/**
 	 * 根据某个row id 查询反馈信息
@@ -101,10 +112,14 @@ public class OperationServiceImpl implements OperationService {
 	 * @param account 管理员帐号
 	 * @param operation gm指令
 	 */
-	public boolean insertGmRecord(String account, String operation, String emailAddress, String type){
+	public int insertGmRecord(String account, String operation, String emailAddress, String type){
 		logger.info("params:{"+"account:"+account+",operation:"+operation+",address:"+emailAddress+",type:"+type+"}");
-		boolean succeed = new GmRecord().use("uc").set("account", account).set("operation", operation).set("create_time", new Date()).set("address", emailAddress).set("type",type).save();
-		return succeed;
+		GmRecord gr = new GmRecord().use("uc").set("account", account).set("operation", operation).set("create_time", new Date()).set("address", emailAddress).set("type",type);
+		boolean succeed = gr.save();
+		if(!succeed){
+			logger.info("insert gm record failed");
+		}
+		return gr.getInt("id");
 	}
 	
 	/**
@@ -114,7 +129,7 @@ public class OperationServiceImpl implements OperationService {
 	 * @return 帐号/时间/标题/内容/附件/操作人
 	 */
 	public List<List<String>> queryGmRecord(String startDate, String endDate, String type, String address) {
-		String sql = "select account,operation,create_time from gm_record where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and type = ? and address = ?";
+		String sql = "select account,operation,create_time,is_mail_send from gm_record where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and type = ? and address = ?";
 		List<GmRecord> gmRecord = GmRecord.dao.use("uc").find(sql, startDate, endDate, type, address);
 		List<List<String>> data = new ArrayList<List<String>>();
 		try{
@@ -122,14 +137,16 @@ public class OperationServiceImpl implements OperationService {
 				String account = gr.getStr("account");
 				String operation = gr.getStr("operation");
 				Date createTime = gr.getDate("create_time");
+				int isMailSend = gr.getInt("is_mail_send");
 				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+				//解析操作
 				Map<String, String> emailDetail = getEmailDetail(operation);
 				if(emailDetail.containsKey("errCode")){
 					logger.info(emailDetail.get("errCode"));
 					continue;
 				}
 				List<String> subList = new ArrayList<String>();
-				//帐号-时间-标题-内容-附件--操作人
+				//帐号-时间-标题-内容-附件-等级-状态-操作人
 				String emailAccount = emailDetail.get("account");
 				emailAccount = "*".equals(emailAccount)?"全服":emailAccount;
 				subList.add(emailAccount);
@@ -138,6 +155,7 @@ public class OperationServiceImpl implements OperationService {
 				subList.add(emailDetail.get("content"));
 				subList.add(emailDetail.get("attachment"));
 				subList.add(emailDetail.get("level"));
+				subList.add(isMailSend==1?"成功":"未知");
 				subList.add(account);
 				data.add(subList);
 			}

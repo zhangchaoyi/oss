@@ -12,7 +12,9 @@ public interface OperationService {
 	
 	public Map<String, String> queryFeedbackById(String id);
 	
-	public boolean insertGmRecord(String account, String operation, String emailAddress, String type);
+	public int insertGmRecord(String account, String operation, String emailAddress, String type);
 	
 	public List<List<String>> queryGmRecord(String startDate, String endDate, String type, String address);
+	
+	public int setGmRecordMailToSucceed(int rowId);
 }

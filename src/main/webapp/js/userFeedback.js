@@ -75,6 +75,7 @@ function configTable(data) {
 
 //点击任意回复反馈按钮  允许选择全服邮件
 $("#btn-atwill-reply").click(function(){
+    $("#reply-account").removeAttr("id-info");
     $("#account-row").children("span").attr("data-toggle","dropdown");
     var info = $("#reply-account").attr("data-info");
     if(info!="mail-server"){
@@ -195,40 +196,45 @@ $("#btn-send").click(function(){
     "account":"admin",
     "password":"af03f87cca0a5e8838c3c8454f58605de41f77f5"
     };
-
-    $.ajax({
-        type: "POST",
-        url: getAddressFromIcon($("#btn-db").attr("data-info")),
-        contentType: "application/json; charset=utf-8",
-        data: JSON.stringify(payloadData),
-        crossDomain: true,
-        dataType: "json",
-        success: function (data) {
-            if (data.result == '1') {
-                alert("已发送");
-                $.post("/oss/api/operation/record", {
-                    account:$("#userAccount").text(),
-                    operation:JSON.stringify(payloadData),
-                    emailAddress:getAddressFromIcon($("#btn-db").attr("data-info")),
-                    type:"mail"
-                },
-                function(data, status) {
-                });
-
-                if(id==undefined){
-                    return;
+    //保存发送记录
+    $.post("/oss/api/operation/record", {
+        account:$("#userAccount").text(),
+        operation:JSON.stringify(payloadData),
+        emailAddress:getAddressFromIcon($("#btn-db").attr("data-info")),
+        type:"mail"
+    },
+    function(data, status) {
+        var rowId = data.rowId;
+        //发送邮件调用游戏服接口
+        $.ajax({
+            type: "POST",
+            url: getAddressFromIcon($("#btn-db").attr("data-info")),
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(payloadData),
+            crossDomain: true,
+            dataType: "json",
+            success: function (data) {
+                if (data.result == '1') {
+                    alert("已发送");
+                    $.post("/oss/api/operation/record/mail/succeed", {
+                        rowId:rowId
+                    },
+                    function(data, status) {
+                    });
+                }else{
+                    alert("发送失败"); 
                 }
-
-                $.post("/oss/api/operation/feedback/user/reply", {
-                    id:id
-                },
-                function(data, status) {
-                    loadFeedbackData(getServerFromIcon($("#btn-db").attr("data-info")));
-                });
-            }else{
-               alert("发送失败"); 
-            }
-        },
+            },
+        });
+        //置用户反馈已回复
+        if(id!=undefined){
+            $.post("/oss/api/operation/feedback/user/reply", {
+                id:id
+            },
+            function(data, status) {
+                loadFeedbackData(getServerFromIcon($("#btn-db").attr("data-info")));
+            });
+        }
     });
 
     //邮件发送完需要清空/还原

@@ -57,4 +57,12 @@ public abstract class BaseGmRecord<M extends BaseGmRecord<M>> extends Model<M> i
 		return get("type");
 	}
 
+	public void setIsMailSend(java.lang.Integer isMailSend) {
+		set("is_mail_send", isMailSend);
+	}
+
+	public java.lang.Integer getIsMailSend() {
+		return get("is_mail_send");
+	}
+
 }

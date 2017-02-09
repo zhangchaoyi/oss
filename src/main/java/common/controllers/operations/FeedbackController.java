@@ -1,5 +1,6 @@
 package common.controllers.operations;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.apache.log4j.Logger;
@@ -113,6 +114,28 @@ public class FeedbackController extends Controller{
 	}
 	
 	/**
+	 * 置邮件发送后的操作记录状态为成功
+	 * @param rowId --mysql row id
+	 * @return row Id   /0表示失败
+	 */
+	@Before({POST.class, GmInterceptor.class})
+	@ActionKey("/api/operation/record/mail/succeed")
+	public void setGmRecordMailSucceed(){
+		String rowId = getPara("rowId", "");
+		logger.info("params {" + "rowId:" + rowId + "}");
+		if("".equals(rowId)){
+			renderText("0");
+			return;
+		}
+		try{
+			int succeed = os.setGmRecordMailToSucceed(Integer.parseInt(rowId));
+			renderText(String.valueOf(succeed));
+		}catch(Exception e){
+			logger.info("Exception:", e);
+		}
+	}
+	
+	/**
 	 * 根据某个row id 查询反馈信息
 	 * @author chris
 	 * @getPara id 获取row id
@@ -140,7 +163,9 @@ public class FeedbackController extends Controller{
 		String emailAddress = getPara("emailAddress", "");
 		String type = getPara("type", "mail");
 		logger.info("params:{"+"account:"+account+",operation:"+operation+",emailAddress:"+emailAddress+",type"+type+"}");
-		boolean succeed = os.insertGmRecord(account, operation, emailAddress, type);
-		renderText(String.valueOf(succeed));
+		int rowId = os.insertGmRecord(account, operation, emailAddress, type);
+		Map<String, Integer> data = new HashMap<String, Integer>();
+		data.put("rowId", rowId);
+		renderJson(data);
 	}
 }
