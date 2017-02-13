@@ -1,6 +1,6 @@
 testUrl = jdbc:mysql://120.25.209.140/egg_log?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
 ucUrl = jdbc:mysql://118.178.17.105/egg_log?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
-iosUrl = jdbc:mysql://121.43.34.172/egg_log?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
+iosUrl = jdbc:mysql://eggioscn.koogame.cn/egg_log?characterEncoding=utf8&zeroDateTimeBehavior=convertToNull
 user = zcy
 password = Zcy@0826
 devMode = true
