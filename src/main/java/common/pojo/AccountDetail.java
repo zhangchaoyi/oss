@@ -1,5 +1,9 @@
 package common.pojo;
 
+/**
+ * 用于PaymentRankServiceImpl 数据处理
+ * @author chris
+ */
 public class AccountDetail {
 	private long onlineTime;
 	private long loginTimes;

@@ -32,7 +32,10 @@ import common.controllers.players.AddController;
 import common.controllers.players.EffectiveController;
 import common.controllers.players.EquipmentController;
 import common.controllers.players.RetainController;
-
+/**
+ * 配置路由
+ * @author chris
+ */
 public class AdminRoute extends Routes {
 
 	@Override

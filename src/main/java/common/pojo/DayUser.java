@@ -1,5 +1,8 @@
 package common.pojo;
-
+/**
+ * 用于LossAnalysisServiceImpl 数据处理
+ * @author chris
+ */
 public class DayUser {
 	private int num;
 	private int firstDay;

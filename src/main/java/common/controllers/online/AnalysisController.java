@@ -18,8 +18,8 @@ import com.jfinal.ext.interceptor.POST;
 import common.interceptor.DataGuestInterceptor;
 import common.service.OnlineAnalysisService;
 import common.service.impl.OnlineAnalysisServiceImpl;
-import common.utils.DateUtils;
-import common.utils.StringUtils;
+import common.util.DateUtils;
+import common.util.StringUtils;
 
 @Clear
 public class AnalysisController extends Controller {
@@ -28,7 +28,6 @@ public class AnalysisController extends Controller {
 
 	/**
 	 * 在线分析页
-	 * 
 	 * @author chris
 	 * @role data_guest
 	 */

@@ -14,9 +14,9 @@ import common.model.SecUser;
 import common.model.SecUserRole;
 import common.mysql.DbSelector;
 import common.service.AdminService;
-import common.utils.EncryptUtils;
-import common.utils.RandomUtil;
-import common.utils.StringUtils;
+import common.util.EncryptUtils;
+import common.util.RandomUtil;
+import common.util.StringUtils;
 
 import org.apache.log4j.Logger;
 

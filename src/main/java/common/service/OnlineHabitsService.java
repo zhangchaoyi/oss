@@ -2,7 +2,10 @@ package common.service;
 
 import java.util.List;
 import java.util.Map;
-
+/**
+ * 在线习惯接口
+ * @author chris
+ */
 public interface OnlineHabitsService {
 	public Map<String, Object> queryAddpDayAvgGP(List<String> categories, String icons, String startDate,
 			String endDate, String db, String versions, String chId);

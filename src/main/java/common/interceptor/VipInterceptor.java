@@ -15,7 +15,6 @@ import common.service.impl.AdminServiceImpl;
 /**
  * 要求用户的角色至少为vip
  * @author chris
- *
  */
 public class VipInterceptor implements Interceptor {
 	private static Logger logger = Logger.getLogger(VipInterceptor.class);

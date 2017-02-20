@@ -1,5 +1,8 @@
 package common.pojo;
-
+/**
+ * 用于PaymentRankServiceImpl 数据处理
+ * @author chris
+ */
 public class PaymentRank {
 	private String createTime;
 	private String firstPaidTime;

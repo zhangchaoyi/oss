@@ -1,4 +1,4 @@
-package common.utils;
+package common.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,14 +11,22 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.apache.log4j.Logger;
-
+/**
+ * 时间处理工具类
+ * @author chris
+ */
 public class DateUtils {
 
 	private static Logger logger = Logger.getLogger(DateUtils.class);
 	
 	//避免被实例化
 	private DateUtils(){}
-	
+	/**
+	 * 字符串转时间Date类型 yyyy-MM-dd
+	 * @param dateString
+	 * @return
+	 * @author chris
+	 */
 	public static Date strToDate(String dateString){
 		Date date = null;
 		SimpleDateFormat sdf;
@@ -31,7 +39,12 @@ public class DateUtils {
 		}
 		return date;
 	}
-	
+	/**
+	 * 字符串转时间Date类型 yyyy-MM
+	 * @param dateString
+	 * @return
+	 * @author chris
+	 */
 	public static Date strToMonth(String dateString){
 		Date date = null;
 		SimpleDateFormat sdf;
@@ -44,17 +57,33 @@ public class DateUtils {
 		}
 		return date;
 	}
-	
+	/**
+	 * Date转字符串类型 yyyy-MM-dd
+	 * @param date
+	 * @return
+	 * @author chris
+	 */
 	public static String dateToStr(Date date) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
 		return sdf.format(date);
 	}
-	
+	/**
+	 * Date转字符串类型 yyyy-MM
+	 * @param date
+	 * @return
+	 * @author chris
+	 */
 	public static String monthToStr(Date date) {
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM"); 
 		return sdf.format(date);
 	}
-	
+	/**
+	 * 获取时间区间列表
+	 * @param startDate
+	 * @param endDate
+	 * @return List<String>
+	 * @author chris
+	 */
 	public static List<String> getDateList(String startDate, String endDate){
 		Date start = strToDate(startDate); 
 		Date end = strToDate(endDate);
@@ -75,7 +104,13 @@ public class DateUtils {
 		}
 		return dateList;
 	}
-	
+	/**
+	 * 获取时间区间列表
+	 * @param startMonth
+	 * @param endMonth
+	 * @return List<String>
+	 * @author chris
+	 */
 	public static List<String> getMonthList(String startMonth, String endMonth){
 		Date start = strToMonth(startMonth); 
 		Date end = strToMonth(endMonth);
@@ -96,7 +131,12 @@ public class DateUtils {
 		}
 		return monthList;
 	}
-	
+	/**
+	 * 时间别名转化
+	 * @param d
+	 * @return
+	 * @author chris
+	 */
 	public static String convertDate(String d){
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -116,7 +156,11 @@ public class DateUtils {
 		}		
 		return d;
 	}
-	
+	/**
+	 * 获取当天时间 yyyy-MM-dd
+	 * @return String
+	 * @author chris
+	 */
 	public static String getTodayDate(){
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -124,6 +168,11 @@ public class DateUtils {
 		cal.setTime(date);
 		return formatter.format(cal.getTime());
 	}
+	/**
+	 * 获取七天前时间 yyyy-MM-dd
+	 * @return
+	 * @author chris
+	 */
 	public static String getSevenAgoDate(){
 		Calendar cal = Calendar.getInstance();
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
@@ -151,7 +200,13 @@ public class DateUtils {
 //		}
 //		return week;
 //	}
-	//将时间段划分成周 Map<start,end>  --以右边时间起始划分,左边时间不足补足七天
+	/**
+	 * 将时间段划分成周 Map<start,end>  --以右边时间起始划分,左边时间不足补足七天 
+	 * @param startDate
+	 * @param endDate
+	 * @return
+	 * @author chris
+	 */
 	public static Map<String, String> divideDateToWeek(String startDate, String endDate) {
 		Date start = DateUtils.strToDate(startDate);
 		Date end = DateUtils.strToDate(endDate);
@@ -170,8 +225,12 @@ public class DateUtils {
 		}
 		return week;
 	}
-	
-	
+	/**
+	 * 秒转化成其他时间格式
+	 * @param s
+	 * @return String
+	 * @author chris
+	 */
 	public static String getTimeFromSecond(long s){
 		final long DAY = 60*60*24;
 		final long HOUR = 60*60;
@@ -195,16 +254,4 @@ public class DateUtils {
 		}
 		return str;
 	}
-	public static void main(String args[]){
-//		System.out.println(getDateList("2016-08-01", "2016-08-10"));
-//		System.out.println(convertDate("2016-08-23"));
-//		System.out.println(divideDateToWeek("2016-12-31","2017-01-13"));
-//		System.out.println(getMonthList("2016-08-11","2016-11-10"));
-//		System.out.println(monthToStr(DateUtils.strToDate("2016-10-13")));
-//		System.out.println(getTimeFromSecond(200000));
-//		System.out.println(strToMonth("2016-08-12"));
-//		System.out.println(getTodayDate());
-//		System.out.println(getSevenAgoDate());
-	}
-	
 }

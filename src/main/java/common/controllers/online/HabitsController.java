@@ -20,8 +20,8 @@ import com.jfinal.ext.interceptor.POST;
 import common.interceptor.DataGuestInterceptor;
 import common.service.OnlineHabitsService;
 import common.service.impl.OnlineHabitsServiceImpl;
-import common.utils.DateUtils;
-import common.utils.StringUtils;
+import common.util.DateUtils;
+import common.util.StringUtils;
 
 @Clear
 public class HabitsController extends Controller {
@@ -30,7 +30,6 @@ public class HabitsController extends Controller {
 
 	/**
 	 * 在线习惯页
-	 * 
 	 * @author chris
 	 * @role data_guest
 	 */

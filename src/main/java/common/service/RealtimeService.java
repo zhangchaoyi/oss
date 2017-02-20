@@ -1,7 +1,10 @@
 package common.service;
 
 import java.util.Map;
-
+/**
+ * 实时接口
+ * @author chris
+ */
 public interface RealtimeService {	
 	public Map<String, Object> queryRealtimeDevice(String icons, String[] date, String db, String versions, String chId);
 	

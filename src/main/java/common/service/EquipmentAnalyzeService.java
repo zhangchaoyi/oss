@@ -3,7 +3,10 @@ package common.service;
 import java.util.List;
 
 import common.model.DeviceInfo;
-
+/**
+ * 设备分析接口
+ * @author chris
+ */
 public interface EquipmentAnalyzeService {
 
 	public List<DeviceInfo> queryAddPlayersEquipment(String icons, String startDate, String endDate, String db, String versions, String chId);

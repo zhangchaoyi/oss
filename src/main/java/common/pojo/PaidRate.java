@@ -1,5 +1,8 @@
 package common.pojo;
-
+/**
+ * 用于PaymentTransformServiceImpl 数据处理
+ * @author chris
+ */
 public class PaidRate {
 	private long paidPlayers;
 	private long activePlayers;

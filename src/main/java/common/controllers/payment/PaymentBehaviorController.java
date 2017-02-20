@@ -18,8 +18,8 @@ import com.jfinal.ext.interceptor.POST;
 import common.interceptor.VipInterceptor;
 import common.service.PaymentBehaviorService;
 import common.service.impl.PaymentBehaviorServiceImpl;
-import common.utils.Contants;
-import common.utils.StringUtils;
+import common.util.Contants;
+import common.util.StringUtils;
 
 @Clear
 public class PaymentBehaviorController extends Controller {

@@ -18,7 +18,7 @@ import common.model.Login;
 import common.model.Logout;
 import common.model.OnlineCount;
 import common.service.RealtimeService;
-import common.utils.DateUtils;
+import common.util.DateUtils;
 
 /**
  * 查询实时数据页 --包括上方表格 和 下方echart

@@ -11,7 +11,10 @@ import com.jfinal.ext.interceptor.GET;
 import common.mysql.DbSelector;
 import common.service.ApiService;
 import common.service.impl.ApiServiceImpl;
-
+/**
+ * 定义api接口
+ * @author chris
+ */
 @Clear
 public class ApiController extends Controller{
 	private ApiService as = new ApiServiceImpl();

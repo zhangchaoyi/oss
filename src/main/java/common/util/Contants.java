@@ -1,8 +1,11 @@
-package common.utils;
+package common.util;
 
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * 游戏常量
+ * @author chris
+ */
 public class Contants {
 	public static final String HEROID = "obj_11";
 	public static final String GREENBOXID = "obj_19";

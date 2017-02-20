@@ -5,7 +5,10 @@ import java.util.Map;
 
 import common.model.LogCharge;
 
-
+/**
+ * 付费数据接口
+ * @author chris
+ */
 public interface PaymentDataService {
 	
 	public Map<String, Map<String,Object>> queryMoneyPayment(List<String> categories, String startDate, String endDate, String icons, String db, String versions, String chId);

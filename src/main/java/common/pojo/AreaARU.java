@@ -1,5 +1,8 @@
 package common.pojo;
-
+/**
+ * 用于PaymentDataServiceImpl 数据处理
+ * @author chris
+ */
 public class AreaARU {
 	private double revenue;
 	private long count;

@@ -18,14 +18,12 @@ import com.jfinal.ext.interceptor.GET;
 import com.jfinal.ext.interceptor.POST;
 import common.service.RealtimeService;
 import common.service.impl.RealtimeServiceImpl;
-import common.utils.StringUtils;
+import common.util.StringUtils;
 import common.interceptor.DataGuestInterceptor;
 
 /**
  * 实时数据页 --逻辑控制层 目前实时在线为假数据
- * 
  * @author chris
- *
  */
 @Clear
 public class RealtimeController extends Controller {

@@ -19,9 +19,9 @@ import common.model.SecUser;
 import common.mysql.DbSelector;
 import common.service.AdminService;
 import common.service.impl.AdminServiceImpl;
-import common.utils.EncryptUtils;
-import common.utils.JsonToMap;
-import common.utils.StringUtils;
+import common.util.EncryptUtils;
+import common.util.JsonToMap;
+import common.util.StringUtils;
 
 @Clear
 public class AdminController extends Controller {

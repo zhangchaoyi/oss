@@ -12,7 +12,7 @@ import common.interceptor.GmInterceptor;
 import common.mysql.DbSelector;
 import common.service.OperationService;
 import common.service.impl.OperationServiceImpl;
-import common.utils.Contants;
+import common.util.Contants;
 @Clear
 public class GmRecordController extends Controller {
 	private static Logger logger = Logger.getLogger(GmRecordController.class);

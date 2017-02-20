@@ -2,7 +2,10 @@ package common.service;
 
 import java.util.List;
 import java.util.Map;
-
+/**
+ * 活跃玩家接口
+ * @author chris
+ */
 public interface ActivePlayersService {
 
 	public List<Long> queryDau(List<String> categories, String icons, String startDate, String endDate, String db, String versions, String chId);

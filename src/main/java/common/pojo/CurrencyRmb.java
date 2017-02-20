@@ -1,5 +1,8 @@
 package common.pojo;
-
+/**
+ * 用于OperationCurrencyServiceImpl 数据处理
+ * @author chris
+ */
 public class CurrencyRmb {
 	private String account;
 	private String timestamp;

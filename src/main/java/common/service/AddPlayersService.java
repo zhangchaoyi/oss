@@ -3,7 +3,10 @@ package common.service;
 import java.util.List;
 
 import common.model.CreateRole;
-
+/**
+ * 新增玩家接口
+ * @author chris
+ */
 public interface AddPlayersService {
 	
 	public List<Long> queryAddPlayersData(List<String> categories, String icons, String startDate, String endDate, String db, String versions, String chId);

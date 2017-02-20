@@ -19,8 +19,8 @@ import com.jfinal.ext.interceptor.POST;
 import common.interceptor.VipInterceptor;
 import common.service.PaymentTransformService;
 import common.service.impl.PaymentTransformServiceImpl;
-import common.utils.DateUtils;
-import common.utils.StringUtils;
+import common.util.DateUtils;
+import common.util.StringUtils;
 
 @Clear
 public class PaymentTransformController extends Controller {

@@ -2,7 +2,10 @@ package common.service;
 
 import java.util.List;
 import java.util.Map;
-
+/**
+ * 付费行为接口
+ * @author chris
+ */
 public interface PaymentBehaviorService {
 	
 	public Map<String,Object> queryRankMoney(String icons, String startDate, String endDate, String db, String versions, String chId);

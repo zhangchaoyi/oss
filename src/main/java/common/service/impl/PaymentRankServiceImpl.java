@@ -13,8 +13,8 @@ import common.model.Logout;
 import common.pojo.AccountDetail;
 import common.pojo.PaymentRank;
 import common.service.PaymentRankService;
-import common.utils.DateUtils;
-import common.utils.StringUtils;
+import common.util.DateUtils;
+import common.util.StringUtils;
 
 /**
  * 付费排行页

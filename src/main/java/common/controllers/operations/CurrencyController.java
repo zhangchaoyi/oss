@@ -22,7 +22,6 @@ public class CurrencyController extends Controller {
 
 	/**
 	 * 货币消耗和获取页
-	 * 
 	 * @author chris
 	 */
 	@Before({GET.class, GmInterceptor.class})

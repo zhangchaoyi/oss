@@ -14,7 +14,7 @@ import common.model.LossUser;
 import common.model.ReturnUser;
 import common.pojo.DayUser;
 import common.service.LossAnalysisService;
-import common.utils.StringUtils;
+import common.util.StringUtils;
 
 /**
  * 流失分析页

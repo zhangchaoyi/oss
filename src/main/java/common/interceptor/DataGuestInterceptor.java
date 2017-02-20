@@ -15,7 +15,6 @@ import common.service.impl.AdminServiceImpl;
 /**
  * 要求用户的角色至少为data_guest
  * @author chris
- *
  */
 public class DataGuestInterceptor implements Interceptor {
 	private static Logger logger = Logger.getLogger(DataGuestInterceptor.class);

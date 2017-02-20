@@ -17,8 +17,8 @@ import com.jfinal.ext.interceptor.POST;
 import common.interceptor.DataGuestInterceptor;
 import common.service.LossAnalysisService;
 import common.service.impl.LossAnalysisServiceImpl;
-import common.utils.DateUtils;
-import common.utils.StringUtils;
+import common.util.DateUtils;
+import common.util.StringUtils;
 
 @Clear
 public class LossController extends Controller {
@@ -27,7 +27,6 @@ public class LossController extends Controller {
 
 	/**
 	 * 流失页
-	 * 
 	 * @author chris
 	 * @role data_guest
 	 */

@@ -19,7 +19,6 @@ import common.service.AccdetailService;
 /**
  * 查询生命轨迹页
  * @author chris
- *
  */
 public class AccdetailServiceImpl implements AccdetailService {
 	private static Logger logger = Logger.getLogger(AccdetailServiceImpl.class);

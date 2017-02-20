@@ -12,7 +12,6 @@ import common.service.impl.AdminServiceImpl;
 /**
  * 要求用户的角色至少为admin
  * @author chris
- *
  */
 public class AdminInterceptor implements Interceptor {
 	private static Logger logger = Logger.getLogger(AdminInterceptor.class);

@@ -42,24 +42,30 @@ import common.model.SecUserRole;
 import common.model.UserFeedback;
 import common.mysql.DbSelector;
 import common.routes.AdminRoute;
-import common.utils.Contants;
-
+import common.util.Contants;
+/**
+ * jFinal项目启动基本配置
+ * @author chris
+ */
 public class BaseConfig extends JFinalConfig {
 	private static Logger logger = Logger.getLogger(BaseConfig.class);
-
 	@Override
 	public void configConstant(Constants me) {
 		me.setEncoding("UTF-8");
 	}
-
+	/**
+	 * 路由映射配置
+	 * @param me
+	 * @author chris
+	 */
 	@Override
 	public void configRoute(Routes me) {
 		me.add("/", IndexController.class, "/WEB-INF/views");
 		me.add(new AdminRoute());
 	}
-
 	@Override
 	/**
+	 * 插件配置
 	 * 配置多个数据源,每个数据源对应一个C3p0Plugin和ActiveRecordPlugin实例
 	 * @author chris
 	 */
@@ -112,7 +118,11 @@ public class BaseConfig extends JFinalConfig {
 		}
 
 	}
-
+	/**
+	 * 拦截器配置
+	 * @param me
+	 * @author chris
+	 */
 	@Override
 	public void configInterceptor(Interceptors me) {
 		me.addGlobalActionInterceptor(new AdminInterceptor());
@@ -127,7 +137,7 @@ public class BaseConfig extends JFinalConfig {
 
 	}
 
-	//用于jfinal Generator 中重新生成表model
+	//用于jfinal Generator 中获取数据库链接重新生成表model
 	public static C3p0Plugin createC3p0Plugin() {
 		PropKit.use("config.txt");
 		return new C3p0Plugin(PropKit.get("ucUrl"), PropKit.get("user"), PropKit.get("password").trim());

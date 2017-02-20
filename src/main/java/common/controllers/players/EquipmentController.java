@@ -18,7 +18,7 @@ import common.interceptor.DataGuestInterceptor;
 import common.model.DeviceInfo;
 import common.service.EquipmentAnalyzeService;
 import common.service.impl.EquipmentAnalyzeServiceImpl;
-import common.utils.StringUtils;
+import common.util.StringUtils;
 
 @Clear
 public class EquipmentController extends Controller {

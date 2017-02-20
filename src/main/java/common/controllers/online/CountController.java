@@ -19,7 +19,7 @@ import com.jfinal.ext.interceptor.POST;
 import common.interceptor.DataGuestInterceptor;
 import common.service.OnlineCountService;
 import common.service.impl.OnlineCountServiceImpl;
-import common.utils.DateUtils;
+import common.util.DateUtils;
 
 @Clear
 public class CountController extends Controller {
@@ -28,7 +28,6 @@ public class CountController extends Controller {
 
 	/**
 	 * 在线人数页
-	 * 
 	 * @author chris
 	 * @role data_guest
 	 */

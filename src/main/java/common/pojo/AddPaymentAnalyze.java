@@ -1,5 +1,8 @@
 package common.pojo;
-
+/**
+ * 用于PaymentTransformServiceImpl 数据处理
+ * @author chris
+ */
 public class AddPaymentAnalyze {
 	private int addPlayers;
 	private int fdPaidPeople;

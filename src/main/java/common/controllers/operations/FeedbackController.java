@@ -13,7 +13,7 @@ import com.jfinal.ext.interceptor.POST;
 import common.interceptor.GmInterceptor;
 import common.service.OperationService;
 import common.service.impl.OperationServiceImpl;
-import common.utils.StringUtils;
+import common.util.StringUtils;
 
 @Clear
 public class FeedbackController extends Controller{

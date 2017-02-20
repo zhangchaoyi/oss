@@ -17,8 +17,8 @@ import com.jfinal.ext.interceptor.POST;
 import common.interceptor.VipInterceptor;
 import common.service.PaymentRankService;
 import common.service.impl.PaymentRankServiceImpl;
-import common.utils.DateUtils;
-import common.utils.StringUtils;
+import common.util.DateUtils;
+import common.util.StringUtils;
 
 @Clear
 public class PaymentRankController extends Controller {

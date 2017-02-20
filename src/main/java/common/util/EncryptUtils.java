@@ -1,4 +1,4 @@
-package common.utils;
+package common.util;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -11,7 +11,10 @@ import javax.crypto.spec.SecretKeySpec;
 import org.apache.commons.codec.binary.Base64;  
 import sun.misc.BASE64Decoder; 
 import sun.misc.BASE64Encoder; 
-
+/**
+ * 加密解密类
+ * @author chris
+ */
 @SuppressWarnings("restriction")
 public class EncryptUtils {
 

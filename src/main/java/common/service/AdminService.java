@@ -4,7 +4,10 @@ import java.util.List;
 import java.util.Map;
 
 import common.model.SecUser;
-
+/**
+ * 后台帐号管理接口
+ * @author chris
+ */
 public interface AdminService {
 	public List<String> queryRoleByUsername(String username);
 
