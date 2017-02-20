@@ -44,17 +44,6 @@ public class RetainController extends Controller {
 	}
 
 	/**
-	 * 自定义留存页
-	 * 
-	 * @role data_guest
-	 */
-	@Before({ GET.class, DataGuestInterceptor.class })
-	@ActionKey("/players/retain-customize")
-	public void retainCustomize() {
-		render("retain-customize.html");
-	}
-
-	/**
 	 * 设备留存页
 	 * 
 	 * @role data_guest
@@ -133,60 +122,6 @@ public class RetainController extends Controller {
 			e.printStackTrace();
 			logger.info("cookie decoder failed", e);
 		}
-	}
-
-	/**
-	 * 自定义留存接口 假数据
-	 * 
-	 * @role data_guest
-	 */
-	@Before({ POST.class, DataGuestInterceptor.class })
-	@ActionKey("/api/players/retain-customize")
-	public void queryRetainCustomize() {
-		String period = getPara("period", "queryDay");
-		String playerType = getPara("playerType");
-		String gameType = getPara("gameType");
-		String times = getPara("times");
-		String retentinoType = getPara("retentionType");
-
-		String playerParam = "";
-		String periodParam = "";
-
-		switch (period) {
-		case "queryDay": {
-			periodParam = "日";
-			break;
-		}
-		case "queryWeek": {
-			periodParam = "周";
-			break;
-		}
-		case "queryMonth": {
-			periodParam = "月";
-			break;
-		}
-		}
-
-		Map<String, Object> data = new LinkedHashMap<String, Object>();
-		List<String> tableHeader = new LinkedList<String>();
-		List<Object> sourceData = new LinkedList<Object>();
-
-		tableHeader.addAll(Arrays.asList("首次使用日", "玩家数", "第N" + periodParam + "后 保留玩家"));
-		for (int i = 1; i < 8; i++) {
-			tableHeader.add("+" + i + periodParam);
-		}
-		tableHeader.add("+14" + periodParam);
-		tableHeader.add("+30" + periodParam);
-
-		for (int i = 0; i < 10; i++) {
-			List<String> perData = Arrays.asList("2016-08-1" + i, String.valueOf(i), "0", "0", "0", "0", "0", "0", "0",
-					"0", "0");
-			sourceData.add(perData);
-		}
-		data.put("header", tableHeader);
-		data.put("data", sourceData);
-		logger.info("data:" + data);
-		renderJson(data);
 	}
 
 	/**
