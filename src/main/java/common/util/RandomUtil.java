@@ -1,13 +1,14 @@
 package common.util;
 
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class RandomUtil {
 	public static final String ALLCHAR = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 	//generate a random String contains number,upper case and lower case letters.
 	public static String getRandomString(int length) {
 
-		Random random = new Random();
+		Random random = ThreadLocalRandom.current();
 
 		StringBuffer sb = new StringBuffer();
 

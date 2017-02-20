@@ -1,5 +1,6 @@
 package common.util;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,7 +19,18 @@ import org.apache.log4j.Logger;
 public class DateUtils {
 
 	private static Logger logger = Logger.getLogger(DateUtils.class);
-	
+	private static final ThreadLocal<DateFormat> dfD = new ThreadLocal<DateFormat>() {
+		@ Override
+		protected DateFormat initialValue() {
+		return new SimpleDateFormat("yyyy-MM-dd");
+		}
+	};
+	private static final ThreadLocal<DateFormat> dfM = new ThreadLocal<DateFormat>() {
+		@ Override
+		protected DateFormat initialValue() {
+		return new SimpleDateFormat("yyyy-MM");
+		}
+	};
 	//避免被实例化
 	private DateUtils(){}
 	/**
@@ -29,10 +41,8 @@ public class DateUtils {
 	 */
 	public static Date strToDate(String dateString){
 		Date date = null;
-		SimpleDateFormat sdf;
 		try {  
-		    sdf = new SimpleDateFormat("yyyy-MM-dd");  
-		    date = sdf.parse(dateString);  
+		    date = dfD.get().parse(dateString);  
 		}catch (ParseException e){  
 			logger.info("throwable exception",e);
 			logger.info(e.getStackTrace());
@@ -47,10 +57,8 @@ public class DateUtils {
 	 */
 	public static Date strToMonth(String dateString){
 		Date date = null;
-		SimpleDateFormat sdf;
 		try {  
-		    sdf = new SimpleDateFormat("yyyy-MM");  
-		    date = sdf.parse(dateString);  
+		    date = dfD.get().parse(dateString);  
 		}catch (ParseException e){  
 			logger.info("throwable exception",e);
 			logger.info(e.getStackTrace());
@@ -64,8 +72,7 @@ public class DateUtils {
 	 * @author chris
 	 */
 	public static String dateToStr(Date date) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd"); 
-		return sdf.format(date);
+		return dfD.get().format(date);
 	}
 	/**
 	 * Date转字符串类型 yyyy-MM
@@ -74,8 +81,7 @@ public class DateUtils {
 	 * @author chris
 	 */
 	public static String monthToStr(Date date) {
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM"); 
-		return sdf.format(date);
+		return dfM.get().format(date);
 	}
 	/**
 	 * 获取时间区间列表
@@ -139,7 +145,6 @@ public class DateUtils {
 	 */
 	public static String convertDate(String d){
 		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Map<String, Integer> map = new HashMap<String, Integer>();
 		map.put("今日", 0);
 		map.put("昨日", -1);
@@ -149,7 +154,7 @@ public class DateUtils {
 		for(Map.Entry<String, Integer> entry:map.entrySet()){
 			cal.setTime(date);
 			cal.add(Calendar.DATE, entry.getValue());
-			String dateString = formatter.format(cal.getTime());
+			String dateString = dfM.get().format(cal.getTime());
 			if(d.equals(dateString)){
 				return entry.getKey();
 			}
@@ -163,10 +168,9 @@ public class DateUtils {
 	 */
 	public static String getTodayDate(){
 		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date date=new Date();
 		cal.setTime(date);
-		return formatter.format(cal.getTime());
+		return dfD.get().format(cal.getTime());
 	}
 	/**
 	 * 获取七天前时间 yyyy-MM-dd
@@ -175,11 +179,10 @@ public class DateUtils {
 	 */
 	public static String getSevenAgoDate(){
 		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		Date date=new Date();
 		cal.setTime(date);
 		cal.add(Calendar.DATE, -6);
-		return formatter.format(cal.getTime());
+		return dfD.get().format(cal.getTime());
 	}
 	//将时间段划分成周 Map<start,end>  --以左边时间起始划分,右边时间不足补足七天
 //	public static Map<String, String> divideDateToWeek(String startDate, String endDate){
