@@ -32,7 +32,8 @@ public class DataGuestInterceptor implements Interceptor {
 			logger.info("serverCookie is null");
 			return;
 		}
-		
+		logger.info("serverCookie:"+serverCookie.getName());
+		logger.info("serverCookie:"+serverCookie.getValue());
 		if (cookie != null) {
 			username = cookie.getValue();
 			// 获取role列表
@@ -45,7 +46,7 @@ public class DataGuestInterceptor implements Interceptor {
 				return;
 			}
 		}
-
+		
 		String actionKey = invocation.getActionKey();
 		// 接口校验不通过直接返回/login
 		if (actionKey.startsWith("/api")) {
