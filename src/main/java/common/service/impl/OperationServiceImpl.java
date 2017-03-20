@@ -34,7 +34,7 @@ public class OperationServiceImpl implements OperationService {
 	public boolean addFeedback(String account, String title, String content, String server, String port) {
 		logger.info("params:{"+"account:"+account+",title:"+title+",content:"+content+",server:"+server+",port:"+port+"}");
 		boolean succeed = false;
-		succeed  = new UserFeedback().use("uc").set("account", account).set("title", title).set("content", content).set("server", server).set("port", port).set("create_time", new Date()).set("reply",0).save();
+		succeed  = new UserFeedback().use("test").set("account", account).set("title", title).set("content", content).set("server", server).set("port", port).set("create_time", new Date()).set("reply",0).save();
 		logger.info("return:" + succeed);
 		return succeed;
 	}
@@ -46,7 +46,7 @@ public class OperationServiceImpl implements OperationService {
 	public List<List<String>> queryFeedback(String startDate, String endDate, String server) {
 		logger.info("params:{"+"server:"+server+"}");
 		String sql = "select * from user_feedback where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and server in ("+ server +")";
-		List<UserFeedback> userFeedback = UserFeedback.dao.use("uc").find(sql, startDate, endDate);
+		List<UserFeedback> userFeedback = UserFeedback.dao.use("test").find(sql, startDate, endDate);
 		List<List<String>> data = new ArrayList<List<String>>();
 		for(UserFeedback uf : userFeedback){
 			String account = uf.getStr("account");
@@ -69,7 +69,7 @@ public class OperationServiceImpl implements OperationService {
 	public int completeReply(int id) {
 		logger.info("params:{"+"id"+id+"}");
 		String sql = "update user_feedback set reply = 1 where id = ?";
-		int succeed = Db.use("uc").update(sql, id);
+		int succeed = Db.use("test").update(sql, id);
 		logger.info("return:" + succeed);
 		return succeed;
 	}
@@ -81,7 +81,7 @@ public class OperationServiceImpl implements OperationService {
 	public int setGmRecordMailToSucceed(int rowId){
 		logger.info("params:{"+"id"+rowId+"}");
 		String sql = "update gm_record set is_mail_send = 1 where id = ?";
-		int succeed = Db.use("uc").update(sql, rowId);
+		int succeed = Db.use("test").update(sql, rowId);
 		return succeed;
 	}
 	
@@ -92,7 +92,7 @@ public class OperationServiceImpl implements OperationService {
 	public Map<String, String> queryFeedbackById(String id) {
 		logger.info("params:{"+"id:"+id+"}");
 		String sql = "select * from user_feedback where id = ?";
-		UserFeedback uf = UserFeedback.dao.use("uc").findFirst(sql, id);
+		UserFeedback uf = UserFeedback.dao.use("test").findFirst(sql, id);
 		Map<String, String> data = new HashMap<String, String>();
 		if(uf==null){
 			data.put("message", "failed");
@@ -114,7 +114,7 @@ public class OperationServiceImpl implements OperationService {
 	 */
 	public int insertGmRecord(String account, String operation, String emailAddress, String type){
 		logger.info("params:{"+"account:"+account+",operation:"+operation+",address:"+emailAddress+",type:"+type+"}");
-		GmRecord gr = new GmRecord().use("uc").set("account", account).set("operation", operation).set("create_time", new Date()).set("address", emailAddress).set("type",type);
+		GmRecord gr = new GmRecord().use("test").set("account", account).set("operation", operation).set("create_time", new Date()).set("address", emailAddress).set("type",type);
 		boolean succeed = gr.save();
 		if(!succeed){
 			logger.info("insert gm record failed");
@@ -130,7 +130,7 @@ public class OperationServiceImpl implements OperationService {
 	 */
 	public List<List<String>> queryGmRecord(String startDate, String endDate, String type, String address) {
 		String sql = "select account,operation,create_time,is_mail_send from gm_record where DATE_FORMAT(create_time,'%Y-%m-%d') between ? and ? and type = ? and address = ?";
-		List<GmRecord> gmRecord = GmRecord.dao.use("uc").find(sql, startDate, endDate, type, address);
+		List<GmRecord> gmRecord = GmRecord.dao.use("test").find(sql, startDate, endDate, type, address);
 		List<List<String>> data = new ArrayList<List<String>>();
 		try{
 			for(GmRecord gr : gmRecord){
